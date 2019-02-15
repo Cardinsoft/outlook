@@ -1528,12 +1528,7 @@ const callbacks = {
 				var url   = parameters.url;
 				var index = +parameters.index;
 				
-			try {
 				var response = await performFetch(url);
-			}
-			catch(e) {
-				console.log(e);
-			}
 				
 				var code = response.code;
 				var data = response.content;
