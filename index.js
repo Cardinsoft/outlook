@@ -23,215 +23,180 @@ Office.initialize = (reason) => {
 };
 
 function cardDisplay(parameters) {
-  var index  = parameters.index;
-  var code   = +parameters.code;
-  var icon   = parameters.icon;
-  var name   = parameters.name;
-  var url    = parameters.url;
-  var data   = parameters.data;
-  var manual = parameters.manual;  
-  var start  = parameters.start;
-  if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
+	var index  = parameters.index;
+	var code   = +parameters.code;
+	var icon   = parameters.icon;
+	var name   = parameters.name;
+	var url    = parameters.url;
+	var data   = parameters.data;
+	var manual = parameters.manual;  
+	var start  = parameters.start;
+	if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
   
-  var msg = getToken(e);
+	var msg = getToken();
   
-  var builder = CardService.newCardBuilder();
-      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+	var builder = CardService.newCardBuilder();
+		builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
   
-  var error = parameters.error;
-  if(error!==undefined) {
-    createErrorSection(builder,false,code,error);
-  }
+	var error = parameters.error;
+	if(error!==undefined) {
+		createErrorSection(builder,false,code,error);
+	}
   
-  var data = parseData(data);
-  if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
+	var data = parseData(data);
+	if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
   
-  var connection = {icon:icon,name:name,url:url,manual:manual};
-  createSectionEdit(builder,true,connection,index);
+	var connection = {icon:icon,name:name,url:url,manual:manual};
+	createSectionEdit(builder,true,connection,index);
   
-  createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
+	createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
 
-  try {
+	try {
 
-    if(data.length!==0) {
-    
-      var cap = 0, fullLength = 0;
-      
-      //handle full data length (including all fields)
-      for(var i=0; i<data.length; i++) {
-        try {var result = JSON.parse(data[i]);}
-        catch(er) { result = data[i]; }
-        for(var key in result) { fullLength += 1; }      
-      }
-      
-      //handle number of sections to display at one time
-      for(var max=0; max<data.length; max++) {
-        if(cap>=globalWidgetsCap) { break; }
-        try {var result = JSON.parse(data[max]);}
-        catch(er) { result = data[max]; }
-        for(var key in result) { cap += 1; }
-      }
-      
-      if(start!==undefined) { 
-        var begin = +start;
-        max = max + begin;
-      }else {
-        begin = 0; 
-      }
-      
-      for(var j=begin; j<data.length; j++) {
-        if(j===max) { break; }
-        var result = data[j];
-        if(data.length!==1) {
-          createShowSection(builder,result,true,j);
-        }else {
-          createShowSection(builder,result,false,j);
-        }
-      }
-      
-    }
+		if(data.length!==0) {
+			var cap = 0, fullLength = 0;
+		  
+			//handle full data length (including all fields)
+			for(var i=0; i<data.length; i++) {
+				try {var result = JSON.parse(data[i]);}
+				catch(er) { result = data[i]; }
+				for(var key in result) { fullLength += 1; }      
+			}
+		  
+			//handle number of sections to display at one time
+			for(var max=0; max<data.length; max++) {
+				if(cap>=globalWidgetsCap) { break; }
+				try {var result = JSON.parse(data[max]);}
+				catch(er) { result = data[max]; }
+				for(var key in result) { cap += 1; }
+			}
+		  
+			if(start!==undefined) { 
+				var begin = +start;
+				max = max + begin;
+			}else {
+				begin = 0; 
+			}
+		  
+			for(var j=begin; j<data.length; j++) {
+				if(j===max) { break; }
+				var result = data[j];
+				if(data.length!==1) {
+					createShowSection(builder,result,true,j);
+				}else {
+					createShowSection(builder,result,false,j);
+				}
+			}
+		  
+		}
   
-  }
-  catch(err) {
+	}
+	catch(err) {
     
-    createUnparsedSection(builder,true,err.message,JSON.stringify(data));
+		createUnparsedSection(builder,true,err.message,JSON.stringify(data));
     
-  }
+	}
   
-  var length = data.length;
-  var diff = max-begin;
+	var length = data.length;
+	var diff = max-begin;
   
-  if(fullLength>cap) {
-    var end = length-1;
-    if(length>max||length+diff-1===max) {
-      var prev = (begin-diff);
-      createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
-    }
-  }
+	console.log('TESTING');
+	console.log(data);
+  
+	if(fullLength>cap) {
+		var end = length-1;
+		if(length>max||length+diff-1===max) {
+			var prev = (begin-diff);
+			createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
+		}
+	}
 
-  return builder.build();
+	return builder.build();
 }
 
 async function cardsetDisplay(builder,idx) {
-  var layout = getFromCache('layout');
-  if(layout===null||layout==='') { layout = []; }else { layout = JSON.parse(layout); }
-
-  var msg = getToken();
+	var msg = getToken();
   
-  var config = getProperty('config','user');
-  console.log(config);
+	var config = getProperty('config','user');
+	console.log(config);
   
-  var autofieldsSection,autosuccessSection,erroredSection,manualSection;
+	var autofieldsSection,autosuccessSection,erroredSection,manualSection;
   
-  for(var index=0; index<config.length; index++) {
-    var connect = config[index];
-    var icon   = connect.icon;
-    var name   = connect.name;
-    var url    = connect.url;
-    var manual = connect.manual;
+	for(var index=0; index<config.length; index++) {
+		var connect = config[index];
+		var icon   = connect.icon;
+		var name   = connect.name;
+		var url    = connect.url;
+		var manual = connect.manual;
 	
-    if(!manual) {
-		var response = await performFetch(url);
-		
-		const code = response.code;
-				
-		if(code>=200&&code<300) {
-			var data = parseData(response.content);
-			var len = data.length;
-			var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
-				
-			if(len!==0) {
-				if(autofieldsSection===undefined) {
-					autofieldsSection = CardService.newCardSection();
-					autofieldsSection.setHeader(globalSuccessfulFetchHeader);
+		if(!manual) {
+			var response = await performFetch(url);
+			
+			const code = response.code;
+					
+			if(code>=200&&code<300) {
+				var data = parseData(response.content);
+				var len = data.length;
+				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
+					
+				if(len!==0) {
+					if(autofieldsSection===undefined) {
+						autofieldsSection = CardService.newCardSection();
+						autofieldsSection.setHeader(globalSuccessfulFetchHeader);
+					}
+					autofieldsSection.addWidget(widget);
+				}else {
+					if(autosuccessSection===undefined) {
+						autosuccessSection = CardService.newCardSection();
+						autosuccessSection.setHeader(globalNoDataFetchHeader);        
+					}
+					autosuccessSection.addWidget(widget);
 				}
-				autofieldsSection.addWidget(widget);
-			}else {
-				if(autosuccessSection===undefined) {
-					autosuccessSection = CardService.newCardSection();
-					autosuccessSection.setHeader(globalNoDataFetchHeader);        
+					
+			}else { //handle incorrect urls;
+					
+				if(erroredSection===undefined) {
+					erroredSection = CardService.newCardSection();
+					erroredSection.setHeader(globalErroredHeader);
+					var errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
+					erroredSection.addWidget(errorMsg);
 				}
-				autosuccessSection.addWidget(widget);
+				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+				erroredSection.addWidget(widget);
+			  
 			}
-				
-		}else { //handle incorrect urls;
-				
-			if(erroredSection===undefined) {
-				erroredSection = CardService.newCardSection();
-				erroredSection.setHeader(globalErroredHeader);
-				var errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
-				erroredSection.addWidget(errorMsg);
-			}
-			var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-			erroredSection.addWidget(widget);
-		  
-		}
 
-    }else { //handle manually triggered connections;
-      
-      var button = textButtonWidget('Manual',true,false,'actionManual');
-      
-      //handle positioning for connections previously invoked;
-      var position = layout.filter(function(elem){ 
-        if(+elem.index===index&&elem.url===url) { return elem; }
-      })[0];
-      if(position!==undefined) { var pos = +position.move; }else { pos = 'not positioned'; }
-      
-      if(pos===1) {
-        if(autofieldsSection===undefined) { 
-          autofieldsSection = CardService.newCardSection();
-          autofieldsSection.setCollapsible(true);
-          autofieldsSection.setHeader(globalSuccessfulFetchHeader);
-          autofieldsSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        var widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        autofieldsSection.addWidget(widget);
-      }else if(pos===0) {
-        if(autosuccessSection===undefined) { 
-          autosuccessSection = CardService.newCardSection();
-          autosuccessSection.setCollapsible(true);
-          autosuccessSection.setHeader(globalNoDataFetchHeader);   
-          autosuccessSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        autosuccessSection.addWidget(widget);
-      }else if(pos===-1) {
-        if(erroredSection===undefined) { 
-          erroredSection = CardService.newCardSection();
-          erroredSection.setCollapsible(true);
-          erroredSection.setHeader(globalErroredHeader);
-          erroredSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-          errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
-          erroredSection.addWidget(errorMsg);
-        }
-        widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        erroredSection.addWidget(widget);
-      }else { //if connection is invoced for the first time;
-        if(manualSection===undefined) {
-          manualSection = CardService.newCardSection();
-          manualSection.setCollapsible(true);
-          manualSection.setHeader(globalManualHeader);
-          manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        widget = actionKeyValueWidget(icon,'',name,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        manualSection.addWidget(widget);
-      }
-         
-    }
-  }
+		}else { //handle manually triggered connections;
+		  
+			var button = textButtonWidget('Manual',true,false,'actionManual');
+				
+			if(manualSection===undefined) {
+				manualSection = CardService.newCardSection();
+				manualSection.setCollapsible(true);
+				manualSection.setHeader(globalManualHeader);
+				manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
+			}
+			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+			manualSection.addWidget(widget);		  
+			
+		}
+	
+	}
   
-  if(erroredSection!==undefined)     { builder.addSection(erroredSection); }
-  if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
-  if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
-  if(manualSection!==undefined)      { builder.addSection(manualSection); }
+	if(erroredSection!==undefined)     { builder.addSection(erroredSection); }
+	if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
+	if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
+	if(manualSection!==undefined)      { builder.addSection(manualSection); }
   
-  return builder.build();
+	createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
+  
+	return builder.build();
 }
 
-function cardOpen(index) {
+async function cardOpen(index) {
 	var builder = CardService.newCardBuilder();
 	  
-	var src = getProperty('config','user');
+	var src = await getProperty('config','user');
 	let config;
 	if(src!==null) {
 		config = src;
@@ -244,7 +209,6 @@ function cardOpen(index) {
 		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
 	}else {//build display card if any connections;
 		cardsetDisplay(builder,index);
-		createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
 	}
 	  
 	return builder.build();
@@ -264,36 +228,36 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
       
-  var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
-  section.addWidget(restText);
+	var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
+	section.addWidget(restText);
   
-  var parameters = {
-    'code':code.toString(),
-    'index':index.toString(),
-    'icon':icon,
-    'url':url,
-    'name':name,
-    'manual':manual.toString(),
-    'data':JSON.stringify(data),
-    'start':max.toString()
-  };
-  var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
-  parameters.start = begin.toString();
-  var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
+	var parameters = {
+		'code':code.toString(),
+		'index':index.toString(),
+		'icon':icon,
+		'url':url,
+		'name':name,
+		'manual':manual.toString(),
+		'data':JSON.stringify(data),
+		'start':max.toString()
+	};
+	var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
+	parameters.start = begin.toString();
+	var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
   
-  //handle conditionally adding buttons "back" and "next" according to data part that is being parsed
-  if(max<=end) {
-    if(max>=(max-begin)) {
-      var set = buttonSet([back,show]);
-      section.addWidget(set);
-    }else {
-      section.addWidget(show);
-    }
-  }else {
-    section.addWidget(back);
-  }
+	//handle conditionally adding buttons "back" and "next" according to data part that is being parsed
+	if(max<=end) {
+		if(max>=(max-begin)) {
+			var set = buttonSet([back,show]);
+			section.addWidget(set);
+		}else {
+			section.addWidget(show);
+		}
+	}else {
+		section.addWidget(back);
+	}
   
-  builder.addSection(section);
+	builder.addSection(section);
 }
 
 function createNoFieldsSection(builder,isCollapsed) {
@@ -1394,7 +1358,7 @@ const callbacks = {
 	},
 	submitURL : function submitURL(parameters) {
 		return new Promise(
-			function(resolve) {
+			async function(resolve) {
 				const inputs = $('input');
 				var icon = inputs[0].value;
 				var name = inputs[1].value;
@@ -1416,7 +1380,7 @@ const callbacks = {
 				var src = getProperty('config','user');
 				src.push(connection);
 				console.log(src);
-				setProperty('config',src,'user');
+				await setProperty('config',src,'user');
 				
 				builder.setNotification(notification(globalUpdateSuccess));
 				builder.setStateChanged(true);
@@ -1494,9 +1458,9 @@ const callbacks = {
 		return new Promise(
 			function(resolve) {			
 				var action = CardService.newActionResponseBuilder();
-				action.setStateChanged(true);
+					action.setStateChanged(true);
 			  
-				var code = parameters.code;
+				var code = +parameters.code;
 				var data = parameters.data;
 		  
 				if(code>=200&&code<300) {
@@ -1527,24 +1491,25 @@ const callbacks = {
 				  
 				var url   = parameters.url;
 				var index = +parameters.index;
-				  
+				
 				var response = await performFetch(url);
+				
 				var code = response.code;
 				var data = response.content;
 				  
-				  if(code>=200&&code<300) {
+				if(code>=200&&code<300) {
 					
 					var len = data.length;
 					if(len!==0) {
-					  parameters.data = data;
-					  var move = '1';
+						parameters.data = data;
+						var move = '1';
 					}else if(code!==0) { //handle no data to show;
-					  move = '0';
+						move = '0';
 					}
 					
 					cardDisplay(parameters);
 					
-				  }else { //handle incorrect urls;
+				}else { //handle incorrect urls;
 					
 					parameters.data  = '[]';
 					parameters.error = data;
@@ -1554,24 +1519,7 @@ const callbacks = {
 					
 					cardDisplay(parameters);
 					
-				  }
-				  
-				  var layout = getFromCache('layout');
-				  if(layout===''||layout===null) { layout = []; }else { layout = JSON.parse(layout); }
-				  var isPositioned = layout.some(function(elem,idx){
-					if(elem.index===index&&elem.url===url) { 
-					  posIdx = idx; 
-					  return elem; 
-					}
-				  });
-				  if(isPositioned) { 
-					layout = layout.filter(function(elem,idx){ 
-					  if(idx!==posIdx) { return elem; }
-					});
-				  }
-				  var position = {'index':index,'url':url,'move':move};
-				  layout.push(position);
-				  putToCache('layout',JSON.stringify(layout));
+				}
 				  
 				return action.build();
 			}
@@ -1736,6 +1684,7 @@ Switch.prototype.appendToUi = function (parent) {
 	input.type = 'checkbox';
 	input.id = fieldName;
 	input.className = 'ms-Toggle-input';
+	if(value===undefined) { input.value = 'on'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let value = input.value;
@@ -1747,7 +1696,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(value) {
+	if(value==='on') {
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
 		label.className = 'ms-Toggle-field';
@@ -2481,21 +2430,29 @@ function createSettingsFile(content) {
 }
 
 async function performFetch(url) {
+	
   var msg = getToken();
   
   var email = trimFrom(msg.getFrom());
   
-  var payload = {
-    'Bcc': msg.getBcc(),
-    'Cc': msg.getCc(),
-    'date': msg.getDate(),
-    'from': email,
-    'id': msg.getId(),
-    'plainBody': msg.getPlainBody(),
-    'subject': msg.getSubject()
-  };
+	var payload = {
+		'Bcc': msg.getBcc(),
+		'Cc': msg.getCc(),
+		'date': msg.getDate(),
+		'from': email,
+		'id': msg.getId(),
+		'plainBody': msg.getPlainBody(),
+		'subject': msg.getSubject()
+	};
   
-  var response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+	let response;
+  
+	try {
+		response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+	}
+	catch(error) {
+		response = error;
+	}
   
   console.log(response);
   
