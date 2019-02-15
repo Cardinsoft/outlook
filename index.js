@@ -1532,10 +1532,8 @@ const callbacks = {
 				var response = await performFetch(url);
 			}
 			catch(e) {
-				console.log('TEST');
+				console.log(e);
 			}
-				
-				console.log(response);
 				
 				var code = response.code;
 				var data = response.content;
@@ -2503,7 +2501,11 @@ async function performFetch(url) {
     'subject': msg.getSubject()
   };
   
-  var response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+  let response;
+  
+  const promise = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+  promise.then(function(result){ response = result; });
+  promise.catch(function(reject){ response = reject; });
   
   console.log(response);
   
