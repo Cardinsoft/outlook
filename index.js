@@ -228,10 +228,10 @@ async function cardsetDisplay(builder,idx) {
   return builder.build();
 }
 
-function cardOpen(index) {
+async function cardOpen(index) {
 	var builder = CardService.newCardBuilder();
 	  
-	var src = getProperty('config','user');
+	var src = await getProperty('config','user');
 	let config;
 	if(src!==null) {
 		config = src;
@@ -1394,7 +1394,7 @@ const callbacks = {
 	},
 	submitURL : function submitURL(parameters) {
 		return new Promise(
-			function(resolve) {
+			async function(resolve) {
 				const inputs = $('input');
 				var icon = inputs[0].value;
 				var name = inputs[1].value;
@@ -1416,7 +1416,7 @@ const callbacks = {
 				var src = getProperty('config','user');
 				src.push(connection);
 				console.log(src);
-				setProperty('config',src,'user');
+				await setProperty('config',src,'user');
 				
 				builder.setNotification(notification(globalUpdateSuccess));
 				builder.setStateChanged(true);
