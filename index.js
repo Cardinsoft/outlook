@@ -2486,21 +2486,26 @@ async function performFetch(url) {
   
   var email = trimFrom(msg.getFrom());
   
-  var payload = {
-    'Bcc': msg.getBcc(),
-    'Cc': msg.getCc(),
-    'date': msg.getDate(),
-    'from': email,
-    'id': msg.getId(),
-    'plainBody': msg.getPlainBody(),
-    'subject': msg.getSubject()
-  };
+	var payload = {
+		'Bcc': msg.getBcc(),
+		'Cc': msg.getCc(),
+		'date': msg.getDate(),
+		'from': email,
+		'id': msg.getId(),
+		'plainBody': msg.getPlainBody(),
+		'subject': msg.getSubject()
+	};
   
-  let response;
+	let response;
   
-  const promise = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
-  promise.then(function(result){ response = result; });
-  promise.catch(function(reject){ response = reject; });
+	try {
+		const promise = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+		promise.then(function(result){ response = result; });
+		promise.catch(function(reject){ response = reject; });
+	}
+	catch(error) {
+		response = error;
+	}
   
   console.log(response);
   
