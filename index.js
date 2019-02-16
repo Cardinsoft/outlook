@@ -2462,9 +2462,7 @@ async function performFetch(url) {
 	let response;
   
 	try {
-		const promise = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
-		promise.then(function(result){ response = result; });
-		promise.catch(function(reject){ response = reject; });
+		const response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
 	}
 	catch(error) {
 		response = error;
