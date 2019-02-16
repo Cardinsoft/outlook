@@ -113,118 +113,82 @@ function cardDisplay(parameters) {
 }
 
 async function cardsetDisplay(builder,idx) {
-  var msg = getToken();
+	var msg = getToken();
   
-  var config = getProperty('config','user');
-  console.log(config);
+	var config = getProperty('config','user');
+	console.log(config);
   
-  var autofieldsSection,autosuccessSection,erroredSection,manualSection;
+	var autofieldsSection,autosuccessSection,erroredSection,manualSection;
   
-  for(var index=0; index<config.length; index++) {
-    var connect = config[index];
-    var icon   = connect.icon;
-    var name   = connect.name;
-    var url    = connect.url;
-    var manual = connect.manual;
+	for(var index=0; index<config.length; index++) {
+		var connect = config[index];
+		var icon   = connect.icon;
+		var name   = connect.name;
+		var url    = connect.url;
+		var manual = connect.manual;
 	
-    if(!manual) {
-		var response = await performFetch(url);
-		
-		const code = response.code;
-				
-		if(code>=200&&code<300) {
-			var data = parseData(response.content);
-			var len = data.length;
-			var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
-				
-			if(len!==0) {
-				if(autofieldsSection===undefined) {
-					autofieldsSection = CardService.newCardSection();
-					autofieldsSection.setHeader(globalSuccessfulFetchHeader);
+		if(!manual) {
+			var response = await performFetch(url);
+			
+			const code = response.code;
+					
+			if(code>=200&&code<300) {
+				var data = parseData(response.content);
+				var len = data.length;
+				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
+					
+				if(len!==0) {
+					if(autofieldsSection===undefined) {
+						autofieldsSection = CardService.newCardSection();
+						autofieldsSection.setHeader(globalSuccessfulFetchHeader);
+					}
+					autofieldsSection.addWidget(widget);
+				}else {
+					if(autosuccessSection===undefined) {
+						autosuccessSection = CardService.newCardSection();
+						autosuccessSection.setHeader(globalNoDataFetchHeader);        
+					}
+					autosuccessSection.addWidget(widget);
 				}
-				autofieldsSection.addWidget(widget);
-			}else {
-				if(autosuccessSection===undefined) {
-					autosuccessSection = CardService.newCardSection();
-					autosuccessSection.setHeader(globalNoDataFetchHeader);        
+					
+			}else { //handle incorrect urls;
+					
+				if(erroredSection===undefined) {
+					erroredSection = CardService.newCardSection();
+					erroredSection.setHeader(globalErroredHeader);
+					var errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
+					erroredSection.addWidget(errorMsg);
 				}
-				autosuccessSection.addWidget(widget);
+				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+				erroredSection.addWidget(widget);
+			  
 			}
-				
-		}else { //handle incorrect urls;
-				
-			if(erroredSection===undefined) {
-				erroredSection = CardService.newCardSection();
-				erroredSection.setHeader(globalErroredHeader);
-				var errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
-				erroredSection.addWidget(errorMsg);
-			}
-			var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-			erroredSection.addWidget(widget);
-		  
-		}
 
-    }else { //handle manually triggered connections;
-      
-      var button = textButtonWidget('Manual',true,false,'actionManual');
-      
-      //handle positioning for connections previously invoked;
-      var position = layout.filter(function(elem){ 
-        if(+elem.index===index&&elem.url===url) { return elem; }
-      })[0];
-      if(position!==undefined) { var pos = +position.move; }else { pos = 'not positioned'; }
-      
-      if(pos===1) {
-        if(autofieldsSection===undefined) { 
-          autofieldsSection = CardService.newCardSection();
-          autofieldsSection.setCollapsible(true);
-          autofieldsSection.setHeader(globalSuccessfulFetchHeader);
-          autofieldsSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        var widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        autofieldsSection.addWidget(widget);
-      }else if(pos===0) {
-        if(autosuccessSection===undefined) { 
-          autosuccessSection = CardService.newCardSection();
-          autosuccessSection.setCollapsible(true);
-          autosuccessSection.setHeader(globalNoDataFetchHeader);   
-          autosuccessSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        autosuccessSection.addWidget(widget);
-      }else if(pos===-1) {
-        if(erroredSection===undefined) { 
-          erroredSection = CardService.newCardSection();
-          erroredSection.setCollapsible(true);
-          erroredSection.setHeader(globalErroredHeader);
-          erroredSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-          errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
-          erroredSection.addWidget(errorMsg);
-        }
-        widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        erroredSection.addWidget(widget);
-      }else { //if connection is invoced for the first time;
-        if(manualSection===undefined) {
-          manualSection = CardService.newCardSection();
-          manualSection.setCollapsible(true);
-          manualSection.setHeader(globalManualHeader);
-          manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-        }
-        widget = actionKeyValueWidget(icon,'',name,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-        manualSection.addWidget(widget);
-      }
-     
-    }
-  }
+		}else { //handle manually triggered connections;
+		  
+			var button = textButtonWidget('Manual',true,false,'actionManual');
+				
+			if(manualSection===undefined) {
+				manualSection = CardService.newCardSection();
+				manualSection.setCollapsible(true);
+				manualSection.setHeader(globalManualHeader);
+				manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
+			}
+			widget = actionKeyValueWidget(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+			manualSection.addWidget(widget);		  
+			
+		}
+	
+	}
   
-  if(erroredSection!==undefined)     { builder.addSection(erroredSection); }
-  if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
-  if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
-  if(manualSection!==undefined)      { builder.addSection(manualSection); }
+	if(erroredSection!==undefined)     { builder.addSection(erroredSection); }
+	if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
+	if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
+	if(manualSection!==undefined)      { builder.addSection(manualSection); }
   
-  createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
+	createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
   
-  return builder.build();
+	return builder.build();
 }
 
 async function cardOpen(index) {
