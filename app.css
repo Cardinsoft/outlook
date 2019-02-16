@@ -42,6 +42,10 @@ body {
 	color: #a6a6a6;
 }
 
+.ms-Panel-headerText {
+	padding: 4px 15px !important;
+}
+
 .TextButton {
 	margin-right: 8px;
 }
@@ -134,8 +138,4 @@ body {
 
 .side i:hover {
 	color: #d0d0d0;
-}
-
-.mainMenu {
-	
 }
