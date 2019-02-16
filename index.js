@@ -216,7 +216,7 @@ async function cardsetDisplay(builder,idx) {
         widget = actionKeyValueWidget(icon,'',name,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
         manualSection.addWidget(widget);
       }
-         
+     
     }
   }
   
@@ -224,6 +224,8 @@ async function cardsetDisplay(builder,idx) {
   if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
   if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
   if(manualSection!==undefined)      { builder.addSection(manualSection); }
+  
+  createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
   
   return builder.build();
 }
