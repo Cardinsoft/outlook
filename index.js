@@ -242,19 +242,19 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 	parameters.start = begin.toString();
 	var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
   
-  //handle conditionally adding buttons "back" and "next" according to data part that is being parsed
-  if(max<=end) {
-    if(max>=(max-begin)) {
-      var set = buttonSet([back,show]);
-      section.addWidget(set);
-    }else {
-      section.addWidget(show);
-    }
-  }else {
-    section.addWidget(back);
-  }
+	//handle conditionally adding buttons "back" and "next" according to data part that is being parsed
+	if(max<=end) {
+		if(max>=(max-begin)) {
+			var set = buttonSet([back,show]);
+			section.addWidget(set);
+		}else {
+			section.addWidget(show);
+		}
+	}else {
+		section.addWidget(back);
+	}
   
-  builder.addSection(section);
+	builder.addSection(section);
 }
 
 function createNoFieldsSection(builder,isCollapsed) {
@@ -1517,23 +1517,6 @@ const callbacks = {
 					cardDisplay(parameters);
 					
 				}
-				  
-				  var layout = getFromCache('layout');
-				  if(layout===''||layout===null) { layout = []; }else { layout = JSON.parse(layout); }
-				  var isPositioned = layout.some(function(elem,idx){
-					if(elem.index===index&&elem.url===url) { 
-					  posIdx = idx; 
-					  return elem; 
-					}
-				  });
-				  if(isPositioned) { 
-					layout = layout.filter(function(elem,idx){ 
-					  if(idx!==posIdx) { return elem; }
-					});
-				  }
-				  var position = {'index':index,'url':url,'move':move};
-				  layout.push(position);
-				  putToCache('layout',JSON.stringify(layout));
 				  
 				return action.build();
 			}
