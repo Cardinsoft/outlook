@@ -1157,8 +1157,6 @@ CardBuilder.prototype.build = function () {
 	const cardSections = this.sections;
 	const cardAction   = this.action;
 	
-	console.log(cardHeader);
-	
 	$('#app-body').empty();
 	
 	const wrap = document.createElement('div');
@@ -1167,11 +1165,14 @@ CardBuilder.prototype.build = function () {
 	$('#app-body').append(wrap);
 	
 	if(this.cardHeader!==undefined) {
+		const headerWrap = document.createElement('div');
+		$('.ms-CommandBar-mainArea').prepend(headerWrap);
+		
 		const header = document.createElement('p');
 		header.id = 'main-Ui-header';
 		header.className = 'ms-Panel-headerText';
 		header.textContent = this.cardHeader.title;
-		$('#main-Ui-wrap').append(header);
+		headerWrap.append(header);
 	}
 	
 		
@@ -1941,8 +1942,6 @@ TextButton.prototype.appendToUi = function (parent) {
 	btnContent.className = 'ms-Button-label';
 	btnContent.textContent = text;
 	button.append(btnContent);
-	
-	console.log(openLink);
 	
 	if(openLink===undefined) {
 		new fabric['Button'](button, actionCallback(action,button) );	
