@@ -174,7 +174,7 @@ async function cardsetDisplay(builder,idx) {
 				manualSection.setHeader(globalManualHeader);
 				manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
 			}
-			widget = actionKeyValueWidget(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
 			manualSection.addWidget(widget);		  
 			
 		}
