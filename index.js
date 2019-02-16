@@ -23,93 +23,92 @@ Office.initialize = (reason) => {
 };
 
 function cardDisplay(parameters) {
-  var index  = parameters.index;
-  var code   = +parameters.code;
-  var icon   = parameters.icon;
-  var name   = parameters.name;
-  var url    = parameters.url;
-  var data   = parameters.data;
-  var manual = parameters.manual;  
-  var start  = parameters.start;
-  if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
+	var index  = parameters.index;
+	var code   = +parameters.code;
+	var icon   = parameters.icon;
+	var name   = parameters.name;
+	var url    = parameters.url;
+	var data   = parameters.data;
+	var manual = parameters.manual;  
+	var start  = parameters.start;
+	if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
   
-  var msg = getToken(e);
+	var msg = getToken();
   
-  var builder = CardService.newCardBuilder();
-      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+	var builder = CardService.newCardBuilder();
+		builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
   
-  var error = parameters.error;
-  if(error!==undefined) {
-    createErrorSection(builder,false,code,error);
-  }
+	var error = parameters.error;
+	if(error!==undefined) {
+		createErrorSection(builder,false,code,error);
+	}
   
-  var data = parseData(data);
-  if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
+	var data = parseData(data);
+	if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
   
-  var connection = {icon:icon,name:name,url:url,manual:manual};
-  createSectionEdit(builder,true,connection,index);
+	var connection = {icon:icon,name:name,url:url,manual:manual};
+	createSectionEdit(builder,true,connection,index);
   
-  createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
+	createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
 
-  try {
+	try {
 
-    if(data.length!==0) {
-    
-      var cap = 0, fullLength = 0;
-      
-      //handle full data length (including all fields)
-      for(var i=0; i<data.length; i++) {
-        try {var result = JSON.parse(data[i]);}
-        catch(er) { result = data[i]; }
-        for(var key in result) { fullLength += 1; }      
-      }
-      
-      //handle number of sections to display at one time
-      for(var max=0; max<data.length; max++) {
-        if(cap>=globalWidgetsCap) { break; }
-        try {var result = JSON.parse(data[max]);}
-        catch(er) { result = data[max]; }
-        for(var key in result) { cap += 1; }
-      }
-      
-      if(start!==undefined) { 
-        var begin = +start;
-        max = max + begin;
-      }else {
-        begin = 0; 
-      }
-      
-      for(var j=begin; j<data.length; j++) {
-        if(j===max) { break; }
-        var result = data[j];
-        if(data.length!==1) {
-          createShowSection(builder,result,true,j);
-        }else {
-          createShowSection(builder,result,false,j);
-        }
-      }
-      
-    }
+		if(data.length!==0) {
+			var cap = 0, fullLength = 0;
+		  
+			//handle full data length (including all fields)
+			for(var i=0; i<data.length; i++) {
+				try {var result = JSON.parse(data[i]);}
+				catch(er) { result = data[i]; }
+				for(var key in result) { fullLength += 1; }      
+			}
+		  
+			//handle number of sections to display at one time
+			for(var max=0; max<data.length; max++) {
+				if(cap>=globalWidgetsCap) { break; }
+				try {var result = JSON.parse(data[max]);}
+				catch(er) { result = data[max]; }
+				for(var key in result) { cap += 1; }
+			}
+		  
+			if(start!==undefined) { 
+				var begin = +start;
+				max = max + begin;
+			}else {
+				begin = 0; 
+			}
+		  
+			for(var j=begin; j<data.length; j++) {
+				if(j===max) { break; }
+				var result = data[j];
+				if(data.length!==1) {
+					createShowSection(builder,result,true,j);
+				}else {
+				createShowSection(builder,result,false,j);
+				}
+			}
+		  
+		}
   
-  }
-  catch(err) {
+	}
+	catch(err) {
     
-    createUnparsedSection(builder,true,err.message,JSON.stringify(data));
+		createUnparsedSection(builder,true,err.message,JSON.stringify(data));
     
-  }
+	}
   
-  var length = data.length;
-  var diff = max-begin;
+	var length = data.length;
+	var diff = max-begin;
   
-  if(fullLength>cap) {
-    var end = length-1;
-    if(length>max||length+diff-1===max) {
-      var prev = (begin-diff);
-      createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
-    }
-  }
+	if(fullLength>cap) {
+		var end = length-1;
+		if(length>max||length+diff-1===max) {
+			var prev = (begin-diff);
+			createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
+		}
+	}
 
-  return builder.build();
+	return builder.build();
 }
 
 async function cardsetDisplay(builder,idx) {
@@ -236,7 +235,7 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
     'url':url,
     'name':name,
     'manual':manual.toString(),
-    'data':JSON.stringify(data),
+    'data':data,
     'start':max.toString()
   };
   var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
@@ -1458,7 +1457,7 @@ const callbacks = {
 				var action = CardService.newActionResponseBuilder();
 				action.setStateChanged(true);
 			  
-				var code = parameters.code;
+				var code = +parameters.code;
 				var data = parameters.data;
 		  
 				if(code>=200&&code<300) {
