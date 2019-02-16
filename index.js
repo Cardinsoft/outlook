@@ -1737,6 +1737,7 @@ Switch.prototype.appendToUi = function (parent) {
 	input.type = 'checkbox';
 	input.id = fieldName;
 	input.className = 'ms-Toggle-input';
+	if(value===undefined) { input.value = 'on'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let value = input.value;
@@ -1748,7 +1749,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(value==='on') {
+	if(value==='on'||) {
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
 		label.className = 'ms-Toggle-field';
