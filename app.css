@@ -43,6 +43,7 @@ body {
 }
 
 .ms-Panel-headerText {
+	margin: 7px 0 !important;
 	padding: 4px 15px !important;
 }
 
