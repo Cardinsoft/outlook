@@ -2445,6 +2445,7 @@ function createSettingsFile(content) {
 }
 
 async function performFetch(url) {
+	
   var msg = getToken();
   
   var email = trimFrom(msg.getFrom());
@@ -2462,7 +2463,7 @@ async function performFetch(url) {
 	let response;
   
 	try {
-		const response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
+		response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
 	}
 	catch(error) {
 		response = error;
