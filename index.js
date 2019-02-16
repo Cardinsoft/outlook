@@ -1166,7 +1166,7 @@ CardBuilder.prototype.build = function () {
 	
 	if(this.cardHeader!==undefined) {
 		const headerWrap = document.createElement('div');
-		$('.ms-CommandBar-mainArea')[0].append(headerWrap);
+		$('.ms-CommandBar-mainArea').prepend(headerWrap);
 		
 		const header = document.createElement('p');
 		header.id = 'main-Ui-header';
