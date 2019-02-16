@@ -113,9 +113,6 @@ function cardDisplay(parameters) {
 }
 
 async function cardsetDisplay(builder,idx) {
-  var layout = getFromCache('layout');
-  if(layout===null||layout==='') { layout = []; }else { layout = JSON.parse(layout); }
-
   var msg = getToken();
   
   var config = getProperty('config','user');
@@ -246,7 +243,6 @@ async function cardOpen(index) {
 		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
 	}else {//build display card if any connections;
 		cardsetDisplay(builder,index);
-		createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
 	}
 	  
 	return builder.build();
