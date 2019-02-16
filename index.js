@@ -225,22 +225,22 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
       
-  var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
-  section.addWidget(restText);
+	var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
+	section.addWidget(restText);
   
-  var parameters = {
-    'code':code.toString(),
-    'index':index.toString(),
-    'icon':icon,
-    'url':url,
-    'name':name,
-    'manual':manual.toString(),
-    'data':data,
-    'start':max.toString()
-  };
-  var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
-  parameters.start = begin.toString();
-  var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
+	var parameters = {
+		'code':code.toString(),
+		'index':index.toString(),
+		'icon':icon,
+		'url':url,
+		'name':name,
+		'manual':manual.toString(),
+		'data':JSON.stringify(data),
+		'start':max.toString()
+	};
+	var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
+	parameters.start = begin.toString();
+	var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
   
   //handle conditionally adding buttons "back" and "next" according to data part that is being parsed
   if(max<=end) {
@@ -1455,7 +1455,7 @@ const callbacks = {
 		return new Promise(
 			function(resolve) {			
 				var action = CardService.newActionResponseBuilder();
-				action.setStateChanged(true);
+					action.setStateChanged(true);
 			  
 				var code = +parameters.code;
 				var data = parameters.data;
@@ -1494,19 +1494,19 @@ const callbacks = {
 				var code = response.code;
 				var data = response.content;
 				  
-				  if(code>=200&&code<300) {
+				if(code>=200&&code<300) {
 					
 					var len = data.length;
 					if(len!==0) {
-					  parameters.data = data;
-					  var move = '1';
+						parameters.data = data;
+						var move = '1';
 					}else if(code!==0) { //handle no data to show;
-					  move = '0';
+						move = '0';
 					}
 					
 					cardDisplay(parameters);
 					
-				  }else { //handle incorrect urls;
+				}else { //handle incorrect urls;
 					
 					parameters.data  = '[]';
 					parameters.error = data;
@@ -1516,7 +1516,7 @@ const callbacks = {
 					
 					cardDisplay(parameters);
 					
-				  }
+				}
 				  
 				  var layout = getFromCache('layout');
 				  if(layout===''||layout===null) { layout = []; }else { layout = JSON.parse(layout); }
