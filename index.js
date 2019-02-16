@@ -84,7 +84,7 @@ function cardDisplay(parameters) {
 				if(data.length!==1) {
 					createShowSection(builder,result,true,j);
 				}else {
-				createShowSection(builder,result,false,j);
+					createShowSection(builder,result,false,j);
 				}
 			}
 		  
@@ -99,6 +99,9 @@ function cardDisplay(parameters) {
   
 	var length = data.length;
 	var diff = max-begin;
+  
+	console.log('TESTING');
+	console.log(data);
   
 	if(fullLength>cap) {
 		var end = length-1;
