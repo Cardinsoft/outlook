@@ -1166,10 +1166,10 @@ CardBuilder.prototype.build = function () {
 	
 	if(this.cardHeader!==undefined) {
 		const headerWrap = document.createElement('div');
+		headerWrap.id = 'main-Ui-header';
 		$('.ms-CommandBar-mainArea').prepend(headerWrap);
 		
 		const header = document.createElement('p');
-		header.id = 'main-Ui-header';
 		header.className = 'ms-Panel-headerText';
 		header.textContent = this.cardHeader.title;
 		headerWrap.append(header);
