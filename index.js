@@ -1602,19 +1602,12 @@ function actionCallback(action,element) {
 		
 		if(loadIndicator!=='NONE') {
 			const overlay = $('#app-overlay');
-			overlay.show();			
-			/*
-			const indicator = document.createElement('div');
-			indicator.id = 'main-Ui-spinner';
-			indicator.className = 'ms-Spinner ms-Spinner--large';
-			overlay.append(indicator);
-			new fabric['Spinner'](indicator);
-			*/	
+			//overlay.show();
 		}
 		
 		await callbacks[functionName](parameters,element)
 		
-		$('#app-overlay').hide();
+		//$('#app-overlay').hide();
 		
 	}
 }
