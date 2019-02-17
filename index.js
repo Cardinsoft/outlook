@@ -196,7 +196,7 @@ async function cardsetDisplay(builder,idx) {
 async function cardOpen(index) {
 	var builder = CardService.newCardBuilder();
 	
-	$('.ms-Panel-headerText').empty();
+	$('.main-Ui-header').empty();
 	
 	var src = await getProperty('config','user');
 	let config;
