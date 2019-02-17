@@ -9,6 +9,8 @@ Office.initialize = (reason) => {
 	$(document).ready(function () {
 		cardOpen();
 		
+		$('.ms-Panel-headerText').empty();
+		
 		$('#home').click(function(){
 			cardOpen();
 		});
