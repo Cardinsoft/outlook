@@ -97,7 +97,7 @@ body {
 
 .closed {
 	overflow: hidden;
-	max-height: 8px;
+	max-height: 0px;
 }
 
 .opened {
@@ -109,7 +109,7 @@ body {
 }
 
 .toggler {
-	margin-bottom: 8px;
+	margin: 8px 0;
 	width: 100%;
 }
 
