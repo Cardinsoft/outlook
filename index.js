@@ -1594,7 +1594,7 @@ class EventObject {
 }
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
-function actionCallback(action,element) {
+async function actionCallback(action,element) {
 	return function(e) {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
@@ -1612,16 +1612,9 @@ function actionCallback(action,element) {
 			*/	
 		}
 		
-		callbacks[functionName](parameters,element)
-		.then(function(){
-			$('#app-overlay').empty(); 
-			$('#app-overlay').hide();
-			
-		})
-		.catch(function(){
-			$('#app-overlay').empty(); 
-			$('#app-overlay').hide();			
-		})
+		await callbacks[functionName](parameters,element)
+		
+		$('#app-overlay').hide();
 		
 	}
 }
