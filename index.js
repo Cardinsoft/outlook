@@ -1595,30 +1595,19 @@ class EventObject {
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
 function actionCallback(action,element) {
-	return function(e) {
+	return async function(e) {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
 		if(loadIndicator!=='NONE') {
 			const overlay = $('#app-overlay');
-			overlay.show();			
-			/*
-			const indicator = document.createElement('div');
-			indicator.id = 'main-Ui-spinner';
-			indicator.className = 'ms-Spinner ms-Spinner--large';
-			overlay.append(indicator);
-			new fabric['Spinner'](indicator);
-			*/	
+			//overlay.show();
 		}
 		
-		callbacks[functionName](parameters,element)
-		.then(function(){
-			if(loadIndicator!=='NONE') { 
-				overlay.empty(); 
-				overlay.hide();
-			}
-		});
+		await callbacks[functionName](parameters,element)
+		
+		//$('#app-overlay').hide();
 		
 	}
 }
