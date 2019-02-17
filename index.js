@@ -1159,7 +1159,6 @@ CardBuilder.prototype.build = function () {
 	const cardSections = this.sections;
 	const cardAction   = this.action;
 	
-	console.log(this);
 	//$('.ms-Panel-headerText').empty();
 	
 	$('#app-body').empty();
