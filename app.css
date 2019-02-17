@@ -12,13 +12,12 @@ body {
 }
 
 .KeyValue {
-	/*margin: 20px 0 10px;*/
 }
 
 .KeyValueImage {
 	margin-top: 5px;
-	width: 50px;
-	height: 50px;
+	width: 30px;
+	height: 30px;
 	border: 0.5px solid #a6a6a6;
 ;
 	border-radius: 5px;
@@ -98,8 +97,6 @@ body {
 	transition: max-height 1s;
 	-webkit-transition: max-height 1s;
 	transition-timing-function: ease-out;
-	/*border: solid #d0d0d0;*/
-	/*border-width: 1px 0 1px 0;	*/
 }
 
 .closed {
