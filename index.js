@@ -1607,7 +1607,7 @@ function actionCallback(action,element) {
 			const indicator = document.createElement('div');
 			indicator.id = 'main-Ui-spinner';
 			indicator.className = 'ms-Spinner ms-Spinner--large';
-			$('#main-Ui-wrap').append(indicator);
+			overlay.append(indicator);
 			new fabric['Spinner'](indicator);	
 		}
 		
