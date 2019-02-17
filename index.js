@@ -1600,9 +1600,10 @@ function actionCallback(action,element) {
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
-		console.log(e);
+		if(loadIndicator!=='NONE') {
+			const overlay = $('#app-overlay');
+			overlay.show();			
 		
-		if(loadIndicator!=='NONE') {		
 			const indicator = document.createElement('div');
 			indicator.id = 'main-Ui-spinner';
 			indicator.className = 'ms-Spinner ms-Spinner--large';
@@ -1612,7 +1613,10 @@ function actionCallback(action,element) {
 		
 		callbacks[functionName](parameters,element)
 		.then(function(){
-			if(loadIndicator!=='NONE') { $('#main-Ui-spinner').remove(); }
+			if(loadIndicator!=='NONE') { 
+				//overlay.hide();
+				//$('#main-Ui-spinner').remove(); 
+			}
 		});
 		
 	}
