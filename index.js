@@ -1212,8 +1212,8 @@ function cardActionCallback(cardAction) {
 		window[functionName](parameters)
 		.then(function(){
 			if(loadIndicator!=='NONE') { 
-				overlay.hide();
-				$('#main-Ui-spinner').remove(); 
+				//overlay.hide();
+				//$('#main-Ui-spinner').remove(); 
 			}
 		});
 	}
