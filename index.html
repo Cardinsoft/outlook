@@ -84,10 +84,12 @@
 	<script type="text/javasctipt" src="function-file/function-file.js"></script>
 	
 	<script type="text/javascript">
-	  const CommandBarElements = document.querySelectorAll(".ms-CommandBar");
-	  for (let i = 0; i < CommandBarElements.length; i++) {
-		new fabric['CommandBar'](CommandBarElements[i]);
-	  }
+		const CommandBarElements = document.querySelectorAll(".ms-CommandBar");
+		for (let i = 0; i < CommandBarElements.length; i++) {
+			new fabric['CommandBar'](CommandBarElements[i]);
+		}
+		const ov = document.querySelector('#overlay');
+		new fabric['Overlay'](ov);
 	</script>
 
 </body>
