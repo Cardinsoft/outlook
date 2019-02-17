@@ -196,7 +196,7 @@ async function cardsetDisplay(builder,idx) {
 async function cardOpen(index) {
 	var builder = CardService.newCardBuilder();
 	
-	$('.ms-Panel-headerText').empty();
+	$('.main-Ui-header').empty();
 	
 	var src = await getProperty('config','user');
 	let config;
@@ -1171,14 +1171,17 @@ CardBuilder.prototype.build = function () {
 		headerWrap.id = 'main-Ui-header';
 		$('.ms-CommandBar-mainArea').prepend(headerWrap);
 		
+		if(this.cardHeader.imageUrl!==undefined) {
+			const icon = document.createElement('img');
+			icon.src = this.cardHeader.imageUrl;
+			icon.className = 'headerIcon';
+			headerWrap.prepend(icon);
+		}
+		
 		const header = document.createElement('p');
 		header.className = 'ms-Panel-headerText';
 		header.textContent = this.cardHeader.title;
 		headerWrap.append(header);
-		
-		const icon = document.createElement('img');
-		icon.src = this.cardHeader.imageUrl;
-		header.prepend(icon);
 	}
 		
 	if(cardSections.length!==0) {
