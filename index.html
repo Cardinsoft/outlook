@@ -71,12 +71,8 @@
 		</div>
 	</div>
 	
-	<div id="overlay" class="ms-OverlayExample">
-		<div class="ms-Overlay"></div>
-	</div>
-	
+	<div id="app-overlay" class="ms-Overlay"></div>
     <main id="app-body" style="display: none;"></main>
-	
 	<div id="app-notif"></div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -88,8 +84,9 @@
 		for (let i = 0; i < CommandBarElements.length; i++) {
 			new fabric['CommandBar'](CommandBarElements[i]);
 		}
-		const ov = document.querySelector('#overlay');
-		new fabric['Overlay'](ov);
+		const ov = document.querySelector('#app-overlay');
+		const overlay = new fabric['Overlay'](ov);
+		overlay.show();
 	</script>
 
 </body>
