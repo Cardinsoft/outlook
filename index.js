@@ -1159,8 +1159,6 @@ CardBuilder.prototype.build = function () {
 	const cardSections = this.sections;
 	const cardAction   = this.action;
 	
-	//$('.ms-Panel-headerText').empty();
-	
 	$('#app-body').empty();
 	
 	const wrap = document.createElement('div');
@@ -1177,8 +1175,11 @@ CardBuilder.prototype.build = function () {
 		header.className = 'ms-Panel-headerText';
 		header.textContent = this.cardHeader.title;
 		headerWrap.append(header);
+		
+		const icon = document.createElement('img');
+		icon.src = this.cardHeader.imageUrl;
+		header.prepend(icon);
 	}
-	
 		
 	if(cardSections.length!==0) {
 		let serialize = true;
