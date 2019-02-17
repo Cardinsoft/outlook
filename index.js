@@ -1171,10 +1171,12 @@ CardBuilder.prototype.build = function () {
 		headerWrap.id = 'main-Ui-header';
 		$('.ms-CommandBar-mainArea').prepend(headerWrap);
 		
-		const icon = document.createElement('img');
-		icon.src = this.cardHeader.imageUrl;
-		icon.className = 'headerIcon';
-		headerWrap.prepend(icon);
+		if(this.cardHeader.imageUrl!==undefined) {
+			const icon = document.createElement('img');
+			icon.src = this.cardHeader.imageUrl;
+			icon.className = 'headerIcon';
+			headerWrap.prepend(icon);
+		}
 		
 		const header = document.createElement('p');
 		header.className = 'ms-Panel-headerText';
