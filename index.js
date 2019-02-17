@@ -1613,8 +1613,10 @@ function actionCallback(action,element) {
 		
 		callbacks[functionName](parameters,element)
 		.then(function(){
-			overlay.empty(); 
-			overlay.hide();
+			if(loadIndicator!=='NONE') { 
+				overlay.empty(); 
+				overlay.hide();
+			}
 		});
 		
 	}
