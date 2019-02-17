@@ -1199,6 +1199,9 @@ function cardActionCallback(cardAction) {
 		const parameters    = cardAction.parameters;
 		
 		if(loadIndicator!=='NONE') {
+			const overlay = $('#app-overlay');
+			overlay.show();
+			
 			const indicator = document.createElement('div');
 			indicator.id = 'main-Ui-spinner';
 			indicator.className = 'ms-Spinner ms-Spinner--large';
@@ -1208,7 +1211,10 @@ function cardActionCallback(cardAction) {
 		
 		window[functionName](parameters)
 		.then(function(){
-			if(loadIndicator!=='NONE') { $('#main-Ui-spinner').remove(); }
+			if(loadIndicator!=='NONE') { 
+				//overlay.hide();
+				//$('#main-Ui-spinner').remove(); 
+			}
 		});
 	}
 }
@@ -1594,19 +1600,24 @@ function actionCallback(action,element) {
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
-		console.log(e);
-		
-		if(loadIndicator!=='NONE') {		
+		if(loadIndicator!=='NONE') {
+			const overlay = $('#app-overlay');
+			overlay.show();			
+			/*
 			const indicator = document.createElement('div');
 			indicator.id = 'main-Ui-spinner';
 			indicator.className = 'ms-Spinner ms-Spinner--large';
-			$('#main-Ui-wrap').append(indicator);
-			new fabric['Spinner'](indicator);	
+			overlay.append(indicator);
+			new fabric['Spinner'](indicator);
+			*/	
 		}
 		
 		callbacks[functionName](parameters,element)
 		.then(function(){
-			if(loadIndicator!=='NONE') { $('#main-Ui-spinner').remove(); }
+			if(loadIndicator!=='NONE') { 
+				overlay.empty(); 
+				overlay.hide();
+			}
 		});
 		
 	}
