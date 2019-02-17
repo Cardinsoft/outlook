@@ -1594,8 +1594,8 @@ class EventObject {
 }
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
-async function actionCallback(action,element) {
-	return function(e) {
+function actionCallback(action,element) {
+	return async function(e) {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
