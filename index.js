@@ -1614,11 +1614,14 @@ function actionCallback(action,element) {
 		
 		callbacks[functionName](parameters,element)
 		.then(function(){
-			if(loadIndicator!=='NONE') { 
-				overlay.empty(); 
-				overlay.hide();
-			}
-		});
+			$('#app-overlay').empty(); 
+			$('#app-overlay').hide();
+			
+		})
+		.catch(function(){
+			$('#app-overlay').empty(); 
+			$('#app-overlay').hide();			
+		})
 		
 	}
 }
