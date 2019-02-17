@@ -1614,7 +1614,7 @@ function actionCallback(action,element) {
 		callbacks[functionName](parameters,element)
 		.then(function(){
 			if(loadIndicator!=='NONE') { 
-				$('#main-Ui-spinner').remove(); 
+				overlay.empty(); 
 				overlay.hide();
 			}
 		});
