@@ -9,8 +9,6 @@ Office.initialize = (reason) => {
 	$(document).ready(function () {
 		cardOpen();
 		
-		$('.ms-Panel-headerText').empty();
-		
 		$('#home').click(function(){
 			cardOpen();
 		});
@@ -197,7 +195,9 @@ async function cardsetDisplay(builder,idx) {
 
 async function cardOpen(index) {
 	var builder = CardService.newCardBuilder();
-	  
+	
+	$('.ms-Panel-headerText').empty();
+	
 	var src = await getProperty('config','user');
 	let config;
 	if(src!==null) {
@@ -1158,6 +1158,9 @@ CardBuilder.prototype.build = function () {
 	const cardHeader   = this.cardHeader;
 	const cardSections = this.sections;
 	const cardAction   = this.action;
+	
+	console.log(this);
+	//$('.ms-Panel-headerText').empty();
 	
 	$('#app-body').empty();
 	
