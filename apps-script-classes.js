@@ -1,9 +1,5 @@
-document.ready(function(){
-	console.log(new __CardService());
-});
-
 //Emulate CardService service;
-class __CardService {
+class W_CardService {
 	constructor() {
 		this.className = 'CardService';
 		this.ComposedEmailType = {REPLY_AS_DRAFT:'REPLY_AS_DRAFT',STANDALONE_DRAFT:'STANDALONE_DRAFT'};
@@ -64,3 +60,5 @@ _CardService.prototype.newTextParagraph = function () {
 _CardService.prototype.newUniversalActionResponseBuilder = function () {
 	return new UniversalActionResponseBuilder(); 
 }
+
+console.log(new W_CardService());
