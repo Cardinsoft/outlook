@@ -75,5 +75,3 @@ function makeRequest(url,params) {
 		}	
 	});
 }
-
-const UrlFetchApp       = new e_UrlFetchApp();
