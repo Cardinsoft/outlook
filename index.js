@@ -4,11 +4,11 @@
  */
 
 //initiate services to be able to access them;
-const UrlFetchApp       = new _UrlFetchApp();
-const CardService       = new _CardService();
-const PropertiesService = new _PropertiesService();
-const CacheService      = new _CacheService();
-const e                 = new EventObject();
+const UrlFetchApp       = new e_UrlFetchApp();
+const CardService       = new e_CardService();
+const PropertiesService = new e_PropertiesService();
+const CacheService      = new e_CacheService();
+const e                 = new e_EventObject();
  
 // The initialize function must be run each time a new page is loaded
 Office.initialize = (reason) => {
@@ -269,69 +269,69 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 }
 
 function createNoFieldsSection(builder,isCollapsed) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed); 
       
-  var noData = simpleKeyValueWidget(globalNoDataWidgetTitle,globalNoDataWidgetText,true);
-  section.addWidget(noData);
+	var noData = simpleKeyValueWidget(globalNoDataWidgetTitle,globalNoDataWidgetText,true);
+	section.addWidget(noData);
   
-  builder.addSection(section);
+	builder.addSection(section);
 }
 
 function createSectionBack(builder,isCollapsed,index) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed); 
   
-  createWidgetsBackAndToRoot(section,index);
+	createWidgetsBackAndToRoot(section,index);
   
-  builder.addSection(section);
+	builder.addSection(section);
 }
 
 function createUnparsedSection(builder,isCollapsed,error,content) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
-      section.setHeader(globalUnparsedHeader);
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed); 
+		section.setHeader(globalUnparsedHeader);
 
-  var errc = simpleKeyValueWidget(globalUnparsedErrorWidgetTitle,error,true);
-  section.addWidget(errc);
+	var errc = simpleKeyValueWidget(globalUnparsedErrorWidgetTitle,error,true);
+	section.addWidget(errc);
 
-  var data = simpleKeyValueWidget(globalUnparsedDataWidgetTitle,content,true);
-  section.addWidget(data);
+	var data = simpleKeyValueWidget(globalUnparsedDataWidgetTitle,content,true);
+	section.addWidget(data);
 
-  builder.addSection(section);  
+	builder.addSection(section);  
 
 }
 
 function createErrorSection(builder,isCollapsed,code,error) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed); 
 
-  var errc = simpleKeyValueWidget(globalCodeWidgetTitle,code,true);
-  section.addWidget(errc);
+	var errc = simpleKeyValueWidget(globalCodeWidgetTitle,code,true);
+	section.addWidget(errc);
 
-  var errt = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
-  section.addWidget(errt);
+	var errt = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
+	section.addWidget(errt);
 
-  builder.addSection(section);
+	builder.addSection(section);
 }
 
 function createSectionEdit(builder,isCollapsed,connection,index) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed);  
-      section.setHeader(globalSettingsHeader);
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed);  
+		section.setHeader(globalSettingsHeader);
   
-  var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index});
-  section.addWidget(del);
+	var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index});
+	section.addWidget(del);
   
-  createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
-  createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
-  createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
-  createWidgetSwitchManual(section,connection.manual);
+	createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
+	createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
+	createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
+	createWidgetSwitchManual(section,connection.manual);
   
-  var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index});
-  section.addWidget(save);
+	var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index});
+	section.addWidget(save);
   
-  builder.addSection(section);   
+	builder.addSection(section);   
 }
 
 function createShowSection(builder,data,isCollapsed,index) {
@@ -1222,7 +1222,7 @@ const callbacks = {
 }
 
 //emulate event object;
-class EventObject {
+class e_EventObject {
 	constructor() {
 		this.messageMetadata = {
 			accessToken : '',
