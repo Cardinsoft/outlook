@@ -79,8 +79,6 @@ function cardDisplay(parameters) {
 	if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
   
 	var connection = {icon:icon,name:name,url:url,manual:manual};
-	createSectionEdit(builder,true,connection,index);
-  
 	createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
 
 	try {
@@ -552,7 +550,7 @@ function createWidgetSetField(section,title,hint,content,num) {
  *
  */
 function createWidgetGoToSettings(section) {
-  var widget = textButtonWidget(globalGoToSettings,false,false,'cardSettings');
+  var widget = textButtonWidget(globalGoToSettings,false,false,'invokeCardSettings');
   section.addWidget(widget);
 }
 
@@ -1399,6 +1397,13 @@ const callbacks = {
 				cardOpen(parameters);
 				
 				return builder.build();
+			}
+		);
+	},
+	invokeCardSettings: function invokeCardSettings(parameters) {
+		return new Promise(
+			function(resolve) {
+				cardSettings(parameters);
 			}
 		);
 	}
