@@ -12,6 +12,10 @@ Office.initialize = (reason) => {
 			cardOpen();
 		});
 		
+		$('#settings').click(function(){
+			cardSettings();
+		});
+		
 		$('#help').click(function(){
 			cardHelp();
 		});
