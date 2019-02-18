@@ -4,12 +4,8 @@
  */
 
 //initiate services to be able to access them;
-const UrlFetchApp       = new e_UrlFetchApp();
-const CardService       = new e_CardService();
-const PropertiesService = new e_PropertiesService();
-const CacheService      = new e_CacheService();
-const e                 = new e_EventObject();
- 
+console.log(UrlFetchApp);
+
 // The initialize function must be run each time a new page is loaded
 Office.initialize = (reason) => {
 	$(document).ready(function () {
