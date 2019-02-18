@@ -962,8 +962,3 @@ e_CacheService.prototype.getUserCache = function () {
 	//future releases;
 	return this;
 }
-
-const CardService       = new e_CardService();
-const PropertiesService = new e_PropertiesService();
-const CacheService      = new e_CacheService();
-const e                 = new e_EventObject();
