@@ -963,7 +963,6 @@ e_CacheService.prototype.getUserCache = function () {
 	return this;
 }
 
-const UrlFetchApp       = new e_UrlFetchApp();
 const CardService       = new e_CardService();
 const PropertiesService = new e_PropertiesService();
 const CacheService      = new e_CacheService();
