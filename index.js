@@ -2,8 +2,14 @@
  * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
-console.log(new W_CardService());
-  
+
+//initiate services to be able to access them;
+const UrlFetchApp       = new _UrlFetchApp();
+const CardService       = new _CardService();
+const PropertiesService = new _PropertiesService();
+const CacheService      = new _CacheService();
+const e                 = new EventObject();
+ 
 // The initialize function must be run each time a new page is loaded
 Office.initialize = (reason) => {
 	$(document).ready(function () {
@@ -1439,10 +1445,3 @@ function trimFrom(input) {
   var email = r.match(regEx2)[0];
   return email;
 }
-
-//initiate services to be able to access them;
-const UrlFetchApp       = new _UrlFetchApp();
-const CardService       = new _CardService();
-const PropertiesService = new _PropertiesService();
-const CacheService      = new _CacheService();
-const e                 = new EventObject();
