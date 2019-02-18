@@ -1,4 +1,4 @@
-$document.onready(function(){
+$(document).onready(function(){
 	console.log(new __CardService());
 });
 
