@@ -1,4 +1,6 @@
-console.log(new __CardService());
+document.ready(function(){
+	console.log(new __CardService());
+});
 
 //Emulate CardService service;
 class __CardService {
