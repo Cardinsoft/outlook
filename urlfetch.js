@@ -22,12 +22,12 @@ HTTPResponse.prototype.getResponseCode = function () {
 }
 
 //Emulate UrlFetchApp service;
-class _UrlFetchApp {
+class e_UrlFetchApp {
 	constructor() {
 		this.className = 'UrlFetchApp';
 	}
 }
-_UrlFetchApp.prototype.fetch = function (url,params) {
+e_UrlFetchApp.prototype.fetch = function (url,params) {
 	let promise = makeRequest(url,params);
 	return promise;
 }
