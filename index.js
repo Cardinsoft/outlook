@@ -21,6 +21,35 @@ Office.initialize = (reason) => {
 	});
 };
 
+function editDisplay(parameters) {
+	var icon   = parameters.icon;
+	var name   = parameters.name;
+	var url    = parameters.url;
+	var index  = parameters.index;
+	var manual = parameters.manual;
+	if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
+	var field1 = parameters.field1;
+	var field2 = parameters.field2;
+	var field3 = parameters.field3;
+  
+	var connection = {
+		icon: icon,
+		name: name,
+		url: url,
+		manual: manual
+	};
+	if(field1!==undefined) { connection.field1 = field1; }
+	if(field2!==undefined) { connection.field2 = field2; }
+	if(field3!==undefined) { connection.field3 = field3; }
+ 
+	var builder = CardService.newCardBuilder();
+		builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+      
+	createSectionEdit(builder,false,connection,index,true);
+  
+	return builder.build();
+}
+
 function cardDisplay(parameters) {
 	var index  = parameters.index;
 	var code   = +parameters.code;
@@ -99,9 +128,6 @@ function cardDisplay(parameters) {
 	var length = data.length;
 	var diff = max-begin;
   
-	console.log('TESTING');
-	console.log(data);
-  
 	if(fullLength>cap) {
 		var end = length-1;
 		if(length>max||length+diff-1===max) {
@@ -115,11 +141,9 @@ function cardDisplay(parameters) {
 
 async function cardsetDisplay(builder,idx) {
 	var msg = getToken();
+	var config = await getProperty('config','user');
   
-	var config = getProperty('config','user');
-	console.log(config);
-  
-	var autofieldsSection,autosuccessSection,erroredSection,manualSection;
+	var section;
   
 	for(var index=0; index<config.length; index++) {
 		var connect = config[index];
@@ -127,68 +151,62 @@ async function cardsetDisplay(builder,idx) {
 		var name   = connect.name;
 		var url    = connect.url;
 		var manual = connect.manual;
-	
+		var field1 = connect.field1;
+		var field2 = connect.field2;
+		var field3 = connect.field3;
+
+		if(section===undefined) { 
+			section = CardService.newCardSection(); 
+			section.setCollapsible(true);
+			section.setNumUncollapsibleWidgets(globalNumUncollapsible);
+		}
+		
 		if(!manual) {
-			var response = await performFetch(url);
+			
+			if(field1!==undefined||field2!==undefined||field3!==undefined) {
+				var dataToPass = {};
+				if(field1!==undefined) { dataToPass.field1 = field1; }
+				if(field2!==undefined) { dataToPass.field2 = field2; }
+				if(field3!==undefined) { dataToPass.field3 = field3; }
+				var response = await performFetch(url,dataToPass);
+			}else {
+				response = await performFetch(url);
+			}			
 			
 			const code = response.code;
-					
+			
 			if(code>=200&&code<300) {
+				
 				var data = parseData(response.content);
 				var len = data.length;
-				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
-					
+				
 				if(len!==0) {
-					if(autofieldsSection===undefined) {
-						autofieldsSection = CardService.newCardSection();
-						autofieldsSection.setHeader(globalSuccessfulFetchHeader);
-					}
-					autofieldsSection.addWidget(widget);
+				  var button = textButtonWidget(globalSuccess,true,false,'actionShow');
 				}else {
-					if(autosuccessSection===undefined) {
-						autosuccessSection = CardService.newCardSection();
-						autosuccessSection.setHeader(globalNoDataFetchHeader);        
-					}
-					autosuccessSection.addWidget(widget);
+				  button = textButtonWidget(globalNoData,true,false,'actionShow');
 				}
-					
+				
+				var widget = actionKeyValueWidgetButton(icon,'',name,button,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
+				
 			}else { //handle incorrect urls;
-					
-				if(erroredSection===undefined) {
-					erroredSection = CardService.newCardSection();
-					erroredSection.setHeader(globalErroredHeader);
-					var errorMsg = simpleKeyValueWidget('',globalIncorrectURL,true);
-					erroredSection.addWidget(errorMsg);
-				}
-				var widget = actionKeyValueWidget(icon,'',name,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-				erroredSection.addWidget(widget);
-			  
+			
+				button = textButtonWidget(globalError,true,false,'actionShow');
+				widget = actionKeyValueWidgetButton(icon,'',name,button,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
+			
 			}
 
 		}else { //handle manually triggered connections;
 		  
-			var button = textButtonWidget('Manual',true,false,'actionManual');
-				
-			if(manualSection===undefined) {
-				manualSection = CardService.newCardSection();
-				manualSection.setCollapsible(true);
-				manualSection.setHeader(globalManualHeader);
-				manualSection.setNumUncollapsibleWidgets(globalNumUncollapsible);
-			}
-			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-			manualSection.addWidget(widget);		  
+			button = textButtonWidget(globalManual,true,false,'actionManual');
+			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});		  
 			
 		}
+		
+		section.addWidget(widget);
 	
 	}
   
-	if(erroredSection!==undefined)     { builder.addSection(erroredSection); }
-	if(autofieldsSection!==undefined)  { builder.addSection(autofieldsSection); }
-	if(autosuccessSection!==undefined) { builder.addSection(autosuccessSection); }
-	if(manualSection!==undefined)      { builder.addSection(manualSection); }
-  
-	createCustomInstall(builder,true,config.length,globalCustomInstallHeader);
-  
+	builder.addSection(section);
 	return builder.build();
 }
 
@@ -208,10 +226,37 @@ async function cardOpen(index) {
 	if(config.length===0) {//build welcome and settings card on install;
 		builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
 		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
+		createSectionWelcome(builder,false);
 	}else {//build display card if any connections;
 		cardsetDisplay(builder,index);
+		createGoToSettingsSection(builder,false);
 	}
 	  
+	return builder.build();
+}
+
+async function cardSettings() {
+	var builder = CardService.newCardBuilder();
+		builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader));
+      
+	var src = await getProperty('config','user');
+	let config;
+	if(src!==null) {
+		config = src;
+	}else {
+		config = [];
+	}
+  
+	if(config.length===0) {
+		createCustomInstall(builder,false,globalCustomInstallHeader);
+	}else {
+		createConfiguredConnectsSection(builder,true,6,config);
+  
+		createCustomInstall(builder,true,globalCustomInstallHeader);
+	}
+  
+	createAdvanced(builder,false,globalAdvancedHeader);
+  
 	return builder.build();
 }
 
@@ -225,6 +270,52 @@ function cardHelp() {
 	return builder.build();
 }
 
+//===============================================SECTIONS===============================================//
+/**
+ *
+ */
+function createGoToSettingsSection(builder,isCollapsed) {
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed); 
+      
+	createWidgetGoToSettings(section,false);
+
+	builder.addSection(section);
+}
+
+/**
+ *
+ */
+function createConfiguredConnectsSection(builder,isCollapsed,numUncollapsible,config) {
+	var section = CardService.newCardSection();
+		section.setCollapsible(isCollapsed);   
+		if(isCollapsed) { section.setNumUncollapsibleWidgets(numUncollapsible); }
+		section.setHeader(globalConfiguredHeader);
+  
+	config.forEach(function(connection,index) {
+		var icon   = connection.icon;
+		var name   = connection.name;
+		var url    = connection.url;
+		var manual = connection.manual;
+		var field1 = connection.field1;
+		var field2 = connection.field2;
+		var field3 = connection.field3;
+    
+		var parameters = {'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()};
+		if(field1!==undefined) { parameters['field1'] = field1; }
+		if(field2!==undefined) { parameters['field2'] = field2; }
+		if(field3!==undefined) { parameters['field3'] = field3; }
+    
+		var widget = actionKeyValueWidget(icon,'',name,'actionEdit',parameters);
+		section.addWidget(widget);
+	});
+  
+	builder.addSection(section);
+}
+
+/**
+ *
+ */
 function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,icon,url,name,manual,data) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
@@ -261,6 +352,9 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 	builder.addSection(section);
 }
 
+/**
+ *
+ */
 function createNoFieldsSection(builder,isCollapsed) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
@@ -271,6 +365,9 @@ function createNoFieldsSection(builder,isCollapsed) {
 	builder.addSection(section);
 }
 
+/**
+ *
+ */
 function createSectionBack(builder,isCollapsed,index) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
@@ -280,6 +377,9 @@ function createSectionBack(builder,isCollapsed,index) {
 	builder.addSection(section);
 }
 
+/**
+ *
+ */
 function createUnparsedSection(builder,isCollapsed,error,content) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
@@ -295,6 +395,9 @@ function createUnparsedSection(builder,isCollapsed,error,content) {
 
 }
 
+/**
+ *
+ */
 function createErrorSection(builder,isCollapsed,code,error) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed); 
@@ -308,20 +411,33 @@ function createErrorSection(builder,isCollapsed,code,error) {
 	builder.addSection(section);
 }
 
-function createSectionEdit(builder,isCollapsed,connection,index) {
+/**
+ *
+ */
+function createSectionEdit(builder,isCollapsed,connection,index,fromSettings) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed);  
 		section.setHeader(globalSettingsHeader);
   
-	var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index});
+	var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index,'fromSettings':fromSettings.toString()});
 	section.addWidget(del);
   
 	createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
 	createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
 	createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
+  
+	var field1 = connection.field1, field2 = connection.field2, field3 = connection.field3;
+	if(field1===undefined) { field1 = ''; }
+	if(field2===undefined) { field2 = ''; }
+	if(field3===undefined) { field3 = ''; }
+  
+	createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,field1,1);
+	createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,field2,2);
+	createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,field3,3);
+  
 	createWidgetSwitchManual(section,connection.manual);
   
-	var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index});
+	var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index,'fromSettings':fromSettings.toString()});
 	section.addWidget(save);
   
 	builder.addSection(section);   
@@ -359,6 +475,9 @@ function createSectionMeta(builder,isCollapsed,msg) {
   builder.addSection(section);
 }
 
+/**
+ *
+ */
 function createSectionWelcome(builder,isCollapsed,header) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed);
@@ -373,38 +492,33 @@ function createSectionWelcome(builder,isCollapsed,header) {
 	builder.addSection(section);
 }
 
-function createSectionInstall(builder,isCollapsed,header) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);
-	if(header!==undefined) { section.setHeader(header); }
+/**
+ *
+ */
+function createCustomInstall(builder,isCollapsed,header) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }
+  if(!isCollapsed) { createWidgetCustomConnect(section); }
   
-	createWidgetInstallText(section);
-	
-	createWidgetInstallLink(section);
-
-	builder.addSection(section);
+  createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint);
+  createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint);
+  createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint);
+  
+  createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,'',1);
+  createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,'',2);
+  createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,'',3);
+  
+  createWidgetSwitchManual(section,true);
+  
+  createWidgetSubmitUrl(section,globalCustomWidgetSubmitText);
+  
+  builder.addSection(section);
 }
 
-function createCustomInstall(builder,isCollapsed,length,header) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);
-	if(header!==undefined) { section.setHeader(header); }
-  
-	if(!isCollapsed) { createWidgetCustomConnect(section); }
-  
-	createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint);
-  
-	createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint);
-  
-	createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint);
-  
-	createWidgetSwitchManual(section,true);
-  
-	createWidgetSubmitUrl(section,globalCustomWidgetSubmitText);
-  
-	builder.addSection(section);
-}
-
+/**
+ *
+ */
 function createAdvanced(builder,isCollapsed,header) {
 	var section = CardService.newCardSection();
 		section.setCollapsible(isCollapsed);
@@ -421,107 +535,166 @@ function createAdvanced(builder,isCollapsed,header) {
 	builder.addSection(section);  
 }
 
+//===============================================WIDGETS===============================================//
+/**
+ *
+ */
+function createWidgetSetField(section,title,hint,content,num) {
+	var widget = textInputWidget(title,'field'+num,hint,content);
+	section.addWidget(widget);
+}
+
+/**
+ *
+ */
+function createWidgetGoToSettings(section) {
+  var widget = textButtonWidget(globalGoToSettings,false,false,'cardSettings');
+  section.addWidget(widget);
+}
+
+/**
+ *
+ */
 function createWidgetWelcomeText(section) {
-  var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle,globalWelcomeWidgetContent,true);
-  section.addWidget(widget);
+	var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle,globalWelcomeWidgetContent,true);
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetWelcomeCardin(section) {
-  var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
-  section.addWidget(widget);
+	var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetWelcomeYouTube(section) {
-  var widget = textButtonWidgetLinked(globalYouTubeUrlText,false,false,globalYouTubeUrl,false,false);
-  section.addWidget(widget);
+	var widget = textButtonWidgetLinked(globalYouTubeUrlText,false,false,globalYouTubeUrl,false,false);
+	section.addWidget(widget);
 }
 
-function createWidgetInstallText(section) {
-  var widget = simpleKeyValueWidget(globalInstallWidgetTitle,globalInstallWidgetContent,true);
-  section.addWidget(widget);
-}
-  
-function createWidgetInstallLink(section) {
-  var widget = textButtonWidget(globalInstallWidgetSubmit,false,false,'actionInstall',{'changeState':'true'});
-  section.addWidget(widget);
-}
-
+/**
+ *
+ */
 function createWidgetSheetsLink(section) {
-  var widget = actionKeyValueWidget(globalIconSheetsUrl,globalSheetsNavTitle,globalSheetsNavContent,'test');
-  section.addWidget(widget);
+	var widget = actionKeyValueWidget(globalIconSheetsUrl,globalSheetsNavTitle,globalSheetsNavContent,'test');
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetFlowLink(section) {
   var widget = actionKeyValueWidget(globalIconFlowUrl,globalFlowNavTitle,globalFlowNavContent,'test');
   section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetCustomConnect(section) {
   var widget = simpleKeyValueWidget(globalCustomWidgetTitle,globalCustomWidgetContent,true);
   section.addWidget(widget);  
 }
 
+/**
+ *
+ */
 function createWidgetSetUrl(section,title,hint,url) {
-  if(url!==undefined) { var content = url; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionURL',hint,content,'checkURL');
-  section.addWidget(widget);   
+	if(url!==undefined) { var content = url; }else { content = ''; }
+	var widget = textInputWidget(title,'connectionURL',hint,content,'checkURL');
+	section.addWidget(widget);   
 }
 
+/**
+ *
+ */
 function createWidgetSetName(section,title,hint,name) {
-  if(name!==undefined) { var content = name; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionName',hint,content);
-  section.addWidget(widget);  
+	if(name!==undefined) { var content = name; }else { content = ''; }
+	var widget = textInputWidget(title,'connectionName',hint,content);
+	section.addWidget(widget);  
 }
 
+/**
+ *
+ */
 function createWidgetSetIcon(section,title,hint,icon) {
-  if(icon!==undefined) { var content = icon; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionIcon',hint,content);
-  section.addWidget(widget);
+	if(icon!==undefined) { var content = icon; }else { content = ''; }
+	var widget = textInputWidget(title,'connectionIcon',hint,content);
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetSubmitUrl(section,text) {
-  var widget = textButtonWidget(text,false,false,'submitURL');
-  section.addWidget(widget);   
+	var widget = textButtonWidget(text,false,false,'submitURL');
+	section.addWidget(widget);   
 }
 
+/**
+ *
+ */
 function createWidgetResetText(section) {
-  var widget = simpleKeyValueWidget(globalResetWidgetTitle,globalResetWidgetContent,true);
-  section.addWidget(widget);
+	var widget = simpleKeyValueWidget(globalResetWidgetTitle,globalResetWidgetContent,true);
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetClearText(section) {
-  var widget = simpleKeyValueWidget(globalClearWidgetTitle,globalClearWidgetContent,true);
-  section.addWidget(widget);
+	var widget = simpleKeyValueWidget(globalClearWidgetTitle,globalClearWidgetContent,true);
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetResetSubmit(section) {
-  var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'performFullReset');
-  section.addWidget(widget);
+	var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'performFullReset');
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetClearSubmit(section) {
-  var widget = textButtonWidget(globalClearWidgetSubmitText,false,false,'clearLayout');
-  section.addWidget(widget);
+	var widget = textButtonWidget(globalClearWidgetSubmitText,false,false,'clearLayout');
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetSwitchManual(section,manual) {
-  if(manual===undefined) { manual = true; }
-  var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,'true');
-  section.addWidget(widget);
+	if(manual===undefined) { manual = true; }
+	var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,'true');
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetMoveToDisplay(section,length) {
-  if(length===0) { var disabled = true; }else { disabled = false; }
-  var widget = textButtonWidget(globalInstallWidgetSubmit,disabled,false,'actionDisplay');
-  section.addWidget(widget);
+	if(length===0) { var disabled = true; }else { disabled = false; }
+	var widget = textButtonWidget(globalInstallWidgetSubmit,disabled,false,'actionDisplay');
+	section.addWidget(widget);
 }
 
+/**
+ *
+ */
 function createWidgetsBackAndToRoot(section,index) {
   var root = textButtonWidget(globalRootText,false,false,'goRoot',{'index':index});
   var widget = buttonSet([root]);
   section.addWidget(widget);
 }
 
+//===============================================TEMPLATES===============================================//
 /**
  * Creates a simple paragraph widget
  * @param {String} text specifies a text to populate widget with
@@ -846,75 +1019,48 @@ function selectionInputWidget(title,name,type,options,changeFunc,params) {
   return widget;
 }
 
-function clearLayout(e) {
+//===============================================ACTIONS===============================================//
+/**
+ *
+ */
+function clearLayout() {
 	var action = CardService.newActionResponseBuilder();
 		action.setStateChanged(true);  
   
 	var cache = CacheService.getScriptCache();
 	cache.remove('layout');
   
-	action.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+	cardOpen();
+	
 	action.setNotification(notification(globalClearSuccess));
   
-  return action.build();
+	return action.build();
 }
 
-function goBack(e) {
-  var action = CardService.newActionResponseBuilder();
-      action.setStateChanged(true);
-      action.setNavigation(CardService.newNavigation().popCard());
+/**
+ *
+ */
+function goBack() {
+	var action = CardService.newActionResponseBuilder();
+		action.setStateChanged(true);
+		action.setNavigation(CardService.newNavigation().popCard());
   
-  return action.build();  
+	return action.build();  
 }
 
-function actionDisplay(e) {
-  var action = CardService.newActionResponseBuilder();
-      action.setStateChanged(true);
-      action.setNavigation(CardService.newNavigation().updateCard(cardsetDisplay(e)));
-  return action.build();
+/**
+ *
+ */
+function actionDisplay() {
+	var action = CardService.newActionResponseBuilder();
+		action.setStateChanged(true);
+	
+	cardsetDisplay();
+	
+	return action.build();
 }
 
-function actionInstall(e) {
-  var changeState = e.parameters.changeState;
-  if(changeState==='true') { changeState = true; }else { changeState = false; }
-  
-  var action = CardService.newActionResponseBuilder();
-      action.setStateChanged(changeState);
-      action.setNavigation(navigationInstall(e));
-  
-  return action.build();
-}
-
-function putToCache(key,value) {
-	try {
-		var cache = CacheService.getScriptCache();
-		cache.setItem(key,value);
-	}
-	catch(error) {
-		console.log(error.message);
-	}
-}
-
-function removeFromCache(key,value) {
-	try {
-		var cache = CacheService.getScriptCache();
-		cache.removeItem(key);
-	}
-	catch(error) {
-		console.log(error.message);
-	}
-}
-
-function getFromCache(key) {
-	try {
-		var cache = CacheService.getScriptCache();
-		return cache.getItem(key);
-	}
-	catch(error) {
-		console.log(error.message);
-		return null;
-	}
-}
+//===============================================NOTIFICATIONS===============================================//
 
 /**
  * Creates a notification to show;
@@ -951,6 +1097,8 @@ function error(text) {
       error.setText(text);
   return error;
 }
+
+//===============================================CALLBACKS===============================================//
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
 function cardActionCallback(cardAction) {
@@ -1011,10 +1159,13 @@ const callbacks = {
 		return new Promise(
 			async function(resolve) {
 				const inputs = $('input');
-				var icon = inputs[0].value;
-				var name = inputs[1].value;
-				var url = inputs[2].value;
-				var useManual = inputs[3].value;
+				var icon 	  = inputs[0].value;
+				var name      = inputs[1].value;
+				var url       = inputs[2].value;
+				var field1    = inputs[3].value;
+				var field2    = inputs[4].value;
+				var field3    = inputs[5].value;
+				var useManual = inputs[6].value;
 				if(useManual==='on') { useManual = true; }else { useManual = false; }
 		  
 				var connection = {
@@ -1023,9 +1174,13 @@ const callbacks = {
 					name: name,
 					manual: useManual
 				};
+				if(field1!=='') { connection.field1 = field1; }
+				if(field2!=='') { connection.field2 = field2; }
+				if(field3!=='') { connection.field3 = field3; }
 		  
 				var builder = CardService.newActionResponseBuilder();
-				var src = getProperty('config','user');
+				
+				var src = await getProperty('config','user');
 				if(src===null) { createSettingsFile(); }
 				
 				var src = getProperty('config','user');
@@ -1041,12 +1196,24 @@ const callbacks = {
 	},
 	updateConnection : function updateConnection(parameters) {
 		return new Promise(
-			function(resolve) {		
+			async function(resolve) {		
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
+					
+				var index = +parameters.index;
+
+				var fromSettings = parameters.fromSettings;
+				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
+				
 				const inputs = $('input');
-				var icon = inputs[0].value;
-				var name = inputs[1].value;
-				var url = inputs[2].value;
-				var useManual = inputs[3].value;
+				var icon 	  = inputs[0].value;
+				var name      = inputs[1].value;
+				var url       = inputs[2].value;
+				var field1    = inputs[3].value;
+				var field2    = inputs[4].value;
+				var field3    = inputs[5].value;
+				var useManual = inputs[6].value;
+				if(useManual==='on') { useManual = true; }else { useManual = false; }
 				
 				var connection = {
 					icon: icon,
@@ -1055,36 +1222,45 @@ const callbacks = {
 					manual: useManual
 				};				
 				
-				var index = +parameters.index;
-			
-				if(useManual==='on') { useManual = true; }else { useManual = false; }
-
-				var builder = CardService.newActionResponseBuilder();
-				var src = getProperty('config','user');
-				
+				var src = await getProperty('config','user');
 				src[index] = connection;
 				setProperty('config',src,'user');
+				
 				builder.setNotification(notification(globalUpdateSuccess));
-				builder.setStateChanged(true);
-				cardOpen();
+				
+				if(fromSettings) {
+					cardSettings(parameters);
+				}else {
+					cardOpen(parameters);
+				}
+  
 			}
 		);
 	},
 	removeConnection : function removeConnection(parameters) {
 		return new Promise(
-			function(resolve) {	  
+			async function(resolve) {	  
 				var builder = CardService.newActionResponseBuilder();
 					builder.setStateChanged(true);
 	  
 				var index = +parameters.index;
-				var src = getProperty('config','user');
-
+				var fromSettings = parameters.fromSettings;
+				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
+				
+				var src = await getProperty('config','user');
 				src = src.filter(function(connect,idx){ 
 					if(idx!==index) { return connect; }
-				});  
+				}); 				
 				setProperty('config',src,'user');
+				
 				builder.setNotification(notification(globalRemoveSuccess));
-				builder.setStateChanged(true);
+				
+				if(fromSettings) {
+					cardSettings(parameters);
+				}else {
+					cardOpen(parameters);
+				}
+				
 				cardOpen();
 			}
 		);
@@ -1105,11 +1281,23 @@ const callbacks = {
 			}
 		);
 	},
+	actionEdit : function actionEdit(parameters) {
+ 		return new Promise(
+			function(resolve) { 
+				var action = CardService.newActionResponseBuilder();
+					action.setStateChanged(true);
+				
+				editDisplay(parameters);
+      
+				return action.build();
+			}
+		);
+	},
 	actionShow : function actionShow(parameters) {
 		return new Promise(
 			function(resolve) {			
-				var action = CardService.newActionResponseBuilder();
-					action.setStateChanged(true);
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
 			  
 				var code = +parameters.code;
 				var data = parameters.data;
@@ -1121,24 +1309,23 @@ const callbacks = {
 				}else { //handle incorrect urls;
 			
 					parameters.data  = '[]';
-					parameters.error = data;
 					parameters.code  = code;
 					
-					action.setNotification(warning(globalIncorrectURL));
+					builder.setNotification(warning(globalIncorrectURL));
 					
 					cardDisplay(parameters);
 			
 				}
   
-				return action.build();
+				return builder.build();
 			}
 		);
 	},
 	actionManual : function actionManual(parameters) {
 		return new Promise(
 			async function(resolve) {
-				var action = CardService.newActionResponseBuilder();
-					action.setStateChanged(true);
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
 				  
 				var url   = parameters.url;
 				var index = +parameters.index;
@@ -1157,7 +1344,6 @@ const callbacks = {
 					}else if(code!==0) { //handle no data to show;
 						move = '0';
 					}
-					
 					cardDisplay(parameters);
 					
 				}else { //handle incorrect urls;
@@ -1166,13 +1352,13 @@ const callbacks = {
 					parameters.error = data;
 					parameters.code  = code;
 					move  = '-1';
-					action.setNotification(warning(globalIncorrectURL));
+					builder.setNotification(warning(globalIncorrectURL));
 					
 					cardDisplay(parameters);
 					
 				}
 				  
-				return action.build();
+				return builder.build();
 			}
 		);
 	},
@@ -1185,14 +1371,12 @@ const callbacks = {
 					action.setStateChanged(true);
 				  
 				cardOpen(index);
-				  
-				//action.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e,index)));
 			  
 				return action.build();  
 			}
 		);
 	},
-	performFullReset : function performFullReset() {
+	performFullReset : function performFullReset(parameters) {
 		return new Promise(
 			function(resolve) {
 				var src = getProperty('config','user');
@@ -1204,11 +1388,13 @@ const callbacks = {
 						console.log('There was no config to delete');
 					}
 				}
-				//clearLayout();
 			  
 				var builder = CardService.newActionResponseBuilder();
 					builder.setStateChanged(true);
-				cardOpen();
+				
+				cardOpen(parameters);
+				
+				return builder.build();
 			}
 		);
 	}
@@ -1379,11 +1565,10 @@ function createSettingsFile(content) {
 	setProperty('config',content,'user');
 }
 
-async function performFetch(url) {
-	
-  var msg = getToken();
+async function performFetch(url,dataToPass) {
+	var msg = getToken();
   
-  var email = trimFrom(msg.getFrom());
+	var email = trimFrom(msg.getFrom());
   
 	var payload = {
 		'Bcc': msg.getBcc(),
@@ -1394,6 +1579,14 @@ async function performFetch(url) {
 		'plainBody': msg.getPlainBody(),
 		'subject': msg.getSubject()
 	};
+	if(dataToPass!==undefined) {
+		var field1 = dataToPass.field1;
+		var field2 = dataToPass.field2;
+		var field3 = dataToPass.field3;
+		if(field1!==undefined) { payload.field1 = field1; }
+		if(field2!==undefined) { payload.field2 = field2; }
+		if(field3!==undefined) { payload.field3 = field3; }
+	}	
   
 	let response;
   
@@ -1404,22 +1597,7 @@ async function performFetch(url) {
 		response = error;
 	}
   
-  console.log(response);
-  
-  return response;
-	/*
-	const code = response.getResponseCode();
-	const headers = response.getHeaders();
-	let content = response.getContentText();	
-	console.log('CODE: '+code);
-	console.log('IS EMPTY STRING: '+ (content==='') );
-	console.log(typeof content);	
-	
-	var isValid = content!==null&&content!==undefined;
-	if(!isValid) { content = '[]'; }	
-	
-    return {code:code,headers:headers,content:JSON.stringify(content)};
-	*/
+	return response;
 }
 
 /**
@@ -1428,15 +1606,15 @@ async function performFetch(url) {
  * @return {String}
  */
 function trimFrom(input) {
-  var regEx1 = /\<.+@.+\>/;
-  var regEx2 = /[^\<].+@.+[^\>]/;
-  try {
-    var r = input.match(regEx1)[0];
-  } catch(e) {
-    return input;
-  }
-  var email = r.match(regEx2)[0];
-  return email;
+	var regEx1 = /\<.+@.+\>/;
+	var regEx2 = /[^\<].+@.+[^\>]/;
+	try {
+		var r = input.match(regEx1)[0];
+	} catch(e) {
+		return input;
+	}
+	var email = r.match(regEx2)[0];
+	return email;
 }
 
 
