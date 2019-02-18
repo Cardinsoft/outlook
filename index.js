@@ -1222,7 +1222,10 @@ const callbacks = {
 					url: url,
 					name: name,
 					manual: useManual
-				};				
+				};	
+				if(field1!=='') { connection.field1 = field1; }
+				if(field2!=='') { connection.field2 = field2; }
+				if(field3!=='') { connection.field3 = field3; }				
 				
 				var src = await getProperty('config','user');
 				src[index] = connection;
