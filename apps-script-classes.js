@@ -15,49 +15,49 @@ class W_CardService {
 		this.UpdateDraftBodyType = {IN_PLACE_INSERT:'IN_PLACE_INSERT'};
 	}
 }
-_CardService.prototype.newAction = function () {
+W_CardService.prototype.newAction = function () {
 	return new Action();
 }
-_CardService.prototype.newActionResponseBuilder = function () {
+W_CardService.prototype.newActionResponseBuilder = function () {
 	return new ActionResponseBuilder();
 }
-_CardService.prototype.newButtonSet = function () {
+W_CardService.prototype.newButtonSet = function () {
 	return new ButtonSet();
 }
-_CardService.prototype.newCardBuilder = function () {
+W_CardService.prototype.newCardBuilder = function () {
 	return new CardBuilder();
 }
-_CardService.prototype.newCardHeader = function () {
+W_CardService.prototype.newCardHeader = function () {
 	return new CardHeader();
 }
-_CardService.prototype.newCardSection = function () {
+W_CardService.prototype.newCardSection = function () {
 	return new CardSection();
 }
-_CardService.prototype.newKeyValue = function () {
+W_CardService.prototype.newKeyValue = function () {
 	return new KeyValue();
 }
-_CardService.prototype.newNavigation = function () {
+W_CardService.prototype.newNavigation = function () {
 	return new Navigation();
 }
-_CardService.prototype.newNotification = function () {
+W_CardService.prototype.newNotification = function () {
 	return new Notification();
 }
-_CardService.prototype.newOpenLink = function () {
+W_CardService.prototype.newOpenLink = function () {
 	return new OpenLink();
 }
-_CardService.prototype.newSwitch = function () {
+W_CardService.prototype.newSwitch = function () {
 	return new Switch();
 }
-_CardService.prototype.newTextButton = function () {
+W_CardService.prototype.newTextButton = function () {
 	return new TextButton();
 }
-_CardService.prototype.newTextInput = function () {
+W_CardService.prototype.newTextInput = function () {
 	return new TextInput();
 }
-_CardService.prototype.newTextParagraph = function () {
+W_CardService.prototype.newTextParagraph = function () {
 	return new TextParagraph();
 }
-_CardService.prototype.newUniversalActionResponseBuilder = function () {
+W_CardService.prototype.newUniversalActionResponseBuilder = function () {
 	return new UniversalActionResponseBuilder(); 
 }
 
