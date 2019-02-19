@@ -1788,6 +1788,7 @@ Switch.prototype.appendToUi = function (parent) {
 	
 	console.log('VALUE');
 	console.log(value);
+	console.log(typeof value);
 	
 	const label = document.createElement('label');
 	if(value==='true') {
