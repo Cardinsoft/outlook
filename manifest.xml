@@ -38,7 +38,7 @@
 	<FormSettings>
 		<Form xsi:type="ItemRead">
 			<DesktopSettings>
-				<SourceLocation DefaultValue=https://cardinsoft.github.io/outlook/index.html"/>
+				<SourceLocation DefaultValue="https://cardinsoft.github.io/outlook/index.html"/>
 				<RequestedHeight>250</RequestedHeight>
 			</DesktopSettings>
 		</Form>
