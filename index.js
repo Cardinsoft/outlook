@@ -1774,8 +1774,8 @@ Switch.prototype.appendToUi = function (parent) {
 	if(value===undefined) { input.value = 'on'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
-		let value = input.value;
-		if(value==='on') { input.value = 'off'; }else { input.value = 'on'; }
+		let val = this.value;
+		if(val==='on') { input.value = 'off'; }else { input.value = 'on'; }
 	});
 	
 	if(action!==undefined) { 
@@ -1783,7 +1783,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(value==='on') {
+	if(value==='on'||value===undefined) {
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
 		label.className = 'ms-Toggle-field';
