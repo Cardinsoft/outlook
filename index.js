@@ -1917,7 +1917,7 @@ CardBuilder.prototype.build = function () {
 	const cardSections = this.sections;
 	const cardAction   = this.action;
 	
-	$('.main-Ui-header').empty();
+	$('#main-Ui-header').empty();
 	$('#app-body').empty();
 	
 	const wrap = document.createElement('div');
