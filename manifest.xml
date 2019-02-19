@@ -16,10 +16,10 @@
 	<DisplayName DefaultValue="Cardin" />
 	<Description DefaultValue="The Add-in allows creating custom connections to APIs to fetch and display data"/>
 
-	<IconUrl DefaultValue="https://cardinsoft.github.io/assets/icon-16.png" />
-	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/assets/icon-80.png"/>
+	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
+	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
 
-	<SupportUrl DefaultValue="https://cardinsoft.github.io/support.html" />
+	<SupportUrl DefaultValue="https://cardinsoft.github.io/outlook/support.html" />
 
 	<!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
 	<AppDomains>
@@ -38,7 +38,7 @@
 	<FormSettings>
 		<Form xsi:type="ItemRead">
 			<DesktopSettings>
-				<SourceLocation DefaultValue="https://cardinsoft.github.io/index.html"/>
+				<SourceLocation DefaultValue=https://cardinsoft.github.io/outlook/index.html"/>
 				<RequestedHeight>250</RequestedHeight>
 			</DesktopSettings>
 		</Form>
@@ -96,13 +96,13 @@
 			</Hosts>
 			<Resources>
 				<bt:Images>
-					<bt:Image id="cardin-icon-16" DefaultValue="https://cardinsoft.github.io/assets/icon-16.png"/>
-					<bt:Image id="cardin-icon-32" DefaultValue="https://cardinsoft.github.io/assets/icon-32.png"/>
-					<bt:Image id="cardin-icon-80" DefaultValue="https://cardinsoft.github.io/assets/icon-80.png"/>
+					<bt:Image id="cardin-icon-16" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png"/>
+					<bt:Image id="cardin-icon-32" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-32.png"/>
+					<bt:Image id="cardin-icon-80" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
 				</bt:Images>
 				<bt:Urls>
-					<bt:Url id="functionFile" DefaultValue="https://cardinsoft.github.io/function-file/function-file.html"/>
-					<bt:Url id="paneReadUrl" DefaultValue="https://cardinsoft.github.io/index.html"/>
+					<bt:Url id="functionFile" DefaultValue="https://cardinsoft.github.io/outlook/function-file/function-file.html"/>
+					<bt:Url id="paneReadUrl" DefaultValue="https://cardinsoft.github.io/outlook/index.html"/>
 				</bt:Urls>
 				<bt:ShortStrings>
 					<bt:String id="groupLabel" DefaultValue="Cardin"/>
