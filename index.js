@@ -1771,14 +1771,14 @@ Switch.prototype.appendToUi = function (parent) {
 	input.type = 'checkbox';
 	input.id = fieldName;
 	input.className = 'ms-Toggle-input';
-	if(value==='true') { input.value = 'on'; }else { input.value = 'off'; }
+	if(value==='true') { input.value = 'true'; }else { input.value = 'false'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let val = input.value;
-		if(val==='on') {
-			input.value = 'off'; 
+		if(val==='true') {
+			input.value = 'false'; 
 		}else {
-			input.value = 'on'; 
+			input.value = 'true'; 
 		}
 	});
 	
