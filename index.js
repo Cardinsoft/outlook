@@ -31,7 +31,6 @@ function editDisplay(parameters) {
 	var url    = parameters.url;
 	var index  = parameters.index;
 	var manual = parameters.manual;
-	if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
 	var field1 = parameters.field1;
 	var field2 = parameters.field2;
 	var field3 = parameters.field3;
@@ -675,8 +674,8 @@ function createWidgetClearSubmit(section) {
  *
  */
 function createWidgetSwitchManual(section,manual) {
-	if(manual===undefined) { manual = true; }
-	var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,'true');
+	if(manual===undefined||manual==='true') { manual = true; }else { manual = false; }
+	var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,manual.toString());
 	section.addWidget(widget);
 }
 
@@ -1773,7 +1772,7 @@ Switch.prototype.appendToUi = function (parent) {
 	input.type = 'checkbox';
 	input.id = fieldName;
 	input.className = 'ms-Toggle-input';
-	if(value==='true') { input.value = 'true'; }else { input.value = 'false'; }
+	input.value = value;
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let val = input.value;
@@ -1791,6 +1790,7 @@ Switch.prototype.appendToUi = function (parent) {
 	console.log('VALUE');
 	console.log(value);
 	console.log(typeof value);
+	console.log(this);
 	
 	const label = document.createElement('label');
 	if(value==='true') {
