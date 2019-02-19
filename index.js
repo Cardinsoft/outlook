@@ -1786,6 +1786,9 @@ Switch.prototype.appendToUi = function (parent) {
 		wrapToggle.addEventListener('click',actionCallback(action,input)); 
 	}
 	
+	console.log('VALUE');
+	console.log(value);
+	
 	const label = document.createElement('label');
 	if(value==='true') {
 		label.className = 'ms-Toggle-field is-selected';
@@ -1793,6 +1796,8 @@ Switch.prototype.appendToUi = function (parent) {
 		label.className = 'ms-Toggle-field';
 	}
 	wrapToggle.append(label);
+	
+	
 	
 	new fabric['Toggle'](wrapToggle);
 }
