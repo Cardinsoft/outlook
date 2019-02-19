@@ -1774,11 +1774,11 @@ Switch.prototype.appendToUi = function (parent) {
 	if(value==='true') { input.value = 'on'; }else { input.value = 'off'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
-		let val = this.value;
+		let val = input.value;
 		if(val==='on') {
-			this.value = 'off'; 
+			input.value = 'off'; 
 		}else {
-			this.value = 'on'; 
+			input.value = 'on'; 
 		}
 	});
 	
