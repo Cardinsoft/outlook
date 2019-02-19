@@ -1760,10 +1760,6 @@ Switch.prototype.appendToUi = function (parent) {
 	const selected  = this.selected;
 	const value     = this.value;
 	
-	console.log('VALUE');
-	console.log(value);
-	console.log(typeof value);
-	
 	const pToggle = document.createElement('p');
 	parent.append(pToggle);
 	
@@ -1775,15 +1771,13 @@ Switch.prototype.appendToUi = function (parent) {
 	input.type = 'checkbox';
 	input.id = fieldName;
 	input.className = 'ms-Toggle-input';
-	if(value) { input.value = 'on'; }else { input.value = 'off'; }
+	if(value==='true') { input.value = 'on'; }else { input.value = 'off'; }
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let val = this.value;
 		if(val==='on') {
-			this.className = 'ms-Toggle-field is-selected';
 			this.value = 'off'; 
 		}else {
-			this.className = 'ms-Toggle-field';
 			this.value = 'on'; 
 		}
 	});
@@ -1793,7 +1787,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(value==='on') {
+	if(value==='true') {
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
 		label.className = 'ms-Toggle-field';
