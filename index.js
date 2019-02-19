@@ -295,6 +295,8 @@ function createConfiguredConnectsSection(builder,isCollapsed,numUncollapsible,co
 		section.setHeader(globalConfiguredHeader);
   
 	config.forEach(function(connection,index) {
+		console.log(connection);
+		
 		var icon   = connection.icon;
 		var name   = connection.name;
 		var url    = connection.url;
