@@ -158,8 +158,8 @@ async function cardsetDisplay(builder,idx) {
 
 		if(section===undefined) { 
 			section = CardService.newCardSection(); 
-			section.setCollapsible(true);
-			section.setNumUncollapsibleWidgets(globalNumUncollapsible);
+			section.setCollapsible(false);
+			//section.setNumUncollapsibleWidgets(globalNumUncollapsible);
 		}
 		
 		if(!manual) {
@@ -229,8 +229,7 @@ async function cardOpen(index) {
 		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
 		createSectionWelcome(builder,false);
 	}else {//build display card if any connections;
-		await cardsetDisplay(builder,index);
-		createGoToSettingsSection(builder,false);
+		cardsetDisplay(builder,index);
 	}
 	  
 	return builder.build();
