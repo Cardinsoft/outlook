@@ -1760,6 +1760,9 @@ Switch.prototype.appendToUi = function (parent) {
 	const selected  = this.selected;
 	const value     = this.value;
 	
+	console.log('VALUE');
+	console.log(value);
+	
 	const pToggle = document.createElement('p');
 	parent.append(pToggle);
 	
