@@ -230,7 +230,7 @@ async function cardOpen(index) {
 		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
 		createSectionWelcome(builder,false);
 	}else {//build display card if any connections;
-		cardsetDisplay(builder,index);
+		await cardsetDisplay(builder,index);
 		createGoToSettingsSection(builder,false);
 	}
 	  
