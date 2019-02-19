@@ -1787,7 +1787,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(input.value==='on') {
+	if(value==='true') {
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
 		label.className = 'ms-Toggle-field';
