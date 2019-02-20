@@ -1433,7 +1433,7 @@ class e_EventObject {
 
 //Emulate Message class that is obtained from current message auth flow;
 class Message {
-	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId) {
+	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId,msgThread) {
 		this.msgFrom = msgFrom;
 		this.msgBcc = msgBcc;
 		this.msgCc = msgCc;
@@ -1441,6 +1441,7 @@ class Message {
 		this.msgPlainBody = msgPlainBody;
 		this.msgSubject = msgSubject;
 		this.msgId = msgId;
+		this.msgThread = msgThread;
 	}
 }
 Message.prototype.getId = function () {
@@ -1463,6 +1464,9 @@ Message.prototype.getPlainBody = function () {
 }
 Message.prototype.getSubject = function () {
 	return this.msgSubject;
+}
+Message.prototype.getThread = function () {
+	return this.msgThread;
 }
 
 /**
