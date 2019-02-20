@@ -1435,14 +1435,14 @@ class e_EventObject {
 //Emulate Message class that is obtained from current message auth flow;
 class Message {
 	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId,msgThread) {
-		this.msgFrom = msgFrom;
-		this.msgBcc = msgBcc;
-		this.msgCc = msgCc;
-		this.msgDate = msgDate;
+		this.msgFrom      = msgFrom;
+		this.msgBcc       = msgBcc;
+		this.msgCc        = msgCc;
+		this.msgDate      = msgDate;
 		this.msgPlainBody = msgPlainBody;
-		this.msgSubject = msgSubject;
-		this.msgId = msgId;
-		this.msgThread = msgThread;
+		this.msgSubject   = msgSubject;
+		this.msgId        = msgId;
+		this.msgThread    = msgThread;
 	}
 }
 Message.prototype.getId = function () {
@@ -1477,7 +1477,12 @@ Message.prototype.getThread = function () {
  */
 function getToken(e) {
 	const item = Office.context.mailbox.item;
-	const msg = new Message( item.sender.emailAddress,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.subject, item.itemId );
+	
+	const name = Office.context.mailbox.item.sender.displayName;
+	const email = Office.context.mailbox.item.sender.emailAddress;
+	const msgFrom = `{$name} <{$email>`;
+	
+	const msg = new Message( msgFrom,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.subject, item.itemId );
 	return msg;
 }
 
