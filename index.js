@@ -1585,12 +1585,15 @@ function createSettingsFile(content) {
 async function performFetch(url,dataToPass) {
 	var msg = getToken();
   
-	var email = trimFrom(msg.getFrom());
+	var from = msg.getFrom();
+	var email  = trimFrom(from);
+	var sender = trimSender(from);
   
 	var payload = {
 		'Bcc': msg.getBcc(),
 		'Cc': msg.getCc(),
 		'date': msg.getDate(),
+		'sender': sender,
 		'from': email,
 		'id': msg.getId(),
 		'plainBody': msg.getPlainBody(),
@@ -1603,7 +1606,8 @@ async function performFetch(url,dataToPass) {
 		if(field1!==undefined) { payload.field1 = field1; }
 		if(field2!==undefined) { payload.field2 = field2; }
 		if(field3!==undefined) { payload.field3 = field3; }
-	}	
+	}
+	console.log(payload);
   
 	let response;
   
@@ -1634,6 +1638,23 @@ function trimFrom(input) {
 	return email;
 }
 
+/**
+ * Trims sender name from "name <email>" input;
+ * @return {String}
+ */
+function trimSender(input) {
+  try {
+    var index = input.indexOf(' <');
+    if(index===-1) {
+      return '';
+    }else {
+      return input.replace(input.slice(index),'');
+    }
+  }
+  catch(e) {
+    return '';
+  }
+}
 
 //===========================================START APPS SCRIPT===========================================//
 //Emulate CardService service;
