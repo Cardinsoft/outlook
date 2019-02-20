@@ -2029,7 +2029,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 
 	const headerText = this.header;
 	console.log(headerText);
-	if(headerText!==undefined||headerText!=='') {
+	if(headerText!==undefined&&headerText!=='') {
 		const header = document.createElement('p');
 		header.className = 'ms-font-m-plus sectionHeader';
 		header.textContent = headerText;
