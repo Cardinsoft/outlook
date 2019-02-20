@@ -1168,7 +1168,7 @@ const callbacks = {
 				var field2    = inputs[4].value;
 				var field3    = inputs[5].value;
 				var useManual = inputs[6].value;
-				if(useManual==='on') { useManual = true; }else { useManual = false; }
+				if(useManual==='true') { useManual = true; }else { useManual = false; }
 		  
 				var connection = {
 					icon: icon,
@@ -1215,7 +1215,7 @@ const callbacks = {
 				var field2    = inputs[4].value;
 				var field3    = inputs[5].value;
 				var useManual = inputs[6].value;
-				if(useManual==='on') { useManual = true; }else { useManual = false; }
+				if(useManual==='true') { useManual = true; }else { useManual = false; }
 				
 				var connection = {
 					icon: icon,
