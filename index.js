@@ -78,7 +78,7 @@ function cardDisplay(parameters) {
 	if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
   
 	var connection = {icon:icon,name:name,url:url,manual:manual};
-	createSectionBack(builder,false,index); //move back to bottom when handled 100 widgets issue;
+	//createSectionBack(builder,false,index); //commented out for 1.0 release, might be switched on later;
 
 	try {
 
@@ -226,7 +226,7 @@ async function cardOpen(index) {
 	  
 	if(config.length===0) {//build welcome and settings card on install;
 		builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
-		createCustomInstall(builder,false,config.length,globalCustomInstallHeader);
+		createCustomInstall(builder,false,globalCustomInstallHeader);
 		createSectionWelcome(builder,false);
 	}else {//build display card if any connections;
 		cardsetDisplay(builder,index);
@@ -237,7 +237,7 @@ async function cardOpen(index) {
 
 async function cardSettings() {
 	var builder = CardService.newCardBuilder();
-		builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader));
+	//builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader)); - not needed for 1.0 release;
       
 	var src = await getProperty('config','user');
 	let config;
@@ -250,7 +250,7 @@ async function cardSettings() {
 	if(config.length===0) {
 		createCustomInstall(builder,false,globalCustomInstallHeader);
 	}else {
-		createConfiguredConnectsSection(builder,true,6,config);
+		createConfiguredConnectsSection(builder,false,6,config);
   
 		createCustomInstall(builder,true,globalCustomInstallHeader);
 	}
@@ -1786,11 +1786,6 @@ Switch.prototype.appendToUi = function (parent) {
 		wrapToggle.addEventListener('click',actionCallback(action,input)); 
 	}
 	
-	console.log('VALUE');
-	console.log(value);
-	console.log(typeof value);
-	console.log(this);
-	
 	const label = document.createElement('label');
 	if(value==='true') {
 		label.className = 'ms-Toggle-field is-selected';
@@ -1798,8 +1793,6 @@ Switch.prototype.appendToUi = function (parent) {
 		label.className = 'ms-Toggle-field';
 	}
 	wrapToggle.append(label);
-	
-	
 	
 	new fabric['Toggle'](wrapToggle);
 }
@@ -2034,14 +2027,14 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	}
 	section.dir = 'ltr';
 
-	if(this.header!==undefined) {
+	const headerText = this.header;
+	console.log(headerText);
+	if(headerText!==undefined||headerText!=='') {
 		const header = document.createElement('p');
 		header.className = 'ms-font-m-plus sectionHeader';
-		header.textContent = this.header;
+		header.textContent = headerText;
 		section.append(header);
-	}	
-	
-	//add handling for collapse, header and uncollapsible widgets;
+	}
 	
 	const widgetsWrap = document.createElement('div');
 	if(collapsible) { widgetsWrap.className = 'closed'; }
@@ -2737,7 +2730,7 @@ var globalYouTubeUrlText = 'YouTube instructions';
 var globalInstallWidgetSubmit = 'Move to display';
 var globalCustomWidgetContent = 'You can create custom connection by configuring form below. You can create as many connections as you want';
 var globalCustomWidgetSubmitText = 'Add connection';
-var globalResetWidgetContent = 'Every user preference will be wiped clean, and config.json file will be deleted';
+var globalResetWidgetContent = 'Every user preference will be wiped clean, and all connections will be deleted';
 var globalClearWidgetContent = 'Cached data will be cleared, including information about successful connection fetches';
 var globalResetWidgetSubmitText = 'Reset';
 var globalClearWidgetSubmitText = 'Clear';
@@ -2757,7 +2750,7 @@ var globalManual = 'Manual';
 var globalGoToSettings = 'Go to settings';
 
 //URLs;
-var globalCardinUrl = 'http://cardinsoft.com/';
+var globalCardinUrl = 'https://cardinsoft.com/';
 var globalYouTubeUrl = 'https://www.youtube.com/';
 
 //notifications, warnings and error messages
