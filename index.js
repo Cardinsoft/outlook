@@ -1215,6 +1215,10 @@ const callbacks = {
 				var field2    = inputs[4].value;
 				var field3    = inputs[5].value;
 				var useManual = inputs[6].value;
+				
+				console.log(useManual);
+				console.log(typeof useManual);
+				
 				if(useManual==='true') { useManual = true; }else { useManual = false; }
 				
 				var connection = {
