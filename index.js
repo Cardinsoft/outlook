@@ -673,7 +673,7 @@ function createWidgetClearSubmit(section) {
  *
  */
 function createWidgetSwitchManual(section,manual) {
-	if(manual===undefined||manual==='true') { manual = true; }else { manual = false; }
+	if(manual===undefined||manual==='true'||manual===true) { manual = true; }else { manual = false; }
 	var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,manual.toString());
 	section.addWidget(widget);
 }
@@ -1215,9 +1215,6 @@ const callbacks = {
 				var field2    = inputs[4].value;
 				var field3    = inputs[5].value;
 				var useManual = inputs[6].value;
-				
-				console.log(useManual);
-				console.log(typeof useManual);
 				
 				if(useManual==='true') { useManual = true; }else { useManual = false; }
 				
