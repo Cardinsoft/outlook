@@ -1480,7 +1480,7 @@ function getToken(e) {
 	
 	const name = Office.context.mailbox.item.sender.displayName;
 	const email = Office.context.mailbox.item.sender.emailAddress;
-	const msgFrom = `{$name} <{$email>`;
+	const msgFrom = `${name} <${email}>`;
 	
 	const msg = new Message( msgFrom,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.subject, item.itemId );
 	return msg;
