@@ -43,7 +43,7 @@ body {
 }
 
 .CardSection {
-	padding: 8px;
+	padding: 8px 8px 0 8px;
 }
 
 .sectionHeader {
@@ -88,20 +88,21 @@ body {
 .row {
 	display: flex;
 	align-items: center;
-	margin-bottom: 8px;
+	margin: 1em 0;
 	width: 100%;
+	min-height: 35px;
 }
 
 .column {
-	
+	flex-grow: 1;
 }
 
 .column-icon {
-	margin-right: 8px;
+	margin-right: 1.5em;
 }
 
 .column-text {
-	flex-grow: 2;
+	flex-grow: 100;
 }
 
 .ms-MessageBar {
