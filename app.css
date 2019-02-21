@@ -80,13 +80,14 @@ body {
 	word-break: break-word;
 }
 
-.ms-Grid-row {
-  display: flex;
-  align-items: center;	
+.row {
+	display: flex;
+	align-items: center;
+	width: 100%;
 }
 
-.ms-sm12, .ms-md12, .ms-lg12 {
-	width: 100%;
+.column {
+	margin: 4px;
 }
 
 .ms-MessageBar {
