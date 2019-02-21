@@ -144,6 +144,7 @@ function cardDisplay(parameters) {
 
 async function cardsetDisplay(builder,idx) {
 	var msg = getToken();
+	console.log(msg);
 	var config = await getProperty('config','user');
   
 	var section;
