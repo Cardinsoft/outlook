@@ -2364,7 +2364,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 }
 KeyValue.prototype.appendToUi = function (parent,index) {
 	const widget = document.createElement('div');
-	widget.className = 'ms-Grid-row '+this.className;
+	widget.className = 'row '+this.className;
 	widget.tabindex = index;
 	parent.append(widget);
 	
@@ -2376,37 +2376,31 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	//handle image creation;
 	if(this.url!==undefined) {
 		const wrapImg = document.createElement('div');
-		wrapImg.className = 'ms-Grid-col ms-sm4 ms-md3 ms-lg2';
+		wrapImg.className = 'column';
 		widget.append(wrapImg);
-		
-		const pImg = document.createElement('p');
-		wrapImg.append(pImg);
 		
 		const img = document.createElement('img');
 		img.className = 'KeyValueImage';
 		img.src = this.url;
 		if(this.altText!==undefined) { img.alt = this.altText; }
-		pImg.append(img);
+		wrapImg.append(img);
 	}
 	
 	//handle label and content creation;
 	const wrapText = document.createElement('div');
-	wrapText.className = 'ms-Grid-col ms-sm4 ms-md6 ms-lg8';
+	wrapText.className = 'column';
 	widget.append(wrapText);
-	
-	const pText = document.createElement('p');
-	wrapText.append(pText);
 	
 	if(this.topLabel!==undefined) {	
 		const label = document.createElement('label');
 		label.className = 'ms-fontSize-s KeyValueLabel';
 		label.textContent = this.topLabel;
-		pText.append(label);
+		wrapText.append(label);
 	}
 	const content = document.createElement('span');
 	content.className = 'ms-font-m-plus KeyValueText';
 	content.textContent = this.content;
-	pText.append(content);
+	wrapText.append(content);
 	
 	//handle button or switch creation;
 	const btn = this.button;
@@ -2414,19 +2408,15 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	
 	if(btn!==undefined||sw!==undefined) {
 		const wrapButton = document.createElement('div');
-		wrapButton.className = 'ms-Grid-col ms-sm4 ms-md3 ms-lg2';
+		wrapButton.className = 'column';
 		widget.append(wrapButton);	
 	
 		if(btn!==undefined) {
 			const backgroundColor = btn.backgroundColor;
-			const text = btn.text;
-			const disabled = btn.disabled;
+			const text 			  = btn.text;
+			const disabled 		  = btn.disabled;
 			const textButtonStyle = btn.textButtonStyle;
-			
-			const action = btn.action;	
-			
-			const pButton = document.createElement('p');
-			wrapButton.append(pButton);	
+			const action		  = btn.action;
 			
 			const button = document.createElement('button');
 			button.disabled = disabled;
@@ -2435,7 +2425,7 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 			}else {
 				button.className = 'ms-Button ms-Button--small ms-Button--primary '+btn.className;
 			}
-			pButton.append(button);
+			wrapButton.append(button);
 				
 			const btnContent = document.createElement('span');
 			btnContent.className = 'ms-Button-label';
