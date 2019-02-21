@@ -34,6 +34,10 @@ body {
 	color: #c8c8c8;
 }
 
+.ms-TextField {
+	width: 100%;
+}
+
 .TextInputInput, .TextInputLabel {
 	padding: 0 !important;
 }
