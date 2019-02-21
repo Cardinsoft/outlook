@@ -2367,7 +2367,7 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	//handle image creation;
 	if(this.url!==undefined) {
 		const wrapImg = document.createElement('div');
-		wrapImg.className = 'column';
+		wrapImg.className = 'column-icon';
 		widget.append(wrapImg);
 		
 		const img = document.createElement('img');
