@@ -91,6 +91,10 @@ body {
 	
 }
 
+.column-icon {
+	margin-right: 8px;
+}
+
 .column-text {
 	flex-grow: 2;
 }
