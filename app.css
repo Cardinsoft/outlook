@@ -87,7 +87,11 @@ body {
 }
 
 .column {
-	margin: 4px;
+	
+}
+
+.column-text {
+	flex-grow: 2;
 }
 
 .ms-MessageBar {
