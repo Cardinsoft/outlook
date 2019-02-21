@@ -1879,15 +1879,12 @@ ButtonSet.prototype.appendToUi = function(parent) {
 	const length = buttons.length;
 	
 	const btnRow = document.createElement('div');
-	btnRow.className = 'ms-Grid-row '+this.className;
+	btnRow.className = 'row '+this.className;
 	parent.append(btnRow);
 	
 	const wrapBtn = document.createElement('div');
-	wrapBtn.className = 'ms-Grid-col ms-sm12 ms-md12 ms-lg12';
+	wrapBtn.className = 'column';
 	btnRow.append(wrapBtn);
-	
-	const pBtn = document.createElement('p');
-	wrapBtn.append(pBtn);
 	
 	buttons.forEach(function(button) {
 		const backgroundColor = button.backgroundColor;
@@ -1903,7 +1900,7 @@ ButtonSet.prototype.appendToUi = function(parent) {
 			btn.className = 'ms-Button ms-Button--small ms-Button--primary '+button.className;
 		}
 		btn.disabled = disabled;
-		pBtn.append(btn);		
+		wrapBtn.append(btn);		
 		
 		const btnContent = document.createElement('span');
 		btnContent.className = 'ms-Button-label';
@@ -2052,9 +2049,9 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	const section = document.createElement('div');
 	if(serialize) {
-		section.className = 'ms-Grid separated '+this.className;
+		section.className = 'separated '+this.className;
 	}else {
-		section.className = 'ms-Grid '+this.className;
+		section.className = this.className;
 	}
 	section.dir = 'ltr';
 
@@ -2156,26 +2153,23 @@ TextInput.prototype.appendToUi = function (parent) {
 	const hint      = this.hint;
 
 	const widget = document.createElement('div');
-	widget.className = 'ms-Grid-row '+this.className;
+	widget.className = 'row '+this.className;
 	parent.append(widget);
 	
 	const row = document.createElement('div');
-	row.className = 'ms-Grid-col ms-sm12 ms-md12 ms-lg12';
+	row.className = 'column';
 	widget.append(row);
-	
-	const pRow = document.createElement('p');
-	row.append(pRow);
 	
 	if(title!==undefined) {	
 		const topLabel = document.createElement('label');
 		topLabel.className = 'ms-fontSize-s TextInputTopLabel';
 		topLabel.textContent = title;
-		pRow.append(topLabel);
+		row.append(topLabel);
 	}
 	
 	const inputWrap = document.createElement('div');
 	inputWrap.className = 'ms-TextField ms-TextField--underlined';
-	pRow.append(inputWrap);
+	row.append(inputWrap);
 	
 	const label = document.createElement('label');
 	label.className = 'ms-Label TextInputLabel';
@@ -2194,7 +2188,7 @@ TextInput.prototype.appendToUi = function (parent) {
 		const bottomLabel = document.createElement('label');
 		bottomLabel.className = 'ms-fontSize-s TextInputBottomLabel';
 		bottomLabel.textContent = hint;
-		pRow.append(bottomLabel);
+		row.append(bottomLabel);
 	}
 }
 
@@ -2233,15 +2227,12 @@ TextButton.prototype.appendToUi = function (parent) {
 	const openLink = this.openLink;
 	
 	const btnRow = document.createElement('div');
-	btnRow.className = 'ms-Grid-row '+this.className;
+	btnRow.className = 'row '+this.className;
 	parent.append(btnRow);
 	
 	const wrapBtn = document.createElement('div');
-	wrapBtn.className = 'ms-Grid-col ms-sm12 ms-md12 ms-lg12';
+	wrapBtn.className = 'column';
 	btnRow.append(wrapBtn);
-	
-	const pButton = document.createElement('p');
-	wrapBtn.append(pButton);	
 	
 	const button = document.createElement('button');
 	button.disabled = disabled;
@@ -2250,7 +2241,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	}else {
 		button.className = 'ms-Button ms-Button--small ms-Button--primary '+this.className;
 	}
-	pButton.append(button);
+	wrapBtn.append(button);
 		
 	const btnContent = document.createElement('span');
 	btnContent.className = 'ms-Button-label';
