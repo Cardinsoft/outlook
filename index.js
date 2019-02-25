@@ -1952,7 +1952,7 @@ function getToken(e) {
  * @returns {String}
  */
 function getProperty(key,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1961,8 +1961,10 @@ function getProperty(key,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  let value = props.get(key);
-  if(value===undefined) {value = null;}
+  var value = props.getProperty(key);
+  try { value = JSON.parse(value); }
+  catch(e) { return value; }
+ 
   return value;
 }
 
@@ -1973,7 +1975,7 @@ function getProperty(key,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get;
  */
 function setProperty(key,value,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1982,8 +1984,10 @@ function setProperty(key,value,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  props.set(key,value);
-  props.saveAsync();
+  try { value = JSON.stringify(value); }
+  catch(e) { props.setProperty(key,value); }  
+  
+  props.setProperty(key,value);
 }
 
 /**
@@ -1992,7 +1996,7 @@ function setProperty(key,value,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get;
  */
 function deleteProperty(key,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -2001,8 +2005,7 @@ function deleteProperty(key,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  props.remove(key);
-  props.saveAsync();
+  props.deleteProperty(key);
 }
 
 /**
@@ -2011,7 +2014,7 @@ function deleteProperty(key,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get 
  */
 function deleteAllProperties(type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -2257,15 +2260,64 @@ class e_PropertiesService {
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;	
+	return new Properties(settings,'document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;	
+	return new Properties(settings,'script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;
+	return new Properties(settings,'user');
+}
+
+//Emulate Clas Properties for PropertiesService service;
+class Properties {
+	constructor(settings,type) {
+		this.settings = settings;
+		this.type     = type;
+	}
+}
+//add new methods to the class;
+Properties.prototype.deleteAllProperties = function () {
+	const settings = this.settings;
+	
+	console.log(typeof settings)
+}
+Properties.prototype.deleteProperty = function (key) {
+	let settings = this.settings;
+	settings.remove(key);
+	settings.saveAsync();
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;	
+}
+//Properties.prototype.getKeys = function () {} - not needed for initial release;
+//Properties.prototype.getProperties = function () {} - not needed for initial release;
+Properties.prototype.getProperty = function (key) {
+	const settings = this.settings;
+	return settings.get(key);
+}
+Properties.prototype.setProperties = function (properties,deleteAllOthers) {
+	const self = this;
+	for(let key in properties) {
+		let value = properties[key];
+		self.setProperty(key,value);
+	}
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;
+}
+Properties.prototype.setProperty = function (key,value) {
+	let settings = this.settings;
+	settings.set(key,value);
+	settings.saveAsync();
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;
 }
 
 //Emulate Class Card for CardService service;
