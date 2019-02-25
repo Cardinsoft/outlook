@@ -1,3 +1,5 @@
+'use strict';
+
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
@@ -1521,6 +1523,49 @@ const callbacks = {
 		);
 	},
 	//==============================START ACTIONS==============================//
+	editDisplay : function editDisplay(e) {
+		return new Promise(
+			async function (resolve) {
+  				var icon   = e.parameters.icon;
+  				var name   = e.parameters.name;
+  				var url    = e.parameters.url;
+				var index  = e.parameters.index;
+				var manual = e.parameters.manual;
+				if(manual==='true') { manual = true; }else { manual = false; }
+				var isDefault = e.parameters.isDefault;
+				if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
+				var loadFields = e.parameters.loadFields;
+				if(loadFields==='true') { loadFields = true; }else { loadFields = false; }
+				var field1 = e.parameters.field1;
+				var field2 = e.parameters.field2;
+				var field3 = e.parameters.field3;
+				var isType = e.parameters.isType;
+				if(isType==='true') { isType = true; }else { isType = false; }
+  
+  				var connection = {
+					icon: icon,
+    				name: name,
+    				url: url,
+    				manual: manual,
+    				isDefault: isDefault
+  				};
+			  	if(field1!==undefined) { connection.field1 = field1; }
+			  	if(field2!==undefined) { connection.field2 = field2; }
+			  	if(field3!==undefined) { connection.field3 = field3; }
+ 
+  				var builder = CardService.newCardBuilder();
+      				builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+  
+			  	if(!isType) {
+					createSectionEditConnection(builder,false,connection,loadFields,index,true);
+			  	}else {
+					createSectionAddConnection(builder,false,'',loadFields,connection);
+				}
+  
+  				return builder.build();				
+			}
+		);
+	},
 	editSectionsShow : function editSectionsShow(e) {
 		return new Promise(
 			async function(resolve) {
