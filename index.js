@@ -1,23 +1,18 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
- 
-// The initialize function must be run each time a new page is loaded
+// The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
-		cardOpen();
+		cardOpen(e);
 		
 		$('#home').click(function(){
-			cardOpen();
+			cardOpen(e);
 		});
 		
 		$('#settings').click(function(){
-			cardSettings();
+			cardSettings(e);
 		});
 		
 		$('#help').click(function(){
-			cardHelp();
+			cardHelp(e);
 		});
 		
 		$('#app-body').show();
@@ -27,124 +22,177 @@ Office.initialize = (reason) => {
 	});
 };
 
-function editDisplay(parameters) {
-	var icon   = parameters.icon;
-	var name   = parameters.name;
-	var url    = parameters.url;
-	var index  = parameters.index;
-	var manual = parameters.manual;
-	var field1 = parameters.field1;
-	var field2 = parameters.field2;
-	var field3 = parameters.field3;
+//===========================================START CARD===========================================//
+/**
+ * Creates and shows card with connection edit form;
+ * @param {Object} e -> event object;
+ */
+function editDisplay(e) {
+  var icon   = e.parameters.icon;
+  var name   = e.parameters.name;
+  var url    = e.parameters.url;
+  var index  = e.parameters.index;
+  var manual = e.parameters.manual;
+  if(manual==='true') { manual = true; }else { manual = false; }
+  var isDefault = e.parameters.isDefault;
+  if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
+  var loadFields = e.parameters.loadFields;
+  if(loadFields==='true') { loadFields = true; }else { loadFields = false; }
+  var field1 = e.parameters.field1;
+  var field2 = e.parameters.field2;
+  var field3 = e.parameters.field3;
+  var isType = e.parameters.isType;
+  if(isType==='true') { isType = true; }else { isType = false; }
   
-	var connection = {
-		icon: icon,
-		name: name,
-		url: url,
-		manual: manual
-	};
-	if(field1!==undefined) { connection.field1 = field1; }
-	if(field2!==undefined) { connection.field2 = field2; }
-	if(field3!==undefined) { connection.field3 = field3; }
+  var connection = {
+    icon: icon,
+    name: name,
+    url: url,
+    manual: manual,
+    isDefault: isDefault
+  };
+  if(field1!==undefined) { connection.field1 = field1; }
+  if(field2!==undefined) { connection.field2 = field2; }
+  if(field3!==undefined) { connection.field3 = field3; }
  
-	var builder = CardService.newCardBuilder();
-		builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+  var builder = CardService.newCardBuilder();
+      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+  
+  if(!isType) {
+    createSectionEditConnection(builder,false,connection,loadFields,index,true); //add handling for field1-3 if Zapier;
+  }else {
+    createSectionAddConnection(builder,false,'',loadFields,connection);
+  }
+  
+  return builder.build();
+}
+
+/**
+ * Creates and shows card with connection display according to data passed with event object;
+ * @param {Object} e -> event object;
+ */
+function cardDisplay(e) {
+  var index  = e.parameters.index;
+  var code   = +e.parameters.code;
+  var icon   = e.parameters.icon;
+  var name   = e.parameters.name;
+  var url    = e.parameters.url;
+  var data   = e.parameters.data;
+  var manual = e.parameters.manual;
+  var field1 = e.parameters.field1;
+  var field2 = e.parameters.field2;
+  var field3 = e.parameters.field3;
+  var start  = e.parameters.start;
+  if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
+  var connection = {'icon':icon,'name':name,'url':url,'manual':manual,'field1':field1,'field2':field2,'field3':field3};
+  
+  var msg = getToken();
+  
+  var builder = CardService.newCardBuilder();
+      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+  
+  var error = e.parameters.error;
+  if(error!==undefined) {
+    createErrorSection(builder,false,code,error);
+  }
+  
+  var data = parseData(data);
+  if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
+  //createSectionBack(builder,false,index); - commented out for 1.0 release, but might be needed for future releases;
+
+  try {
+
+    if(data.length!==0) {
+    
+      //check if there are any nested objects or not;
+      var hasNested = checkNested(data);
+      if(hasNested) {
       
-	createSectionEdit(builder,false,connection,index,true);
+        for(var j=0; j<data.length; j++) {
+          var obj = data[j];
+          var keys = Object.keys(obj);
+          var overrides = {};
+          if(keys.indexOf('header')!==-1)           { overrides.header = obj.header; }
+          if(keys.indexOf('isCollapsible')!==-1)    { overrides.isCollapsible = obj.isCollapsible; }
+          if(keys.indexOf('numUncollapsible')!==-1) { overrides.numUncollapsible = obj.numUncollapsible; }
+          createSectionsShow(builder,code,data,obj,overrides,index,j,connection);     
+        }
+        
+        var hasEditable = checkEditable(data);
+        if(hasEditable) {
+          var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionsShow',{'data':JSON.stringify(data),'connection':JSON.stringify(connection)});
+          var updateSection = CardService.newCardSection();
+              updateSection.addWidget(updateButton);
+          builder.addSection(updateSection);
+        }
+        
+      }else {
+        var cap = 0, fullLength = 0;
+        
+        //handle full data length (including all fields)
+        for(var i=0; i<data.length; i++) {
+          try {var result = JSON.parse(data[i]);}
+          catch(er) { result = data[i]; }
+          for(var key in result) { fullLength += 1; }      
+        }
+        
+        //handle number of sections to display at one time
+        for(var max=0; max<data.length; max++) {
+          if(cap>=globalWidgetsCap) { break; }
+          try {var result = JSON.parse(data[max]);}
+          catch(er) { result = data[max]; }
+          for(var key in result) { cap += 1; }
+        }
+        
+        if(start!==undefined) { 
+          var begin = +start;
+          max = max + begin;
+        }else {
+          begin = 0; 
+        }
+        
+        for(var j=begin; j<data.length; j++) {
+          if(j===max) { break; }
+          var result = data[j];
+          if(data.length!==1) {
+            createSectionShow(builder,result,true,j);
+          }else {
+            createSectionShow(builder,result,false,j);
+          }
+        }
+      
+      }
+      
+    }
   
-	return builder.build();
+  }
+  catch(err) {
+    
+    createUnparsedSection(builder,true,err.message,JSON.stringify(data));
+    
+  }
+  
+  var length = data.length;
+  var diff = max-begin;
+  
+  if(fullLength>cap) {
+    var end = length-1;
+    if(length>max||length+diff-1===max) {
+      var prev = (begin-diff);
+      createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
+    }
+  }
+
+  return builder.build();
 }
 
-function cardDisplay(parameters) {
-	var index  = parameters.index;
-	var code   = +parameters.code;
-	var icon   = parameters.icon;
-	var name   = parameters.name;
-	var url    = parameters.url;
-	var data   = parameters.data;
-	var manual = parameters.manual;  
-	var start  = parameters.start;
-	if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
-  
+/**
+ * Generates a display of connections card;
+ * @param {Object} e -> event object;
+ *
+ */
+async function cardsetDisplay(e,builder,idx) {
 	var msg = getToken();
-  
-	var builder = CardService.newCardBuilder();
-		builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
-  
-	var error = parameters.error;
-	if(error!==undefined) {
-		createErrorSection(builder,false,code,error);
-	}
-  
-	var data = parseData(data);
-	if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
-  
-	var connection = {icon:icon,name:name,url:url,manual:manual};
-	//createSectionBack(builder,false,index); //commented out for 1.0 release, might be switched on later;
-
-	try {
-
-		if(data.length!==0) {
-			var cap = 0, fullLength = 0;
-		  
-			//handle full data length (including all fields)
-			for(var i=0; i<data.length; i++) {
-				try {var result = JSON.parse(data[i]);}
-				catch(er) { result = data[i]; }
-				for(var key in result) { fullLength += 1; }      
-			}
-		  
-			//handle number of sections to display at one time
-			for(var max=0; max<data.length; max++) {
-				if(cap>=globalWidgetsCap) { break; }
-				try {var result = JSON.parse(data[max]);}
-				catch(er) { result = data[max]; }
-				for(var key in result) { cap += 1; }
-			}
-		  
-			if(start!==undefined) { 
-				var begin = +start;
-				max = max + begin;
-			}else {
-				begin = 0; 
-			}
-		  
-			for(var j=begin; j<data.length; j++) {
-				if(j===max) { break; }
-				var result = data[j];
-				if(data.length!==1) {
-					createShowSection(builder,result,true,j);
-				}else {
-					createShowSection(builder,result,false,j);
-				}
-			}
-		  
-		}
-  
-	}
-	catch(err) {
-    
-		createUnparsedSection(builder,true,err.message,JSON.stringify(data));
-    
-	}
-  
-	var length = data.length;
-	var diff = max-begin;
-  
-	if(fullLength>cap) {
-		var end = length-1;
-		if(length>max||length+diff-1===max) {
-			var prev = (begin-diff);
-			createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
-		}
-	}
-
-	return builder.build();
-}
-
-async function cardsetDisplay(builder,idx) {
-	var msg = getToken();
-	console.log(msg);
 	var config = await getProperty('config','user');
   
 	var section;
@@ -172,9 +220,9 @@ async function cardsetDisplay(builder,idx) {
 				if(field1!==undefined) { dataToPass.field1 = field1; }
 				if(field2!==undefined) { dataToPass.field2 = field2; }
 				if(field3!==undefined) { dataToPass.field3 = field3; }
-				var response = await performFetch(url,dataToPass);
+				var response = await performFetch(e,url,dataToPass);
 			}else {
-				response = await performFetch(url);
+				response = await performFetch(e,url);
 			}			
 			
 			const code = response.code;
@@ -202,7 +250,17 @@ async function cardsetDisplay(builder,idx) {
 		}else { //handle manually triggered connections;
 		  
 			button = textButtonWidget(globalManual,true,false,'actionManual');
-			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',{'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});		  
+			var params = {
+				'index':index.toString(),
+				'icon':icon,
+				'url':url,
+				'name':name,
+				'manual':manual.toString()
+			};
+			if(field1!==undefined) { params.field1 = field1; }
+			if(field2!==undefined) { params.field2 = field2; }
+			if(field3!==undefined) { params.field3 = field3; } 
+			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',params);		  
 			
 		}
 		
@@ -214,7 +272,13 @@ async function cardsetDisplay(builder,idx) {
 	return builder.build();
 }
 
-async function cardOpen(index) {
+/**
+ * Triggers either a welcome or display of connections card generators;
+ * @param {Object} e -> event object;
+ * @params {Integer} index
+ * @returns {Card}
+ */
+async function cardOpen(e,index) {
 	var builder = CardService.newCardBuilder();
 	
 	$('.main-Ui-header').empty();
@@ -226,19 +290,63 @@ async function cardOpen(index) {
 	}else {
 		config = [];
 	}
+	
+	var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
+	if(hasDefault) {	
+		
+		var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
+		
+		//set parameters to pass with event object;
+		e.parameters.icon      = def.icon;
+		e.parameters.name      = def.name;
+		e.parameters.url       = def.url;
+		e.parameters.manual    = def.manual.toString();
+		e.parameters.isDefault = def.isDefault.toString();
+		if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
+		if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
+		if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
+
+		var response = performFetch(e,def.url);
+		var code     = response.code;
+		var data     = response.content; 
+		
+		e.parameters.code = code;
+		
+		if(code>=200&&code<300) {
+    
+			var len = data.length;
+			if(len!==0) { e.parameters.data = data; }
+    
+		}else { //handle incorrect urls;
+    
+			e.parameters.data  = '[]';
+			e.parameters.error = data;
+    
+		}
+
+		return cardDisplay(e);
+	
+	}else {
 	  
-	if(config.length===0) {//build welcome and settings card on install;
-		builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
-		createCustomInstall(builder,false,globalCustomInstallHeader);
-		createSectionWelcome(builder,false);
-	}else {//build display card if any connections;
-		cardsetDisplay(builder,index);
+		if(config.length===0) {//build welcome and settings card on install;
+			builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
+			createSectionChooseType(builder,false,globalChooseTypeHeader);
+			createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
+			createSectionWelcome(builder,false);
+		}else {//build display card if any connections;
+			cardsetDisplay(e,builder,index);
+		}
+	
 	}
 	  
 	return builder.build();
 }
 
-async function cardSettings() {
+/**
+ * Generates settings card according to configuration;
+ * @param {Object} e -> event object;
+ */
+async function cardSettings(e) {
 	var builder = CardService.newCardBuilder();
 	//builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader)); - not needed for 1.0 release;
       
@@ -250,205 +358,221 @@ async function cardSettings() {
 		config = [];
 	}
   
-	if(config.length===0) {
-		createCustomInstall(builder,false,globalCustomInstallHeader);
-	}else {
-		createConfiguredConnectsSection(builder,false,6,config);
-  
-		createCustomInstall(builder,true,globalCustomInstallHeader);
+	if(config.length!==0) {
+		createConfiguredConnectsSection(builder,true,6,config);
 	}
   
+	createSectionChooseType(builder,false,globalChooseTypeHeader);
+	createSectionAddConnection(builder,true,globalAddConnectionHeader,true);  
 	createAdvanced(builder,false,globalAdvancedHeader);
   
 	return builder.build();
 }
 
-function cardHelp() {
+/**
+ * Generates help card;
+ * @param {Object} e -> event object;
+ */
+function cardHelp(e) {
 	var builder = CardService.newCardBuilder();
 		builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
       
 	createSectionWelcome(builder,false);
-	createAdvanced(builder,false);
 
 	return builder.build();
 }
+//===========================================END CARD===========================================//
 
 //===============================================SECTIONS===============================================//
 /**
  *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
  */
 function createGoToSettingsSection(builder,isCollapsed) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
       
-	createWidgetGoToSettings(section,false);
+  createWidgetGoToSettings(section,false);
 
-	builder.addSection(section);
+  builder.addSection(section);
 }
 
 /**
- *
+ * Creates section with a list of configured connections;
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} numUncollapsible -> number of widgets to show in a list initially;
+ * @param {Array} config -> an array of connection settings objects;
  */
 function createConfiguredConnectsSection(builder,isCollapsed,numUncollapsible,config) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);   
-		if(isCollapsed) { section.setNumUncollapsibleWidgets(numUncollapsible); }
-		section.setHeader(globalConfiguredHeader);
-  
-	config.forEach(function(connection,index) {
-		console.log(connection);
-		
-		var icon   = connection.icon;
-		var name   = connection.name;
-		var url    = connection.url;
-		var manual = connection.manual;
-		var field1 = connection.field1;
-		var field2 = connection.field2;
-		var field3 = connection.field3;
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);   
+      if(isCollapsed) { section.setNumUncollapsibleWidgets(numUncollapsible); }
+      section.setHeader(globalConfiguredHeader);
+  try {
+    config.forEach(function(connection,index) {
+      var icon      = connection.icon;
+      var name      = connection.name;
+      var url       = connection.url;
+      var manual    = connection.manual;
+      var isDefault = connection.isDefault;
+      if(isDefault===undefined) { isDefault = false; }
+      var field1    = connection.field1;
+      var field2    = connection.field2;
+      var field3    = connection.field3;
+      
+      var parameters = {'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'isDefault':isDefault.toString()};
+      if(field1!==undefined) { parameters['field1'] = field1; }
+      if(field2!==undefined) { parameters['field2'] = field2; }
+      if(field3!==undefined) { parameters['field3'] = field3; }
+      
+      var widget = actionKeyValueWidget(icon,'',name,'actionEdit',parameters);
+      section.addWidget(widget);
     
-		var parameters = {'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()};
-		if(field1!==undefined) { parameters['field1'] = field1; }
-		if(field2!==undefined) { parameters['field2'] = field2; }
-		if(field3!==undefined) { parameters['field3'] = field3; }
+    });
+  }
+  catch(e) {  
+    var resetText = simpleKeyValueWidget(globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,true);
+    var resetBtn = textButtonWidget(globalResetWidgetSubmitText,false,false,'testDeleteAllUP');
     
-		var widget = actionKeyValueWidget(icon,'',name,'actionEdit',parameters);
-		section.addWidget(widget);
-	});
+    section.addWidget(resetText); 
+    section.addWidget(resetBtn);
+  }
   
-	builder.addSection(section);
+  builder.addSection(section);
 }
 
 /**
  *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {} end -> 
+ * @param {} begin -> 
+ * @param {} max -> 
+ * @param {Integer} code -> 
+ * @param {} index -> 
+ * @param {} icon -> 
+ * @param {} url -> 
+ * @param {} name -> 
+ * @param {Boolean} manual -> 
+ * @param {} data -> 
  */
 function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,icon,url,name,manual,data) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
       
-	var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
-	section.addWidget(restText);
+  var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
+  section.addWidget(restText);
   
-	var parameters = {
-		'code':code.toString(),
-		'index':index.toString(),
-		'icon':icon,
-		'url':url,
-		'name':name,
-		'manual':manual.toString(),
-		'data':JSON.stringify(data),
-		'start':max.toString()
-	};
-	var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
-	parameters.start = begin.toString();
-	var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
+  var parameters = {
+    'code':code.toString(),
+    'index':index.toString(),
+    'icon':icon,
+    'url':url,
+    'name':name,
+    'manual':manual.toString(),
+    'data':JSON.stringify(data),
+    'start':max.toString()
+  };
+  var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
+  parameters.start = begin.toString();
+  var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
   
-	//handle conditionally adding buttons "back" and "next" according to data part that is being parsed
-	if(max<=end) {
-		if(max>=(max-begin)) {
-			var set = buttonSet([back,show]);
-			section.addWidget(set);
-		}else {
-			section.addWidget(show);
-		}
-	}else {
-		section.addWidget(back);
-	}
+  //handle conditionally adding buttons "back" and "next" according to data part that is being parsed
+  if(max<=end) {
+    if(max>=(max-begin)) {
+      var set = buttonSet([back,show]);
+      section.addWidget(set);
+    }else {
+      section.addWidget(show);
+    }
+  }else {
+    section.addWidget(back);
+  }
   
-	builder.addSection(section);
+  builder.addSection(section);
 }
 
 /**
- *
+ * Creates section for no data to show scenario;
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
  */
 function createNoFieldsSection(builder,isCollapsed) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
       
-	var noData = simpleKeyValueWidget(globalNoDataWidgetTitle,globalNoDataWidgetText,true);
-	section.addWidget(noData);
+  var noData = simpleKeyValueWidget(globalNoDataWidgetTitle,globalNoDataWidgetText,true);
+  section.addWidget(noData);
   
-	builder.addSection(section);
+  builder.addSection(section);
+}
+
+/**
+ * Creates section containing buttons for going back and/or to root card;
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} index ->
+ */
+function createSectionBack(builder,isCollapsed,index) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
+  
+  createWidgetsBackAndToRoot(section,index);
+  
+  builder.addSection(section);
 }
 
 /**
  *
- */
-function createSectionBack(builder,isCollapsed,index) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
-  
-	createWidgetsBackAndToRoot(section,index);
-  
-	builder.addSection(section);
-}
-
-/**
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {} error -> 
  *
  */
 function createUnparsedSection(builder,isCollapsed,error,content) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
-		section.setHeader(globalUnparsedHeader);
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
+      section.setHeader(globalUnparsedHeader);
 
-	var errc = simpleKeyValueWidget(globalUnparsedErrorWidgetTitle,error,true);
-	section.addWidget(errc);
+  var errCode = simpleKeyValueWidget(globalUnparsedErrorWidgetTitle,error,true);
+  section.addWidget(errCode);
 
-	var data = simpleKeyValueWidget(globalUnparsedDataWidgetTitle,content,true);
-	section.addWidget(data);
+  var data = simpleKeyValueWidget(globalUnparsedDataWidgetTitle,content,true);
+  section.addWidget(data);
 
-	builder.addSection(section);  
-
+  builder.addSection(section);
 }
 
 /**
  *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {} code ->
+ * @param {} error -> 
  */
 function createErrorSection(builder,isCollapsed,code,error) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed); 
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
 
-	var errc = simpleKeyValueWidget(globalCodeWidgetTitle,code,true);
-	section.addWidget(errc);
+  var errCode = simpleKeyValueWidget(globalCodeWidgetTitle,code,true);
+  section.addWidget(errCode);
 
-	var errt = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
-	section.addWidget(errt);
+  var errText = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
+  section.addWidget(errText);
 
-	builder.addSection(section);
+  builder.addSection(section);
 }
 
 /**
- *
+ * Handles sections generation if a simple json schema (an array of objects with key-value pairs) is provided;
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Array} data -> a set of key-value pairs representing widgets; 
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} index -> result index to append to section header;
  */
-function createSectionEdit(builder,isCollapsed,connection,index,fromSettings) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);  
-		section.setHeader(globalSettingsHeader);
-  
-	var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index,'fromSettings':fromSettings.toString()});
-	section.addWidget(del);
-  
-	createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
-	createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
-	createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
-  
-	var field1 = connection.field1, field2 = connection.field2, field3 = connection.field3;
-	if(field1===undefined) { field1 = ''; }
-	if(field2===undefined) { field2 = ''; }
-	if(field3===undefined) { field3 = ''; }
-  
-	createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,field1,1);
-	createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,field2,2);
-	createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,field3,3);
-  
-	createWidgetSwitchManual(section,connection.manual);
-  
-	var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index,'fromSettings':fromSettings.toString()});
-	section.addWidget(save);
-  
-	builder.addSection(section);   
-}
-
-function createShowSection(builder,data,isCollapsed,index) {
+function createSectionShow(builder,data,isCollapsed,index) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(index!==undefined) { section.setHeader(globalShowHeader+' '+(index+1)) }
@@ -462,6 +586,104 @@ function createShowSection(builder,data,isCollapsed,index) {
   }
     
   builder.addSection(section); 
+}
+
+/**
+ * Handles sections generation if a complex json schema is provided;
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Integer} code -> response status code;
+ * @param {Object} data -> full data array with card display settings;
+ * @param {Object} obj -> data object element with section display settings;
+ * @param {Object} overrides -> a set of settings to override defaults with;
+ * @param {} paramIdx -> ;
+ * @param {} idx -> ;
+ * @param {} connection -> ;
+ */
+function createSectionsShow(builder,code,data,obj,overrides,paramIdx,idx,connection) {
+  var header           = overrides.header;
+  var isCollapsible    = overrides.isCollapsible;
+  var numUncollapsible = overrides.numUncollapsible;
+  
+  var widgets = obj.widgets;
+  
+  var section = CardService.newCardSection();
+  if(header!==undefined)           { section.setHeader(header); }
+  if(isCollapsible!==undefined)    { section.setCollapsible(isCollapsible); }
+  if(numUncollapsible!==undefined) { section.setNumUncollapsibleWidgets(numUncollapsible); }else if(isCollapsible!==undefined) { section.setNumUncollapsibleWidgets(globalNumUncollapsible); }
+  
+  try { widgets = JSON.parse(widgets); }
+  catch(er) { widgets = widgets; }  
+  
+  if(widgets.length!==0) {
+    widgets.forEach(function(widget,index) {
+      var state = widget.state;
+      if(state!=='hidden') { 
+        var element;
+        var type    = widget.type;
+        var title   = widget.title;
+        var name    = widget.name;
+        var content = widget.content;
+        switch(type) {
+          case 'TextParagraph':
+            element = textWidget(content);
+            break;
+          case 'KeyValue':
+            var isMultiline = widget.isMultiline;
+            if(isMultiline===undefined) { isMultiline = true; }
+            var iconUrl     = widget.icon;
+            if(iconUrl===undefined) { iconUrl = ''; }
+            var switchValue = widget.switchValue;
+            var buttonText = widget.buttonText;
+            if(switchValue!==undefined) {
+              element = switchWidget(title,content,name,switchValue,switchValue);
+            }else {
+            
+              //parameters to pass to edit handler to ensure correct card reload;
+              var params = {
+                'code' : code.toString(),
+                'sectionIdx' : idx.toString(),
+                'widgetIdx' : index.toString(),
+                'data' : JSON.stringify(data),
+                'connection' : JSON.stringify(connection)
+              }; 
+              if(paramIdx!==undefined) { params.paramIdx = paramIdx.toString(); }
+            
+              if(buttonText!==undefined) {
+                var button = textButtonWidget(buttonText,true,false);
+                if(state!=='editable') {
+                  element = simpleKeyValueWidget(title,content,isMultiline,iconUrl,button);
+                }else {
+                  element = actionKeyValueWidgetButton(iconUrl,title,content,button,'editSectionsShow',params);
+                }
+              }else {
+                if(state!=='editable') {
+                  element = simpleKeyValueWidget(title,content,isMultiline,iconUrl);
+                }else {
+                  element = actionKeyValueWidget(iconUrl,title,content,'editSectionsShow',params);
+                }
+              }
+            }
+            break;
+          case 'TextInput':
+            var hint = widget.hint;
+            element = textInputWidget(title,name,hint,content);
+            break;
+          case 'Radio':
+            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+            break;
+          case 'Checkbox':
+            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+            break;
+          case 'Dropdown':
+            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+            break;
+        }
+      }
+      section.addWidget(element);
+    });
+  builder.addSection(section);
+  }
+ 
 }
 
 /**
@@ -481,123 +703,241 @@ function createSectionMeta(builder,isCollapsed,msg) {
 }
 
 /**
- *
+ * 
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {String} header -> section header text;
  */
 function createSectionWelcome(builder,isCollapsed,header) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);
-	if(header!==undefined) { section.setHeader(header); }
-  
-	createWidgetWelcomeText(section);
-  
-	createWidgetWelcomeCardin(section);
-  
-	createWidgetWelcomeYouTube(section);
-  
-	builder.addSection(section);
-}
-
-/**
- *
- */
-function createCustomInstall(builder,isCollapsed,header) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(header!==undefined) { section.setHeader(header); }
-  if(!isCollapsed) { createWidgetCustomConnect(section); }
   
-  createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint);
-  createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint);
-  createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint);
+  createWidgetWelcomeText(section);
   
-  createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,'',1);
-  createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,'',2);
-  createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,'',3);
+  createWidgetWelcomeCardin(section);
   
-  createWidgetSwitchManual(section,true);
-  
-  createWidgetSubmitUrl(section,globalCustomWidgetSubmitText);
+  createWidgetWelcomeYouTube(section);
   
   builder.addSection(section);
 }
 
 /**
  *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {String} header -> section header text;
+ */
+function createSectionChooseType(builder,isCollapsed,header) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }
+  
+  var paramsSheets = {
+    'icon':globalSheetsIconUrl,
+    'name':globalSheetsContent,
+    'url':'',
+    'manual':'true',
+    'isType':'true',
+    'loadFields':'false'
+  };
+  var paramsFlow = {
+    'icon':globalFlowIconUrl,
+    'name':globalFlowContent,
+    'url':'',
+    'manual':'true',
+    'isType':'true',
+    'loadFields':'false'
+  };
+  var paramsZapier = {
+    'icon':globalZapierIconUrl,
+    'name':globalZapierContent,
+    'url':'',
+    'manual':'true',
+    'isType':'true',
+    'loadFields':'true'
+  };
+  var paramsFttt = {
+    'icon':globalIftttIconUrl,
+    'name':globalIftttContent,
+    'url':'',
+    'manual':'true',
+    'isType':'true',
+    'loadFields':'false'
+  };
+  
+  //types go here
+  createWidgetCreateType(section,globalSheetsIconUrl,globalSheetsContent,paramsSheets);
+  createWidgetCreateType(section,globalFlowIconUrl,globalFlowContent,paramsFlow);
+  createWidgetCreateType(section,globalZapierIconUrl,globalZapierContent,paramsZapier);
+  createWidgetCreateType(section,globalIftttIconUrl,globalIftttContent,paramsFttt);
+  
+  builder.addSection(section);
+}
+
+/**
+ *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {String} header -> section header text;
+ * @param {Object} connection -> 
+ * @param {Boolean} loadFields ->
+ */
+function createSectionAddConnection(builder,isCollapsed,header,loadFields,connection) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined&&header!=='') { section.setHeader(header); }
+  if(!isCollapsed&&connection===undefined) { createWidgetCustomConnect(section); }
+  
+  if(connection!==undefined) {
+    createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
+    createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
+    createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url);
+  }else {
+    createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint);
+    createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint);
+    createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint);
+  }
+  
+  if(loadFields) {
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,'',1);
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,'',2);
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,'',3);
+  }
+  
+  createWidgetSwitchManual(section,true);
+  
+  createWidgetSwitchDefault(section,false);
+  
+  createWidgetCreateConnection(section,globalCreateConnectionText);
+  
+  builder.addSection(section);
+}
+
+/**
+ *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {} connection ->
+ * @param {Boolean} loadFields -> 
+ * @param {} index -> 
+ * @param {} fromSettings -> 
+ */
+function createSectionEditConnection(builder,isCollapsed,connection,loadFields,index,fromSettings) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);  
+      section.setHeader(globalSettingsHeader);
+  
+  var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index,'fromSettings':fromSettings.toString()});
+  section.addWidget(del);
+  
+  createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
+  createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
+  createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
+  
+  if(loadFields) {
+    var field1 = connection.field1, field2 = connection.field2, field3 = connection.field3;
+    if(field1===undefined) { field1 = ''; }
+    if(field2===undefined) { field2 = ''; }
+    if(field3===undefined) { field3 = ''; }
+    
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,field1,1);
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,field2,2);
+    createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,field3,3);
+  }
+  
+  createWidgetSwitchManual(section,connection.manual);
+  
+  createWidgetSwitchDefault(section,connection.isDefault);
+  
+  var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index,'fromSettings':fromSettings.toString()});
+  section.addWidget(save);
+  
+  builder.addSection(section);   
+}
+
+/**
+ *
+ * @param {CardBuilder} builder -> card builder to append section to;
+ * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * @param {String} header -> section header text;
  */
 function createAdvanced(builder,isCollapsed,header) {
-	var section = CardService.newCardSection();
-		section.setCollapsible(isCollapsed);
-	if(header!==undefined) { section.setHeader(header); }
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }
 
-	createWidgetResetText(section);
+  createWidgetResetText(section);
   
-	createWidgetResetSubmit(section);
-  
-	//future release functionality - no cached states for 1.0
-	//createWidgetClearText(section);
-	//createWidgetClearSubmit(section);
+  createWidgetResetSubmit(section);
 
-	builder.addSection(section);  
+  builder.addSection(section);  
 }
 
 //===============================================WIDGETS===============================================//
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
+ *
  */
-function createWidgetSetField(section,title,hint,content,num) {
-	var widget = textInputWidget(title,'field'+num,hint,content);
-	section.addWidget(widget);
+function createWidgetCreateType(section,url,content,params) {
+  var widget = actionKeyValueWidget(url,'',content,'editDisplay',params);
+  section.addWidget(widget);
 }
 
 /**
+ *
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {String} title -> title text of the widget;
+ */
+function createWidgetSetField(section,title,hint,content,num) {
+  var widget = textInputWidget(title,'field'+num,hint,content);
+  section.addWidget(widget);
+}
+
+/**
+ *
+ * @param {CardSection} section -> section to append widget sets;
  *
  */
 function createWidgetGoToSettings(section) {
-  var widget = textButtonWidget(globalGoToSettings,false,false,'invokeCardSettings');
+  var widget = textButtonWidget(globalGoToSettings,false,false,'cardSettings');
   section.addWidget(widget);
 }
 
 /**
+ *
+ * @param {CardSection} section -> section to append widget sets;
  *
  */
 function createWidgetWelcomeText(section) {
-	var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle,globalWelcomeWidgetContent,true);
-	section.addWidget(widget);
-}
-
-/**
- *
- */
-function createWidgetWelcomeCardin(section) {
-	var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
-	section.addWidget(widget);
-}
-
-/**
- *
- */
-function createWidgetWelcomeYouTube(section) {
-	var widget = textButtonWidgetLinked(globalYouTubeUrlText,false,false,globalYouTubeUrl,false,false);
-	section.addWidget(widget);
-}
-
-/**
- *
- */
-function createWidgetSheetsLink(section) {
-	var widget = actionKeyValueWidget(globalIconSheetsUrl,globalSheetsNavTitle,globalSheetsNavContent,'test');
-	section.addWidget(widget);
-}
-
-/**
- *
- */
-function createWidgetFlowLink(section) {
-  var widget = actionKeyValueWidget(globalIconFlowUrl,globalFlowNavTitle,globalFlowNavContent,'test');
+  var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle,globalWelcomeWidgetContent,true);
   section.addWidget(widget);
 }
 
 /**
+ *
+ * @param {CardSection} section -> section to append widget sets;
+ *
+ */
+function createWidgetWelcomeCardin(section) {
+  var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
+  section.addWidget(widget);
+}
+
+/**
+ *
+ * @param {CardSection} section -> section to append widget sets;
+ *
+ */
+function createWidgetWelcomeYouTube(section) {
+  var widget = textButtonWidgetLinked(globalYouTubeUrlText,false,false,globalYouTubeUrl,false,false);
+  section.addWidget(widget);
+}
+
+/**
+ *
+ * @param {CardSection} section -> section to append widget sets;
  *
  */
 function createWidgetCustomConnect(section) {
@@ -607,90 +947,108 @@ function createWidgetCustomConnect(section) {
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {String} title -> title text of the widget;
  */
 function createWidgetSetUrl(section,title,hint,url) {
-	if(url!==undefined) { var content = url; }else { content = ''; }
-	var widget = textInputWidget(title,'connectionURL',hint,content,'checkURL');
-	section.addWidget(widget);   
+  if(url!==undefined) { var content = url; }else { content = ''; }
+  var widget = textInputWidget(title,'connectionURL',hint,content,'checkURL');
+  section.addWidget(widget);   
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {String} title -> title text of the widget;
  */
 function createWidgetSetName(section,title,hint,name) {
-	if(name!==undefined) { var content = name; }else { content = ''; }
-	var widget = textInputWidget(title,'connectionName',hint,content);
-	section.addWidget(widget);  
+  if(name!==undefined) { var content = name; }else { content = ''; }
+  var widget = textInputWidget(title,'connectionName',hint,content);
+  section.addWidget(widget);  
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {String} title -> title text of the widget;
  */
 function createWidgetSetIcon(section,title,hint,icon) {
-	if(icon!==undefined) { var content = icon; }else { content = ''; }
-	var widget = textInputWidget(title,'connectionIcon',hint,content);
-	section.addWidget(widget);
+  if(icon!==undefined) { var content = icon; }else { content = ''; }
+  var widget = textInputWidget(title,'connectionIcon',hint,content);
+  section.addWidget(widget);
 }
 
 /**
+ * 
+ * @param {CardSection} section -> section to append widget sets;
  *
  */
-function createWidgetSubmitUrl(section,text) {
-	var widget = textButtonWidget(text,false,false,'submitURL');
-	section.addWidget(widget);   
+function createWidgetCreateConnection(section,text) {
+  var widget = textButtonWidget(text,false,false,'createConnection');
+  section.addWidget(widget);   
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
  */
 function createWidgetResetText(section) {
-	var widget = simpleKeyValueWidget(globalResetWidgetTitle,globalResetWidgetContent,true);
-	section.addWidget(widget);
+  var widget = simpleKeyValueWidget(globalResetWidgetTitle,globalResetWidgetContent,true);
+  section.addWidget(widget);
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
  */
 function createWidgetClearText(section) {
-	var widget = simpleKeyValueWidget(globalClearWidgetTitle,globalClearWidgetContent,true);
-	section.addWidget(widget);
+  var widget = simpleKeyValueWidget(globalClearWidgetTitle,globalClearWidgetContent,true);
+  section.addWidget(widget);
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
  */
 function createWidgetResetSubmit(section) {
-	var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'performFullReset');
-	section.addWidget(widget);
+  var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'performFullReset');
+  section.addWidget(widget);
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
  */
 function createWidgetClearSubmit(section) {
-	var widget = textButtonWidget(globalClearWidgetSubmitText,false,false,'clearLayout');
-	section.addWidget(widget);
+  var widget = textButtonWidget(globalClearWidgetSubmitText,false,false,'clearLayout');
+  section.addWidget(widget);
 }
 
 /**
  *
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {Boolean} isManual -> 
  */
-function createWidgetSwitchManual(section,manual) {
-	if(manual===undefined||manual==='true'||manual===true) { manual = true; }else { manual = false; }
-	var widget = switchWidget(globalCustomWidgetSwitchText,'manual',manual,manual.toString());
-	section.addWidget(widget);
+function createWidgetSwitchManual(section,isManual) {
+  if(isManual===undefined) { isManual = true; }
+  var widget = switchWidget('',globalCustomWidgetSwitchText,'manual',isManual,true);
+  section.addWidget(widget);
+}
+
+/**
+ * 
+ * @param {CardSection} section -> section to append widget sets;
+ * @param {Boolean} isDefault -> 
+ */
+function createWidgetSwitchDefault(section,isDefault) {
+  if(isDefault===undefined||isDefault==='true') { isDefault = true; }
+  var widget = switchWidget('',globalIsDefaultWidgetSwitchText,'isDefault',isDefault,true);
+  section.addWidget(widget);
 }
 
 /**
  *
- */
-function createWidgetMoveToDisplay(section,length) {
-	if(length===0) { var disabled = true; }else { disabled = false; }
-	var widget = textButtonWidget(globalInstallWidgetSubmit,disabled,false,'actionDisplay');
-	section.addWidget(widget);
-}
-
-/**
+ * @param {CardSection} section -> section to append widget sets;
  *
  */
 function createWidgetsBackAndToRoot(section,index) {
@@ -886,6 +1244,7 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
 
 /**
  * Creates a switch widget (in conjunction with a KeyValue as this is the only way to create a switch);
+ * @param {String} title -> title of the input;
  * @param {String} text -> text to display as switch label;
  * @param {String} name -> unique fieldname (non-unique if multi-switch widget);
  * @param {Boolean} selected -> truthy value to set on / off click event;
@@ -895,8 +1254,9 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
  * @param {Object} params -> parameters to pass to function;
  * @returns {KeyValue} 
  */
-function switchWidget(text,name,selected,value,changeFunc,hasSpinner,params) {  
+function switchWidget(title,text,name,selected,value,changeFunc,hasSpinner,params) {  
   var keyValue = CardService.newKeyValue();
+  if(title!==''&&title!==undefined) { keyValue.setTopLabel(title); }
       keyValue.setContent(text);
   
   var widget = CardService.newSwitch();
@@ -1160,7 +1520,253 @@ const callbacks = {
 			}
 		);
 	},
-	submitURL : function submitURL(parameters) {
+	//==============================START ACTIONS==============================//
+	editDisplay : function editDisplay(e) {
+		return new Promise(
+			async function (resolve) {
+  				var icon   = e.parameters.icon;
+  				var name   = e.parameters.name;
+  				var url    = e.parameters.url;
+				var index  = e.parameters.index;
+				var manual = e.parameters.manual;
+				if(manual==='true') { manual = true; }else { manual = false; }
+				var isDefault = e.parameters.isDefault;
+				if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
+				var loadFields = e.parameters.loadFields;
+				if(loadFields==='true') { loadFields = true; }else { loadFields = false; }
+				var field1 = e.parameters.field1;
+				var field2 = e.parameters.field2;
+				var field3 = e.parameters.field3;
+				var isType = e.parameters.isType;
+				if(isType==='true') { isType = true; }else { isType = false; }
+  
+  				var connection = {
+					icon: icon,
+    				name: name,
+    				url: url,
+    				manual: manual,
+    				isDefault: isDefault
+  				};
+			  	if(field1!==undefined) { connection.field1 = field1; }
+			  	if(field2!==undefined) { connection.field2 = field2; }
+			  	if(field3!==undefined) { connection.field3 = field3; }
+ 
+  				var builder = CardService.newCardBuilder();
+      				builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+  
+			  	if(!isType) {
+					createSectionEditConnection(builder,false,connection,loadFields,index,true);
+			  	}else {
+					createSectionAddConnection(builder,false,'',loadFields,connection);
+				}
+  
+  				return builder.build();				
+			}
+		);
+	},
+	editSectionsShow : function editSectionsShow(e) {
+		return new Promise(
+			async function(resolve) {
+				var parameters = e.parameters;
+  
+				var sectionIdx = +parameters.sectionIdx;
+				var widgetIdx  = +parameters.widgetIdx;
+				var data       = JSON.parse(parameters.data);
+				var connection = JSON.parse(parameters.connection);
+  
+				data[sectionIdx].widgets[widgetIdx].type = 'TextInput';
+
+				e.parameters.index  = parameters.paramIdx;
+				e.parameters.icon   = connection.icon;
+				e.parameters.name   = connection.name;
+				e.parameters.url    = connection.url;
+				e.parameters.manual = connection.manual;
+				e.parameters.field1 = connection.field1;
+				e.parameters.field2 = connection.field2;
+				e.parameters.field3 = connection.field3;
+				e.parameters.data   = JSON.stringify(data);
+  
+				return cardDisplay(e);
+			}
+		);
+	},
+	updateSectionsShow : function updateSectionsShow(e) {
+		return new Promise(
+			async function(resolve) {
+				var conn = JSON.parse(e.parameters.connection);
+				var data = JSON.parse(e.parameters.data);
+				var form = e.formInput; //change to formInputs for multiselect;
+		  
+				data.forEach(function(elem){
+					var widgets = elem.widgets;
+					widgets.forEach(function(widget){
+			  
+						var type = widget.type;
+				  
+						for(var key in form) {
+							if(key===widget.name) {
+								if(type==='Radio'||type==='Checkbox'||type==='Dropdown') {
+									var content = widget.content;
+									content.forEach(function(option){
+										if(option.value===form[key]) { option.selected = true; }else { option.selected = false; }
+									});
+								}else if(type==='KeyValue') {
+									if(form[key]!==undefined) { widget.switchValue = true; }
+								}else {
+									widget.content = form[key];
+								}
+							}
+						}
+				  
+						if(type==='TextInput') {
+							widget.state = 'editable';
+							widget.type  = 'KeyValue';
+						}
+				  
+						//handle widgets with switches that are toggled off after load;
+						var noInput = !Object.keys(form).some(function(key){ return key===widget.name; });
+						if(type==='KeyValue'&&widget.switchValue!==undefined&&noInput) {
+							widget.switchValue = false;
+						}
+			  
+					});
+				});
+		 
+				var resp = await performFetch(e,conn.url,{data:data,field1:conn.field1,field2:conn.field2,field3:conn.field3});
+		  
+				//override event object parameters with connection info and response data;
+				e.parameters.code   = resp.code;
+				e.parameters.icon   = conn.icon;
+				e.parameters.name   = conn.name;
+				e.parameters.url    = conn.url;
+				e.parameters.manual = conn.manual;
+				e.parameters.field1 = conn.field1;
+				e.parameters.field2 = conn.field2;
+				e.parameters.field3 = conn.field3;
+				e.parameters.data   = parseData(resp.content);
+			
+				return actionShow(e);
+			}
+		);
+	},
+	checkURL : function checkURL(e,element) {
+		return new Promise(
+			function(resolve) {
+				var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
+				var url = element.value;
+				var test = regExp.test(url);
+				if(!test) {
+					var action = CardService.newActionResponseBuilder();
+						action.setNotification(warning(globalInvalidURLnoMethod));
+					return action.build();
+				}
+		  
+			}
+		);
+	},
+	goRoot : function goRoot(e) {
+		return new Promise(
+			function(resolve) {	
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);				
+				
+				var index = +e.parameters.index; 
+				
+				cardOpen(e,index);
+			  
+				return builder.build();  
+			}
+		);
+	},	
+	actionEdit : function actionEdit(e) {
+ 		return new Promise(
+			function(resolve) { 
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
+				
+				editDisplay(e);
+      
+				return builder.build();
+			}
+		);
+	},
+	actionShow : function actionShow(e) {
+		return new Promise(
+			function(resolve) {			
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
+			  
+				var code = +e.parameters.code;
+				var data = e.parameters.data;
+				
+				e.parameters.code = code;
+		  
+				if(code>=200&&code<300) {
+					
+					cardDisplay(e);
+			
+				}else { //handle incorrect urls;
+			
+					e.parameters.data  = '[]';
+					e.parameters.code  = code;
+					
+					builder.setNotification(warning(globalIncorrectURL));
+					cardDisplay(e);
+			
+				}
+  
+				return builder.build();
+			}
+		);
+	},
+	actionManual : function actionManual(e) {
+		return new Promise(
+			async function(resolve) {
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
+				  
+				var url   = e.parameters.url;
+				var index = +e.parameters.index;
+				
+				var response = await performFetch(e,url);
+				var code = response.code;
+				var data = response.content;
+				  
+				if(code>=200&&code<300) {
+					
+					var len = data.length;
+					if(len!==0) {
+						e.parameters.data = data;
+					}
+					cardDisplay(e);
+					
+				}else { //handle incorrect urls;
+					
+					e.parameters.data  = '[]';
+					e.parameters.error = data;
+					builder.setNotification(warning(globalIncorrectURL));
+					cardDisplay(e);
+					
+				}
+				  
+				return builder.build();
+			}
+		);
+	},
+	actionDisplay : function actionDisplay(e) {
+		return new Promise(
+			function(resolve) {
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);
+					cardsetDisplay(e);
+				return builder.build();
+			}
+		);
+	},
+	//==============================END ACTIONS==============================//
+	
+	//==============================START CONNECTION ACTIONS==============================//
+	createConnection : function createConnection(e) {
 		return new Promise(
 			async function(resolve) {
 				const inputs = $('input');
@@ -1186,28 +1792,30 @@ const callbacks = {
 				var builder = CardService.newActionResponseBuilder();
 				
 				var src = await getProperty('config','user');
-				if(src===null) { createSettingsFile(); }
+				if(src===null) { createSettings(); }
+				src = await getProperty('config','user');
 				
-				var src = getProperty('config','user');
 				src.push(connection);
 				console.log(src);
 				await setProperty('config',src,'user');
 				
 				builder.setNotification(notification(globalUpdateSuccess));
 				builder.setStateChanged(true);
-				cardOpen();
+				cardOpen(e);
+				
+				return builder.build();
 			}
 		);
 	},
-	updateConnection : function updateConnection(parameters) {
+	updateConnection : function updateConnection(e) {
 		return new Promise(
 			async function(resolve) {		
 				var builder = CardService.newActionResponseBuilder();
 					builder.setStateChanged(true);
 					
-				var index = +parameters.index;
+				var index = +e.parameters.index;
 
-				var fromSettings = parameters.fromSettings;
+				var fromSettings = e.parameters.fromSettings;
 				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
 				
 				const inputs = $('input');
@@ -1218,7 +1826,6 @@ const callbacks = {
 				var field2    = inputs[4].value;
 				var field3    = inputs[5].value;
 				var useManual = inputs[6].value;
-				
 				if(useManual==='true') { useManual = true; }else { useManual = false; }
 				
 				var connection = {
@@ -1238,22 +1845,23 @@ const callbacks = {
 				builder.setNotification(notification(globalUpdateSuccess));
 				
 				if(fromSettings) {
-					cardSettings(parameters);
+					cardSettings(e);
 				}else {
-					cardOpen(parameters);
+					cardOpen(e);
 				}
-  
+				
+				return builder.build();
 			}
 		);
 	},
-	removeConnection : function removeConnection(parameters) {
+	removeConnection : function removeConnection(e) {
 		return new Promise(
 			async function(resolve) {	  
 				var builder = CardService.newActionResponseBuilder();
 					builder.setStateChanged(true);
 	  
-				var index = +parameters.index;
-				var fromSettings = parameters.fromSettings;
+				var index = +e.parameters.index;
+				var fromSettings = e.parameters.fromSettings;
 				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
 				
 				var src = await getProperty('config','user');
@@ -1265,129 +1873,21 @@ const callbacks = {
 				builder.setNotification(notification(globalRemoveSuccess));
 				
 				if(fromSettings) {
-					cardSettings(parameters);
+					cardSettings(e);
 				}else {
-					cardOpen(parameters);
+					cardOpen(e);
 				}
 				
-				cardOpen();
-			}
-		);
-	},
-	checkURL : function checkURL(parameters,element) {
-		return new Promise(
-			function(resolve) {		
-		
-				var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
-				var url = element.value;
-				var test = regExp.test(url);
-				if(!test) {
-					var action = CardService.newActionResponseBuilder();
-						action.setNotification(warning(globalInvalidURLnoMethod));
-					return action.build();
-				}
-		  
-			}
-		);
-	},
-	actionEdit : function actionEdit(parameters) {
- 		return new Promise(
-			function(resolve) { 
-				var action = CardService.newActionResponseBuilder();
-					action.setStateChanged(true);
-				
-				editDisplay(parameters);
-      
-				return action.build();
-			}
-		);
-	},
-	actionShow : function actionShow(parameters) {
-		return new Promise(
-			function(resolve) {			
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-			  
-				var code = +parameters.code;
-				var data = parameters.data;
-		  
-				if(code>=200&&code<300) {
-					
-					cardDisplay(parameters);
-			
-				}else { //handle incorrect urls;
-			
-					parameters.data  = '[]';
-					parameters.code  = code;
-					
-					builder.setNotification(warning(globalIncorrectURL));
-					
-					cardDisplay(parameters);
-			
-				}
-  
 				return builder.build();
 			}
 		);
 	},
-	actionManual : function actionManual(parameters) {
-		return new Promise(
-			async function(resolve) {
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-				  
-				var url   = parameters.url;
-				var index = +parameters.index;
-				
-				var response = await performFetch(url);
-				
-				var code = response.code;
-				var data = response.content;
-				  
-				if(code>=200&&code<300) {
-					
-					var len = data.length;
-					if(len!==0) {
-						parameters.data = data;
-						var move = '1';
-					}else if(code!==0) { //handle no data to show;
-						move = '0';
-					}
-					cardDisplay(parameters);
-					
-				}else { //handle incorrect urls;
-					
-					parameters.data  = '[]';
-					parameters.error = data;
-					parameters.code  = code;
-					move  = '-1';
-					builder.setNotification(warning(globalIncorrectURL));
-					
-					cardDisplay(parameters);
-					
-				}
-				  
-				return builder.build();
-			}
-		);
-	},
-	goRoot : function goRoot(parameters) {
-		return new Promise(
-			function(resolve) {	
-				var index = +parameters.index; 
-
-				var action = CardService.newActionResponseBuilder();
-					action.setStateChanged(true);
-				  
-				cardOpen(index);
-			  
-				return action.build();  
-			}
-		);
-	},
-	performFullReset : function performFullReset(parameters) {
+	performFullReset : function performFullReset(e) {
 		return new Promise(
 			function(resolve) {
+				var builder = CardService.newActionResponseBuilder();
+					builder.setStateChanged(true);				
+				
 				var src = getProperty('config','user');
 				if(src!==null) {
 					try {
@@ -1397,16 +1897,14 @@ const callbacks = {
 						console.log('There was no config to delete');
 					}
 				}
-			  
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
+				deleteAllProperties('user');
 				
-				cardOpen(parameters);
-				
+				cardOpen(e);
 				return builder.build();
 			}
 		);
 	},
+	//==============================END CONNECTION ACTIONS==============================//
 	invokeCardSettings: function invokeCardSettings(parameters) {
 		return new Promise(
 			function(resolve) {
@@ -1489,6 +1987,7 @@ function getToken(e) {
 	return msg;
 }
 
+//===========================================START PROPERTY===========================================//
 /**
  * Fetches user / script property value by key;
  * @param {String} key -> key of the property to find;
@@ -1496,7 +1995,7 @@ function getToken(e) {
  * @returns {String}
  */
 function getProperty(key,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1505,8 +2004,10 @@ function getProperty(key,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  let value = props.get(key);
-  if(value===undefined) {value = null;}
+  var value = props.getProperty(key);
+  try { value = JSON.parse(value); }
+  catch(e) { return value; }
+ 
   return value;
 }
 
@@ -1517,7 +2018,7 @@ function getProperty(key,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get;
  */
 function setProperty(key,value,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1526,8 +2027,10 @@ function setProperty(key,value,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  props.set(key,value);
-  props.saveAsync();
+  try { value = JSON.stringify(value); }
+  catch(e) { props.setProperty(key,value); }  
+  
+  props.setProperty(key,value);
 }
 
 /**
@@ -1536,7 +2039,7 @@ function setProperty(key,value,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get;
  */
 function deleteProperty(key,type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1545,8 +2048,7 @@ function deleteProperty(key,type) {
       props = PropertiesService.getUserProperties();
     break;
   }
-  props.remove(key);
-  props.saveAsync();
+  props.deleteProperty(key);
 }
 
 /**
@@ -1555,7 +2057,7 @@ function deleteProperty(key,type) {
  * @param {String} type -> 'user' or 'script' to determine prop type to get 
  */
 function deleteAllProperties(type) {
-  let props;
+  var props;
   switch(type) {
     case 'script': 
       props = PropertiesService.getScriptProperties();
@@ -1566,36 +2068,96 @@ function deleteAllProperties(type) {
   }
   props.deleteAllProperties(); 
 }
+//===========================================END PROPERTY===========================================//
 
+//===========================================START BACKEND===========================================//
+/**
+ * Checks if data contains widgets in "editable" state;
+ * @param {Array} data -> an array of objects to check;
+ * @returns {Boolean}
+*/
+function checkEditable(data) {
+  var hasEditable = data.some(function(elem){
+    var widgets = elem.widgets;
+    var elemHasEditable = widgets.some(function(widget){
+      var state = widget.state;
+      if(state==='editable') { return widget; }
+    });
+    if(elemHasEditable) { return elem; }
+  });
+  return hasEditable;
+}
+
+/**
+ * Checks if data contains nested objects to determine which Ui to load;
+ * @param {Array} data -> an array of objects to check;
+ * @returns {Boolean}
+ */
+function checkNested(data) {
+  var hasNested = data.some(function(elem){ 
+    var hasSecondLevelObject = false;
+    for(var key in elem) {
+      var val = elem[key];
+      if(typeof val === 'object') { 
+        hasSecondLevelObject = true; break; 
+      }
+    }
+    return hasSecondLevelObject;
+  });
+  return hasNested;
+}
+
+/**
+ * Attempts to pre-parse data;
+ * @param {String} data -> data string to be parsed;
+ * @returns {Array}
+ */
 function parseData(data) {
-  if(data===''||data==='[]'||data==='""') {
-    data = []; 
-  }else { 
-    data = JSON.parse(data);
+  try {
+    if(data===''||data==='[]'||data==='""') {
+      data = []; 
+    }else { 
+      data = JSON.parse(data);
+    }
+    if(!(data instanceof Array)&&!(typeof data==='string')) {
+      data = [data]; 
+    }else if(typeof data==='string') {
+      data = JSON.parse(data);
+    }
+    if(!(data instanceof Array)&&(typeof data==='object')) {
+      data = [data];
+    }
   }
-  if(!(data instanceof Array)&&!(typeof data==='string')) {
-    data = [data]; 
-  }else if(typeof data==='string') {
-    data = JSON.parse(data);
+  catch(e) {
+    return data;
   }
-  if(!(data instanceof Array)&&(typeof data==='object')) {
-    data = [data];
-  }
-  
   return data;
 }
 
-function createSettingsFile(content) {
-	if(content===undefined) { content = []; }
-	setProperty('config',content,'user');
+/**
+ * Creates settings storage;
+ * @param {String} content -> content to pass to JSON file;
+ */
+function createSettings(content) {
+  if(content===undefined) { content = []; }
+  setProperty('config',content,'user');
 }
 
-async function performFetch(url,dataToPass) {
+/**
+ * Performs URL fetch with payload to external service;
+ * @param {Object} e -> event object;
+ * @param {String} url -> url to be passed to UrlFetchApp call;
+ * @param {Object} dataToPass -> object containing fields 1-3 for Zapier connection;
+ * @returns {Object}
+ */
+async function performFetch(e,url,dataToPass) {
 	var msg = getToken();
   
 	var from = msg.getFrom();
 	var email  = trimFrom(from);
 	var sender = trimSender(from);
+  
+	//var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); }); - as categories are in beta for Outlook;
   
 	var payload = {
 		'Bcc': msg.getBcc(),
@@ -1605,12 +2167,15 @@ async function performFetch(url,dataToPass) {
 		'from': email,
 		'id': msg.getId(),
 		'plainBody': msg.getPlainBody(),
-		'subject': msg.getSubject()
+		'subject': msg.getSubject()/*,
+		'labels': labels*/
 	};
 	if(dataToPass!==undefined) {
+		var data   = dataToPass.data;
 		var field1 = dataToPass.field1;
 		var field2 = dataToPass.field2;
 		var field3 = dataToPass.field3;
+		if(data!==undefined)   { payload.data   = data;   }
 		if(field1!==undefined) { payload.field1 = field1; }
 		if(field2!==undefined) { payload.field2 = field2; }
 		if(field3!==undefined) { payload.field3 = field3; }
@@ -1630,7 +2195,7 @@ async function performFetch(url,dataToPass) {
 }
 
 /**
- * Trims sender info from name and '<' & '>' characters - supplemental function
+ * Trims sender info from name and '<' & '>' characters;
  * @param {String} input -> sender info to trim
  * @return {String}
  */
@@ -1663,6 +2228,7 @@ function trimSender(input) {
     return '';
   }
 }
+//===========================================END BACKEND===========================================//
 
 //===========================================START APPS SCRIPT===========================================//
 //Emulate CardService service;
@@ -1737,15 +2303,69 @@ class e_PropertiesService {
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;	
+	return new Properties(settings,'document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;	
+	return new Properties(settings,'script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
 	const settings = Office.context.roamingSettings;
-	return settings;
+	return new Properties(settings,'user');
+}
+
+//Emulate Clas Properties for PropertiesService service;
+class Properties {
+	constructor(settings,type) {
+		this.settings = settings;
+		this.type     = type;
+	}
+}
+//add new methods to the class;
+Properties.prototype.deleteAllProperties = function () {
+	const settings = this.settings;
+	
+	console.log(Object.keys(typeof settings));
+}
+Properties.prototype.deleteProperty = function (key) {
+	let settings = this.settings;
+	settings.remove(key);
+	settings.saveAsync();
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;	
+}
+//Properties.prototype.getKeys = function () {} - not needed for initial release;
+//Properties.prototype.getProperties = function () {} - not needed for initial release;
+Properties.prototype.getProperty = function (key) {
+	const settings = this.settings;
+	let property = settings.get(key);
+	if(property!==undefined) { 
+		return property; 
+	}else { 
+		return null; 
+	}
+}
+Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
+	const self = this;
+	for(let key in properties) {
+		let value = properties[key];
+		self.setProperty(key,value);
+	}
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;
+}
+Properties.prototype.setProperty = function (key,value) {
+	let settings = this.settings;
+	settings.set(key,value);
+	settings.saveAsync();
+	const type = this.type;
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;
 }
 
 //Emulate Class Card for CardService service;
@@ -2699,84 +3319,100 @@ function makeRequest(url,params) {
 
 //===========================================START GLOBALS===========================================//
 //headers;
-var globalOpenHeader 			 = 'Welcome to Cardin';
-var globalInstallHeader 		 = 'Connection setup';
-var globalSettingsHeader 		 = 'Settings';
-var globalAdvancedHeader 		 = 'Advanced';
-var globalHelpHeader 			 = 'Help';
-var globalExistingConnectsHeader = 'Configured connections';
-var globalManualHeader 			 = 'Manual fetch';
-var globalAutoHeader 			 = 'Auto fetch';
-var globalCustomInstallHeader 	 = 'Add new connection';
+var globalOpenHeader             = 'Welcome to Cardin';
+var globalInstallHeader          = 'Card setup';
+var globalSettingsHeader         = 'Settings';
+var globalAdvancedHeader         = 'Advanced';
+var globalHelpHeader             = 'Help';
+var globalExistingConnectsHeader = 'Configured cards';
+var globalManualHeader           = 'Manual fetch';
+var globalAutoHeader             = 'Auto fetch';
+var globalAddConnectionHeader    = 'Add custom card';
 var globalSuccessfulFetchHeader  = 'Successfully fetched';
-var globalNoDataFetchHeader 	 = 'Fetched with no data';
-var globalErroredHeader 		 = 'Returned with error';
-var globalShowHeader 			 = 'Contact';
-var globalUnparsedHeader 		 = 'Unparsed data';
-var globalConfiguredHeader 		 = 'Configured connections';
+var globalNoDataFetchHeader      = 'Fetched with no data';
+var globalErroredHeader          = 'Returned with error';
+var globalShowHeader             = 'Contact';
+var globalUnparsedHeader         = 'Unparsed data';
+var globalConfiguredHeader       = 'Configured cards';
+var globalChooseTypeHeader       = 'Choose card type';
 
 //titles;
-var globalWelcomeWidgetTitle 	   = '';
-var globalInstallWidgetTitle 	   = '';
-var globalCustomWidgetTitle 	   = '';
+var globalWelcomeWidgetTitle       = '';
+var globalInstallWidgetTitle       = '';
+var globalCustomWidgetTitle        = '';
 var globalCustomWidgetIconTitle    = 'Card icon';
 var globalCustomWidgetNameTitle    = 'Card name';
 var globalCustomWidgetInputTitle   = 'Card URL';
-var globalResetWidgetTitle 		   = 'Reset';
-var globalClearWidgetTitle 		   = 'Cache';
-var globalCodeWidgetTitle 		   = 'Code';
-var globalErrorWidgetTitle 		   = 'Error info';
+var globalResetWidgetTitle         = 'Reset';
+var globalClearWidgetTitle         = 'Cache';
+var globalCodeWidgetTitle          = 'Code';
+var globalErrorWidgetTitle         = 'Error info';
 var globalUnparsedErrorWidgetTitle = 'Parse failure reason';
 var globalUnparsedDataWidgetTitle  = 'Unparsed data';
-var globalNoDataWidgetTitle 	   = '';
-var globalExtraDataTitle 		   = '';
+var globalNoDataWidgetTitle        = '';
+var globalExtraDataTitle           = '';
 var globalCustomWidgetFieldTitle   = 'Field';
+var globalConfigErrorWidgetTitle   = 'Add-on failure';
 
 //hints;
-var globalCustomWidgetIconHint 	= 'Card icon to display next to card name';
-var globalCustomWidgetNameHint 	= 'Card name to display in list of cards';
-var globalCustomWidgetHint 		= 'Card URL (eg Flow/Zapier Webhook trigger)';
-var globalCustomWidgetFieldHint = 'Data to be sent with payload (for Zapier)';
+var globalCustomWidgetIconHint  = 'Card icon to display next to card name';
+var globalCustomWidgetNameHint  = 'Card name to display in list of cards';
+var globalCustomWidgetHint      = 'Card URL (eg Flow/Zapier Webhook trigger)';
+var globalCustomWidgetFieldHint = 'Data to be sent with payload';
 
 //contents & texts;
-var globalWelcomeWidgetContent 	 = 'If you need help, setup instructions are available on resources below:';
-var globalCardinUrlText 		 = 'cardinsoft.com';
-var globalYouTubeUrlText 		 = 'YouTube instructions';
-var globalInstallWidgetSubmit 	 = 'Move to display';
-var globalCustomWidgetContent 	 = 'You can create custom connection by configuring form below. You can create as many connections as you want';
-var globalCustomWidgetSubmitText = 'Add connection';
-var globalResetWidgetContent 	 = 'Every user preference will be wiped clean, and all connections will be deleted';
-var globalClearWidgetContent 	 = 'Cached data will be cleared, including information about successful connection fetches';
-var globalResetWidgetSubmitText  = 'Reset';
-var globalClearWidgetSubmitText  = 'Clear';
-var globalCustomWidgetSwitchText = 'Use manual data fetch';
-var globalRootText 				 = 'Go back';
-var globalUpdateConnectionText   = 'Update';
-var globalRemoveConnectionText   = 'Remove connection';
-var globalNoDataWidgetText 		 = 'The connection returned with no data to be displayed. If this is not an intended behaviour, please consider reconfiguring connection';
-var globalExtraDataText 		 = 'There is more data to show, but we trimmed it to several sections to avoid hitting 100 widgets capping';
-var globalLoadExtraForwardText 	 = 'Next';
-var globalLoadExtraBackText 	 = 'Back';
-var globalSuccess 				 = 'Success';
-var globalError 				 = 'Error';
-var globalNoData 				 = 'No data';
-var globalAuto 					 = 'Auto';
-var globalManual 				 = 'Manual';
-var globalGoToSettings 			 = 'Go to settings';
+var globalWelcomeWidgetContent      = 'If you need help, setup instructions are available on resources below:';
+var globalCustomWidgetContent       = 'You can create custom card by configuring form below. You can create as many cards as you want';
+var globalConfigErrorWidgetContent  = 'Seems like you either have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
+var globalResetWidgetContent        = 'Every user preference will be wiped clean, and cards configuration will be deleted';
+var globalClearWidgetContent        = 'Cached data will be cleared, including information about successful fetches';
+var globalCustomWidgetSwitchText    = 'Use manual data fetch';
+var globalIsDefaultWidgetSwitchText = 'Use as default card';
+var globalNoDataWidgetText          = 'Card fetch returned with no data to be displayed. If this is not an intended behaviour, please consider reconfiguring it';
+var globalExtraDataText             = 'There is more data to show, but we trimmed it to several sections to avoid hitting 100 widgets capping';
+var globalGoToSettings              = 'Go to settings';
+var globalSheetsContent             = 'Google Sheets';
+var globalFlowContent               = 'Microsoft flow';
+var globalZapierContent             = 'Zapier';
+var globalIftttContent              = 'IFTTT';
+
+//button as labels texts;
+var globalSuccess                   = 'Success';
+var globalError                     = 'Error';
+var globalNoData                    = 'No data';
+var globalAuto                      = 'Auto';
+var globalManual                    = 'Manual';
+
+//button texts;
+var globalResetWidgetSubmitText     = 'Reset';
+var globalClearWidgetSubmitText     = 'Clear';
+var globalCreateConnectionText      = 'Create';
+var globalUpdateConnectionText      = 'Update';
+var globalRemoveConnectionText      = 'Remove';
+var globalUpdateShowText            = 'Update';
+var globalLoadExtraForwardText      = 'Next';
+var globalLoadExtraBackText         = 'Back';
+var globalRootText                  = 'Go back';
+var globalCardinUrlText             = 'cardinsoft.com';
+var globalYouTubeUrlText            = 'YouTube instructions';
 
 //URLs;
-var globalCardinUrl  = 'https://cardinsoft.com/';
-var globalYouTubeUrl = 'https://www.youtube.com/';
+var globalCardinUrl     = 'https://cardinsoft.com/';
+var globalYouTubeUrl    = 'https://youtube.com/';
+var globalSheetsIconUrl = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
+var globalFlowIconUrl   = 'https://cardinsoft.github.io/outlook/assets/flow.png';
+var globalZapierIconUrl = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
+var globalIftttIconUrl  = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
 
 //notifications, warnings and error messages
-var globalUpdateSuccess 	 = 'Configuration successfully updated!';
-var globalRemoveSuccess 	 = 'Configuration successfully removed!';
-var globalClearSuccess  	 = 'Cache successfully cleared!';
-var globalIncorrectURL  	 = 'Please, consider reconfiguring connections listed below as their URLs returned with an error';
+var globalUpdateSuccess      = 'Configuration successfully updated!';
+var globalRemoveSuccess      = 'Configuration successfully removed!';
+var globalClearSuccess       = 'Cache successfully cleared!';
+var globalIncorrectURL       = 'Please, consider reconfiguring cards listed below as their URLs returned with an error';
 var globalInvalidURLnoMethod = 'URLs should include http or https method indication and domain';
 
 //other;
-var globalConfigName 	   = 'config';
+var globalConfigName       = 'config';
 var globalNumUncollapsible = 5;
 var globalWidgetsCap       = 50;
 //===========================================END GLOBALS===========================================//
