@@ -346,7 +346,7 @@ async function cardOpen(e,index) {
  * Generates settings card according to configuration;
  * @param {Object} e -> event object;
  */
-async function cardSettings() {
+async function cardSettings(e) {
 	var builder = CardService.newCardBuilder();
 	//builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader)); - not needed for 1.0 release;
       
@@ -2297,9 +2297,14 @@ Properties.prototype.deleteProperty = function (key) {
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
 Properties.prototype.getProperty = function (key) {
 	const settings = this.settings;
-	return settings.get(key);
+	let property = settings.get(key);
+	if(property!==undefined) { 
+		return property; 
+	}else { 
+		return null; 
+	}
 }
-Properties.prototype.setProperties = function (properties,deleteAllOthers) {
+Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
 	const self = this;
 	for(let key in properties) {
 		let value = properties[key];
