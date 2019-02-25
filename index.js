@@ -1,3 +1,5 @@
+'use strict';
+
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
@@ -2282,7 +2284,7 @@ class Properties {
 Properties.prototype.deleteAllProperties = function () {
 	const settings = this.settings;
 	
-	console.log(typeof settings)
+	console.log(Object.keys(typeof settings));
 }
 Properties.prototype.deleteProperty = function (key) {
 	let settings = this.settings;
