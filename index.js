@@ -809,7 +809,7 @@ function createSectionAddConnection(builder,isCollapsed,header,loadFields,connec
   
   createWidgetSwitchDefault(section,false);
   
-  createWidgetCreateConnection(section,globalCustomWidgetSubmitText);
+  createWidgetCreateConnection(section,globalCreateConnectionText);
   
   builder.addSection(section);
 }
