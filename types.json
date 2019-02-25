@@ -4,31 +4,31 @@
     "name"			:	"Google Sheets",
     "url"			:	"",
     "manual"		:	true,
-    "isType"		:	"true",
-    "loadFields"	:	"false"
+    "isType"		:	true,
+    "loadFields"	:	false
 },
 {
     "icon"			:	"https://cardinsoft.github.io/outlook/assets/flow.png",
     "name"			:	"Microsoft flow",
     "url"			:	"",
     "manual"		:	true,
-    "isType"		:	"true",
-    "loadFields"	:	"false"
+    "isType"		:	true,
+    "loadFields"	:	false
 },
 {
     "icon"			:	"https://cardinsoft.github.io/outlook/assets/zapier.png",
     "name"			:	"Zapier",
     "url"			:	"",
     "manual"		:	true,
-    "isType"		:	"true",
-    "loadFields"	:	"true"
+    "isType"		:	true,
+    "loadFields"	:	true
   },
 {
     "icon"			:	"https://cardinsoft.github.io/outlook/assets/ifttt.jpg",
     "name"			:	"IFTTT",
     "url"			:	"",
     "manual"		:	true,
-    "isType"		:	"true",
-    "loadFields"	:	"false"
+    "isType"		:	true,
+    "loadFields"	:	false
 }
 ]
