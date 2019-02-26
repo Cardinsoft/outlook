@@ -14,13 +14,5 @@
     "manual"		:	true,
     "isType"		:	true,
     "loadFields"	:	true
-  },
-{
-    "icon"			:	"https://cardinsoft.github.io/outlook/assets/ifttt.jpg",
-    "name"			:	"IFTTT",
-    "url"			:	"",
-    "manual"		:	true,
-    "isType"		:	true,
-    "loadFields"	:	false
-}
+  }
 ]
