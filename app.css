@@ -28,7 +28,7 @@ body {
 	border-radius: 5px;
 }
 
-.KeyValueLabel, .TextInputTopLabel, .TextInputBottomLabel {
+.KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
 	display: block;
 	margin-bottom: 5px;
 	color: #c8c8c8;
