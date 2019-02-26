@@ -1,5 +1,3 @@
-'use strict';
-
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
@@ -3380,7 +3378,7 @@ var globalCustomWidgetFieldHint = 'Data to be sent with payload';
 //contents & texts;
 var globalWelcomeWidgetContent      = 'If you need help, setup instructions are available on resources below:';
 var globalCustomWidgetContent       = 'You can create custom card by configuring form below. You can create as many cards as you want';
-var globalConfigErrorWidgetContent  = 'Seems like you either have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
+var globalConfigErrorWidgetContent  = 'Seems like you have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
 var globalResetWidgetContent        = 'Every user preference will be wiped clean, and cards configuration will be deleted';
 var globalClearWidgetContent        = 'Cached data will be cleared, including information about successful fetches';
 var globalCustomWidgetSwitchText    = 'Use manual data fetch';
@@ -3392,6 +3390,7 @@ var globalSheetsContent             = 'Google Sheets';
 var globalFlowContent               = 'Microsoft flow';
 var globalZapierContent             = 'Zapier';
 var globalIftttContent              = 'IFTTT';
+var globalCustomTypeContent         = 'Custom';
 
 //button as labels texts;
 var globalSuccess                   = 'Success';
@@ -3414,12 +3413,15 @@ var globalCardinUrlText             = 'cardinsoft.com';
 var globalYouTubeUrlText            = 'YouTube instructions';
 
 //URLs;
-var globalCardinUrl     = 'https://cardinsoft.com/';
-var globalYouTubeUrl    = 'https://youtube.com/';
-var globalSheetsIconUrl = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
-var globalFlowIconUrl   = 'https://cardinsoft.github.io/outlook/assets/flow.png';
-var globalZapierIconUrl = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
-var globalIftttIconUrl  = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
+var globalCardinUrl      = 'https://cardinsoft.com/';
+var globalYouTubeUrl     = 'https://youtube.com/';
+var globalSheetsIconUrl  = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
+var globalFlowIconUrl    = 'https://cardinsoft.github.io/outlook/assets/flow.png';
+var globalZapierIconUrl  = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
+var globalIftttIconUrl   = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
+var globalCustomIconUrl  = 'https://cardinsoft.github.io/outlook/assets/custom.png';
+var globalTypesConfigUrl = 'https://cardinsoft.github.io/outlook/types.json';
+ 
 
 //notifications, warnings and error messages
 var globalUpdateSuccess      = 'Configuration successfully updated!';
