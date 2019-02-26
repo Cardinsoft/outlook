@@ -1,13 +1,5 @@
 [
 {
-    "icon"			:	"https://cardinsoft.github.io/outlook/assets/sheets.png",
-    "name"			:	"Google Sheets",
-    "url"			:	"",
-    "manual"		:	true,
-    "isType"		:	true,
-    "loadFields"	:	false
-},
-{
     "icon"			:	"https://cardinsoft.github.io/outlook/assets/flow.png",
     "name"			:	"Microsoft flow",
     "url"			:	"",
