@@ -291,55 +291,72 @@ async function cardOpen(e,index) {
 		config = [];
 	}
 	
-	var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
-	if(hasDefault) {	
-		
-		var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
-		
-		//set parameters to pass with event object;
-		e.parameters.icon      = def.icon;
-		e.parameters.name      = def.name;
-		e.parameters.url       = def.url;
-		e.parameters.manual    = def.manual.toString();
-		e.parameters.isDefault = def.isDefault.toString();
-		if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
-		if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
-		if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
+	try {
+		var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
+		if(hasDefault) {	
 
-		var response = performFetch(e,def.url);
-		var code     = response.code;
-		var data     = response.content; 
-		
-		e.parameters.code = code;
-		
-		if(code>=200&&code<300) {
-    
-			var len = data.length;
-			if(len!==0) { e.parameters.data = data; }
-    
-		}else { //handle incorrect urls;
-    
-			e.parameters.data  = '[]';
-			e.parameters.error = data;
-    
+			var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
+
+			//set parameters to pass with event object;
+			e.parameters.icon      = def.icon;
+			e.parameters.name      = def.name;
+			e.parameters.url       = def.url;
+			e.parameters.manual    = def.manual.toString();
+			e.parameters.isDefault = def.isDefault.toString();
+			if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
+			if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
+			if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
+
+			var response = performFetch(e,def.url);
+			var code     = response.code;
+			var data     = response.content; 
+
+			e.parameters.code = code;
+
+			if(code>=200&&code<300) {
+
+				var len = data.length;
+				if(len!==0) { e.parameters.data = data; }
+
+			}else { //handle incorrect urls;
+
+				e.parameters.data  = '[]';
+				e.parameters.error = data;
+
+			}
+
+			return cardDisplay(e);
+
+		}else {
+
+			if(config.length===0) {//build welcome and settings card on install;
+				builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
+				createSectionChooseType(builder,false,globalChooseTypeHeader);
+				createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
+				createSectionHelp(builder,false);
+			}else {//build display card if any connections;
+				cardsetDisplay(e,builder,index);
+			}
+
 		}
 
-		return cardDisplay(e);
-	
-	}else {
-	  
-		if(config.length===0) {//build welcome and settings card on install;
-			builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
-			createSectionChooseType(builder,false,globalChooseTypeHeader);
-			createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
-			createSectionWelcome(builder,false);
-		}else {//build display card if any connections;
-			cardsetDisplay(e,builder,index);
-		}
-	
+		return builder.build();		
 	}
-	  
-	return builder.build();
+	catch(error) {
+    	var errorSection = CardService.newCardSection();
+    
+    	var resetText = simpleKeyValueWidget(globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,true);
+    	var resetErr  = simpleKeyValueWidget(globalErrorWidgetTitle,error.message,true); 
+    	var resetBtn  = textButtonWidget(globalResetWidgetSubmitText,false,false,'testDeleteAllUP');
+    
+    	errorSection.addWidget(resetErr);
+    	errorSection.addWidget(resetText); 
+    	errorSection.addWidget(resetBtn);
+    
+    	builder.addSection(errorSection);
+    
+    	return builder.build();
+  	}
 }
 
 /**
@@ -363,7 +380,7 @@ async function cardSettings(e) {
 	}
   
 	createSectionChooseType(builder,false,globalChooseTypeHeader);
-	createSectionAddConnection(builder,true,globalAddConnectionHeader,true);  
+	//createSectionAddConnection(builder,true,globalAddConnectionHeader,true); - no add custom connection for now, but might be needed for future dev; 
 	createAdvanced(builder,false,globalAdvancedHeader);
   
 	return builder.build();
@@ -377,7 +394,7 @@ function cardHelp(e) {
 	var builder = CardService.newCardBuilder();
 		builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
       
-	createSectionWelcome(builder,false);
+	createSectionHelp(builder,false);
 
 	return builder.build();
 }
@@ -708,7 +725,7 @@ function createSectionMeta(builder,isCollapsed,msg) {
  * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
  * @param {String} header -> section header text;
  */
-function createSectionWelcome(builder,isCollapsed,header) {
+function createSectionHelp(builder,isCollapsed,header) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(header!==undefined) { section.setHeader(header); }
@@ -716,8 +733,6 @@ function createSectionWelcome(builder,isCollapsed,header) {
   createWidgetWelcomeText(section);
   
   createWidgetWelcomeCardin(section);
-  
-  createWidgetWelcomeYouTube(section);
   
   builder.addSection(section);
 }
@@ -1495,7 +1510,7 @@ function cardActionCallback(cardAction) {
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
 function actionCallback(action,element) {
-	return async function(e) {
+	return async function() {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
@@ -1505,7 +1520,9 @@ function actionCallback(action,element) {
 			//overlay.show();
 		}
 		
-		await callbacks[functionName](parameters,element)
+		e.parameters = parameters;
+		
+		await callbacks[functionName](e,element)
 		
 		//$('#app-overlay').hide();
 		
@@ -1770,14 +1787,27 @@ const callbacks = {
 		return new Promise(
 			async function(resolve) {
 				const inputs = $('input');
-				var icon 	  = inputs[0].value;
-				var name      = inputs[1].value;
-				var url       = inputs[2].value;
-				var field1    = inputs[3].value;
-				var field2    = inputs[4].value;
-				var field3    = inputs[5].value;
-				var useManual = inputs[6].value;
-				if(useManual==='true') { useManual = true; }else { useManual = false; }
+				
+				if(inputs.length===8) {
+					var icon 	  = inputs[0].value;
+					var name      = inputs[1].value;
+					var url       = inputs[2].value;
+					var field1    = inputs[3].value;
+					var field2    = inputs[4].value;
+					var field3    = inputs[5].value;
+					var useManual = inputs[6].value;
+					if(useManual==='true') { useManual = true; }else { useManual = false; }
+					var isDefault = inputs[7].value;
+					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
+				}else {
+					var icon 	  = inputs[0].value;
+					var name      = inputs[1].value;
+					var url       = inputs[2].value;
+					var useManual = inputs[3].value;
+					if(useManual==='true') { useManual = true; }else { useManual = false; }
+					var isDefault = inputs[4].value;
+					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }					
+				}
 		  
 				var connection = {
 					icon: icon,
@@ -1924,7 +1954,7 @@ class e_EventObject {
 		this.formInput;
 		this.clientPlatform;
 		this.formInputs;
-		this.parameters;
+		this.parameters = {};
 		this.userLocale;
 		this.userTimezone = {
 			offset : '',
@@ -2151,6 +2181,9 @@ function createSettings(content) {
  * @returns {Object}
  */
 async function performFetch(e,url,dataToPass) {
+	
+	console.log(url)
+	
 	var msg = getToken();
   
 	var from = msg.getFrom();
@@ -3363,7 +3396,7 @@ var globalCustomWidgetFieldHint = 'Data to be sent with payload';
 //contents & texts;
 var globalWelcomeWidgetContent      = 'If you need help, setup instructions are available on resources below:';
 var globalCustomWidgetContent       = 'You can create custom card by configuring form below. You can create as many cards as you want';
-var globalConfigErrorWidgetContent  = 'Seems like you either have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
+var globalConfigErrorWidgetContent  = 'Seems like you have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
 var globalResetWidgetContent        = 'Every user preference will be wiped clean, and cards configuration will be deleted';
 var globalClearWidgetContent        = 'Cached data will be cleared, including information about successful fetches';
 var globalCustomWidgetSwitchText    = 'Use manual data fetch';
@@ -3375,6 +3408,7 @@ var globalSheetsContent             = 'Google Sheets';
 var globalFlowContent               = 'Microsoft flow';
 var globalZapierContent             = 'Zapier';
 var globalIftttContent              = 'IFTTT';
+var globalCustomTypeContent         = 'Custom';
 
 //button as labels texts;
 var globalSuccess                   = 'Success';
@@ -3397,12 +3431,15 @@ var globalCardinUrlText             = 'cardinsoft.com';
 var globalYouTubeUrlText            = 'YouTube instructions';
 
 //URLs;
-var globalCardinUrl     = 'https://cardinsoft.com/';
-var globalYouTubeUrl    = 'https://youtube.com/';
-var globalSheetsIconUrl = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
-var globalFlowIconUrl   = 'https://cardinsoft.github.io/outlook/assets/flow.png';
-var globalZapierIconUrl = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
-var globalIftttIconUrl  = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
+var globalCardinUrl      = 'https://cardinsoft.com/';
+var globalYouTubeUrl     = 'https://youtube.com/';
+var globalSheetsIconUrl  = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
+var globalFlowIconUrl    = 'https://cardinsoft.github.io/outlook/assets/flow.png';
+var globalZapierIconUrl  = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
+var globalIftttIconUrl   = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
+var globalCustomIconUrl  = 'https://cardinsoft.github.io/outlook/assets/custom.png';
+var globalTypesConfigUrl = 'https://cardinsoft.github.io/outlook/types.json';
+ 
 
 //notifications, warnings and error messages
 var globalUpdateSuccess      = 'Configuration successfully updated!';
