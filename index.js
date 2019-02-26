@@ -1522,7 +1522,7 @@ function actionCallback(action,element) {
 		
 		e.parameters = parameters;
 		
-		await callbacks[functionName](e.parameters,element)
+		await callbacks[functionName](e,element)
 		
 		//$('#app-overlay').hide();
 		
