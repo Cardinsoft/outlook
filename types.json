@@ -38,6 +38,6 @@
 		"manual"		: "",
 		"isType"		: true,
 		"loadFields"	: true,
-		"needsAuth"		: true
+		"addLink"		: true
 	}
 ]
