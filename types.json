@@ -32,9 +32,9 @@
 		"loadFields"	:	false
 	},
 	{
-		"icon"			: "https://cardinsoft.github.io/outlook/assets/appsScript.png"
-		"name"			: "Apps Script Project"
-		"url"			: ""
+		"icon"			: "https://cardinsoft.github.io/outlook/assets/appsScript.png",
+		"name"			: "Apps Script Project",
+		"url"			: "",
 		"manual"		: "",
 		"isType"		: true,
 		"loadFields"	: true,
