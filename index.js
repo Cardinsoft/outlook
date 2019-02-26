@@ -1510,7 +1510,7 @@ function cardActionCallback(cardAction) {
 
 //sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
 function actionCallback(action,element) {
-	return async function(e) {
+	return async function() {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
@@ -1520,7 +1520,9 @@ function actionCallback(action,element) {
 			//overlay.show();
 		}
 		
-		await callbacks[functionName](parameters,element)
+		e.parameters = parameters;
+		
+		await callbacks[functionName](e.parameters,element)
 		
 		//$('#app-overlay').hide();
 		
