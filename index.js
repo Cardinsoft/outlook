@@ -1,3 +1,5 @@
+'use strict';
+
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
@@ -291,55 +293,72 @@ async function cardOpen(e,index) {
 		config = [];
 	}
 	
-	var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
-	if(hasDefault) {	
-		
-		var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
-		
-		//set parameters to pass with event object;
-		e.parameters.icon      = def.icon;
-		e.parameters.name      = def.name;
-		e.parameters.url       = def.url;
-		e.parameters.manual    = def.manual.toString();
-		e.parameters.isDefault = def.isDefault.toString();
-		if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
-		if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
-		if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
+	try {
+		var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
+		if(hasDefault) {	
 
-		var response = performFetch(e,def.url);
-		var code     = response.code;
-		var data     = response.content; 
-		
-		e.parameters.code = code;
-		
-		if(code>=200&&code<300) {
-    
-			var len = data.length;
-			if(len!==0) { e.parameters.data = data; }
-    
-		}else { //handle incorrect urls;
-    
-			e.parameters.data  = '[]';
-			e.parameters.error = data;
-    
+			var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
+
+			//set parameters to pass with event object;
+			e.parameters.icon      = def.icon;
+			e.parameters.name      = def.name;
+			e.parameters.url       = def.url;
+			e.parameters.manual    = def.manual.toString();
+			e.parameters.isDefault = def.isDefault.toString();
+			if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
+			if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
+			if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
+
+			var response = performFetch(e,def.url);
+			var code     = response.code;
+			var data     = response.content; 
+
+			e.parameters.code = code;
+
+			if(code>=200&&code<300) {
+
+				var len = data.length;
+				if(len!==0) { e.parameters.data = data; }
+
+			}else { //handle incorrect urls;
+
+				e.parameters.data  = '[]';
+				e.parameters.error = data;
+
+			}
+
+			return cardDisplay(e);
+
+		}else {
+
+			if(config.length===0) {//build welcome and settings card on install;
+				builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
+				createSectionChooseType(builder,false,globalChooseTypeHeader);
+				createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
+				createSectionHelp(builder,false);
+			}else {//build display card if any connections;
+				cardsetDisplay(e,builder,index);
+			}
+
 		}
 
-		return cardDisplay(e);
-	
-	}else {
-	  
-		if(config.length===0) {//build welcome and settings card on install;
-			builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
-			createSectionChooseType(builder,false,globalChooseTypeHeader);
-			createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
-			createSectionWelcome(builder,false);
-		}else {//build display card if any connections;
-			cardsetDisplay(e,builder,index);
-		}
-	
+		return builder.build();		
 	}
-	  
-	return builder.build();
+	catch(error) {
+    	var errorSection = CardService.newCardSection();
+    
+    	var resetText = simpleKeyValueWidget(globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,true);
+    	var resetErr  = simpleKeyValueWidget(globalErrorWidgetTitle,error.message,true); 
+    	var resetBtn  = textButtonWidget(globalResetWidgetSubmitText,false,false,'testDeleteAllUP');
+    
+    	errorSection.addWidget(resetErr);
+    	errorSection.addWidget(resetText); 
+    	errorSection.addWidget(resetBtn);
+    
+    	builder.addSection(errorSection);
+    
+    	return builder.build();
+  	}
 }
 
 /**
@@ -363,7 +382,7 @@ async function cardSettings(e) {
 	}
   
 	createSectionChooseType(builder,false,globalChooseTypeHeader);
-	createSectionAddConnection(builder,true,globalAddConnectionHeader,true);  
+	//createSectionAddConnection(builder,true,globalAddConnectionHeader,true); - no add custom connection for now, but might be needed for future dev; 
 	createAdvanced(builder,false,globalAdvancedHeader);
   
 	return builder.build();
@@ -377,7 +396,7 @@ function cardHelp(e) {
 	var builder = CardService.newCardBuilder();
 		builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
       
-	createSectionWelcome(builder,false);
+	createSectionHelp(builder,false);
 
 	return builder.build();
 }
@@ -708,7 +727,7 @@ function createSectionMeta(builder,isCollapsed,msg) {
  * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
  * @param {String} header -> section header text;
  */
-function createSectionWelcome(builder,isCollapsed,header) {
+function createSectionHelp(builder,isCollapsed,header) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(header!==undefined) { section.setHeader(header); }
@@ -716,8 +735,6 @@ function createSectionWelcome(builder,isCollapsed,header) {
   createWidgetWelcomeText(section);
   
   createWidgetWelcomeCardin(section);
-  
-  createWidgetWelcomeYouTube(section);
   
   builder.addSection(section);
 }
