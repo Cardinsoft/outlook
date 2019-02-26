@@ -1787,14 +1787,27 @@ const callbacks = {
 		return new Promise(
 			async function(resolve) {
 				const inputs = $('input');
-				var icon 	  = inputs[0].value;
-				var name      = inputs[1].value;
-				var url       = inputs[2].value;
-				var field1    = inputs[3].value;
-				var field2    = inputs[4].value;
-				var field3    = inputs[5].value;
-				var useManual = inputs[6].value;
-				if(useManual==='true') { useManual = true; }else { useManual = false; }
+				
+				if(inputs.length===8) {
+					var icon 	  = inputs[0].value;
+					var name      = inputs[1].value;
+					var url       = inputs[2].value;
+					var field1    = inputs[3].value;
+					var field2    = inputs[4].value;
+					var field3    = inputs[5].value;
+					var useManual = inputs[6].value;
+					if(useManual==='true') { useManual = true; }else { useManual = false; }
+					var isDefault = inputs[7].value;
+					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
+				}else {
+					var icon 	  = inputs[0].value;
+					var name      = inputs[1].value;
+					var url       = inputs[2].value;
+					var useManual = inputs[3].value;
+					if(useManual==='true') { useManual = true; }else { useManual = false; }
+					var isDefault = inputs[4].value;
+					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }					
+				}
 		  
 				var connection = {
 					icon: icon,
