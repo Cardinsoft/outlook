@@ -2321,6 +2321,9 @@ e_CardService.prototype.newTextButton = function () {
 e_CardService.prototype.newTextInput = function () {
 	return new TextInput();
 }
+e_CardService.prototype.newSelectionInput = function () {
+	return new SelectionInput();
+}
 e_CardService.prototype.newTextParagraph = function () {
 	return new TextParagraph();
 }
@@ -2846,6 +2849,75 @@ TextInput.prototype.appendToUi = function (parent) {
 		bottomLabel.textContent = hint;
 		row.append(bottomLabel);
 	}
+}
+
+//Emulate Class SelectionInput extending base Class Widget for CardService service;
+class SelectionInput extends Widget {
+	constructor() {
+		super();
+		this.className = 'SelectionInput';
+		this.fieldName;
+		this.action;
+		this.title;
+		this.type = CardService.SelectionInputType.CHECK_BOX;
+	}
+}
+//chain SelectionInput to Widget base class;
+SelectionInput.prototype = Object.create(Widget.prototype);
+//add new methods to the class;
+SelectionInput.prototype.addItem = function (text, value, selected) {
+	
+}
+SelectionInput.prototype.setFieldName = function (fieldName) {
+	this.fieldName = fieldName;
+	return this;
+}
+SelectionInput.prototype.setOnChangeAction = function (action) {
+	this.action = action;
+	return this;
+}
+SelectionInput.prototype.setTitle = function (title) {
+	this.title = title;
+	return this;
+}
+SelectionInput.prototype.setType = function (type) {
+	this.type = type;
+	return this;
+}
+SelectionInput.prototype.appendToUi = function (parent) {
+	const fieldName = this.fieldName;
+	const action    = this.action;
+	const title     = this.title;
+	const type      = this.type;
+	
+	const widget = document.createElement('div');
+	widget.className = 'row '+this.className;
+	parent.append(widget);
+	
+	const row = document.createElement('div');
+	row.className = 'column';
+	widget.append(row);
+	
+	if(title!==undefined) {	
+		const topLabel = document.createElement('label');
+		topLabel.className = 'ms-fontSize-s SelectionInputTopLabel';
+		topLabel.textContent = title;
+		row.append(topLabel);
+	}
+	
+	//SelectionInput Ui
+	switch(type) {
+		case 'CHECK_BOX':
+			
+			break;
+		case 'RADIO_BUTTON':
+			
+			break;
+		case 'DROPDOWN':
+			
+			break;
+	}
+
 }
 
 //Emulate Class TextButton extending base Class Button for CardService service;
