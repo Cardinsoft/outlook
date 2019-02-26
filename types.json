@@ -37,6 +37,7 @@
 		"url"			: "",
 		"manual"		: "",
 		"isType"		: true,
-		"loadFields"	: true
+		"loadFields"	: false,
+		"addLink"		: true
 	}
 ]
