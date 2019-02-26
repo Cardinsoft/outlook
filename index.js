@@ -2181,6 +2181,9 @@ function createSettings(content) {
  * @returns {Object}
  */
 async function performFetch(e,url,dataToPass) {
+	
+	console.log(url)
+	
 	var msg = getToken();
   
 	var from = msg.getFrom();
