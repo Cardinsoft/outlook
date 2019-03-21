@@ -24,477 +24,766 @@ Office.initialize = (reason) => {
 
 //===========================================START CARD===========================================//
 /**
- * Creates and shows card with connection edit form;
- * @param {Object} e -> event object;
+ * Creates and shows card with connector creation form;
+ * @param {Object} e event object; 
+ * @returns {Card}
  */
-function editDisplay(e) {
-  var icon   = e.parameters.icon;
-  var name   = e.parameters.name;
-  var url    = e.parameters.url;
-  var index  = e.parameters.index;
-  var manual = e.parameters.manual;
-  if(manual==='true') { manual = true; }else { manual = false; }
-  var isDefault = e.parameters.isDefault;
-  if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
-  var loadFields = e.parameters.loadFields;
-  if(loadFields==='true') { loadFields = true; }else { loadFields = false; }
-  var field1 = e.parameters.field1;
-  var field2 = e.parameters.field2;
-  var field3 = e.parameters.field3;
-  var isType = e.parameters.isType;
-  if(isType==='true') { isType = true; }else { isType = false; }
-  
-  var connection = {
-    icon: icon,
-    name: name,
-    url: url,
-    manual: manual,
-    isDefault: isDefault
-  };
-  if(field1!==undefined) { connection.field1 = field1; }
-  if(field2!==undefined) { connection.field2 = field2; }
-  if(field3!==undefined) { connection.field3 = field3; }
- 
+function addConnector(e) {
   var builder = CardService.newCardBuilder();
-      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+
+  var data    = e.formInput;
+  var type    = e.parameters;
   
-  if(!isType) {
-    createSectionEditConnection(builder,false,connection,loadFields,index,true); //add handling for field1-3 if Zapier;
-  }else {
-    createSectionAddConnection(builder,false,'',loadFields,connection);
+  //create and set card header;
+  var header = CardService.newCardHeader();
+      header.setTitle(type.name);
+      header.setImageUrl(type.icon);
+      builder.setHeader(header);
+  
+  //access type's basic and advanced config;
+  var widgets  = JSON.parse(type.basic).widgets;
+  var advanced = JSON.parse(type.config); 
+ 
+  //create section with short type description;
+  if(type.short!==undefined) {
+    createDescriptionSection(builder,false,type.short);
   }
+  
+  //extend basic with advanced and create config section;
+  advanced.forEach(function(c){
+    mergeObjects(widgets,c.widgets);
+  });
+  
+  //ensure input values are preserved;
+  if(widgets.length!==0) {
+    widgets.forEach(function(widget){
+      var name    = widget.name;
+      var content = widget.content; 
+      
+      for(var key in type) {
+        //if field name is found;
+        if(key===name) {
+          //if content is array -> select options;
+          if(content instanceof Array) {
+            content.forEach(function(option){
+              if(data[key].indexOf(option.value)!==-1) { 
+                option.selected = true; 
+              }else { 
+                option.selected = false; 
+              }
+            });
+          }else {
+            widget.content = type[key];
+          } 
+        } 
+      }          
+    });
+  }
+  
+  //create config object and section;
+  var config = {
+    header: globalConfigHeader,
+    widgets: widgets
+  };
+  createSectionConfig(builder,config);
+  
+  //create fields 1-3 for custom connectors;
+  if(type.name===globalBaseClassName) {
+    createSectionFields(builder,false,3,type);
+  }
+  
+  //create config for connector behaviour;
+  createSectionAddConnector(builder,false,'',type);
   
   return builder.build();
 }
 
+
 /**
- * Creates and shows card with connection display according to data passed with event object;
- * @param {Object} e -> event object;
+ * Creates and shows card with connector update form;
+ * @param {Object} e event object;
+ * @returns {Card}
  */
-function cardDisplay(e) {
-  var index  = e.parameters.index;
-  var code   = +e.parameters.code;
-  var icon   = e.parameters.icon;
-  var name   = e.parameters.name;
-  var url    = e.parameters.url;
-  var data   = e.parameters.data;
-  var manual = e.parameters.manual;
-  var field1 = e.parameters.field1;
-  var field2 = e.parameters.field2;
-  var field3 = e.parameters.field3;
-  var start  = e.parameters.start;
-  if(manual==='true') { manual = true; }else { manual = false; } //e.parameters accepts only strings;
-  var connection = {'icon':icon,'name':name,'url':url,'manual':manual,'field1':field1,'field2':field2,'field3':field3};
-  
-  var msg = getToken();
-  
+function cardUpdate(e) {
   var builder = CardService.newCardBuilder();
-      builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
+ 
+  var connector = e.parameters;
+  var type      = connector.type;
+  var icon      = connector.icon;
+  var name      = connector.name;
+  var url       = connector.url;
+  var manual    = connector.manual;
+  var isDefault = connector.isDefault;
+  var authType  = connector.authType;
+  if(authType==='OAuth2') { var isReloaded = true; }else { isReloaded = false; }
   
-  var error = e.parameters.error;
-  if(error!==undefined) {
-    createErrorSection(builder,false,code,error);
+  //convert strings to boolean as e.parameters accepts only strings;
+  if(manual==='true')     { manual = true;    }else { manual = false;    } 
+  if(isDefault==='true')  { isDefault = true; }else { isDefault = false; }  
+  connector.manual    = manual;
+  connector.isDefault = isDefault;
+  
+  //create and set card header;
+  var header = CardService.newCardHeader();
+      header.setTitle(name);
+      header.setImageUrl(icon);
+      builder.setHeader(header);
+  
+  //access connector type;
+  var cType = new this[type]();
+  
+  //create section with authorize / revoke;
+  var cAuth = cType.auth;
+  if(Object.keys(cAuth).length!==0||connector.auth==='OAuth2') {
+    if(cType.login!==undefined) { connector.login = cType.login; }
+    createSectionAuth(builder,connector,cAuth);
   }
   
-  var data = parseData(data);
-  if(data.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
-  //createSectionBack(builder,false,index); - commented out for 1.0 release, but might be needed for future releases;
-
-  try {
-
-    if(data.length!==0) {
-    
-      //check if there are any nested objects or not;
-      var hasNested = checkNested(data);
-      if(hasNested) {
+  //access type's basic and advanced config;
+  var widgets  = new Connector(icon,name,url).basic.widgets;
+  var advanced = cType.config;
+  
+  //extend basic with advanced and create config section;
+  advanced.forEach(function(c){
+    mergeObjects(widgets,c.widgets);
+  });  
+  
+  //ensure input values are preserved;
+  if(widgets.length!==0) {
+    widgets.forEach(function(widget){
+      var name    = widget.name;
+      var content = widget.content; 
       
-        for(var j=0; j<data.length; j++) {
-          var obj = data[j];
-          var keys = Object.keys(obj);
-          var overrides = {};
-          if(keys.indexOf('header')!==-1)           { overrides.header = obj.header; }
-          if(keys.indexOf('isCollapsible')!==-1)    { overrides.isCollapsible = obj.isCollapsible; }
-          if(keys.indexOf('numUncollapsible')!==-1) { overrides.numUncollapsible = obj.numUncollapsible; }
-          createSectionsShow(builder,code,data,obj,overrides,index,j,connection);     
-        }
+      for(var key in connector) {
+        //if field name is found;
+        if(key===name) {
+          //if content is array -> select options;
+          if(content instanceof Array) {
+            content.forEach(function(option){
+              if(connector[key].indexOf(option.value)!==-1) { 
+                option.selected = true; 
+              }else { 
+                option.selected = false; 
+              }
+            });
+          }else {
+            widget.content = connector[key];
+          } 
+        } 
+      }          
+    });
+  }  
+  
+  //create config object and section;
+  var config = {
+    header: globalConfigHeader,
+    widgets: widgets
+  };
+  createSectionConfig(builder,config);
+  
+  //create section with custom fields;
+  if(connector.type===globalBaseClassName) {
+    createSectionFields(builder,false,3,connector);
+  }
+  
+  //create section with manual and default widgets + update button;
+  createSectionUpdateConnector(builder,false,connector,true,isReloaded,authType);
+
+  return builder.build();
+}
+
+/**
+ * Creates and shows card with connector display according to data passed with event object;
+ * @param {Object} e event object;
+ * @returns {Card}
+ */
+function cardDisplay(e) {
+  var builder = CardService.newCardBuilder();
+
+  //get required parameters;
+  var connector  = e.parameters;
+  var index      = connector.index;
+  var code       = +connector.code;
+  var url        = connector.url;
+  var content    = connector.content;
+  var manual     = connector.manual;
+  var type       = connector.type;
+  var authType   = connector.auth;
+  //get optional parameters;
+  var error      = connector.error;
+  var start      = connector.start;
+  
+  //e.parameters accepts only strings;
+  if(manual==='true') { manual = true; }else if(manual==='false') { manual = false; }
+  
+  //perform parameters adjustments to prevent errors;
+  if(index===undefined) { delete connector.index; }
+  if(content!==undefined) { connector.content = JSON.stringify(content); }
+  
+  var msg = getToken(e);
+  
+  //create card header with connector properties;
+  var header = CardService.newCardHeader();
+      header.setImageUrl(connector.icon);
+      header.setTitle(connector.name);
+      builder.setHeader(header);
+  
+  //handle failed response codes;
+  if((code<200||code>=300)&&code!==401) {
+    createErrorSection(builder,true,code,error);
+  }else if(code===401) {
+    createNotAuthorizedSection(builder,false,connector,code);
+    return builder.build();
+  }
+ 
+  //parse content;
+  content = parseData(content);
+ 
+  //if no content is passed - prompt user that there is no data to show;
+  if(content.length===0&&error===undefined) { createNoFieldsSection(builder,false); }
+  
+  //try to display content or show unparsed data if error;
+  try {
+    if(content.length!==0) {
+      
+      //check if there are any nested objects or not;
+      var hasNested = checkNested(content);
+      if(hasNested) {
         
-        var hasEditable = checkEditable(data);
+        for(var j=0; j<content.length; j++) {
+      
+          var result = content[j];
+          
+          var keys = Object.keys(result);
+          var overrides = {};
+          if(result.header!==undefined)           { overrides.header = result.header; }
+          if(result.isCollapsible!==undefined)    { overrides.isCollapsible = Boolean(result.isCollapsible); }
+          if(result.numUncollapsible!==undefined) { overrides.numUncollapsible = result.numUncollapsible; }
+
+
+
+          try {
+            createSectionsShow(builder,content,result,overrides,index,j,connector); 
+          }
+          catch(er) {
+            //try to handle nested objects that do not conform to our schema;
+            createSectionShow(builder,propertiesToString(result),true,j);
+          }
+        }
+       
+        var hasEditable = checkEditable(content);
         if(hasEditable) {
-          var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionsShow',{'data':JSON.stringify(data),'connection':JSON.stringify(connection)});
+        
+          //stringify connector properties;
+          connector = propertiesToString(connector); 
+        
+          var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionsShow',connector);
           var updateSection = CardService.newCardSection();
               updateSection.addWidget(updateButton);
           builder.addSection(updateSection);
+          
         }
-        
+ 
       }else {
         var cap = 0, fullLength = 0;
         
-        //handle full data length (including all fields)
-        for(var i=0; i<data.length; i++) {
-          try {var result = JSON.parse(data[i]);}
-          catch(er) { result = data[i]; }
+        //handle full content length (including all fields)
+        for(var i=0; i<content.length; i++) {
+          try {var result = JSON.parse(content[i]);}
+          catch(er) { result = content[i]; }
           for(var key in result) { fullLength += 1; }      
         }
         
         //handle number of sections to display at one time
-        for(var max=0; max<data.length; max++) {
+        for(var max=0; max<content.length; max++) {
           if(cap>=globalWidgetsCap) { break; }
-          try {var result = JSON.parse(data[max]);}
-          catch(er) { result = data[max]; }
+          try {var result = JSON.parse(content[max]);}
+          catch(er) { result = content[max]; }
           for(var key in result) { cap += 1; }
         }
         
+        //shift begin and max parameters;
         if(start!==undefined) { 
           var begin = +start;
           max = max + begin;
         }else {
           begin = 0; 
         }
-        
-        for(var j=begin; j<data.length; j++) {
+
+        for(var j=begin; j<content.length; j++) {        
           if(j===max) { break; }
-          var result = data[j];
-          if(data.length!==1) {
+          var result = content[j];
+          if(content.length!==1) {
             createSectionShow(builder,result,true,j);
           }else {
             createSectionShow(builder,result,false,j);
           }
         }
-      
+        
       }
-      
     }
-  
   }
   catch(err) {
-    
-    createUnparsedSection(builder,true,err.message,JSON.stringify(data));
-    
+    //handle data that failed to comply to JSON schema;
+    createUnparsedSection(builder,true,err.message,JSON.stringify(content));
   }
-  
-  var length = data.length;
+
+  var length = content.length;
   var diff = max-begin;
   
   if(fullLength>cap) {
     var end = length-1;
     if(length>max||length+diff-1===max) {
       var prev = (begin-diff);
-      createExtraDataSection(builder,false,end,prev,max,200,index,icon,url,name,manual,data);
+      createExtraDataSection(builder,false,end,prev,max,200,index,content,connector);
     }
   }
+  
+  return builder.build();
+}
+
+/**
+ * Generates display of connections card;
+ * @param {Object} e event object;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @returns {Card}
+ */
+async function cardsetDisplay(e,builder) {
+  var msg = getToken(e);
+  var config = await getProperty('config','user');
+  
+  var section = CardService.newCardSection();
+  
+  config.forEach(function(connector,index){
+    //get required parameters;
+    var type      = connector.type;
+    var icon      = connector.icon;
+    var name      = connector.name;
+    var url       = connector.url;
+    var manual    = connector.manual;
+    var authType  = connector.auth;
+    
+    //default to empty url if nothing is in source;
+    if(url===undefined) { 
+      url = ''; 
+      connector.url===''; 
+    }
+    
+    //load connector type and get authorization config;
+    var cType = new this[type]();
+    var cAuth = cType.auth;
+    
+    //add connector index (display req);
+    connector.index = index;
+
+    if(Object.keys(cAuth).length!==0) {
+      //set authorization properties from type;
+      connector.urlAuth  = cAuth.urlAuth; 
+      connector.urlToken = cAuth.urlToken;
+      connector.id       = cAuth.id;
+      connector.secret   = cAuth.secret;
+      
+      //default to type's scope if none provided;
+      if(connector.scope===''||connector.scope===undefined) { 
+        connector.scope = cAuth.scope;
+      }
+    }
+    
+    if(!manual) {
+      //perform request and parse response if connector is not manual;
+      try { var response = cType.run(msg,connector); }
+      catch(error) {
+        //temporary solution for uncaught 401 error;
+        var response = {headers:'', content:error.message};
+        var isAuth = checkAgainstErrorTypes(error);
+        if(!isAuth) { response.code = 0; }else { response.code = 401; }
+      }
+      var code    = response.code;
+      var content = response.content;
+      
+      //initialize common varibales;
+      var button, widget, label, actionName;
+      
+      //set response code to connector (display req);
+      connector.code = code;   
+      
+      actionName = 'actionShow';
+      
+      if(code>=200&&code<300) {
+        //handle successful requests;
+        content = parseData(content);
+        var length = content.length;
+        if(length!==0) { label = globalSuccess; }else { label = globalNoData; }
+        connector.content = JSON.stringify(content);
+      }else {
+        //handle failed requests;
+        label = globalError;
+        connector.error = JSON.stringify(content);
+      }
+      
+    }else {
+      //create manual action function name and label;
+      actionName = 'actionManual';
+      label      = globalManual;
+    }
+    
+    //stringify parameters to pass to action;
+    connector = propertiesToString(connector);
+    
+    //set label and create widget representing connector;
+    button = textButtonWidget(label,true,false,actionName);
+    widget = actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
+    section.addWidget(widget);
+  });
+  
+  builder.addSection(section);
+  return builder.build();
+}
+
+/**
+ * Triggers either a welcome or display of connections card generators;
+ * @param {Object} e event object;
+ * @returns {Card}
+ */
+async function cardOpen(e) {  
+  var builder = CardService.newCardBuilder();
+  
+  var src = await getProperty('config','user');
+  var config;
+  if(src!==null) {
+    config = src;
+  }else {
+    config = [];
+  }
+  
+  try {
+    var hasDefault = config.some(function(conn){ if( Boolean(conn.isDefault)===true ) { return conn; } });
+    
+    if(hasDefault) {
+      //fetch default connector from config;
+      var def = config.filter(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } })[0];
+      
+      //get message object;
+      var msg = getToken(e);
+      
+      //get required parameters;
+      var type      = def.type;
+      var icon      = def.icon;
+      var name      = def.name;
+      var url       = def.url;
+      var manual    = def.manual;
+      var isDefault = def.isDefault;
+      var authType  = def.auth;
+      
+      //find connector's index in config;
+      var index = getIndex(config,def);
+      
+      //default to empty url if nothing is in source;
+      if(url===undefined) { 
+        url = ''; 
+        def.url===''; 
+      }
+      
+      //load connector type and get authorization config;
+      var cType = new this[type]();
+      var cAuth = cType.auth;
+      
+      //initialize and set common parameters;
+      var params = {
+        'type': type,
+        'icon': icon,
+        'name': name,
+        'url': url, 
+        'manual': manual.toString(),
+        'isDefault':isDefault.toString(),
+        'index': index.toString(),
+        'auth': authType
+      };
+      
+      if(Object.keys(cAuth).length!==0) {
+        params.urlAuth  = cAuth.urlAuth; 
+        params.urlToken = cAuth.urlToken;
+        params.id       = cAuth.id;
+        params.secret   = cAuth.secret;
+        
+        //default to type's scope if none provided;
+        if(def.scope===''||def.scope===undefined) { 
+          params.scope = cAuth.scope;
+          def.scope    = cAuth.scope;
+        }else { 
+          params.scope = def.scope; 
+        }  
+        
+      }else if(authType==='OAuth2') { 
+        params.urlAuth  = def.urlAuth; 
+        params.urlToken = def.urlToken;
+        params.id       = def.id;
+        params.secret   = def.secret;
+        params.scope    = def.scope; 
+      }
+    
+      //perform request and parse response if connector is not manual;
+      try { var response = cType.run(msg,def); }
+      catch(error) {
+        //temporary solution for uncaught 401 error;
+        var response = {headers:'', content:error.message};
+        var isAuth = checkAgainstErrorTypes(error);
+        if(!isAuth) { response.code = 0; }else { response.code = 401; }
+      }
+      var code    = response.code;
+      var content = response.content;
+      
+      //set response code to parameters;
+      params.code = code;
+    
+      //handle response codes;
+      if(code>=200&&code<300) {
+        var len = content.length;
+        if(len!==0) { params.content = content; }
+      }else {
+        params.content  = '[]';
+        params.error = content;
+      }
+      
+      //assign parameters to event object;
+      e.parameters = params;
+      
+      return cardDisplay(e);
+      
+    }else {
+      
+      if(config.length===0) {
+        //build welcome, types and settings section on first-time use;
+        var header = CardService.newCardHeader();
+            header.setImageUrl(globalCardinIconUrl);
+            header.setTitle(globalWelcomeHeader);
+            builder.setHeader(header);
+        
+        createSectionWelcome(builder,false);
+        
+        createSectionChooseType(builder,false,globalChooseTypeHeader);
+        
+        createSectionHelp(builder,false);
+      }else {
+        //build display card if at least one connector exists;
+        cardsetDisplay(e,builder,index);
+      }
+      return builder.build();
+      
+    }
+  
+  }
+  catch(error) {
+    //catch configuration error and create erro info section instead;
+    createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
+    return builder.build();
+  }
+}
+
+/**
+ * Generates settings card according to configuration;
+ * @param {Object} e event object;
+ */
+async function cardSettings(e) {
+  var builder = CardService.newCardBuilder();
+      
+  var src = await getProperty('config','user');
+  var config;
+  if(src!==null) {
+    config = src;
+  }else {
+    config = [];
+  }
+  
+  if(config.length!==0) {
+    createConfiguredConnectorsSection(builder,false,config);
+  }
+  
+  createSectionChooseType(builder,false,globalChooseTypeHeader);
+  createAdvanced(builder,false,globalAdvancedHeader);
+  
+  return builder.build();
+}
+
+/**
+ * Generates help card;
+ * @param {Object} e event object;
+ */
+function cardHelp(e) {
+  var builder = CardService.newCardBuilder();
+      builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
+      
+  createSectionHelp(builder,false);
 
   return builder.build();
 }
 
 /**
- * Generates a display of connections card;
- * @param {Object} e -> event object;
- *
+ * Generates card for confirming or cancelling action;
+ * @param {Object} e event object;
  */
-async function cardsetDisplay(e,builder,idx) {
-	var msg = getToken();
-	var config = await getProperty('config','user');
+function cardConfirm(e) {
+  //create card builder and set required params;
+  var builder = CardService.newCardBuilder();
   
-	var section;
+  //create and set card header;
+  var header = CardService.newCardHeader();
+      header.setTitle(globalConfirmHeader);
+  builder.setHeader(header);
   
-	for(var index=0; index<config.length; index++) {
-		var connect = config[index];
-		var icon   = connect.icon;
-		var name   = connect.name;
-		var url    = connect.url;
-		var manual = connect.manual;
-		var field1 = connect.field1;
-		var field2 = connect.field2;
-		var field3 = connect.field3;
-
-		if(section===undefined) { 
-			section = CardService.newCardSection(); 
-			section.setCollapsible(false);
-			//section.setNumUncollapsibleWidgets(globalNumUncollapsible);
-		}
-		
-		if(!manual) {
-			
-			if(field1!==undefined||field2!==undefined||field3!==undefined) {
-				var dataToPass = {};
-				if(field1!==undefined) { dataToPass.field1 = field1; }
-				if(field2!==undefined) { dataToPass.field2 = field2; }
-				if(field3!==undefined) { dataToPass.field3 = field3; }
-				var response = await performFetch(e,url,dataToPass);
-			}else {
-				response = await performFetch(e,url);
-			}			
-			
-			const code = response.code;
-			
-			if(code>=200&&code<300) {
-				
-				var data = parseData(response.content);
-				var len = data.length;
-				
-				if(len!==0) {
-				  var button = textButtonWidget(globalSuccess,true,false,'actionShow');
-				}else {
-				  button = textButtonWidget(globalNoData,true,false,'actionShow');
-				}
-				
-				var widget = actionKeyValueWidgetButton(icon,'',name,button,'actionShow',{'code':code.toString(),'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'data':JSON.stringify(data)});
-				
-			}else { //handle incorrect urls;
-			
-				button = textButtonWidget(globalError,true,false,'actionShow');
-				widget = actionKeyValueWidgetButton(icon,'',name,button,'actionShow',{'code':code.toString(),'error':response.content,'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString()});
-			
-			}
-
-		}else { //handle manually triggered connections;
-		  
-			button = textButtonWidget(globalManual,true,false,'actionManual');
-			var params = {
-				'index':index.toString(),
-				'icon':icon,
-				'url':url,
-				'name':name,
-				'manual':manual.toString()
-			};
-			if(field1!==undefined) { params.field1 = field1; }
-			if(field2!==undefined) { params.field2 = field2; }
-			if(field3!==undefined) { params.field3 = field3; } 
-			widget = actionKeyValueWidgetButton(icon,'',name,button,'actionManual',params);		  
-			
-		}
-		
-		section.addWidget(widget);
-	
-	}
+  createSectionConfirm(builder,false,e);
   
-	builder.addSection(section);
-	return builder.build();
-}
-
-/**
- * Triggers either a welcome or display of connections card generators;
- * @param {Object} e -> event object;
- * @params {Integer} index
- * @returns {Card}
- */
-async function cardOpen(e,index) {
-	var builder = CardService.newCardBuilder();
-	
-	$('.main-Ui-header').empty();
-	
-	var src = await getProperty('config','user');
-	let config;
-	if(src!==null) {
-		config = src;
-	}else {
-		config = [];
-	}
-	
-	try {
-		var hasDefault = config.some(function(conn){ if( conn.isDefault!==false && conn.isDefault!==undefined ) { return conn; } });
-		if(hasDefault) {	
-
-			var def = config.filter(function(conn){ if( conn.isDefault===true ) { return conn; } })[0];
-
-			//set parameters to pass with event object;
-			e.parameters.icon      = def.icon;
-			e.parameters.name      = def.name;
-			e.parameters.url       = def.url;
-			e.parameters.manual    = def.manual.toString();
-			e.parameters.isDefault = def.isDefault.toString();
-			if(def.field1!==undefined) { e.parameters.field1 = def.field1; }
-			if(def.field2!==undefined) { e.parameters.field2 = def.field2; }
-			if(def.field3!==undefined) { e.parameters.field3 = def.field3; }	
-
-			var response = performFetch(e,def.url);
-			var code     = response.code;
-			var data     = response.content; 
-
-			e.parameters.code = code;
-
-			if(code>=200&&code<300) {
-
-				var len = data.length;
-				if(len!==0) { e.parameters.data = data; }
-
-			}else { //handle incorrect urls;
-
-				e.parameters.data  = '[]';
-				e.parameters.error = data;
-
-			}
-
-			return cardDisplay(e);
-
-		}else {
-
-			if(config.length===0) {//build welcome and settings card on install;
-				builder.setHeader(CardService.newCardHeader().setTitle(globalOpenHeader));
-				createSectionChooseType(builder,false,globalChooseTypeHeader);
-				createSectionAddConnection(builder,true,globalAddConnectionHeader,true);
-				createSectionHelp(builder,false);
-			}else {//build display card if any connections;
-				cardsetDisplay(e,builder,index);
-			}
-
-		}
-
-		return builder.build();		
-	}
-	catch(error) {
-    	var errorSection = CardService.newCardSection();
-    
-    	var resetText = simpleKeyValueWidget(globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,true);
-    	var resetErr  = simpleKeyValueWidget(globalErrorWidgetTitle,error.message,true); 
-    	var resetBtn  = textButtonWidget(globalResetWidgetSubmitText,false,false,'testDeleteAllUP');
-    
-    	errorSection.addWidget(resetErr);
-    	errorSection.addWidget(resetText); 
-    	errorSection.addWidget(resetBtn);
-    
-    	builder.addSection(errorSection);
-    
-    	return builder.build();
-  	}
-}
-
-/**
- * Generates settings card according to configuration;
- * @param {Object} e -> event object;
- */
-async function cardSettings(e) {
-	var builder = CardService.newCardBuilder();
-	//builder.setHeader(CardService.newCardHeader().setTitle(globalSettingsHeader)); - not needed for 1.0 release;
-      
-	var src = await getProperty('config','user');
-	let config;
-	if(src!==null) {
-		config = src;
-	}else {
-		config = [];
-	}
-  
-	if(config.length!==0) {
-		createConfiguredConnectsSection(builder,true,6,config);
-	}
-  
-	createSectionChooseType(builder,false,globalChooseTypeHeader);
-	//createSectionAddConnection(builder,true,globalAddConnectionHeader,true); - no add custom connection for now, but might be needed for future dev; 
-	createAdvanced(builder,false,globalAdvancedHeader);
-  
-	return builder.build();
-}
-
-/**
- * Generates help card;
- * @param {Object} e -> event object;
- */
-function cardHelp(e) {
-	var builder = CardService.newCardBuilder();
-		builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
-      
-	createSectionHelp(builder,false);
-
-	return builder.build();
+  return builder.build();
 }
 //===========================================END CARD===========================================//
 
 //===============================================SECTIONS===============================================//
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * Creates section with code 401 and authentication widget;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Object} connector connector object;
+ * @param {String} error error message to set to title;
  */
-function createGoToSettingsSection(builder,isCollapsed) {
+function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
   var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
-      
-  createWidgetGoToSettings(section,false);
-
-  builder.addSection(section);
+      section.setCollapsible(isCollapsed);
+  
+  var cAuth    = new this[connector.type]().auth;
+  var authType = connector.auth;
+  
+  if(authType!=='none') {
+    //explain that connector requires auth;
+    createWidgetNotAuthorized(section,globalNotAuthorizedContent,error);
+  
+    //if auth data not provided by type -> invoke from connector;
+    if(Object.keys(cAuth).length!==0) {
+      createWidgetOpenAuth(section,globalOpenAuthText,cAuth);
+    }else {
+      var auth   = {};
+      var custom = {};
+      if(authType==='OAuth2') {
+        custom.name     = connector.name;
+        custom.scope    = connector.scope;
+        custom.urlAuth  = connector.urlAuth;
+        custom.urlToken = connector.urlToken;
+        custom.id       = connector.id;
+        custom.secret   = connector.secret;
+        createWidgetOpenAuth(section,globalOpenAuthText,auth,custom);
+      }
+    }
+  }else {
+    //explain that there was a connector type mismatch;
+    createWidgetAuthTypeErr(section,globalAuthTypeErrorContent);
+  }
+ 
+  builder.addSection(section);  
 }
 
 /**
- * Creates section with a list of configured connections;
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {Integer} numUncollapsible -> number of widgets to show in a list initially;
- * @param {Array} config -> an array of connection settings objects;
+ * Creates section with a list of configured connectors;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Array} config an array of connector settings objects;
  */
-function createConfiguredConnectsSection(builder,isCollapsed,numUncollapsible,config) {
+function createConfiguredConnectorsSection(builder,isCollapsed,config) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);   
-      if(isCollapsed) { section.setNumUncollapsibleWidgets(numUncollapsible); }
+      if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsible); }
       section.setHeader(globalConfiguredHeader);
   try {
-    config.forEach(function(connection,index) {
-      var icon      = connection.icon;
-      var name      = connection.name;
-      var url       = connection.url;
-      var manual    = connection.manual;
-      var isDefault = connection.isDefault;
-      if(isDefault===undefined) { isDefault = false; }
-      var field1    = connection.field1;
-      var field2    = connection.field2;
-      var field3    = connection.field3;
+    config.forEach(function(connector,index) {
+      var icon = connector.icon;
+      var name = connector.name;
+      var url  = connector.url;
       
-      var parameters = {'index':index.toString(),'icon':icon,'url':url,'name':name,'manual':manual.toString(),'isDefault':isDefault.toString()};
-      if(field1!==undefined) { parameters['field1'] = field1; }
-      if(field2!==undefined) { parameters['field2'] = field2; }
-      if(field3!==undefined) { parameters['field3'] = field3; }
+      //default to empty url if nothing is in source;
+      if(url===undefined) { 
+        url = ''; 
+        connector.url===''; 
+      }      
       
-      var widget = actionKeyValueWidget(icon,'',name,'actionEdit',parameters);
+      //set connector index (display card req);
+      connector.index = index;
+      
+      //stringify connector parameters;
+      connector = propertiesToString(connector);
+      
+      var widget = actionKeyValueWidget(icon,'',name,'actionEdit',connector);
       section.addWidget(widget);
-    
     });
-  }
-  catch(e) {  
-    var resetText = simpleKeyValueWidget(globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,true);
-    var resetBtn = textButtonWidget(globalResetWidgetSubmitText,false,false,'testDeleteAllUP');
     
-    section.addWidget(resetText); 
-    section.addWidget(resetBtn);
+    builder.addSection(section);
+  }
+  catch(error) {  
+    //catch configuration error and create erro info section instead;
+    createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
   }
   
-  builder.addSection(section);
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {} end -> 
- * @param {} begin -> 
- * @param {} max -> 
- * @param {Integer} code -> 
- * @param {} index -> 
- * @param {} icon -> 
- * @param {} url -> 
- * @param {} name -> 
- * @param {Boolean} manual -> 
- * @param {} data -> 
+ * Creates section with configuration error info and reset button and prompt;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ * @param {String} title error prompt widget title;
+ * @param {String} content error prompt widget content;
+ * @param {String} text reset button text;
+ * @returns {CardSection}
  */
-function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,icon,url,name,manual,data) {
+function createConfigErrorSection(builder,isCollapsed,header,title,content,text) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);   
+      if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsible); }
+      section.setHeader(header);  
+      
+  //create reset prompt widget;
+  var resetText = simpleKeyValueWidget(title,content,true);
+  section.addWidget(resetText); 
+  
+  //create TextButton widget for full reset;
+  createWidgetResetSubmit(section);
+  
+  builder.addSection(section);
+  return section;
+}
+
+/**
+ * Creates section with partial data and navigation Ui for traversing full data (100 widgets cap handling);
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} end data element index to end on; 
+ * @param {Integer} begin data element index to begin with;
+ * @param {Integet} max maximum number of elements to show; 
+ * @param {Integer} code response status code;
+ * @param {Integer} index connector index;
+ * @param {Array} data results array to traverse;
+ * @param {Object} connector connector object;
+ */
+function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,data,connector) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed); 
-      
+  
+  //create widget prompting the user that there is more data to show;
   var restText = simpleKeyValueWidget(globalExtraDataTitle,globalExtraDataText,true);
   section.addWidget(restText);
   
-  var parameters = {
-    'code':code.toString(),
-    'index':index.toString(),
-    'icon':icon,
-    'url':url,
-    'name':name,
-    'manual':manual.toString(),
-    'data':JSON.stringify(data),
-    'start':max.toString()
-  };
-  var show = textButtonWidget(globalLoadExtraForwardText,false,false,'actionShow',parameters);
-  parameters.start = begin.toString();
-  var back = textButtonWidget(globalLoadExtraBackText,false,false,'actionShow',parameters);
+  //set connector parameters;
+  connector.code  = code;
+  connector.index = index;
+  connector.data  = data;
+  connector.start = max;
+  
+  //stringify connector parameters;
+  connector = propertiesToString(connector);
+  
+  //set action function name to run;
+  var actionName = 'actionShow';
+  
+  var show = textButtonWidget(globalLoadExtraForwardText,false,false,actionName,connector);
+  connector.start = begin.toString();
+  var back = textButtonWidget(globalLoadExtraBackText,false,false,actionName,connector);
   
   //handle conditionally adding buttons "back" and "next" according to data part that is being parsed
   if(max<=end) {
@@ -512,9 +801,9 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,code,index,ico
 }
 
 /**
- * Creates section for no data to show scenario;
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
+ * Creates section containing information message that data there is no data to show;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  */
 function createNoFieldsSection(builder,isCollapsed) {
   var section = CardService.newCardSection();
@@ -528,9 +817,9 @@ function createNoFieldsSection(builder,isCollapsed) {
 
 /**
  * Creates section containing buttons for going back and/or to root card;
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {Integer} index ->
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} index connector index;
  */
 function createSectionBack(builder,isCollapsed,index) {
   var section = CardService.newCardSection();
@@ -542,11 +831,28 @@ function createSectionBack(builder,isCollapsed,index) {
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {} error -> 
- *
+ * Creates section containing promp to confirm action and set of buttons to proceed;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Object} e event object;
+ * @returns {CardSection}
+ */
+function createSectionConfirm(builder,isCollapsed,e) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed); 
+  
+  createWidgetsConfirm(section,e);
+
+  builder.addSection(section);
+  return section;
+}
+
+/**
+ * Creates section containing error message and unparsed data;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} error error message to show;
+ * @param {String} content unparsed content;
  */
 function createUnparsedSection(builder,isCollapsed,error,content) {
   var section = CardService.newCardSection();
@@ -563,31 +869,197 @@ function createUnparsedSection(builder,isCollapsed,error,content) {
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {} code ->
- * @param {} error -> 
+ * Creates section containing error code and error text;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} code response status code;
+ * @param {String} error error message to show; 
  */
 function createErrorSection(builder,isCollapsed,code,error) {
   var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed); 
+      section.setCollapsible(isCollapsed);
+      section.setNumUncollapsibleWidgets(1);
 
-  var errCode = simpleKeyValueWidget(globalCodeWidgetTitle,code,true);
-  section.addWidget(errCode);
+  if(code!==0) {
+    //initiate error title and content;
+    var title, content;
+    
+    //set user-friendly messages for different responses;
+    
+    switch(code) {
+      case 404:
+        title   = 'Not found';
+        content = 'Seems like the endpoint resource you want the connector to access cannot be found or does not exist';     
+        break;
+      case 405:
+        title   = 'Method Not Allowed';
+        content = 'The method the connector is using is not allowed by endpoint resource.\rBy default, our Add-on makes POST requests to external APIs - please, let us know if you need to be able to choose methods for this connector type';
+    }
+  
+    var description = simpleKeyValueWidget(title,content,true);
+    section.addWidget(description);
+  }
 
-  var errText = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
-  section.addWidget(errText);
+  var additional = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
+  section.addWidget(additional);
 
   builder.addSection(section);
 }
 
 /**
+ * Creates section with authorization and revoke buttons;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Object} connector connector configuration object;
+ * @param {Object} auth section auth config object;
+ */
+function createSectionAuth(builder,connector,auth) {
+  var section = CardService.newCardSection();
+  
+  var authText = textWidget(globalAuthTextWidgetContent);
+  section.addWidget(authText);
+  
+  if(auth!==undefined) {
+    if(Object.keys(auth).length===0) { 
+      auth = {
+        'name': connector.type
+      };
+      var custom = {
+        'name': connector.name,
+        'urlAuth': connector.urlAuth,
+        'urlToken': connector.urlToken,
+        'id': connector.id,
+        'secret': connector.secret,
+        'scope': connector.scope
+      };
+      auth.scope = connector.scope;
+    }
+
+    var buttonSet = CardService.newButtonSet();
+    if(connector.login!==undefined) {
+      createWidgetLogin(buttonSet,globalLoginText,connector.login());
+    }
+    createWidgetOpenAuth(buttonSet,globalOpenAuthText,auth,custom);
+    createWidgetRevoke(buttonSet,globalRevokeAuthText,auth,custom);
+    section.addWidget(buttonSet);
+  }
+  
+  builder.addSection(section);
+}
+
+/**
+ * Creates section with a number of custom field inputs;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} numFileds number of custom field inputs to create;
+ * @param {Object} connector connector config object;
+ */
+function createSectionFields(builder,isCollapsible,numFields,connector) {
+  var section = CardService.newCardSection();
+      section.setHeader('Custom fields');
+      if(isCollapsible) { section.setCollapsible(isCollapsible); }
+  
+  createWidgetFieldsText(section,globalOptionalFieldsContent);
+  
+  if(numFields===undefined) { numFields = 3; }
+  for(var i=1; i<=numFields; i++) {
+    var name = 'field'+i;
+    
+    var value;
+    if(connector!==undefined) {
+     value = connector[name];
+    }
+    
+    createWidgetCustomInput(section,name,name,'Custom connector fields',value);
+  }
+  
+  builder.addSection(section);
+}
+
+/**
+ * Creates section from widgets config;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Object} config section config object;
+ */ 
+function createSectionConfig(builder,config) {
+  var section = CardService.newCardSection();
+  if(config.header!==undefined)           { section.setHeader(config.header); }
+  if(config.isCollapsible!==undefined)    { section.setCollapsible(config.isCollapsible); }
+  if(config.numUncollapsible!==undefined) { section.setNumUncollapsibleWidgets(config.numUncollapsible); }
+  
+  var widgets = config.widgets;
+  if(widgets!==undefined&&widgets.length!==0) {
+    widgets.forEach(function(widget,index) {
+      var element;
+      var type    = widget.type;
+      var title   = widget.title;
+      var name    = widget.name;
+      var content = widget.content;
+      switch(type) {
+        case 'TextParagraph':
+          element = textWidget(content);
+          break;
+        case 'TextButton':
+          //access button-specific params;
+          var disabled   = widget.disabled;
+          var filled     = widget.filled;
+          var fullsized  = widget.fullsized;
+          var reload     = widget.reload;
+          var action     = widget.action;
+          
+          //build either a clickable or linked button;
+          if(action===globalTextButtonActionClick) {
+            element = textButtonWidget(title,disabled,filled,content);
+          }else {
+            element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
+          }
+        
+          break;
+        case 'KeyValue':
+          var isMultiline = widget.isMultiline;
+          if(isMultiline===undefined) { isMultiline = true; }
+          
+          var iconUrl = widget.icon;
+          if(iconUrl===undefined) { iconUrl = ''; }
+          
+          var switchValue = widget.switchValue;
+          var buttonText = widget.buttonText;
+          if(switchValue!==undefined) {
+            element = switchWidget(title,content,name,switchValue,switchValue);
+          }else {            
+            if(buttonText!==undefined) {
+              var button = textButtonWidget(buttonText,true,false);
+              element = simpleKeyValueWidget(title,content,isMultiline,iconUrl,button);
+            }else {
+              element = simpleKeyValueWidget(title,content,isMultiline,iconUrl);
+            }
+          }
+          break;
+        case 'TextInput':
+          var hint = widget.hint;
+          element = textInputWidget(title,name,hint,content);
+          break;
+        case globalEnumRadio:
+          element = selectionInputWidget(title,name,type,content);
+          break;
+        case globalEnumCheckbox:
+          element = selectionInputWidget(title,name,type,content);
+          break;
+        case globalEnumDropdown:
+          element = selectionInputWidget(title,name,type,content);
+          break;
+      }  
+      section.addWidget(element);
+    });
+  builder.addSection(section);
+  }  
+}
+
+/**
  * Handles sections generation if a simple json schema (an array of objects with key-value pairs) is provided;
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Array} data -> a set of key-value pairs representing widgets; 
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {Integer} index -> result index to append to section header;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Array} data a set of key-value pairs representing widgets; 
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Integer} index result index to append to section header;
  */
 function createSectionShow(builder,data,isCollapsed,index) {
   var section = CardService.newCardSection();
@@ -607,16 +1079,15 @@ function createSectionShow(builder,data,isCollapsed,index) {
 
 /**
  * Handles sections generation if a complex json schema is provided;
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Integer} code -> response status code;
- * @param {Object} data -> full data array with card display settings;
- * @param {Object} obj -> data object element with section display settings;
- * @param {Object} overrides -> a set of settings to override defaults with;
- * @param {} paramIdx -> ;
- * @param {} idx -> ;
- * @param {} connection -> ;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Object} data full data array with card display settings;
+ * @param {Object} obj data object element with section display settings;
+ * @param {Object} overrides a set of settings to override defaults with;
+ * @param {Integer} paramIdx;
+ * @param {Integer} idx;
+ * @param {Object} connector connector config object;
  */
-function createSectionsShow(builder,code,data,obj,overrides,paramIdx,idx,connection) {
+function createSectionsShow(builder,data,obj,overrides,paramIdx,idx,connector) {
   var header           = overrides.header;
   var isCollapsible    = overrides.isCollapsible;
   var numUncollapsible = overrides.numUncollapsible;
@@ -636,47 +1107,62 @@ function createSectionsShow(builder,code,data,obj,overrides,paramIdx,idx,connect
       var state = widget.state;
       if(state!=='hidden') { 
         var element;
+        var icon    = widget.icon;
         var type    = widget.type;
         var title   = widget.title;
         var name    = widget.name;
         var content = widget.content;
+        
         switch(type) {
           case 'TextParagraph':
             element = textWidget(content);
             break;
+          case 'TextButton':
+            //access button-specific params;
+            var disabled   = widget.disabled;
+            var filled     = widget.filled;
+            var fullsized  = widget.fullsized;
+            var reload     = widget.reload;
+            var action     = widget.action;
+          
+            //build either a clickable or linked button;
+            if(action===globalTextButtonActionClick) {
+              element = textButtonWidget(title,disabled,filled,content);
+            }else {
+              element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
+            }
+        
+            break;
           case 'KeyValue':
             var isMultiline = widget.isMultiline;
             if(isMultiline===undefined) { isMultiline = true; }
-            var iconUrl     = widget.icon;
-            if(iconUrl===undefined) { iconUrl = ''; }
+           
+            if(icon===undefined) { icon = ''; }
+            
             var switchValue = widget.switchValue;
             var buttonText = widget.buttonText;
             if(switchValue!==undefined) {
               element = switchWidget(title,content,name,switchValue,switchValue);
             }else {
             
-              //parameters to pass to edit handler to ensure correct card reload;
-              var params = {
-                'code' : code.toString(),
-                'sectionIdx' : idx.toString(),
-                'widgetIdx' : index.toString(),
-                'data' : JSON.stringify(data),
-                'connection' : JSON.stringify(connection)
-              }; 
-              if(paramIdx!==undefined) { params.paramIdx = paramIdx.toString(); }
+              connector.sectionIdx = idx;
+              connector.widgetIdx  = index;
+              if(paramIdx!==undefined) { connector.paramIdx = paramIdx; }
+            
+              connector = propertiesToString(connector);
             
               if(buttonText!==undefined) {
                 var button = textButtonWidget(buttonText,true,false);
                 if(state!=='editable') {
-                  element = simpleKeyValueWidget(title,content,isMultiline,iconUrl,button);
+                  element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
                 }else {
-                  element = actionKeyValueWidgetButton(iconUrl,title,content,button,'editSectionsShow',params);
+                  element = actionKeyValueWidgetButton(icon,title,content,button,'editSectionsShow',connector);
                 }
               }else {
                 if(state!=='editable') {
-                  element = simpleKeyValueWidget(title,content,isMultiline,iconUrl);
+                  element = simpleKeyValueWidget(title,content,isMultiline,icon);
                 }else {
-                  element = actionKeyValueWidget(iconUrl,title,content,'editSectionsShow',params);
+                  element = actionKeyValueWidget(icon,title,content,'editSectionsShow',connector);
                 }
               }
             }
@@ -685,14 +1171,14 @@ function createSectionsShow(builder,code,data,obj,overrides,paramIdx,idx,connect
             var hint = widget.hint;
             element = textInputWidget(title,name,hint,content);
             break;
-          case 'Radio':
-            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+          case globalEnumRadio:
+            element = selectionInputWidget(title,name,type,content);
             break;
-          case 'Checkbox':
-            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+          case globalEnumCheckbox:
+            element = selectionInputWidget(title,name,type,content);
             break;
-          case 'Dropdown':
-            element = selectionInputWidget(title,name,type.toLowerCase(),content);
+          case globalEnumDropdown:
+            element = selectionInputWidget(title,name,type,content);
             break;
         }
       }
@@ -704,178 +1190,150 @@ function createSectionsShow(builder,code,data,obj,overrides,paramIdx,idx,connect
 }
 
 /**
- * Creates a section for metadata;
- * @param {CardBuilder} builder -> card builder;
- * @param {Message} msg -> current message;
- * @param {String} sender -> email address string;
- * @param {String} updates -> JSON string with a list of updates;
- */
-function createSectionMeta(builder,isCollapsed,msg) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed);
-  var from = simpleKeyValueWidget('<b>From: </b>',trimFrom(msg.getFrom()),false); 
-  section.addWidget(from);
-  
-  builder.addSection(section);
-}
-
-/**
- * 
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {String} header -> section header text;
- */
-function createSectionHelp(builder,isCollapsed,header) {
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed);
-  if(header!==undefined) { section.setHeader(header); }
-  
-  createWidgetWelcomeText(section);
-  
-  createWidgetWelcomeCardin(section);
-  
-  builder.addSection(section);
-}
-
-/**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {String} header -> section header text;
+ * Creates section containing widgets representing connector types;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ * @returns {CardSection}
  */
 function createSectionChooseType(builder,isCollapsed,header) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(header!==undefined) { section.setHeader(header); }
   
-  var paramsSheets = {
-    'icon':globalSheetsIconUrl,
-    'name':globalSheetsContent,
-    'url':'',
-    'manual':'true',
-    'isType':'true',
-    'loadFields':'false'
-  };
-  var paramsFlow = {
-    'icon':globalFlowIconUrl,
-    'name':globalFlowContent,
-    'url':'',
-    'manual':'true',
-    'isType':'true',
-    'loadFields':'false'
-  };
-  var paramsZapier = {
-    'icon':globalZapierIconUrl,
-    'name':globalZapierContent,
-    'url':'',
-    'manual':'true',
-    'isType':'true',
-    'loadFields':'true'
-  };
-  var paramsFttt = {
-    'icon':globalIftttIconUrl,
-    'name':globalIftttContent,
-    'url':'',
-    'manual':'true',
-    'isType':'true',
-    'loadFields':'false'
-  };
+  //create class instance to get config data;
+  var sheets     = new Sheets();
+  var flow       = new Flow();
   
-  //types go here
-  createWidgetCreateType(section,globalSheetsIconUrl,globalSheetsContent,paramsSheets);
-  createWidgetCreateType(section,globalFlowIconUrl,globalFlowContent,paramsFlow);
-  createWidgetCreateType(section,globalZapierIconUrl,globalZapierContent,paramsZapier);
-  createWidgetCreateType(section,globalIftttIconUrl,globalIftttContent,paramsFttt);
-  
+  //create widgets representing types;
+  var types = [sheets,flow];
+  types.forEach(function(type){ 
+    createWidgetCreateType(section,type);
+  });
+
   builder.addSection(section);
+  return section;
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {String} header -> section header text;
- * @param {Object} connection -> 
- * @param {Boolean} loadFields ->
+ * Creates section with manual and default switches + add connector button;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ * @param {Object} type connector type object;
  */
-function createSectionAddConnection(builder,isCollapsed,header,loadFields,connection) {
+function createSectionAddConnector(builder,isCollapsed,header,type) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
   if(header!==undefined&&header!=='') { section.setHeader(header); }
-  if(!isCollapsed&&connection===undefined) { createWidgetCustomConnect(section); }
   
-  if(connection!==undefined) {
-    createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
-    createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
-    createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url);
-  }else {
-    createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint);
-    createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint);
-    createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint);
+  //create switches for manual and default and handle reloading;
+  createWidgetSwitchManual(section,type.manual);
+  createWidgetSwitchDefault(section,type.isDefault);
+  
+  //create auth type choice if no auth data is provided by type;
+  if(Object.keys(JSON.parse(type.auth)).length===0&&type.type===globalBaseClassName) { 
+    if(type.authType==='OAuth2') {
+      createWidgetChooseAuth(section,false,type.authType);
+      createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth',globalAuthUrlInputHint,'');
+      createWidgetCustomInput(section,globalUrlTokenFieldName,'Token',globalTokenUrlInputHint,'');
+      createWidgetCustomInput(section,globalClientIdFieldName,'Client Id',globalClientIdInputHint,'');
+      createWidgetCustomInput(section,globalSecretFieldName,'Client Secret',globalSecretInputHint,'');
+      createWidgetCustomInput(section,globalScopeFieldName,'Scope',globalScopeInputHint,'');
+    }else {
+      createWidgetChooseAuth(section,false);
+    }
   }
   
-  if(loadFields) {
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,'',1);
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,'',2);
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,'',3);
-  }
-  
-  createWidgetSwitchManual(section,true);
-  
-  createWidgetSwitchDefault(section,false);
-  
-  createWidgetCreateConnection(section,globalCreateConnectionText);
+  createWidgetCreateConnector(section,globalCreateConnectorText,type);
   
   builder.addSection(section);
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {} connection ->
- * @param {Boolean} loadFields -> 
- * @param {} index -> 
- * @param {} fromSettings -> 
+ * Creates section with manual and default switches + edit connector button and sets input values;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Object} connector connector configuration object;
+ * @param {Boolean} isReloaded truthy value to derermine wheter it is invoked from input change;
+ * @param {String} authType authorization type to set auth type choice group to;
  */
-function createSectionEditConnection(builder,isCollapsed,connection,loadFields,index,fromSettings) {
+function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,authType) {
   var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed);  
-      section.setHeader(globalSettingsHeader);
+      section.setCollapsible(isCollapsed);
+ 
+  var index  = connector.index;
+
+  //create switches for manual and default and handle reloading;
+  createWidgetSwitchManual(section,connector.manual);
+  createWidgetSwitchDefault(section,connector.isDefault);
   
-  var del = textButtonWidget(globalRemoveConnectionText,false,false,'removeConnection',{'index':index,'fromSettings':fromSettings.toString()});
-  section.addWidget(del);
+  //get auth parameters from type and connector;
+  var cAuth = new this[connector.type]().auth;
+  var auth  = connector.auth;
   
-  createWidgetSetIcon(section,globalCustomWidgetIconTitle,globalCustomWidgetIconHint,connection.icon);
-  createWidgetSetName(section,globalCustomWidgetNameTitle,globalCustomWidgetNameHint,connection.name);
-  createWidgetSetUrl(section,globalCustomWidgetInputTitle,globalCustomWidgetHint,connection.url,'checkURL');
+  //create auth type choice if no auth data is provided by type;
+  if(Object.keys(cAuth).length===0&&auth!=='none'&&auth!==undefined) {
+    if(auth==='OAuth2'&&!isReloaded) {
+      createWidgetChooseAuth(section,true,auth);
+      createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth','Authorization URL',connector.urlAuth);
+      createWidgetCustomInput(section,globalUrlTokenFieldName,'Token','Token URL',connector.urlToken);
+      createWidgetCustomInput(section,globalClientIdFieldName,'Client Id','Obtained from API',connector.id);
+      createWidgetCustomInput(section,globalSecretFieldName,'Client Secret','Obtained from API',connector.secret);
+      createWidgetCustomInput(section,globalScopeFieldName,'Scope','Obtained from API',connector.scope);
+    }else if(!isReloaded) {
+      createWidgetChooseAuth(section,true);
+    }else if(auth==='OAuth2'||authType==='OAuth2') {
+      createWidgetChooseAuth(section,true,authType);
+      
+      if(connector.scope!==undefined) { 
+        createWidgetCustomInput(section,globalScopeFieldName,'Scope','Authorization scope',connector.scope);
+      }else {
+        createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth','Authorization URL','');
+        createWidgetCustomInput(section,globalUrlTokenFieldName,'Token','Token URL','');
+        createWidgetCustomInput(section,globalClientIdFieldName,'Client Id','Obtained from API','');
+        createWidgetCustomInput(section,globalSecretFieldName,'Client Secret','Obtained from API','');
+        createWidgetCustomInput(section,globalScopeFieldName,'Scope','Obtained from API','');
+      }
+    }else {
+      createWidgetChooseAuth(section,true);  
+    }
+   
+  } 
   
-  if(loadFields) {
-    var field1 = connection.field1, field2 = connection.field2, field3 = connection.field3;
-    if(field1===undefined) { field1 = ''; }
-    if(field2===undefined) { field2 = ''; }
-    if(field3===undefined) { field3 = ''; }
-    
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'1 (optional)',globalCustomWidgetFieldHint,field1,1);
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'2 (optional)',globalCustomWidgetFieldHint,field2,2);
-    createWidgetSetField(section,globalCustomWidgetFieldTitle+'3 (optional)',globalCustomWidgetFieldHint,field3,3);
-  }
-  
-  createWidgetSwitchManual(section,connection.manual);
-  
-  createWidgetSwitchDefault(section,connection.isDefault);
-  
-  var save = textButtonWidget(globalUpdateConnectionText,false,false,'updateConnection',{'index':index,'fromSettings':fromSettings.toString()});
-  section.addWidget(save);
+  var buttonSet = CardService.newButtonSet();
+  createWidgetUpdateConnector(buttonSet,globalUpdateConnectorText,connector);
+  createWidgetRemoveConnector(buttonSet,globalRemoveConnectorText,connector);
+  section.addWidget(buttonSet);
   
   builder.addSection(section);   
 }
 
 /**
- *
- * @param {CardBuilder} builder -> card builder to append section to;
- * @param {Boolean} isCollapsed -> truthy value to determine whether to generate section as collapsible;
- * @param {String} header -> section header text;
+ * Creates section for connector type description;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} short connector type description;
+ * @param {String} header section header text;
+ * @returns {CardSection}
+ */
+function createDescriptionSection(builder,isCollapsed,short,header) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }  
+  
+  createWidgetShortText(section,'',short);
+  
+  builder.addSection(section);
+  return section;
+}
+
+
+/**
+ * Creates section for advanced settings;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
  */
 function createAdvanced(builder,isCollapsed,header) {
   var section = CardService.newCardSection();
@@ -889,41 +1347,130 @@ function createAdvanced(builder,isCollapsed,header) {
   builder.addSection(section);  
 }
 
+
+/**
+ * Creates section for welcome info;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ */
+function createSectionWelcome(builder,isCollapsed,header) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }
+  
+  createWidgetWelcomeText(section);
+  
+  builder.addSection(section);
+}
+
+/**
+ * Creates section for help info;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ */
+function createSectionHelp(builder,isCollapsed,header) {
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  if(header!==undefined) { section.setHeader(header); }
+  
+  createWidgetHelpText(section);
+  
+  createWidgetGoToCardin(section);
+   
+  builder.addSection(section);
+}
+//=============================================END SECTIONS============================================//
+
 //===============================================WIDGETS===============================================//
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
- */
-function createWidgetCreateType(section,url,content,params) {
-  var widget = actionKeyValueWidget(url,'',content,'editDisplay',params);
+ * Creates KeyValue widget with projects redirect URL;
+ * @param {CardSection} section section to append widget sets;
+ * @param {Boolean} isSimple truthy value to determine whether to invoke simple or consructed url;
+ * @param {Object} custom custom authorization config;
+ */ 
+function createWidgetShowRedirectUrl(section,isSimple,params) {
+  var url;
+  if(isSimple) {
+    url = returnSimpleRedirectUrl();
+  }else {
+    //url = returnCustomRedirectUrl(funcName,scope,custom);
+  }
+  var widget = textInputWidget('Redirect URL',globalRedirectFieldName,'Project redirect URL',url);
   section.addWidget(widget);
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- * @param {String} title -> title text of the widget;
+ * Creates KeyValue widget with 401 code and text explaining further actions;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} content widget content or value;
+ * @param {Integer} code response status code;
  */
-function createWidgetSetField(section,title,hint,content,num) {
-  var widget = textInputWidget(title,'field'+num,hint,content);
+function createWidgetNotAuthorized(section,content,code) {
+  var widget = simpleKeyValueWidget(code,content,true);
   section.addWidget(widget);
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates KeyValue widget with text explaining auth type mismatch;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} content widget content or value;
  */
-function createWidgetGoToSettings(section) {
-  var widget = textButtonWidget(globalGoToSettings,false,false,'cardSettings');
-  section.addWidget(widget);
+function createWidgetAuthTypeErr(section,content) {
+  var widget = simpleKeyValueWidget(globalAuthTypeErrorTitle,content,true);
+  section.addWidget(widget);  
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates TextButton widget with action set to open login link;
+ * @param {CardSection} || {ButtonSet} builder section or button set to append widget sets;
+ * @param {String} text text to appear on the button;
+ * @param {String} url URL to open link text;
+ * return {TextButton}
+ */
+function createWidgetLogin(builder,text,url) { 
+  var widget = textButtonWidgetLinked(text,false,false,url,false,false);
+  try{ builder.addWidget(widget); }
+  catch(error) { builder.addButton(widget); }
+  return widget;
+}
+
+/**
+ * Creates TextButton widget with action set to open Auth link;
+ * @param {CardSection} || {ButtonSet} builder section or button set to append widget sets;
+ * @param {String} text text to appear on the button;
+ * @param {Object} auth authorization config object;
+ * @param {Object} custom custom authorization config;
+ */
+function createWidgetOpenAuth(builder,text,auth,custom) { 
+  var service = authService(auth.name,auth.scope,custom);
+  var params  = {'funcName':auth.name,'scope':auth.scope};
+  if(custom!==undefined) { params.custom = JSON.stringify(custom); }
+  var widget = textButtonWidgetAuth(text,false,false,service.getAuthorizationUrl(params));
+  try{ builder.addWidget(widget); }
+  catch(error) { builder.addButton(widget); }
+}
+
+/**
+ * Creates TextButton widget with action set to revoke Auth;
+ * @param {CardSection} || {ButtonSet} builder section or button set to append widget sets;
+ * @param {String} text text to appear on the button;
+ * @param {Object} auth authorization config object;
+ * @param {Object} custom custom authorization config; 
+ */
+function createWidgetRevoke(builder,text,auth,custom) {
+  var service = authService(auth.name,auth.scope,custom);
+  var params  = {'funcName':auth.name,'scope':auth.scope};
+  if(custom!==undefined) { params.custom = JSON.stringify(custom); }
+  var widget  = textButtonWidget(text,false,false,'revokeAuth',params);
+  try{ builder.addWidget(widget); }
+  catch(error) { builder.addButton(widget); }
+}
+
+/**
+ * Creates KeyValue widget for prompting user that this is a first-time use;
+ * @param {CardSection} section section to append widget sets;
  */
 function createWidgetWelcomeText(section) {
   var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle,globalWelcomeWidgetContent,true);
@@ -931,146 +1478,282 @@ function createWidgetWelcomeText(section) {
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates KeyValue widget for help card section;
+ * @param {CardSection} section section to append widget sets;
  */
-function createWidgetWelcomeCardin(section) {
+function createWidgetHelpText(section) {
+  var widget = simpleKeyValueWidget(globalHelpWidgetTitle,globalHelpWidgetContent,true);
+  section.addWidget(widget);
+}
+
+/**
+ * Creates TextButton widget for Cardin homepage link open;
+ * @param {CardSection} section section to append widget sets;
+ */
+function createWidgetGoToCardin(section) {
   var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
   section.addWidget(widget);
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates widget for diplaying hint for optional fields usage;
+ * @param {CardSection} section section to append widget sets;
+ * @param {TextParagraph}
  */
-function createWidgetWelcomeYouTube(section) {
-  var widget = textButtonWidgetLinked(globalYouTubeUrlText,false,false,globalYouTubeUrl,false,false);
+function createWidgetFieldsText(section,text) {
+  var widget = textWidget(text);
   section.addWidget(widget);
+  return widget;
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates TextInput widget with custom field name and content;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} fieldName field name for the formInput to use;
+ * @param {String} title title text of the widget; 
+ * @param {String} hint text that appears on the input;
+ * @param {String} custom custom content to set;
+ * @returns {TextInput}
  */
-function createWidgetCustomConnect(section) {
-  var widget = simpleKeyValueWidget(globalCustomWidgetTitle,globalCustomWidgetContent,true);
-  section.addWidget(widget);  
-}
-
-/**
- *
- * @param {CardSection} section -> section to append widget sets;
- * @param {String} title -> title text of the widget;
- */
-function createWidgetSetUrl(section,title,hint,url) {
-  if(url!==undefined) { var content = url; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionURL',hint,content,'checkURL');
-  section.addWidget(widget);   
-}
-
-/**
- *
- * @param {CardSection} section -> section to append widget sets;
- * @param {String} title -> title text of the widget;
- */
-function createWidgetSetName(section,title,hint,name) {
-  if(name!==undefined) { var content = name; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionName',hint,content);
-  section.addWidget(widget);  
-}
-
-/**
- *
- * @param {CardSection} section -> section to append widget sets;
- * @param {String} title -> title text of the widget;
- */
-function createWidgetSetIcon(section,title,hint,icon) {
-  if(icon!==undefined) { var content = icon; }else { content = ''; }
-  var widget = textInputWidget(title,'connectionIcon',hint,content);
+function createWidgetCustomInput(section,fieldName,title,hint,custom) {
+  if(custom!==undefined) { var content = custom; }else { content = ''; }
+  var widget = textInputWidget(title,fieldName,hint,content);
   section.addWidget(widget);
+  return widget;
 }
 
 /**
- * 
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates KeyValue widget for accessing connector config;
+ * @param {CardSection} section section to append widget sets;
+ * @param {Object} type connector class instance;
+ * @returns {KeyValue}
  */
-function createWidgetCreateConnection(section,text) {
-  var widget = textButtonWidget(text,false,false,'createConnection');
-  section.addWidget(widget);   
+function createWidgetCreateType(section,type) {
+  
+  /*
+  try {
+    var str = propertiesToString(type);
+    Logger.log(str);
+  }
+  catch(e) {
+    Logger.log(e)
+  }
+  */
+
+  var params = {
+    'basic': JSON.stringify(type.basic),
+    'config': JSON.stringify(type.config),
+    'type': type.name,
+    'icon': type.icon,
+    'name': type.name
+  };
+  if(type.short!==undefined) { params.short = type.short; }
+  
+  if(type.auth!==undefined) { params.auth = JSON.stringify(type.auth); }
+  var widget = actionKeyValueWidget(type.icon,'',type.name,'addConnector',params);
+  section.addWidget(widget);
+  return widget;
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
+ * Creates TextButton widget for connector creation;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} text text to appear on the button;
+ * @param {Object} type connector type object;
+ * @returns {TextButton}
+ */
+function createWidgetCreateConnector(section,text,type) {
+  type = propertiesToString(type);
+
+  var widget = textButtonWidget(text,false,false,'createConnector',type);
+  section.addWidget(widget);
+  return widget;
+}
+
+/**
+ * Creates TextButton widget for connector update;
+ * @param {String} text text to appear on the button;
+ * @param {Object} connector connector object;
+ * @returns {TextButton}
+ */
+function createWidgetUpdateConnector(builder,text,connector) {
+  connector = propertiesToString(connector);
+  
+  var widget = textButtonWidget(globalUpdateConnectorText,false,false,'updateConnector',connector);
+  try{ builder.addWidget(widget); }
+  catch(error) { builder.addButton(widget); }
+  return widget;
+}
+
+/**
+ * Creates TextButton widget for connector removal;
+ * @param {CardSection} || {ButtonSet} builder section or button set to append widget sets;
+ * @param {String} text text to appear on the button;
+ * @param {Object} connector connector object;
+ * @returns {TextButton}
+ */
+function createWidgetRemoveConnector(builder,text,connector) {
+  
+  connector = propertiesToString(connector);
+
+  //set confirmation procedure;
+  connector.cancelAction  = 'actionEdit',
+  connector.confirmAction = 'removeConnector',
+  connector.prompt        = globalConfirmRemoveWidgetContent 
+  
+  Logger.log(connector)
+
+  var widget = textButtonWidget(globalRemoveConnectorText,false,false,'actionConfirm',connector);
+  try{ builder.addWidget(widget); }
+  catch(error) { builder.addButton(widget); }
+  return widget;  
+}
+
+/**
+ * Creates KeyValue widget with reset feature description;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} title widget title;
+ * @param {String} content widget content;
+ * @returns {KeyValue}
+ */
+function createWidgetShortText(section,title,content) {
+  var widget = simpleKeyValueWidget(title,content,true);
+  section.addWidget(widget);  
+  
+  return widget;
+}
+
+/**
+ * Creates KeyValue widget with reset feature description;
+ * @param {CardSection} section section to append widget sets;
+ * @returns {KeyValue}
  */
 function createWidgetResetText(section) {
   var widget = simpleKeyValueWidget(globalResetWidgetTitle,globalResetWidgetContent,true);
   section.addWidget(widget);
+  
+  return widget;
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- */
-function createWidgetClearText(section) {
-  var widget = simpleKeyValueWidget(globalClearWidgetTitle,globalClearWidgetContent,true);
-  section.addWidget(widget);
-}
-
-/**
- *
- * @param {CardSection} section -> section to append widget sets;
+ * Creates TextButton widget that performs full reset when clicked;
+ * @param {CardSection} section section to append widget sets;
  */
 function createWidgetResetSubmit(section) {
-  var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'performFullReset');
+  
+  //set confirmation params;
+  var params = {
+    confirmAction : 'performFullReset',
+    cancelAction : 'goSettings',
+    prompt : globalConfirmResetWidgetContent,
+    success : globalResetSuccess,
+    failure : globalResetFailure
+  };
+  
+  var widget = textButtonWidget(globalResetWidgetSubmitText,false,false,'actionConfirm',params);
   section.addWidget(widget);
 }
 
 /**
- *
+ * Creates SelectionInput widget for choosing authentication type (none and OAuth2 for now);
  * @param {CardSection} section -> section to append widget sets;
+ * @param {Boolean} isEdit -> truthy value to determine which card to reload;
+ * @param {String} selected -> value that should be selected;
  */
-function createWidgetClearSubmit(section) {
-  var widget = textButtonWidget(globalClearWidgetSubmitText,false,false,'clearLayout');
+function createWidgetChooseAuth(section,isEdit,selected) {
+  var options = [
+    {
+      'text': 'None',
+      'value': 'none',
+      'selected': true
+    },
+    {
+      'text': 'OAuth 2.0',
+      'value': 'OAuth2',
+      'selected': false
+    }
+  ];
+  
+  //if selected value param is provided, select this option;
+  if(selected!==undefined) {
+    options.forEach(function(option){
+      if(option.value===selected) {
+        option.selected = true;
+        options.forEach(function(opt){
+          if(opt.value!==selected) {
+            opt.selected = false;
+          }
+        });
+      }
+    });
+  }
+  
+  var widget = selectionInputWidget(globalCustomWidgetAuthText,'auth','RADIO_BUTTON',options,'chooseAuth',true,{'isEdit':isEdit.toString()});
   section.addWidget(widget);
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- * @param {Boolean} isManual -> 
+ * Creates Switch widget for setting connector to be invoked manually;
+ * @param {CardSection} section section to append widget sets;
+ * @param {Boolean} isManual truthy value to determine invoking manually;
  */
 function createWidgetSwitchManual(section,isManual) {
-  if(isManual===undefined) { isManual = true; }
-  var widget = switchWidget('',globalCustomWidgetSwitchText,'manual',isManual,true);
+  if(isManual===undefined||isManual==='true') { isManual = true; }  
+  var widget = switchWidget('',globalCustomWidgetSwitchText,globalManualFieldName,isManual,true);
   section.addWidget(widget);
 }
 
 /**
- * 
- * @param {CardSection} section -> section to append widget sets;
- * @param {Boolean} isDefault -> 
+ * Creates Switch widget for setting connector to be loaded by default;
+ * @param {CardSection} section section to append widget sets;
+ * @param {Boolean} isDefault truthy value to determine loading by default;
+ * @returns {Switch}
  */
 function createWidgetSwitchDefault(section,isDefault) {
-  if(isDefault===undefined||isDefault==='true') { isDefault = true; }
-  var widget = switchWidget('',globalIsDefaultWidgetSwitchText,'isDefault',isDefault,true);
+  if(isDefault===undefined||isDefault==='false') { isDefault = false; }else if(isDefault==='true') { isDefault = true; }
+  var widget = switchWidget('',globalIsDefaultWidgetSwitchText,globalDefaultFieldName,isDefault,true);
   section.addWidget(widget);
+  return widget;
 }
 
 /**
- *
- * @param {CardSection} section -> section to append widget sets;
- *
+ * Creates ButtonSet for going to root card;
+ * @param {CardSection} section section to append widget sets;
+ * @param {String} index index to use when going back;
+ * @returns {ButtonSet}
  */
 function createWidgetsBackAndToRoot(section,index) {
-  var root = textButtonWidget(globalRootText,false,false,'goRoot',{'index':index});
+  var params = {'index':index};
+  var root = textButtonWidget(globalRootText,false,false,'goRoot',params);
   var widget = buttonSet([root]);
   section.addWidget(widget);
+  return widget;
 }
+
+/**
+ * Create ButtonSet for confirming and cancelling;
+ * @param {CardSection} section section to append widget sets;
+ * @param {Object} e event object;
+ * @returns {ButtonSet}
+ */
+function createWidgetsConfirm(section,e) {
+  //access parameters;
+  var params = e.parameters;
+
+  //create KeyValue widget to prompt user of action;
+  var userPrompt = simpleKeyValueWidget(globalConfirmWidgetTitle,params.prompt,true);
+  section.addWidget(userPrompt);
+  
+  //create TextButton widgets to confirm or cancel;
+  var btnConfirm = textButtonWidget(globalConfirmText,false,false,params.confirmAction,params);
+  var btnCancel  = textButtonWidget(globalCancelText,false,false,params.cancelAction,params);
+  
+  //create ButtonSet with confirm and cancel buttons;
+  var widget = buttonSet([btnConfirm,btnCancel]);
+  section.addWidget(widget);
+  return widget;
+}
+//==============================================END WIDGETS==============================================//
 
 //===============================================TEMPLATES===============================================//
 /**
@@ -1086,13 +1769,13 @@ function textWidget(text) {
 
 /**
  * Creates an input widget;
- * @param {String} title -> title of the input;
- * @param {String} name -> fieldname of the input;
- * @param {String} hint -> text that appears on the input;
- * @param {String} value -> value that is passed to widget by default;
- * @param {String} changeFunc -> name of the function fired on user change;
- * @param {Boolean} hasSpinner -> truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params -> parameters to pass to function;
+ * @param {String} title title of the input;
+ * @param {String} name fieldname of the input;
+ * @param {String} hint text that appears on the input;
+ * @param {String} value value that is passed to widget by default;
+ * @param {String} changeFunc name of the function fired on user change;
+ * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
+ * @param {Object} params parameters to pass to function;
  * @returns {TextInput} 
  */
 function textInputWidget(title,name,hint,value,changeFunc,hasSpinner,params) {
@@ -1119,9 +1802,9 @@ function textInputWidget(title,name,hint,value,changeFunc,hasSpinner,params) {
 
 /**
  * Creates suggestions for a textInput widget;
- * @param {textInput} textInputWidget -> text input to append suggestions to;
- * @param {Suggestions} suggestions -> list of suggestions to append;
- * @param {String} suggestFunc -> function name to fire on suggestion select;
+ * @param {textInput} textInputWidget text input to append suggestions to;
+ * @param {Suggestions} suggestions list of suggestions to append;
+ * @param {String} suggestFunc function name to fire on suggestion select;
  */
 function suggestions(textInputWidget,suggestions,suggestFunc) {
     
@@ -1137,7 +1820,7 @@ function suggestions(textInputWidget,suggestions,suggestFunc) {
 
 /**
  * Creates suggestion object for textInput autocomplete handler;
- * @param {Array} suggestions -> an array of string values for creating options;
+ * @param {Array} suggestions an array of string values for creating options;
  * @returns {Suggestions}
  */
 function suggestion(suggestions) {
@@ -1148,7 +1831,7 @@ function suggestion(suggestions) {
 
 /**
  * Creates a set of buttons for chaining;
- * @param {Array} buttons -> an array of button widgets to add to button set;
+ * @param {Array} buttons an array of button widgets to add to button set;
  * @returns {ButtonSet}
  */
 function buttonSet(buttons) {
@@ -1165,11 +1848,11 @@ function buttonSet(buttons) {
 
 /**
  * Creates a button widget with text content;
- * @param {String} text -> text to appear on the button;
- * @param {Boolean} disabled -> truthy value to disable / enable click event;
- * @param {Boolean} isFilled -> sets buttons style to filled if true;
- * @param {String} changeFunc -> name of the function fired on user click;
- * @param {Object} params -> parameters to pass to function;
+ * @param {String} text text to appear on the button;
+ * @param {Boolean} disabled truthy value to disable / enable click event;
+ * @param {Boolean} isFilled sets buttons style to filled if true;
+ * @param {String} clickFunc name of the function fired on user click;
+ * @param {Object} params parameters to pass to function;
  * @returns {TextButton} 
  */
 function textButtonWidget(text,disabled,isFilled,clickFunc,params) {
@@ -1188,36 +1871,67 @@ function textButtonWidget(text,disabled,isFilled,clickFunc,params) {
 }
 
 /**
+ * Creates a button widget with authorization action to trigger Auth flow;
+ * @param {String} text text to appear on the button;
+ * @param {Boolean} disabled truthy value to disable / enable click event;
+ * @param {Boolean} isFilled sets buttons style to filled if true;
+ * @param {String} url authorization url; 
+ */
+function textButtonWidgetAuth(text,disabled,isFilled,url) {
+  var widget = CardService.newTextButton();
+      widget.setText(text);
+      widget.setDisabled(disabled);
+      
+  if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
+  
+  var action = CardService.newAuthorizationAction();
+      action.setAuthorizationUrl(url);
+      
+  widget.setAuthorizationAction(action);
+  
+  return widget;
+}
+
+/**
  * Creates a button widget with link action set to it instead of an inbound action;
- * @param {String} text -> text to appear on the button;
- * @param {Boolean} disabled -> truthy value to disable / enable click event;
- * @param {Boolean} isFilled -> sets buttons style to filled if true;
- * @param {String} url -> URL being opened on user button click;
- * @param {Boolean} fullsized -> truthy value to detemine whether to open link as fullsized or overlayed;
- * @param {Boolean} needsReload -> truthy value to determine whether it needs to reload the Add-on on link close;
+ * @param {String} text text to appear on the button;
+ * @param {Boolean} disabled truthy value to disable / enable click event;
+ * @param {Boolean} isFilled sets buttons style to filled if true;
+ * @param {String} url URL being opened on user button click;
+ * @param {Boolean} fullsized truthy value to detemine whether to open link as fullsized or overlayed;
+ * @param {Boolean} needsReload truthy value to determine whether it needs to reload the Add-on on link close;
+ * @param {Boolean} useAction truthy value to determine whether to set OpenLink or link builder;
+ * @param {String} clickFunc name of the function fired on user click;
+ * @param {Object} params parameters to pass to function;
  * @returns {TextButton} 
  */
-function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload) {
+function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload,useAction,clickFunc,params) {
   var widget = CardService.newTextButton();
       widget.setText(text);
       widget.setDisabled(disabled);
       
       if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
       
-      var openLink = CardService.newOpenLink();
-          openLink.setUrl(url);
-      if(fullsized) { openLink.setOpenAs(CardService.OpenAs.FULL_SIZE); }else { openLink.setOpenAs(CardService.OpenAs.OVERLAY); }
-      if(needsReload) { openLink.setOnClose(CardService.OnClose.RELOAD_ADD_ON); }else { openLink.setOnClose(CardService.OnClose.NOTHING); }
-      widget.setOpenLink(openLink);
-
+      if(useAction&&(useAction!==undefined)) {
+        var action = CardService.newAction().setFunctionName(clickFunc);
+        if(params!==undefined) { action.setParameters(params); }
+        widget.setOnClickOpenLinkAction(action);
+      }else {
+        var openLink = CardService.newOpenLink();
+            openLink.setUrl(url);
+        if(fullsized) { openLink.setOpenAs(CardService.OpenAs.FULL_SIZE); }else { openLink.setOpenAs(CardService.OpenAs.OVERLAY); }
+        if(needsReload) { openLink.setOnClose(CardService.OnClose.RELOAD_ADD_ON); }else { openLink.setOnClose(CardService.OnClose.NOTHING); }
+        widget.setOpenLink(openLink);        
+      }
+      
   return widget;
 }
 
 /*
  * Creates a button widget with icon content;
- * @param {Icon} icon -> icon object to appear on the button;
- * @param {String} changeFunc -> name of the function fired on user click;
- * @param {Object} params -> parameters to pass to function;
+ * @param {Icon} icon icon object to appear on the button;
+ * @param {String} changeFunc name of the function fired on user click;
+ * @param {Object} params parameters to pass to function;
  * @returns {ImageButton} 
  */
 function imageButtonWidget(icon,clickFunc,params) {
@@ -1233,12 +1947,12 @@ function imageButtonWidget(icon,clickFunc,params) {
 }
 
 /**
- * Creates an image widget;
- * @param {String} src -> string url of publicly deployed image;
- * @param {String} alt -> text to display if image cannot be loaded or denied access;
- * @param {String} clickFunc -> name of the function fired on user click;
- * @param {Boolean} hasSpinner -> truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params -> parameters to pass to function;
+ * Creates an Image widget;
+ * @param {String} src string url of publicly deployed image;
+ * @param {String} alt text to display if image cannot be loaded or denied access;
+ * @param {String} clickFunc name of the function fired on user click;
+ * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
+ * @param {Object} params parameters to pass to function;
  * @returns {Image}
  */
 function imageWidget(src,alt,clickFunc,hasSpinner,params) {
@@ -1258,26 +1972,32 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
 }
 
 /**
- * Creates a switch widget (in conjunction with a KeyValue as this is the only way to create a switch);
- * @param {String} title -> title of the input;
- * @param {String} text -> text to display as switch label;
- * @param {String} name -> unique fieldname (non-unique if multi-switch widget);
- * @param {Boolean} selected -> truthy value to set on / off click event;
- * @param {String} value -> value to pass to handler if selected;
- * @param {String} changeFunc -> name of the function fired on user change;
- * @param {Boolean} hasSpinner -> truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params -> parameters to pass to function;
+ * Creates a Switch widget (KeyValue is used as base constructor);
+ * @param {String} top label text;
+ * @param {String} content content text;
+ * @param {String} name unique fieldname (non-unique if multi-switch widget);
+ * @param {Boolean} selected truthy value to set on / off click event;
+ * @param {String} value value to pass to handler if selected;
+ * @param {String} changeFunc name of the function fired on user change;
+ * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
+ * @param {Object} params parameters to pass to function;
  * @returns {KeyValue} 
  */
-function switchWidget(title,text,name,selected,value,changeFunc,hasSpinner,params) {  
+function switchWidget(top,content,name,selected,value,changeFunc,hasSpinner,params) {  
+  //create base KeyValue widget and set required parameters;
   var keyValue = CardService.newKeyValue();
-  if(title!==''&&title!==undefined) { keyValue.setTopLabel(title); }
-      keyValue.setContent(text);
+      keyValue.setContent(content);
   
+  //set top title if found;
+  if(top!==undefined&&top!=='') { keyValue.setTopLabel(top); }
+  
+  //create Switch widget and set required parameters;
   var widget = CardService.newSwitch();
       widget.setFieldName(name);
       widget.setSelected(selected);
       widget.setValue(value);
+  
+  //set an onchange action;
   if(changeFunc!==undefined) { 
     var action = CardService.newAction();
         action.setFunctionName(changeFunc);
@@ -1286,45 +2006,79 @@ function switchWidget(title,text,name,selected,value,changeFunc,hasSpinner,param
     widget.setOnChangeAction(action);
   }
   
+  //set switch and return widget;
   keyValue.setSwitch(widget);
   return keyValue;
 }
 
 /** 
- * Creates an unclickable keyValue widget (for labeled text purposes) - due to a possible bug in param assignment;
- * @param {String} iconUrl -> url of icon to use;
- * @param {String} top -> label text;
- * @param {String} content -> content text;
- * @param {Boolean} isMultiline -> truthy value for determining multiline feature;
- * @param {TextButton} button -> a button object to add on the right; 
+ * Creates a simple KeyValue widget;
+ * @param {String} icon url or enum of icon to use;
+ * @param {String} top label text;
+ * @param {String} content content text;
+ * @param {Boolean} isMultiline truthy value for determining multiline feature;
+ * @param {TextButton} button a button object to add on the right; 
  * @returns {KeyValue}
  */
-function simpleKeyValueWidget(top,content,isMultiline,iconUrl,button) {
+function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
+  //check if content is a Date and format to locale to avoid errors;
+  if(content instanceof Date) { content = content.toLocaleDateString(); }
+  
+  //create widget and set required parameters;
   var widget = CardService.newKeyValue();
-      widget.setTopLabel(top);
       widget.setContent(content);
       widget.setMultiline(isMultiline);
+  
+  //set top title if found;
+  if(top!==undefined&&top!=='') { widget.setTopLabel(top); }
+  
+  //set button to widget;
   if(button!==undefined) { widget.setButton(button); }
-  if(iconUrl!==undefined) { widget.setIconUrl(iconUrl); }
+  
+  //set icon if found or set icon url if not;
+  if(icon!==undefined&&icon!=='') { 
+    var iconEnum = CardService.Icon[icon];
+    if(iconEnum!==undefined) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(icon);
+    } 
+  }
+  
   return widget;
 }
 
 /** 
- * Creates a keyValue widget (for labeled text purposes);
- * @param {String} iconUrl -> url of icon to use;
- * @param {String} top -> label text;
- * @param {String} content -> content text;
- * @param {String} clickFunc -> name of the function fired on user click;
- * @param {Object} params -> parameters to pass to function;
+ * Creates a KeyValue widget with action set on it;
+ * @param {String} icon url or enum of icon to use;
+ * @param {String} top label text;
+ * @param {String} content content text;
+ * @param {String} clickFunc name of the function fired on user click;
+ * @param {Object} params parameters to pass to function;
  * @returns {KeyValue} 
  */
-function actionKeyValueWidget(iconUrl,top,content,clickFunc,params) {
+function actionKeyValueWidget(icon,top,content,clickFunc,params) {
+  //check if content is a Date and format to locale to avoid errors;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
+  
+  //create widget and set required parameters;
   var widget = CardService.newKeyValue();
-      widget.setTopLabel(top);
       widget.setContent(content);
-      widget.setIconUrl(iconUrl);
+  
+  //set top title if found;
+  if(top!==undefined&&top!=='') { widget.setTopLabel(top); }
+      
+  //set icon if found or set icon url if not;    
+  if(icon!==undefined&&icon!=='') { 
+    var iconEnum = CardService.Icon[icon];
+    if(iconEnum!==undefined) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(icon);
+    } 
+  }
 
+  //set onclick action and set parameters if provided;
   var action = CardService.newAction();
       action.setFunctionName(clickFunc);
   if(params!==undefined) {action.setParameters(params);}
@@ -1334,23 +2088,38 @@ function actionKeyValueWidget(iconUrl,top,content,clickFunc,params) {
 }
 
 /** 
- * Creates a keyValue widget with button on the right (for labeled text purposes);
- * @param {String} iconUrl -> url of icon to use;
- * @param {String} top -> label text;
- * @param {String} content -> content text;
- * @param {TextButton} button -> a button object to add on the right; 
- * @param {String} clickFunc -> name of the function fired on user click;
- * @param {Object} params -> parameters to pass to function;
+ * Creates a keyValue widget with button on the right;
+ * @param {String} icon url or enum of icon to use;
+ * @param {String} top widget title;
+ * @param {String} content content text;
+ * @param {TextButton} button a button object to add on the right; 
+ * @param {String} clickFunc name of the function fired on user click;
+ * @param {Object} params parameters to pass to function;
  * @returns {KeyValue} 
  */
-function actionKeyValueWidgetButton(iconUrl,top,content,button,clickFunc,params) {
+function actionKeyValueWidgetButton(icon,top,content,button,clickFunc,params) {
+  //check if content is a Date and format to locale to avoid errors;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
-  var widget = CardService.newKeyValue();
-      widget.setTopLabel(top);
-      widget.setContent(content);
-      widget.setIconUrl(iconUrl);
-      widget.setButton(button);
   
+  //create widget and set required parameters;
+  var widget = CardService.newKeyValue();
+      widget.setContent(content);
+      widget.setButton(button);
+   
+  //set top title if found;
+  if(top!==undefined&&top!=='') { widget.setTopLabel(top); }
+  
+  //set icon if found or set icon url if not;
+  if(icon!==undefined&&icon!=='') {
+    var iconEnum = CardService.Icon[icon];
+    if(iconEnum!==undefined) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(icon);
+    } 
+  }
+  
+  //set onclick action and set parameters if provided;
   var action = CardService.newAction();
       action.setFunctionName(clickFunc);
   if(params!==undefined) {action.setParameters(params);}
@@ -1361,90 +2130,113 @@ function actionKeyValueWidgetButton(iconUrl,top,content,button,clickFunc,params)
 
 /**
  * Creates a selection widget with specified options;
- * @param {String} title -> title of the input;
- * @param {String} name -> fieldname of the input;
- * @param {String} type -> type of select to render: checkboxes / radio btns / dropdown list;
- * @param {String} changeFunc -> name of the function fired on value change;
- * @param {Object} params -> parameters to pass to function;
+ * @param {String} top widget title;
+ * @param {String} name fieldname of the input;
+ * @param {String} type type of select to render: checkboxes / radio btns / dropdown list;
+ * @param {Array} options an array of objects representing selection options;
+ * @param {String} changeFunc name of the function fired on value change;
+ * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
+ * @param {Object} params parameters to pass to function;
  * @returns {SelectionInput}
-*/
-function selectionInputWidget(title,name,type,options,changeFunc,params) {
+ */
+function selectionInputWidget(top,name,type,options,changeFunc,hasSpinner,params) {
+  //create widget and set required parameters;
   var widget = CardService.newSelectionInput();
-  switch(type) {
-    case 'checkbox':
-      widget.setType(CardService.SelectionInputType.CHECK_BOX);
-    break;
-    case 'dropdown':
-      widget.setType(CardService.SelectionInputType.DROPDOWN);
-    break;
-    case 'radio':
-      widget.setType(CardService.SelectionInputType.RADIO_BUTTON);
-    break;
-  }
-  widget.setTitle(title);
-  widget.setFieldName(name);
+      widget.setFieldName(name);
   
+  //set widget's type accordingly [rewrite];
+  widget.setType(CardService.SelectionInputType[type]);
+  
+  //set top title if found;
+  if(top!==undefined&&top!=='') { widget.setTitle(top); }
+
+  //set an onchange action;
   if(changeFunc!==undefined) { 
     var action = CardService.newAction();
         action.setFunctionName(changeFunc);
-        action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+    if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER) }
     if(params!==undefined) {action.setParameters(params);}
     widget.setOnChangeAction(action);
   }
   
-  var anySelected = options.some(function(option) { return option.selected===true; });
-  if(!anySelected) { widget.addItem('...','',true); }
+  //set options to widget;
   options.forEach(function(option) { widget.addItem(option.text,option.value,option.selected); });
   
   return widget;
 }
+//============================================END TEMPLATES============================================//
 
-//===============================================ACTIONS===============================================//
-/**
- *
- */
-function clearLayout() {
-	var action = CardService.newActionResponseBuilder();
-		action.setStateChanged(true);  
-  
-	var cache = CacheService.getScriptCache();
-	cache.remove('layout');
-  
-	cardOpen();
-	
-	action.setNotification(notification(globalClearSuccess));
-  
-	return action.build();
+//==============================================CONNECTOR==============================================//
+//Sheets connector class;
+function Connector(icon,name,url) {
+  if(icon===undefined) { icon = ''; }
+  if(name===undefined) { name = ''; }
+  if(url===undefined)  { url = ''; }
+  this.icon = globalCustomIconUrl;
+  this.name = 'Connector';
+  this.basic = {
+      'header': 'Basic config',
+      'isCollapsible': false,
+      'widgets': [
+        {
+          'name': globalNameFieldName,
+          'type': 'TextInput',
+          'title': globalCustomWidgetNameTitle,
+          'content': name,
+          'hint': globalCustomWidgetNameHint
+        }
+      ]
+    };
+  this.config = [];
+  this.auth   = {};
+  this.run = async function (msg,connector,data) {
+    //set method for url fetch ('get' or 'post' for now);
+    var method = 'post';
+
+    //set headers for url fetch;
+    var headers = {};
+    
+    //set payload in case POST request will be triggered;
+    var trimmed = trimMessage(msg,true,true);
+    var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
+    var payload = {
+      'Bcc': msg.getBcc(),
+      'Cc': msg.getCc(),
+      'date': msg.getDate(),
+      'sender': trimmed.name,
+      'from': trimmed.email,
+      'id': msg.getId(),
+      'subject': msg.getSubject(),
+      'labels': labels
+    };
+    if(data!==undefined) { payload.data = data; }
+    
+    //build authorization;
+    if(connector.auth==='OAuth2') {
+      var custom  = {
+        'name': connector.name,
+        'scope': connector.scope,
+        'urlAuth': connector.urlAuth,
+        'urlToken': connector.urlToken,
+        'id': connector.id,
+        'secret': connector.secret
+      };
+      var service = authService(connector.type,connector.scope,custom);
+      var bearer  = 'Bearer '+service.getAccessToken();
+      headers.Authorization = bearer;
+      payload.Authorization = bearer;
+    }
+    
+    //initiate request;
+    return await performFetch(connector.url,method,headers,payload);
+  }
 }
+//============================================END CONNECTOR============================================//
 
-/**
- *
- */
-function goBack() {
-	var action = CardService.newActionResponseBuilder();
-		action.setStateChanged(true);
-		action.setNavigation(CardService.newNavigation().popCard());
-  
-	return action.build();  
-}
-
-/**
- *
- */
-function actionDisplay() {
-	var action = CardService.newActionResponseBuilder();
-		action.setStateChanged(true);
-	
-	cardsetDisplay();
-	
-	return action.build();
-}
-
-//===============================================NOTIFICATIONS===============================================//
-
+//============================================NOTIFICATIONS============================================//
 /**
  * Creates a notification to show;
- * @param {String} text -> text to display when fired;
+ * @param {String} text text to display when fired;
  * @returns {Notification}
  */
 function notification(text) {
@@ -1456,7 +2248,7 @@ function notification(text) {
 
 /**
  * Creates a warning to show;
- * @param {String} text -> text to display when fired;
+ * @param {String} text text to display when fired;
  * @returns {Notification}
  */
 function warning(text) {
@@ -1468,7 +2260,7 @@ function warning(text) {
 
 /**
  * Creates an error to show;
- * @param {String} text -> text to display when fired;
+ * @param {String} text text to display when fired;
  * @returns {Notification}
  */
 function error(text) {
@@ -1477,6 +2269,7 @@ function error(text) {
       error.setText(text);
   return error;
 }
+//===========================================END NOTIFICATIONS===========================================//
 
 //===============================================CALLBACKS===============================================//
 
@@ -1528,8 +2321,11 @@ function actionCallback(action,element) {
 		
 	}
 }
+//=============================================END CALLBACKS=============================================//
 
+//=============================================START ACTIONS=============================================//
 const callbacks = {
+	
 	blink : function (parameters) { //blink is a debug function and is not used outside testing environment!
 		return new Promise(
 			function(resolve) {
@@ -1537,412 +2333,1549 @@ const callbacks = {
 			}
 		);
 	},
-	//==============================START ACTIONS==============================//
-	editDisplay : function editDisplay(e) {
+	/**
+	 * Updates connector add / edit settings card on auth select change;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
+	chooseAuth : function chooseAuth(e) {
 		return new Promise(
-			async function (resolve) {
-  				var icon   = e.parameters.icon;
-  				var name   = e.parameters.name;
-  				var url    = e.parameters.url;
-				var index  = e.parameters.index;
-				var manual = e.parameters.manual;
-				if(manual==='true') { manual = true; }else { manual = false; }
-				var isDefault = e.parameters.isDefault;
-				if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
-				var loadFields = e.parameters.loadFields;
-				if(loadFields==='true') { loadFields = true; }else { loadFields = false; }
-				var field1 = e.parameters.field1;
-				var field2 = e.parameters.field2;
-				var field3 = e.parameters.field3;
-				var isType = e.parameters.isType;
-				if(isType==='true') { isType = true; }else { isType = false; }
-  
-  				var connection = {
-					icon: icon,
-    				name: name,
-    				url: url,
-    				manual: manual,
-    				isDefault: isDefault
-  				};
-			  	if(field1!==undefined) { connection.field1 = field1; }
-			  	if(field2!==undefined) { connection.field2 = field2; }
-			  	if(field3!==undefined) { connection.field3 = field3; }
- 
-  				var builder = CardService.newCardBuilder();
-      				builder.setHeader(CardService.newCardHeader().setTitle(name).setImageUrl(icon));
-  
-			  	if(!isType) {
-					createSectionEditConnection(builder,false,connection,loadFields,index,true);
-			  	}else {
-					createSectionAddConnection(builder,false,'',loadFields,connection);
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  var data       = e.formInput;
+			  var authType   = data.auth;
+			  var parameters = e.parameters;
+			  var isEdit     = parameters.isEdit;
+			  
+			  var custom = new Connector();
+			  
+			  e.parameters.icon = data[globalIconFieldName];
+			  e.parameters.name = data[globalNameFieldName];
+			  e.parameters.url  = data[globalURLfieldName];
+			  
+			  for(var input in data) {
+				var val = data[input];
+				e.parameters[input] = val;
+			  }
+			  if(data.manual===undefined)    { e.parameters.manual = false;    }
+			  if(data.isDefault===undefined) { e.parameters.isDefault = false; }
+			  
+			  e.parameters.authType = authType;
+			  
+			  e.parameters.auth     = JSON.stringify({});
+			  e.parameters.basic    = JSON.stringify(custom.basic);
+			  e.parameters.config   = JSON.stringify(custom.config);
+			  e.parameters.type     = custom.name;
+			  
+			  if(isEdit==='true') {  
+				if(data.scope!==undefined) {
+				  e.parameters.urlAuth  = data.urlAuth; 
+				  e.parameters.urlToken = data.urlToken;
+				  e.parameters.id       = data.id;
+				  e.parameters.secret   = data.secret;
+				  e.parameters.scope    = data.scope; 
 				}
-  
-  				return builder.build();				
+				e.parameters.index = getIndex(getProperty('config','user'),e.parameters).toString();
+				builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
+			  }else {
+				builder.setNavigation(CardService.newNavigation().updateCard(addConnector(e)));
+			  }
+			  
+			  builder.setStateChanged(true);
+			  return builder.build();
 			}
 		);
 	},
+	/**
+	 * Updates widget by provided index to generate form input instead of clickable field;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */
 	editSectionsShow : function editSectionsShow(e) {
 		return new Promise(
-			async function(resolve) {
-				var parameters = e.parameters;
-  
-				var sectionIdx = +parameters.sectionIdx;
-				var widgetIdx  = +parameters.widgetIdx;
-				var data       = JSON.parse(parameters.data);
-				var connection = JSON.parse(parameters.connection);
-  
-				data[sectionIdx].widgets[widgetIdx].type = 'TextInput';
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
 
-				e.parameters.index  = parameters.paramIdx;
-				e.parameters.icon   = connection.icon;
-				e.parameters.name   = connection.name;
-				e.parameters.url    = connection.url;
-				e.parameters.manual = connection.manual;
-				e.parameters.field1 = connection.field1;
-				e.parameters.field2 = connection.field2;
-				e.parameters.field3 = connection.field3;
-				e.parameters.data   = JSON.stringify(data);
-  
-				return cardDisplay(e);
+			  var connector = e.parameters;
+			  var content   = connector.content;
+			  
+			  //try to parse content until recieved an array; 
+			  try {
+				while(!(content instanceof Array)) {
+				  content = JSON.parse(content);
+				}
+			  }
+			  catch(err) { content = content; }
+			  
+			  var sectionIdx = +connector.sectionIdx;
+			  var widgetIdx  = +connector.widgetIdx;
+			  
+			  content[sectionIdx].widgets[widgetIdx].type = 'TextInput';
+			  
+			  e.parameters.index   = connector.paramIdx;
+			  e.parameters.content = JSON.stringify(content);
+			  
+			  //set data state change and navigate to display card;
+			  builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+			  builder.setStateChanged(true);
+			  return builder.build();				
 			}
 		);
 	},
+	/**
+	 * Updates data with form input values, performs request and calls display with updated response;
+	 * @param {Object} e event object;
+	 */
 	updateSectionsShow : function updateSectionsShow(e) {
 		return new Promise(
-			async function(resolve) {
-				var conn = JSON.parse(e.parameters.connection);
-				var data = JSON.parse(e.parameters.data);
-				var form = e.formInput; //change to formInputs for multiselect;
-		  
-				data.forEach(function(elem){
-					var widgets = elem.widgets;
-					widgets.forEach(function(widget){
+			function (resolve) {
+			  var connector = e.parameters;
+			  var data      = connector.content;
 			  
-						var type = widget.type;
-				  
-						for(var key in form) {
-							if(key===widget.name) {
-								if(type==='Radio'||type==='Checkbox'||type==='Dropdown') {
-									var content = widget.content;
-									content.forEach(function(option){
-										if(option.value===form[key]) { option.selected = true; }else { option.selected = false; }
-									});
-								}else if(type==='KeyValue') {
-									if(form[key]!==undefined) { widget.switchValue = true; }
-								}else {
-									widget.content = form[key];
-								}
-							}
-						}
-				  
-						if(type==='TextInput') {
-							widget.state = 'editable';
-							widget.type  = 'KeyValue';
-						}
-				  
-						//handle widgets with switches that are toggled off after load;
-						var noInput = !Object.keys(form).some(function(key){ return key===widget.name; });
-						if(type==='KeyValue'&&widget.switchValue!==undefined&&noInput) {
-							widget.switchValue = false;
-						}
-			  
-					});
-				});
-		 
-				var resp = await performFetch(e,conn.url,{data:data,field1:conn.field1,field2:conn.field2,field3:conn.field3});
-		  
-				//override event object parameters with connection info and response data;
-				e.parameters.code   = resp.code;
-				e.parameters.icon   = conn.icon;
-				e.parameters.name   = conn.name;
-				e.parameters.url    = conn.url;
-				e.parameters.manual = conn.manual;
-				e.parameters.field1 = conn.field1;
-				e.parameters.field2 = conn.field2;
-				e.parameters.field3 = conn.field3;
-				e.parameters.data   = parseData(resp.content);
-			
-				return actionShow(e);
-			}
-		);
-	},
-	checkURL : function checkURL(e,element) {
-		return new Promise(
-			function(resolve) {
-				var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
-				var url = element.value;
-				var test = regExp.test(url);
-				if(!test) {
-					var action = CardService.newActionResponseBuilder();
-						action.setNotification(warning(globalInvalidURLnoMethod));
-					return action.build();
+			  //try to parse content until recieved an array; 
+			  try {
+				while(!(data instanceof Array)) {
+				  data = JSON.parse(data);
 				}
-		  
+			  }
+			  catch(err) { data = data; }
+			  
+			  var form  = e.formInput;
+			  var forms = e.formInputs;
+			  
+			  data.forEach(function(elem){
+				var widgets = elem.widgets;
+				widgets.forEach(function(widget){
+				  var type = widget.type;
+				  
+				  for(var key in form) {
+					if(key===widget.name) {
+					  if(type===globalEnumRadio||type===globalEnumCheckbox||type===globalEnumDropdown) {
+						var content = widget.content;
+						content.forEach(function(option){
+						  try {
+							var isContained = forms[key].some(function(val){
+							  if(val===option.value) { return val; }
+							});
+						  }
+						  catch(error) { isContained = false; }
+						  if(isContained) { option.selected = true; }else { option.selected = false; }
+						});
+					  }else if(type==='KeyValue') {
+						if(form[key]!==undefined) { widget.switchValue = true; }
+					  }else {
+						widget.content = form[key];
+					  }
+					}
+				  }
+				  
+				  if(type==='TextInput') {
+					widget.state = 'editable';
+					widget.type  = 'KeyValue';
+				  }
+				  
+				  //handle widgets with switches that are toggled off after load;
+				  try {
+					var noInput = !Object.keys(form).some(function(key){ return key===widget.name; });
+				  }
+				  catch (error) { noInput = false; }
+				  if(type==='KeyValue'&&widget.switchValue!==undefined&&noInput) {
+					widget.switchValue = false;
+				  }
+				  
+				});
+			  });
+			 
+			  var msg   = getToken(e);
+			  var cType = new this[connector.type]();
+			  var resp  = cType.run(msg,connector,data);
+			  
+			  //override event object parameters with response data;
+			  e.parameters.code    = resp.code;
+			  e.parameters.content = resp.content;
+			  
+			  return actionShow(e);				
 			}
 		);
 	},
+	/**
+	 * Checks if URL entered is valid and displays a warning if it is not;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */
+	checkURL : function checkURL(e) {
+		return new Promise(
+			function (resolve) {
+			  var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
+			  var url = e.formInput.connectionURL;
+			  var test = regExp.test(url);
+			  if(!test) {
+				var action = CardService.newActionResponseBuilder();
+					action.setNotification(warning(globalInvalidURLnoMethod));
+				return action.build();
+			  }	
+			}
+		);
+	},
+	/**
+	 * Removes card from navigation and loads previous card in stack;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
+	goBack : function goBack(e) {
+		return new Promise(
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  //set data state change and pop card from stack;
+			  builder.setNavigation(CardService.newNavigation().popCard());
+			  builder.setStateChanged(true);
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Removes all cards from navigation and loads root (first) card in stack;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
 	goRoot : function goRoot(e) {
 		return new Promise(
-			function(resolve) {	
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);				
-				
-				var index = +e.parameters.index; 
-				
-				cardOpen(e,index);
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+
+			  var index = +e.parameters.index; 
 			  
-				return builder.build();  
-			}
-		);
-	},	
-	actionEdit : function actionEdit(e) {
- 		return new Promise(
-			function(resolve) { 
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-				
-				editDisplay(e);
-      
-				return builder.build();
+			  //set data state change and navigate to main card;
+			  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e,index)));
+			  builder.setStateChanged(true);  
+			  return builder.build();			
 			}
 		);
 	},
+	/**
+	 * Pushes settings card on stack top and loads it;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
+	goSettings : function goSettings(e) {
+		return new Promise(
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  //set data state change and navigate to settings card;
+			  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
+			  builder.setStateChanged(true);  
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Pushes confirmation card on stack top and loads it;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
+	actionConfirm : function actionConfirm(e) {
+		return new Promise(
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  //set data state change and navigate to confirmation card;
+			  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+			  builder.setStateChanged(false);
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Pushes connector update card on stack top and loads it;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
+	actionEdit : function actionEdit(e) {
+		return new Promise(
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  //set data state change and navigate to edit connector card;
+			  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
+			  builder.setStateChanged(true);
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Pushes display card on stack top with data provided and loads it;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
 	actionShow : function actionShow(e) {
 		return new Promise(
-			function(resolve) {			
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+				  
+			  var code = +e.parameters.code;
 			  
-				var code = +e.parameters.code;
-				var data = e.parameters.data;
-				
-				e.parameters.code = code;
-		  
-				if(code>=200&&code<300) {
-					
-					cardDisplay(e);
-			
-				}else { //handle incorrect urls;
-			
-					e.parameters.data  = '[]';
-					e.parameters.code  = code;
-					
-					builder.setNotification(warning(globalIncorrectURL));
-					cardDisplay(e);
-			
-				}
-  
-				return builder.build();
+			  //handle failed responses;
+			  if(code<200||code>=300) {
+				e.parameters.content  = '[]';
+				builder.setNotification(warning(globalIncorrectURL));
+			  }
+			  
+			  //set data state change and navigate to display card;
+			  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+			  builder.setStateChanged(true);
+			  return builder.build();				
 			}
 		);
 	},
+	/**
+	 * Pushes display card on stack top after performing data fetch; 
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
 	actionManual : function actionManual(e) {
 		return new Promise(
-			async function(resolve) {
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-				  
-				var url   = e.parameters.url;
-				var index = +e.parameters.index;
-				
-				var response = await performFetch(e,url);
-				var code = response.code;
-				var data = response.content;
-				  
-				if(code>=200&&code<300) {
-					
-					var len = data.length;
-					if(len!==0) {
-						e.parameters.data = data;
-					}
-					cardDisplay(e);
-					
-				}else { //handle incorrect urls;
-					
-					e.parameters.data  = '[]';
-					e.parameters.error = data;
-					builder.setNotification(warning(globalIncorrectURL));
-					cardDisplay(e);
-					
-				}
-				  
-				return builder.build();
-			}
-		);
-	},
-	actionDisplay : function actionDisplay(e) {
-		return new Promise(
-			function(resolve) {
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-					cardsetDisplay(e);
-				return builder.build();
-			}
-		);
-	},
-	//==============================END ACTIONS==============================//
-	
-	//==============================START CONNECTION ACTIONS==============================//
-	createConnection : function createConnection(e) {
-		return new Promise(
-			async function(resolve) {
-				const inputs = $('input');
-				
-				if(inputs.length===8) {
-					var icon 	  = inputs[0].value;
-					var name      = inputs[1].value;
-					var url       = inputs[2].value;
-					var field1    = inputs[3].value;
-					var field2    = inputs[4].value;
-					var field3    = inputs[5].value;
-					var useManual = inputs[6].value;
-					if(useManual==='true') { useManual = true; }else { useManual = false; }
-					var isDefault = inputs[7].value;
-					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }
-				}else {
-					var icon 	  = inputs[0].value;
-					var name      = inputs[1].value;
-					var url       = inputs[2].value;
-					var useManual = inputs[3].value;
-					if(useManual==='true') { useManual = true; }else { useManual = false; }
-					var isDefault = inputs[4].value;
-					if(isDefault==='true') { isDefault = true; }else { isDefault = false; }					
-				}
-		  
-				var connection = {
-					icon: icon,
-					url: url,
-					name: name,
-					manual: useManual
-				};
-				if(field1!=='') { connection.field1 = field1; }
-				if(field2!=='') { connection.field2 = field2; }
-				if(field3!=='') { connection.field3 = field3; }
-		  
-				var builder = CardService.newActionResponseBuilder();
-				
-				var src = await getProperty('config','user');
-				if(src===null) { createSettings(); }
-				src = await getProperty('config','user');
-				
-				src.push(connection);
-				console.log(src);
-				await setProperty('config',src,'user');
-				
-				builder.setNotification(notification(globalUpdateSuccess));
-				builder.setStateChanged(true);
-				cardOpen(e);
-				
-				return builder.build();
-			}
-		);
-	},
-	updateConnection : function updateConnection(e) {
-		return new Promise(
-			async function(resolve) {		
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-					
-				var index = +e.parameters.index;
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  var msg       = getToken(e); 
+			  var connector = e.parameters;
 
-				var fromSettings = e.parameters.fromSettings;
-				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
+			  var cType = new this[connector.type]();
+			  var cAuth = cType.auth;
 				
-				const inputs = $('input');
-				var icon 	  = inputs[0].value;
-				var name      = inputs[1].value;
-				var url       = inputs[2].value;
-				var field1    = inputs[3].value;
-				var field2    = inputs[4].value;
-				var field3    = inputs[5].value;
-				var useManual = inputs[6].value;
-				if(useManual==='true') { useManual = true; }else { useManual = false; }
+			  //try to perform request;
+			  var response;
+			  
+			  try { 
+				response = cType.run(msg,connector); 
+			  }
+			  catch(error) { 
+				//set empty response headers and content to error message;
+				response = {headers:'',content:error.message}; 
 				
-				var connection = {
-					icon: icon,
-					url: url,
-					name: name,
-					manual: useManual
-				};	
-				if(field1!=='') { connection.field1 = field1; }
-				if(field2!=='') { connection.field2 = field2; }
-				if(field3!=='') { connection.field3 = field3; }				
-				
-				var src = await getProperty('config','user');
-				src[index] = connection;
-				setProperty('config',src,'user');
-				
-				builder.setNotification(notification(globalUpdateSuccess));
-				
-				if(fromSettings) {
-					cardSettings(e);
+				//check if error is caused by code or fetch fail;
+				var isAuthError = checkAgainstErrorTypes(error);
+				if(isAuthError) {
+				  response.code = 401;
 				}else {
-					cardOpen(e);
+				  response.code = 0;
 				}
-				
-				return builder.build();
+			  }
+			  
+			  var code    = response.code;
+			  var content = response.content;
+			  
+			  e.parameters.code = code;
+			  
+			  if(code>=200&&code<300) {
+				//handle successful requests;
+				var len = content.length;
+				if(len!==0) {
+				  e.parameters.content = content;
+				}
+			  }else {
+				//handle failed requests;
+				e.parameters.content  = '[]';
+				e.parameters.error    = content;
+				builder.setNotification(warning(globalIncorrectURL));
+			  }
+			  
+			  //set data state change and navigate to display card;
+			  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+			  builder.setStateChanged(true);
+			  return builder.build();				
 			}
 		);
 	},
-	removeConnection : function removeConnection(e) {
-		return new Promise(
-			async function(resolve) {	  
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);
-	  
-				var index = +e.parameters.index;
-				var fromSettings = e.parameters.fromSettings;
-				if(fromSettings==='true') { fromSettings = true; }else { fromSettings = false; }
-				
-				var src = await getProperty('config','user');
-				src = src.filter(function(connect,idx){ 
-					if(idx!==index) { return connect; }
-				}); 				
-				setProperty('config',src,'user');
-				
-				builder.setNotification(notification(globalRemoveSuccess));
-				
-				if(fromSettings) {
-					cardSettings(e);
-				}else {
-					cardOpen(e);
-				}
-				
-				return builder.build();
-			}
-		);
-	},
+	/**
+	 * Performs reset of every user preference;
+	 * @param {Object} e event object;
+	 * @returns {ActionResponse}
+	 */	
 	performFullReset : function performFullReset(e) {
 		return new Promise(
-			function(resolve) {
-				var builder = CardService.newActionResponseBuilder();
-					builder.setStateChanged(true);				
-				
-				var src = getProperty('config','user');
-				if(src!==null) {
-					try {
-						deleteProperty('config','user');
-					}
-					catch(e) {
-						console.log('There was no config to delete');
-					}
-				}
-				deleteAllProperties('user');
-				
-				cardOpen(e);
-				return builder.build();
+			async function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  var onSuccessText = e.parameters.success;
+			  var onFailureText = e.parameters.failure;
+			  
+			  try {
+				var src = await getProperty('config','user');
+				await deleteAllProperties('user');
+				builder.setNotification(notification(onSuccessText));
+			  }
+			  catch(err) {
+				builder.setNotification(error(onFailureText));
+			  }
+			  
+			  //set data state change and navigate to main card;
+			  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
+			  builder.setStateChanged(true);
+			  return builder.build();				
 			}
 		);
 	},
-	//==============================END CONNECTION ACTIONS==============================//
-	invokeCardSettings: function invokeCardSettings(parameters) {
+	//=================================END ACTIONS=================================//
+	
+	//==============================CONNECTOR ACTIONS==============================//
+	/**
+	 * Creates new connector and saves it to properties;
+	 * @param {Object} e event object;
+	 */	
+	createConnector : function createConnector(e) {
+		return new Promise(
+			function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  var data      = e.formInput;
+			  var multi     = e.formInputs;
+			  var isDefault = data.isDefault;
+			  var useManual = data.manual;
+			  
+			  //set to false if switched off;
+			  if(isDefault===undefined) { isDefault = false; }
+			  if(useManual===undefined) { useManual = false; }
+			  
+			  //initialize connector type;
+			  var type = e.parameters.type;
+			  var cType = new this[type]();
+			  
+			  //connector default properties;
+			  var connector = {type:type,isDefault:isDefault,manual:useManual};  
+			  
+			  //set connector properties;
+			  for(var key in data) {
+				var value = data[key];
+				
+				//set multiple values if select input is present;
+				var multivalue = multi[key];
+				if(multivalue.length>1) { 
+				  connector[key] = multivalue; 
+				}else { 
+				  connector[key] = value; 
+				}
+				
+				//override stringifyed booleans;
+				if(value==='true') { value = true; }
+				if(value==='false') { value = false; }
+				
+				//default icon, name and url if custom connector and no content provided;
+				if(value===''&&type===globalBaseClassName) {
+				  if(key===globalIconFieldName) { connector[key] = globalCustomIconUrl;  }
+				  if(key===globalNameFieldName) { connector[key] = globalCustomNameName; }
+				  if(key===globalURLfieldName)  { connector[key] = globalCustomUrlUrl;   }
+				}
+			  }
+			  
+			  //set icon and url for typed connectors;
+			  if(type!==globalBaseClassName) {
+				//handle connector icon creation;
+				if(data.hasOwnProperty(globalIconFieldName)) { 
+				  connector[globalIconFieldName] = data[globalIconFieldName]; 
+				}else { 
+				  connector[globalIconFieldName] = cType[globalIconFieldName]; 
+				}
+				//handle connector name creation;
+				if(data[globalNameFieldName]==='') { 
+				  connector[globalNameFieldName] = cType[globalNameFieldName]; 
+				}
+				//handle connector url creation;
+				if(data.hasOwnProperty(globalURLfieldName)) { 
+				  connector[globalURLfieldName] = data[globalURLfieldName]; 
+				}else if(cType.hasOwnProperty(globalURLfieldName)) { 
+				  connector[globalURLfieldName] = cType[globalURLfieldName]; 
+				}
+			  }  
+				 
+			  //add auth type property if connector type does not specify any;
+			  var cAuth = new this[type]().auth;
+			  if(Object.keys(cAuth).length===0) {
+				var auth  = data.auth;
+				if(data.auth===undefined) { auth = 'none'; }
+				connector.auth = auth;
+				if(auth==='OAuth2') { 
+				  var scope     = data.scope;
+				  var urlAuth   = data.urlAuth;
+				  var urlToken  = data.urlToken;
+				  var id        = data.id;
+				  var secret    = data.secret;
+				  connector.scope     = scope;
+				  connector.urlAuth   = urlAuth;
+				  connector.urlToken  = urlToken;
+				  connector.id        = id;
+				  connector.secret    = secret;
+				}
+			  }else {
+				connector.auth = 'OAuth2'; //until added auth types - hardcoded;
+			  }
+			  
+			  try {
+				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
+			  
+				//get configuration or create a new one if none found;
+				var config = getProperty('config','user');
+				if(config===null) { createSettings(); }
+				config = getProperty('config','user');
+				
+				//reset default connectors if new one is default;
+				if(connector.isDefault) {
+				  config.forEach(function(conn){
+					if(conn.isDefault||conn.isDefault===undefined) { conn.isDefault = false; }
+				  });
+				}
+				
+				//create connector and notify thwe user of success;
+				config.push(connector);
+				setProperty('config',config,'user');
+				builder.setNotification(notification(globalCreateSuccess));
+			  }
+			  catch(err) {
+				//notify the user that connector creation failed;
+				builder.setNotification(error(globalCreateFailure));  
+			  }
+			  
+			  //change data state and build settings card;
+			  builder.setStateChanged(true); 
+			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Updates connector and saves it to properties;
+	 * @param {Object} e event object;
+	 */
+	updateConnector : function updateConnector(e) {
+		return new Promise(
+			async function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  var data      = e.formInput;
+			  var multi     = e.formInputs;
+			  var icon      = data[globalIconFieldName];
+			  var name      = data[globalNameFieldName];
+			  var url       = data[globalURLfieldName];
+			  
+			  var isDefault = data.isDefault;
+			  var useManual = data.manual;
+			  
+			  if(isDefault!==undefined) { isDefault = true; }else { isDefault = false; }
+			  if(useManual!==undefined) { useManual = true; }else { useManual = false; }
+			  
+			  //initialize connector type;
+			  var type = e.parameters.type;
+			  var cType = new this[type](icon,name,url);
+
+			  //connector default properties;
+			  var connector = {type:type,isDefault:isDefault,manual:useManual};  
+			  
+			  //set connector properties;
+			  for(var key in data) {
+				var value = data[key];
+				
+				//set multiple values if select input is present;
+				var multivalue = multi[key];
+				if(multivalue.length>1) { 
+				  connector[key] = multivalue; 
+				}else { 
+				  connector[key] = value; 
+				}
+				
+				//override stringifyed booleans;
+				if(value==='true') { value = true; }
+				if(value==='false') { value = false; }
+				
+				//default icon, name and url if custom connector and no content provided;
+				if(value===''&&type===globalBaseClassName) {
+				  if(key===globalIconFieldName) { connector[key] = globalCustomIconUrl;  }
+				  if(key===globalNameFieldName) { connector[key] = globalCustomNameName; }
+				  if(key===globalURLfieldName)  { connector[key] = globalCustomUrlUrl;   }
+				}
+			  }
+
+			  //set icon and url for typed connectors;
+			  if(type!==globalBaseClassName) {
+				//handle connector icon creation;
+				if(data.hasOwnProperty(globalIconFieldName)) { 
+				  connector[globalIconFieldName] = data[globalIconFieldName]; 
+				}else { 
+				  connector[globalIconFieldName] = cType[globalIconFieldName]; 
+				}
+				//handle connector name creation;
+				if(data[globalNameFieldName]==='') { 
+				  connector[globalNameFieldName] = cType[globalNameFieldName]; 
+				}
+				//handle connector url creation;
+				if(data.hasOwnProperty(globalURLfieldName)) { 
+				  connector[globalURLfieldName] = data[globalURLfieldName]; 
+				}else if(cType.hasOwnProperty(globalURLfieldName)) { 
+				  connector[globalURLfieldName] = cType[globalURLfieldName]; 
+				}
+			  }  
+
+			  //add auth type property if connector type does not specify any;
+			  var cAuth = new this[type]().auth;
+			  if(Object.keys(cAuth).length===0) {
+				var auth = data.auth;
+				if(data.auth===undefined) { auth = 'none'; }
+				connector.auth = auth;
+				if(auth==='OAuth2') { 
+				  var scope     = data.scope;
+				  var urlAuth   = data.urlAuth;
+				  var urlToken  = data.urlToken;
+				  var id        = data.id;
+				  var secret    = data.secret;
+				  connector.scope     = scope;
+				  connector.urlAuth   = urlAuth;
+				  connector.urlToken  = urlToken;
+				  connector.id        = id;
+				  connector.secret    = secret;
+				}
+			  }else {
+				connector.auth = 'OAuth2'; //until added auth types - hardcoded;
+			  }
+
+			  //connector index (for ease of flow);
+			  var index = e.parameters.index;
+
+			  try {
+				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
+			  
+				//get configuration;
+				var config = await getProperty('config','user');
+
+				//reset default connectors if updated one is default;
+				if(connector.isDefault) {
+				  config.forEach(function(conn){
+					if(conn.isDefault||conn.isDefault===undefined) { conn.isDefault = false; }
+				  });
+				}
+				
+				//update connector and notify the user of success;
+				config[index] = connector;
+				await setProperty('config',config,'user');
+				builder.setNotification(notification(globalUpdateSuccess));
+			  }
+			  catch(err) {
+				//notify the user that connector update failed;
+				builder.setNotification(error(globalUpdateFailure));
+			  }
+			  
+			  //change data state and build settings card;
+			  builder.setStateChanged(true);
+			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			  return builder.build();				
+			}
+		);
+	},
+	/**
+	 * Removes connector and saves properties;
+	 * @param {Object} e event object;
+	 */	
+	removeConnector : function removeConnector(e) {
+		return new Promise(
+			async function (resolve) {
+			  var builder = CardService.newActionResponseBuilder();
+			  
+			  //connector index (for ease of flow);
+			  var index = +e.parameters.index;
+			  
+			  try {
+				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
+			  
+				//get configuration;
+				var src = await getProperty('config','user');
+				
+				//remove connector and notify the user of success;
+				src = src.filter(function(connect,idx){
+				  if(idx!==index) { return connect; }
+				});
+				await setProperty('config',src,'user');
+				builder.setNotification(notification(globalRemoveSuccess));
+			  }
+			  catch(err) {
+				//notify the user that connector removal failed;
+				builder.setNotification(error(globalRemoveFailure));    
+			  }
+			  
+			  //change data state and build settings card;
+			  builder.setStateChanged(true);
+			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			  return builder.build();				
+			}
+		);
+	},
+	//============================END CONNECTOR ACTIONS============================//
+	
+	//==============================UNIVERSAL ACTIONS==============================//
+	invokeCardSettings : function invokeCardSettings(e) {
 		return new Promise(
 			function(resolve) {
-				cardSettings(parameters);
+				cardSettings(e);
 			}
 		);
 	}
+	//============================END UNIVERSAL ACTIONS============================//
 }
+//===================================END ACTIONS===================================//
+
+//==================================START PROPERTY=================================//
+/**
+ * Fetches user / script property value by key;
+ * @param {String} key key of the property to find;
+ * @param {String} type 'user' or 'script' to determine prop type to get;
+ * @returns {String}
+ */
+function getProperty(key,type) {
+  var props;
+  switch(type) {
+    case 'script': 
+      props = PropertiesService.getScriptProperties();
+    break;
+    case 'user':
+      props = PropertiesService.getUserProperties();
+    break;
+  }
+  var value = props.getProperty(key);
+  try { value = JSON.parse(value); }
+  catch(e) { return value; }
+ 
+  return value;
+}
+
+/**
+ * Fetches an sets user / script property by key;
+ * @param {String} key key of the property to find;
+ * @param {String} value new value of the property;
+ * @param {String} type 'user' or 'script' to determine prop type to get;
+ */
+function setProperty(key,value,type) {
+  var props;
+  switch(type) {
+    case 'script': 
+      props = PropertiesService.getScriptProperties();
+    break;
+    case 'user':
+      props = PropertiesService.getUserProperties();
+    break;
+  }
+  try { value = JSON.stringify(value); }
+  catch(e) { props.setProperty(key,value); }  
+  
+  props.setProperty(key,value);
+}
+
+/**
+ * Deletes a user / script property by key;
+ * @param {String} key key of the property to find;
+ * @param {String} type 'user' or 'script' to determine prop type to get;
+ */
+function deleteProperty(key,type) {
+  var props;
+  switch(type) {
+    case 'script': 
+      props = PropertiesService.getScriptProperties();
+    break;
+    case 'user':
+      props = PropertiesService.getUserProperties();
+    break;
+  }
+  props.deleteProperty(key);
+}
+
+/**
+ * Deletes every user / script property set;
+ * @param {String} key key of the property to find
+ * @param {String} type 'user' or 'script' to determine prop type to get 
+ */
+function deleteAllProperties(type) {
+  var props;
+  switch(type) {
+    case 'script': 
+      props = PropertiesService.getScriptProperties();
+    break;
+    case 'user':
+      props = PropertiesService.getUserProperties();
+    break;
+  }
+  props.deleteAllProperties(); 
+}
+//==================================END PROPERTY=================================//
+
+//=================================START BACKEND=================================//
+/**
+ * Creates an object for generating timeframes;
+ * @param {Date} start instance of Date (starting);
+ * @param {Date} end instance of Date (ending);
+ * @returns {Object}
+ */
+function getTimeframe(start,end) {
+  //calc milliseconds between dates;
+  var between = end.valueOf()-start.valueOf();
+  
+  //create timeframe object;
+  var timeframe = {
+    between : between,
+    minutes : 0,
+    hours   : 0,
+    days    : 0,
+    months  : 0,
+    years   : 0
+  };
+  
+  //count timeframe values;
+  var minutes = end.getMinutes()  - start.getMinutes();
+  var hours   = end.getHours()    - start.getHours();
+  var days    = end.getDate()     - start.getDate();
+  var months  = end.getMonth()    - start.getMonth();
+  var years   = end.getFullYear() - start.getFullYear();
+  
+  //update timeframe parameters;
+  timeframe.minutes = minutes,
+  timeframe.hours   = hours,
+  timeframe.days    = days,
+  timeframe.months  = months,
+  timeframe.years   = years
+  
+  return timeframe;
+}
+
+/**
+ * Checks whether a sheet has any data that matches email regExp;
+ * @param {Sheet} sheet sheet currently being looped through;
+ * @returns {Boolean}
+ */
+function hasEmail(sheet) {
+  var data = sheet.getDataRange().getValues();
+  var regExp = /[^\<].+@.+[^\>]/;
+  var hasEmailData = data.some(function(d){ return (regExp).test(d); });
+  return hasEmailData;
+}
+
+/**
+ * Fetches spreadsheet by URL or Id;
+ * @param {String} filter spreadsheet URL or Id;
+ * @param {Boolean} isId truthy value to determine fetching by Id;
+ * @returns {Spreadsheet} || {null}
+ */
+function getSpreadsheet(filter,isId) {
+  try {
+    var spreadsheet;
+    if(isId) {
+      spreadsheet = SpreadsheetApp.openById(filter);
+    }else {
+      spreadsheet = SpreadsheetApp.openByUrl(filter);
+    }
+    return spreadsheet;
+  }
+  catch(error) {
+    return null;
+  }
+}
+
+/**
+ * Checks error type against common error types;
+ * @param {Object} error error object;
+ * @returns {Boolean}
+ */
+function checkAgainstErrorTypes(error) {
+  var isEval   = error instanceof EvalError;
+  var isRange  = error instanceof RangeError;
+  var isRef    = error instanceof ReferenceError;
+  var isSyntax = error instanceof SyntaxError;
+  var isType   = error instanceof TypeError;
+  var isURI    = error instanceof URIError;
+  
+  var notTyped = !isEval&&!isRange&&!isRef&&!isSyntax&&!isType&&!isURI;
+
+  return notTyped;
+}
+
+/**
+ * Stringifies every object property that is not of type String;
+ * @param {Object} object object to change;
+ * @returns {Object}
+ */
+function propertiesToString(object) {
+  var length = Object.keys(object).length;
+  if(length!==0) {
+    
+    for(var key in object) {
+      var value = object[key];
+
+      //check normal types;
+      var isObject  = typeof value==='object';
+      var isBoolean = typeof value==='boolean';
+      var isNumber  = typeof value==='number';
+      //check unique situations;
+      var isNull    = value===null;
+      var isArray   = value instanceof Array;
+      var isNotNum  = isNaN(value);
+      
+      if(isArray) {
+        value.forEach(function(element,index,array){ 
+          //check normal types;
+          var elemIsObject  = typeof element==='object';
+          var elemIsBoolean = typeof element==='boolean';
+          var elemIsNumber  = typeof element==='number';
+          //check unique situations;
+          var elemIsNull    = element===null;
+          var elemIsArray   = element instanceof Array;
+          var elemIsNotNum  = isNaN(element);
+          //modify values according to checks;
+          if(!elemIsNull&&elemIsObject&&!elemIsArray) { array[index] = JSON.stringify(element); }
+          if(elemIsBoolean) { array[index] = element.toString(); }
+          if(elemIsNull) { array[index] = JSON.stringify(new Object(element)); }
+        });
+        object[key] = value.join(',');
+      } //handle arrays (only plain ones);
+      if(!isNull&&isObject&&!isArray) {     
+        object[key] = JSON.stringify(value); 
+      } //handle proper objects;
+      if(isBoolean||isNumber||isNotNum) { object[key] = value.toString(); } //handle booleans, numbers and NaNs (same behaviour);
+      if(isNull) { object[key] = JSON.stringify(new Object(value)); } //handle null;
+      
+    }
+    
+  }
+  return object;
+}
+
+/**
+ * Finds connector index in config;
+ * @param {Array} config array of connector config objects;
+ * @param {Object} connector connector config object;
+ */
+function getIndex(config,connector) {
+  var index = -1;
+  var name = connector.name;
+  
+  if(config instanceof Array) {
+    if(config.length!==0) {
+      config.forEach(function(conn,idx){
+        if(conn.name===name) { index = idx; }
+      });
+    }
+  }
+  
+  return index;
+}
+
+/**
+ * Extends object with all properties of another;
+ * @param {Object} extended object to extend;
+ * @param {Object} extender object which properties to use;
+ * @returns {Object}
+ */
+function mergeObjects(extended,extender) {
+  //check if extended and extender are arrays;
+  var isArrExd = extended instanceof Array;
+  var isArrExr = extender instanceof Array;
+  
+  //perform merging;
+  if(isArrExd&&isArrExr) {
+    //if both are arrays -> extend length;
+    extender.forEach(function(prop){
+      extended[extended.length] = prop;
+    });
+    return extended;
+  }else if(!isArrExd&&!isArrExr) {
+    //if both are objects -> extend props;
+    for(var key in extender) {
+      var prop = extender[key];
+      if(prop===undefined) { continue; }
+      if(!extended.hasOwnProperty(key)) { extended[key] = prop; }
+    }
+    return extended;
+  }else if(isArrExd) {
+    //if extended is array -> append extender;
+    extended[extended.length] = extender;
+    return extended;
+  }else {
+    //if extender is array -> append extended;
+    extender[extender.length] = extended;
+    return extender;
+  }
+  
+}
+
+/**
+ * Extends object provided with data except for default fields;
+ * @param {Object} object object to extend with custom fields;
+ * @param {Object} inputs object containing custom data;
+ * @returns {Object}
+ */
+function extendCustom(object,inputs) {
+  for(var key in inputs) {
+    var notIcon    = key!==globalIconFieldName;
+    var notName    = key!==globalNameFieldName;
+    var notURL     = key!==globalURLfieldName;
+    var notManual  = key!== globalManualFieldName;
+    var notDefault = key!==globalDefaultFieldName;
+    if(notIcon&&notName&&notURL&&notManual&&notDefault) {
+      object[key] = inputs[key];
+    }
+  }
+  return object;
+}
+
+/**
+ * Trims message properties that can be trimmed and returns modified object;
+ * @param {GmailMessage} msg Apps Script class representing current message;
+ * @param {Boolean} trimFromToFrom truthy value to determine whether to trim from property to email address;
+ * @param {Boolean} trimFromToSender truthy value to determine whether to trim from property to sender info;
+ * @returns {Object}
+ */
+function trimMessage(msg,trimFromToFrom,trimFromToSender) {
+  if(trimFromToFrom||trimFromToSender) {
+    var from = msg.getFrom();
+  }
+  var trimmed = {};
+  if(trimFromToFrom) { trimmed.email = trimFrom(from); }
+  if(trimFromToSender) { 
+    trimmed.name = trimSender(from);
+    
+    //split sender's name by spaces (rudimental guessing);
+    var split = trimmed.name.split(' ');
+    
+    //access possible first name, lowercase it and set default first name index;
+    var first = split[0];
+    var lwd   = first.toLowerCase();
+    var start = 0;
+    
+    //check if sender's name starts with "the" or "a";
+    if(lwd==='the'||lwd==='a') { 
+      first += ' '+split[1]; 
+      start = 1; 
+    }
+    
+    //set first name and initiate last;
+    trimmed.first = first;
+    trimmed.last  = '';
+    if(split.length>1) {
+      split.forEach(function(part,idx){
+        var spacer = '';
+        if(idx!==(start+1)) { spacer = ' '; }
+        if(idx>start) { trimmed.last += spacer+part; }
+      });
+    }
+    
+  }
+  return trimmed;
+}
+
+/**
+ * Checks if data contains widgets in "editable" state;
+ * @param {Array} data an array of objects to check;
+ * @returns {Boolean}
+ */
+function checkEditable(data) {
+  if(!(data instanceof Array)) { return false; }
+  var hasEditable = data.some(function(elem){
+    var widgets = elem.widgets;
+    if(widgets instanceof Array) {
+      var elemHasEditable = widgets.some(function(widget){
+        var state = widget.state;
+        if(state==='editable') { return widget; }
+      });
+    }else { elemHasEditable = false; }
+    if(elemHasEditable) { return elem; }
+  });
+  return hasEditable;
+}
+
+/**
+ * Checks if data contains nested objects to determine which Ui to load;
+ * @param {Array} data an array of objects to check;
+ * @returns {Boolean}
+ */
+function checkNested(data) {
+  if(!(data instanceof Array)) { return false; }
+  var hasNested = data.some(function(elem){ 
+    var hasSecondLevelObject = false;
+    for(var key in elem) {
+      var val = elem[key];
+      if(typeof val === 'object') { 
+        hasSecondLevelObject = true; break; 
+      }
+    }
+    return hasSecondLevelObject;
+  });
+  return hasNested;
+}
+
+/**
+ * Attempts to pre-parse data;
+ * @param {String} data data string to be parsed;
+ * @returns {Array}
+ */
+function parseData(data) {
+
+  //try to parse content until recieved an array; 
+  try {
+    while(!(data instanceof Array)) {
+      data = JSON.parse(data);
+    }
+    return data;
+  }
+  catch(err) { data = data; }
+
+  try {
+    if(data===''||data==='[]'||data==='""') {
+      data = []; 
+    }else { 
+      data = JSON.parse(data);
+    }
+    if(!(data instanceof Array)&&!(typeof data==='string')) {
+      data = [data]; 
+    }else if(typeof data==='string') {
+      data = JSON.parse(data);
+    }
+    if(!(data instanceof Array)&&(typeof data==='object')) {
+      data = [data];
+    }
+  }
+  catch(e) {
+    return data;
+  }
+  return data;
+}
+
+/**
+ * Creates settings storage;
+ * @param {String} content content to pass to JSON file;
+ */
+async function createSettings(content) {
+  if(content===undefined) { content = []; }
+  await setProperty('config',content,'user');
+}
+
+/**
+ * Trims sender info from name and '<' & '>' characters;
+ * @param {String} input sender info to trim;
+ * @return {String}
+ */
+function trimFrom(input) {
+  var regEx1 = /\<.+@.+\>/;
+  var regEx2 = /[^\<].+@.+[^\>]/;
+  try {
+    var r = input.match(regEx1)[0];
+  } catch(e) {
+    return input;
+  }
+  var email = r.match(regEx2)[0];
+  return email;
+}
+
+/**
+ * Trims sender name from "name <email>" input;
+ * @return {String}
+ */
+function trimSender(input) {
+  try {
+    var index = input.indexOf(' <');
+    if(index===-1) {
+      return '';
+    }else {
+      return input.replace(input.slice(index),'');
+    }
+  }
+  catch(e) {
+    return '';
+  }
+}
+//====================================END BACKEND====================================//
+
+//================================START PERFORM FETCH================================//
+/**
+ * Performs URL fetch with payload to external service;
+ * @param {String} url url to be passed to request;
+ * @param {Object} headers headers to be passed to request;
+ * @param {Object} payload payload to be passed to request;
+ * @returns {Object}
+ */
+async function performFetch(url,method,headers,payload) {
+  try {    
+    var params = {
+      'method':method,
+      'muteHttpExceptions':true,
+      'contentType':'application/json',
+      'headers':headers
+    };
+    if(method!=='get') { params.payload = JSON.stringify(payload); }
+    
+    var response = await UrlFetchApp.fetch(url,params);
+    var code     = response.getResponseCode();
+    var headers  = response.getHeaders();
+    var content  = response.getContentText();
+   
+    var isValid = content!==null&&content!==undefined;
+    if(!isValid) { content = '[]'; }
+    return {code:code,headers:headers,content:content};
+  }
+  catch(e) {
+    //handles request exceptions not caught by muteHttpExceptions;
+    return {code:0,headers:'',content:e.message}
+  }
+}
+//=================================END PERFORM FETCH=================================//
+
+
+
+
+
+
+
+
+
+/**
+ * Trims sender info from name and '<' & '>' characters;
+ * @param {String} input -> sender info to trim
+ * @return {String}
+ */
+function trimFrom(input) {
+	var regEx1 = /\<.+@.+\>/;
+	var regEx2 = /[^\<].+@.+[^\>]/;
+	try {
+		var r = input.match(regEx1)[0];
+	} catch(e) {
+		return input;
+	}
+	var email = r.match(regEx2)[0];
+	return email;
+}
+
+/**
+ * Trims sender name from "name <email>" input;
+ * @return {String}
+ */
+function trimSender(input) {
+  try {
+    var index = input.indexOf(' <');
+    if(index===-1) {
+      return '';
+    }else {
+      return input.replace(input.slice(index),'');
+    }
+  }
+  catch(e) {
+    return '';
+  }
+}
+//===========================================END BACKEND===========================================//
+
+//==========================================START GLOBALS==========================================//
+//headers;
+var globalWelcomeHeader          = 'Welcome to Cardin for Gmail!';
+var globalConfigHeader           = 'Connector configuration';
+var globalSettingsHeader         = 'Settings';
+var globalAdvancedHeader         = 'Advanced settings';
+var globalHelpHeader             = 'Help';
+var globalConfirmHeader          = 'Confirm action';
+var globalExistingConnectsHeader = 'Configured Connectors';
+var globalManualHeader           = 'Manual fetch';
+var globalAutoHeader             = 'Auto fetch';
+var globalShowHeader             = 'Record';
+var globalUnparsedHeader         = 'Unparsed data';
+var globalConfiguredHeader       = 'Configured Connectors';
+var globalChooseTypeHeader       = 'Available Connector types';
+var globalConfigErrorHeader      = 'Configuration error';
+
+//titles;
+var globalWelcomeWidgetTitle        = '';
+var globalHelpWidgetTitle           = '';
+var globalInstallWidgetTitle        = '';
+var globalCustomWidgetTitle         = '';
+var globalConfirmWidgetTitle        = '';
+var globalCustomWidgetNameTitle     = 'Connector name';
+var globalResetWidgetTitle          = 'Reset';
+var globalClearWidgetTitle          = 'Cache';
+var globalCodeWidgetTitle           = 'Code';
+var globalErrorWidgetTitle          = 'Error description';
+var globalUnparsedErrorWidgetTitle  = 'Parse failure reason';
+var globalUnparsedDataWidgetTitle   = 'Unparsed data';
+var globalNoDataWidgetTitle         = '';
+var globalExtraDataTitle            = '';
+var globalCustomWidgetFieldTitle    = 'Field';
+var globalConfigErrorWidgetTitle    = '';
+var globalAuthTypeErrorTitle        = 'Auth type mismatch';
+
+//content - errors;
+var globalConfigErrorWidgetContent   = 'Seems like you have a configuration issue! Please, reset the Add-on if this is the only section you see. Otherwise, try removing any malformed Connectors before resetting';
+var globalAuthTypeErrorContent       = 'The Connector seems to require OAuth 2.0 authorization to work, but you set auth type to "none". Please configure OAuth properties in Settings';
+//content - others;
+var globalAuthTextWidgetContent      = 'This Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
+var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
+var globalConfirmResetWidgetContent  = 'Every configured Connector will be permanently deleted. Are you sure?';
+var globalConfirmRemoveWidgetContent = 'The Connector will be permanently removed. Are you sure?';
+var globalHelpWidgetContent          = 'Visit our website for setup instructions and other support resources';
+var globalCustomWidgetContent        = 'You can create a custom Connector by completing the form below';
+var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
+var globalCustomWidgetSwitchText     = 'Manually invoke Connector';
+var globalCustomWidgetAuthText       = 'Authorization type';
+var globalIsDefaultWidgetSwitchText  = 'Run and display by default';
+var globalNoDataWidgetText           = 'The Connector returned with no data to be displayed';
+var globalExtraDataText              = 'More data is available, but we trimmed it to avoid hitting the 100 field limit';
+var globalGoToSettings               = 'Go to settings';
+var globalSheetsContent              = 'Google Sheets';
+var globalFlowContent                = 'Microsoft flow';
+var globalZapierContent              = 'Zapier';
+var globalIftttContent               = 'IFTTT';
+var globalCustomTypeContent          = 'Custom';
+var globalNotAuthorizedContent       = 'Seems like the Connector you built requires authentication but no credentials were provided';
+var globalOptionalFieldsContent      = 'These fields are optional and can be left blank';
+
+//hints;
+var globalCustomWidgetNameHint      = 'Name to display in list of Connectors';
+
+//button as labels texts;
+var globalSuccess                   = 'Success';
+var globalError                     = 'Error';
+var globalNoData                    = 'No data';
+var globalAuto                      = 'Auto';
+var globalManual                    = 'Manual';
+
+//button texts;
+var globalResetWidgetSubmitText     = 'Reset';
+var globalClearWidgetSubmitText     = 'Clear';
+var globalCreateConnectorText       = 'Create';
+var globalUpdateConnectorText       = 'Update';
+var globalRemoveConnectorText       = 'Remove';
+var globalUpdateShowText            = 'Update';
+var globalLoadExtraForwardText      = 'Next';
+var globalLoadExtraBackText         = 'Back';
+var globalRootText                  = 'Go back';
+var globalCardinUrlText             = 'cardinsoft.com';
+var globalYouTubeUrlText            = 'YouTube instructions';
+var globalOpenAuthText              = 'Authorize';
+var globalRevokeAuthText            = 'Revoke';
+var globalLoginText                 = 'Login';
+var globalConfirmText               = 'Confirm';
+var globalCancelText                = 'Cancel';
+
+//URLs;
+var globalInfusionIconUrl = 'https://cardinsoft.github.io/outlook/assets/infusionsoft.png';
+var globalCardinUrl       = 'https://cardinsoft.com/cardin-gmail/';
+var globalYouTubeUrl      = 'https://youtube.com/';
+var globalCardinIconUrl   = 'https://cardinsoft.github.io/outlook/assets/cardin-logo.png';
+var globalGitHubIconUrl   = 'https://cardinsoft.github.io/outlook/assets/github.png';
+var globalSheetsIconUrl   = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
+var globalFlowIconUrl     = 'https://cardinsoft.github.io/outlook/assets/flow.png';
+var globalZapierIconUrl   = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
+var globalIftttIconUrl    = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
+var globalCustomIconUrl   = 'https://cardinsoft.github.io/outlook/assets/custom.png';
+var globalTypesConfigUrl  = 'https://cardinsoft.github.io/outlook/types.json';
+ 
+
+//notifications, warnings and error messages
+var globalCreateSuccess       = 'Connector successfully created!';
+var globalCreateFailure       = 'Connector creation failed';
+var globalUpdateSuccess       = 'Connector successfully updated!';
+var globalUpdateFailure       = 'Connector update failed';
+var globalRemoveSuccess       = 'Connector successfully removed!';
+var globalRemoveFailure       = 'Connector removal failed';
+var globalClearSuccess        = 'Cache successfully cleared!';
+var globalIncorrectURL        = 'Please reconfigure the Connectors listed below as their URLs returned with an error';
+var globalInvalidURLnoMethod  = 'URLs should include http or https and a domain';
+var globalRevokeAccessSuccess = 'Access token successfully revoked!';
+var globalResetSuccess        = 'Add-on configuration successfully reset!';
+var globalResetFailure        = 'Add-on configuration reset failed!';
+
+//field names and global parameters;
+var globalEnumRadio             = 'RADIO_BUTTON';
+var globalEnumCheckbox          = 'CHECK_BOX';
+var globalEnumDropdown          = 'DROPDOWN';
+var globalCustomUrlUrl          = '';
+var globalCustomNameName        = 'custom';
+var globalBaseClassName         = 'Connector';
+var globalIconFieldName         = 'icon';
+var globalNameFieldName         = 'name';
+var globalURLfieldName          = 'url';
+var globalManualFieldName       = 'manual';
+var globalDefaultFieldName      = 'isDefault';
+var globalUrlAuthFieldName      = 'urlAuth';
+var globalUrlTokenFieldName     = 'urlToken';
+var globalClientIdFieldName     = 'id';
+var globalSecretFieldName       = 'secret';
+var globalScopeFieldName        = 'scope';
+var globalRedirectFieldName     = 'redirect';
+var globalConfigName            = 'config';
+var globalTextButtonActionClick = 'click';
+var globalTextButtonActionLink  = 'link';
+var globalNumUncollapsible      = 5;
+var globalWidgetsCap            = 50;
+var globalInfusionsoftApptsCap  = 5;
+var globalInfusionsoftTasksCap  = 5;
+
+//OAuth2 flow;
+var globalAlreadyAuthorized = 'Connector previously authorized!';
+var globalAlreadyRevoked    = 'Connector revoked or does not have access!';
+var globalRevokeAccess      = 'Revoke access';
+var globalAuthorize         = 'Please authorize the Connector';
+var globalAuthSuccess       = 'Successfully authorized! You can close the window now';
+var globalAuthFailure       = 'Authorization failed! You can close the window now';
+var globalAuthUrlInputHint  = 'Authorization URL';
+var globalTokenUrlInputHint = 'Token URL';
+var globalClientIdInputHint = 'Obtained from API';
+var globalSecretInputHint   = 'Obtained from API';
+var globalScopeInputHint    = 'Obtained from API';
+
+//connector types specific globals;
+var globalInfusionShort = 'Fetches sales and marketing information from Infusionsoft by Keap CRM & marketing automation platform';
+var globalSheetsShort   = 'Fetches and displays data from a Google Sheet. Please, make sure that you have access rights to view it';
+var globalFlowShort     = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
+var globalQBShortDesc   = 'Fetches customer or supplier invoice or bill detail from connected QB company. Please authenticate to QB';
+//==========================================END GLOBALS==========================================//
+
+//==========================================START GITHUB==========================================//
+//sample GitHub connector class;
+function GitHub() {
+  Connector.call(this);
+  this.icon = globalGitHubIconUrl;
+  this.name = 'GitHub';
+  this.url  = 'https://api.github.com/user';
+  this.config = [
+    {
+      'header': 'Additional config',
+      'isCollapsible': false,
+      'widgets': [
+        {
+          'type': 'KeyValue',
+          'title': 'GitHub',
+          'content': 'Retrieves user info data from GitHub'
+        }
+      ]
+    }
+  ];
+  this.auth = {
+    name: 'GitHub',
+    urlAuth: 'https://github.com/login/oauth/authorize',
+    urlToken: 'https://github.com/login/oauth/access_token',
+    id: 'e6c7b5e9866ad262b1c8',
+    secret: 'd53fe70345b269e96477a1559d844a29c0061251',
+    scope: 'malformed'
+  };
+  
+  /**
+   * method for performing fetch to external service;
+   * @param {Object} msg -> message object;
+   * @param {Object} connector -> connector config object;
+   * @param {Object} data -> custom data object to pass to payload;
+   * @return {Function}
+   */
+  this.run = async function (msg,connector,data) { 
+    //initiate authorization service;
+    var service = authService(connector.type,connector.scope);
+
+    //set method for url fetch ('get' or 'post' for now);
+    var method = 'get';
+  
+    //set headers for url fetch;
+    var headers = {
+      'Authorization' : 'Bearer '+service.getAccessToken()
+    };
+  
+    //set payload in case POST request will be triggered;
+    var trimmed = trimMessage(msg,true,true);
+    var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
+    var payload = {
+      'Bcc': msg.getBcc(),
+      'Cc': msg.getCc(),
+      'date': msg.getDate(),
+      'sender': trimmed.name,
+      'from': trimmed.email,
+      'id': msg.getId(),
+      'subject': msg.getSubject(),
+      'labels': labels
+    };
+    if(data!==undefined) { payload.data = data; }
+  
+    //initiate request;
+    var response = await performFetch(connector.url,method,headers,payload);
+    
+    //initialize result without content;
+    var parsed;
+    
+    //perform some parsing;
+    if(!(response instanceof Array)) {
+      //change content into array and parse all nested objects;
+      parsed = new Array(parseData(response.content));
+    }
+    //add custom key-value pair;
+    parsed[0].custom = 'CUSTOM ADDITION';
+    //filter out empty strings, undefined and nulls from array elements;
+    parsed.forEach(function(elem){
+      for(var key in elem) {
+        var value = elem[key];
+        if(value===''||value===undefined||value===null) { delete elem[key]; }
+      }
+    });
+    
+    //make some parsing;
+    return {'code':response.code,'headers':response.headers,'content':parsed};    
+  }
+}
+//chain custom connector to base class;
+GitHub.prototype = Object.create(Connector.prototype);
+//===========================================END GITHUB===========================================//
+
+//===========================================START FLOW===========================================//
+//Flow connector class;
+function Flow() {
+  Connector.call(this);
+  this.icon  = globalFlowIconUrl;
+  this.name  = 'Flow';
+  this.short = globalFlowShort;
+  this.config = [
+    {
+      'header': 'Flow config',
+      'isCollapsible': false,
+      'widgets': [
+        {
+          'name': globalURLfieldName,
+          'type': 'TextInput',
+          'title': 'Flow URL',
+          'content': '',
+          'hint': 'e.g. Http get or post URL'
+        }
+      ]
+    }  
+  ];
+  this.auth = {};
+  this.run = async function (msg,connector,data) {
+    //set method for url fetch ('get' or 'post' for now);
+    var method = 'post';
+
+    //set headers for url fetch;
+    var headers = {};
+    
+    //set payload in case POST request will be triggered;
+    var trimmed = trimMessage(msg,true,true);
+    var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
+    var payload = {
+      'Bcc': msg.getBcc(),
+      'Cc': msg.getCc(),
+      'date': msg.getDate(),
+      'sender': trimmed.name,
+      'from': trimmed.email,
+      'id': msg.getId(),
+      'subject': msg.getSubject(),
+      'labels': labels
+    };
+    if(data!==undefined) { payload.data = data; }
+    
+    //perform data fetch and return result;
+    var result = await performFetch(connector.url,method,headers,payload);
+    return result;
+  }
+}
+//chain custom connector to base class;
+Flow.prototype = Object.create(Connector.prototype);
+//============================================END FLOW============================================//
 
 //emulate event object;
 class e_EventObject {
@@ -2016,252 +3949,6 @@ function getToken(e) {
 	const msg = new Message( msgFrom,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.subject, item.itemId );
 	return msg;
 }
-
-//===========================================START PROPERTY===========================================//
-/**
- * Fetches user / script property value by key;
- * @param {String} key -> key of the property to find;
- * @param {String} type -> 'user' or 'script' to determine prop type to get;
- * @returns {String}
- */
-function getProperty(key,type) {
-  var props;
-  switch(type) {
-    case 'script': 
-      props = PropertiesService.getScriptProperties();
-    break;
-    case 'user':
-      props = PropertiesService.getUserProperties();
-    break;
-  }
-  var value = props.getProperty(key);
-  try { value = JSON.parse(value); }
-  catch(e) { return value; }
- 
-  return value;
-}
-
-/**
- * Fetches an sets user / script property by key;
- * @param {String} key -> key of the property to find;
- * @param {String} value -> new value of the property;
- * @param {String} type -> 'user' or 'script' to determine prop type to get;
- */
-function setProperty(key,value,type) {
-  var props;
-  switch(type) {
-    case 'script': 
-      props = PropertiesService.getScriptProperties();
-    break;
-    case 'user':
-      props = PropertiesService.getUserProperties();
-    break;
-  }
-  try { value = JSON.stringify(value); }
-  catch(e) { props.setProperty(key,value); }  
-  
-  props.setProperty(key,value);
-}
-
-/**
- * Deletes a user / script property by key;
- * @param {String} key -> key of the property to find;
- * @param {String} type -> 'user' or 'script' to determine prop type to get;
- */
-function deleteProperty(key,type) {
-  var props;
-  switch(type) {
-    case 'script': 
-      props = PropertiesService.getScriptProperties();
-    break;
-    case 'user':
-      props = PropertiesService.getUserProperties();
-    break;
-  }
-  props.deleteProperty(key);
-}
-
-/**
- * Deletes every user / script property set;
- * @param {String} key -> key of the property to find
- * @param {String} type -> 'user' or 'script' to determine prop type to get 
- */
-function deleteAllProperties(type) {
-  var props;
-  switch(type) {
-    case 'script': 
-      props = PropertiesService.getScriptProperties();
-    break;
-    case 'user':
-      props = PropertiesService.getUserProperties();
-    break;
-  }
-  props.deleteAllProperties(); 
-}
-//===========================================END PROPERTY===========================================//
-
-//===========================================START BACKEND===========================================//
-/**
- * Checks if data contains widgets in "editable" state;
- * @param {Array} data -> an array of objects to check;
- * @returns {Boolean}
-*/
-function checkEditable(data) {
-  var hasEditable = data.some(function(elem){
-    var widgets = elem.widgets;
-    var elemHasEditable = widgets.some(function(widget){
-      var state = widget.state;
-      if(state==='editable') { return widget; }
-    });
-    if(elemHasEditable) { return elem; }
-  });
-  return hasEditable;
-}
-
-/**
- * Checks if data contains nested objects to determine which Ui to load;
- * @param {Array} data -> an array of objects to check;
- * @returns {Boolean}
- */
-function checkNested(data) {
-  var hasNested = data.some(function(elem){ 
-    var hasSecondLevelObject = false;
-    for(var key in elem) {
-      var val = elem[key];
-      if(typeof val === 'object') { 
-        hasSecondLevelObject = true; break; 
-      }
-    }
-    return hasSecondLevelObject;
-  });
-  return hasNested;
-}
-
-/**
- * Attempts to pre-parse data;
- * @param {String} data -> data string to be parsed;
- * @returns {Array}
- */
-function parseData(data) {
-  try {
-    if(data===''||data==='[]'||data==='""') {
-      data = []; 
-    }else { 
-      data = JSON.parse(data);
-    }
-    if(!(data instanceof Array)&&!(typeof data==='string')) {
-      data = [data]; 
-    }else if(typeof data==='string') {
-      data = JSON.parse(data);
-    }
-    if(!(data instanceof Array)&&(typeof data==='object')) {
-      data = [data];
-    }
-  }
-  catch(e) {
-    return data;
-  }
-  return data;
-}
-
-/**
- * Creates settings storage;
- * @param {String} content -> content to pass to JSON file;
- */
-function createSettings(content) {
-  if(content===undefined) { content = []; }
-  setProperty('config',content,'user');
-}
-
-/**
- * Performs URL fetch with payload to external service;
- * @param {Object} e -> event object;
- * @param {String} url -> url to be passed to UrlFetchApp call;
- * @param {Object} dataToPass -> object containing fields 1-3 for Zapier connection;
- * @returns {Object}
- */
-async function performFetch(e,url,dataToPass) {
-	
-	console.log(url)
-	
-	var msg = getToken();
-  
-	var from = msg.getFrom();
-	var email  = trimFrom(from);
-	var sender = trimSender(from);
-  
-	//var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); }); - as categories are in beta for Outlook;
-  
-	var payload = {
-		'Bcc': msg.getBcc(),
-		'Cc': msg.getCc(),
-		'date': msg.getDate(),
-		'sender': sender,
-		'from': email,
-		'id': msg.getId(),
-		'plainBody': msg.getPlainBody(),
-		'subject': msg.getSubject()/*,
-		'labels': labels*/
-	};
-	if(dataToPass!==undefined) {
-		var data   = dataToPass.data;
-		var field1 = dataToPass.field1;
-		var field2 = dataToPass.field2;
-		var field3 = dataToPass.field3;
-		if(data!==undefined)   { payload.data   = data;   }
-		if(field1!==undefined) { payload.field1 = field1; }
-		if(field2!==undefined) { payload.field2 = field2; }
-		if(field3!==undefined) { payload.field3 = field3; }
-	}
-	console.log(payload);
-  
-	let response;
-  
-	try {
-		response = await UrlFetchApp.fetch(url,{'method':'post','payload':JSON.stringify(payload),'muteHttpExceptions':true,'contentType':'application/json'});
-	}
-	catch(error) {
-		response = error;
-	}
-  
-	return response;
-}
-
-/**
- * Trims sender info from name and '<' & '>' characters;
- * @param {String} input -> sender info to trim
- * @return {String}
- */
-function trimFrom(input) {
-	var regEx1 = /\<.+@.+\>/;
-	var regEx2 = /[^\<].+@.+[^\>]/;
-	try {
-		var r = input.match(regEx1)[0];
-	} catch(e) {
-		return input;
-	}
-	var email = r.match(regEx2)[0];
-	return email;
-}
-
-/**
- * Trims sender name from "name <email>" input;
- * @return {String}
- */
-function trimSender(input) {
-  try {
-    var index = input.indexOf(' <');
-    if(index===-1) {
-      return '';
-    }else {
-      return input.replace(input.slice(index),'');
-    }
-  }
-  catch(e) {
-    return '';
-  }
-}
-//===========================================END BACKEND===========================================//
 
 //===========================================START APPS SCRIPT===========================================//
 //Emulate CardService service;
@@ -3421,110 +5108,6 @@ function makeRequest(url,params) {
 	});
 }
 //===========================================END URL FETCH===========================================//
-
-//===========================================START GLOBALS===========================================//
-//headers;
-var globalOpenHeader             = 'Welcome to Cardin';
-var globalInstallHeader          = 'Card setup';
-var globalSettingsHeader         = 'Settings';
-var globalAdvancedHeader         = 'Advanced';
-var globalHelpHeader             = 'Help';
-var globalExistingConnectsHeader = 'Configured cards';
-var globalManualHeader           = 'Manual fetch';
-var globalAutoHeader             = 'Auto fetch';
-var globalAddConnectionHeader    = 'Add custom card';
-var globalSuccessfulFetchHeader  = 'Successfully fetched';
-var globalNoDataFetchHeader      = 'Fetched with no data';
-var globalErroredHeader          = 'Returned with error';
-var globalShowHeader             = 'Contact';
-var globalUnparsedHeader         = 'Unparsed data';
-var globalConfiguredHeader       = 'Configured cards';
-var globalChooseTypeHeader       = 'Choose card type';
-
-//titles;
-var globalWelcomeWidgetTitle       = '';
-var globalInstallWidgetTitle       = '';
-var globalCustomWidgetTitle        = '';
-var globalCustomWidgetIconTitle    = 'Card icon';
-var globalCustomWidgetNameTitle    = 'Card name';
-var globalCustomWidgetInputTitle   = 'Card URL';
-var globalResetWidgetTitle         = 'Reset';
-var globalClearWidgetTitle         = 'Cache';
-var globalCodeWidgetTitle          = 'Code';
-var globalErrorWidgetTitle         = 'Error info';
-var globalUnparsedErrorWidgetTitle = 'Parse failure reason';
-var globalUnparsedDataWidgetTitle  = 'Unparsed data';
-var globalNoDataWidgetTitle        = '';
-var globalExtraDataTitle           = '';
-var globalCustomWidgetFieldTitle   = 'Field';
-var globalConfigErrorWidgetTitle   = 'Add-on failure';
-
-//hints;
-var globalCustomWidgetIconHint  = 'Card icon to display next to card name';
-var globalCustomWidgetNameHint  = 'Card name to display in list of cards';
-var globalCustomWidgetHint      = 'Card URL (eg Flow/Zapier Webhook trigger)';
-var globalCustomWidgetFieldHint = 'Data to be sent with payload';
-
-//contents & texts;
-var globalWelcomeWidgetContent      = 'If you need help, setup instructions are available on resources below:';
-var globalCustomWidgetContent       = 'You can create custom card by configuring form below. You can create as many cards as you want';
-var globalConfigErrorWidgetContent  = 'Seems like you have a malformed configuration - most likely this is due to a significant update to config structure. Please, initiate Add-on reset';
-var globalResetWidgetContent        = 'Every user preference will be wiped clean, and cards configuration will be deleted';
-var globalClearWidgetContent        = 'Cached data will be cleared, including information about successful fetches';
-var globalCustomWidgetSwitchText    = 'Use manual data fetch';
-var globalIsDefaultWidgetSwitchText = 'Use as default card';
-var globalNoDataWidgetText          = 'Card fetch returned with no data to be displayed. If this is not an intended behaviour, please consider reconfiguring it';
-var globalExtraDataText             = 'There is more data to show, but we trimmed it to several sections to avoid hitting 100 widgets capping';
-var globalGoToSettings              = 'Go to settings';
-var globalSheetsContent             = 'Google Sheets';
-var globalFlowContent               = 'Microsoft flow';
-var globalZapierContent             = 'Zapier';
-var globalIftttContent              = 'IFTTT';
-var globalCustomTypeContent         = 'Custom';
-
-//button as labels texts;
-var globalSuccess                   = 'Success';
-var globalError                     = 'Error';
-var globalNoData                    = 'No data';
-var globalAuto                      = 'Auto';
-var globalManual                    = 'Manual';
-
-//button texts;
-var globalResetWidgetSubmitText     = 'Reset';
-var globalClearWidgetSubmitText     = 'Clear';
-var globalCreateConnectionText      = 'Create';
-var globalUpdateConnectionText      = 'Update';
-var globalRemoveConnectionText      = 'Remove';
-var globalUpdateShowText            = 'Update';
-var globalLoadExtraForwardText      = 'Next';
-var globalLoadExtraBackText         = 'Back';
-var globalRootText                  = 'Go back';
-var globalCardinUrlText             = 'cardinsoft.com';
-var globalYouTubeUrlText            = 'YouTube instructions';
-
-//URLs;
-var globalCardinUrl      = 'https://cardinsoft.com/';
-var globalYouTubeUrl     = 'https://youtube.com/';
-var globalSheetsIconUrl  = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
-var globalFlowIconUrl    = 'https://cardinsoft.github.io/outlook/assets/flow.png';
-var globalZapierIconUrl  = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
-var globalIftttIconUrl   = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
-var globalCustomIconUrl  = 'https://cardinsoft.github.io/outlook/assets/custom.png';
-var globalTypesConfigUrl = 'https://cardinsoft.github.io/outlook/types.json';
- 
-
-//notifications, warnings and error messages
-var globalUpdateSuccess      = 'Configuration successfully updated!';
-var globalRemoveSuccess      = 'Configuration successfully removed!';
-var globalClearSuccess       = 'Cache successfully cleared!';
-var globalIncorrectURL       = 'Please, consider reconfiguring cards listed below as their URLs returned with an error';
-var globalInvalidURLnoMethod = 'URLs should include http or https method indication and domain';
-
-//other;
-var globalConfigName       = 'config';
-var globalNumUncollapsible = 5;
-var globalWidgetsCap       = 50;
-//===========================================END GLOBALS===========================================//
 
 //initiate services to be able to access them;
 const UrlFetchApp       = new e_UrlFetchApp();
