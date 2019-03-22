@@ -3877,6 +3877,158 @@ function Flow() {
 Flow.prototype = Object.create(Connector.prototype);
 //============================================END FLOW============================================//
 
+//============================================START SHEETS========================================//
+//sample Sheets connector class;
+function Sheets() {
+  Connector.call(this);
+  this.icon  = globalSheetsIconUrl;
+  this.name  = 'Sheets';
+  this.short = globalSheetsShort;
+  this.config = [
+    {
+      'header': 'Additional config',
+      'isCollapsible': false,
+      'widgets': [
+        {
+          'name': globalURLfieldName,
+          'type': 'TextInput',
+          'title': 'Spreadsheet URL',
+          'content': '',
+          'hint': 'https://docs.google.com/spreadsheets/d/{id}/edit'
+        },
+        {
+          'name': 'numcol',
+          'type': 'TextInput',
+          'title': 'Number of columns',
+          'content': '',
+          'hint': 'Max number of columns to lookup'
+        },
+        {
+          'name': 'numrow',
+          'type': 'TextInput',
+          'title': 'Number of rows',
+          'content': '',
+          'hint': 'Max number of rows to lookup'
+        }
+      ]
+    }
+  ];
+  this.auth = {};
+  this.run = function (msg,connector,data) { 
+    //unpack connector settings;
+    var maxcol = +connector.numcol;
+    var maxrow = +connector.numrow;
+    
+    //set initial result object properties;
+    var result = {code:200,headers:{},content:[]};
+    
+    //perform trimming and assign values to variables;
+    var trimmed = trimMessage(msg,true,true);  
+    var name  = trimmed.name;
+    var email = trimmed.email;
+    
+    //get spreadsheet and start fetching data;
+    var spread = getSpreadsheet(connector.url,false);
+    if(spread===null) { 
+      result.code = 404;
+      result.content = 'The spreadsheet with url < '+connector.url+' > could not be found or you do not have access to it';
+      return result; 
+    }
+    
+    try {//temp for dev
+
+    if(spread!==null) {
+      var sheets = spread.getSheets();
+      var numsh  = sheets.length;
+
+      //loop through each sheet and perform fetching;
+      for(var i=0; i<numsh; i++) {
+        //check if sheet has email data in it;
+        var cursh        = sheets[i];
+        var shname       = cursh.getName();
+        var hasEmailData = hasEmail(cursh);
+        if(hasEmailData) {
+          
+          //get data dimentions and range;
+          var numrow = cursh.getLastRow();
+          var numcol = cursh.getLastColumn();
+          if(maxcol!==0) { numcol = maxcol; }
+          if(maxrow!==0) { numrow = maxrow+1; }
+
+          var dataRange = cursh.getRange(1,1,numrow,numcol);
+          
+          //get values and data validations;
+          var dataValues   = dataRange.getValues();
+          var dataValids   = dataRange.getDataValidations();
+          var dataFormats  = dataRange.getNumberFormats();
+          var dataDisplays = dataRange.getDisplayValues(); 
+          
+          //get headers;
+          var dataHeaders = dataValues[0];
+          
+          //loop through each values row;
+          for(var j=1; j<dataValues.length; j++) {
+            
+            //get values, validations, formats and display values for current row; 
+            var values   = dataValues[j];
+            var valids   = dataValids[j];
+            var formats  = dataFormats[j];
+            var displays = dataDisplays[j]; 
+            
+            //check if values row has match to an email;
+            var hasMatch = values.some(function(value) { return value===email; });
+            if(hasMatch) {
+              
+              //create section for each email match;
+              var section = {
+                header: '"'+shname+'", matched on row '+j,
+                isCollapsible: true,
+                numUncollapsible: globalNumUncollapsible,
+                widgets: []
+              };             
+              
+              //create widgets for each field;
+              values.forEach(function(value,index){
+                
+                //get validations, formats and display values for current value;
+                var valid   = valids[index];
+                var format  = formats[index];
+                var display = displays[index];
+                
+                //create widget to display data;
+                var widget = {
+                  type: 'KeyValue',
+                  title: dataHeaders[index],
+                  content: display
+                };
+                
+                section.widgets.push(widget);
+              });
+              
+              result.content.push(section);
+            }
+            
+          }
+          
+          
+        }else { continue; }
+        
+      }
+      
+    }
+    
+    }
+    catch(er) {}
+    
+    if(result.content.length===0) { result.content = '[]'; }
+    
+    return result;
+  }
+}
+//chain custom connector to base class;
+Sheets.prototype = Object.create(Connector.prototype);
+//============================================END SHEETS========================================//
+
 //emulate event object;
 class e_EventObject {
 	constructor() {
@@ -4090,6 +4242,38 @@ Properties.prototype.setProperty = function (key,value) {
 	const updated = new Properties(settings);
 	return updated;
 }
+
+//Emulate class Navigation for CardService service;
+class Navigation extends e_CardService {
+	constructor() {
+		super();
+		this.className = 'Navigation';
+	}
+}
+//add new methods to the class;
+Card.prototype.popCard = function () {
+	
+}
+Card.prototype.popToNamedCard = function (cardName) {
+	
+}
+Card.prototype.popToRoot = function () {
+	
+}
+Card.prototype.printJson = function () {
+	return JSON.stringify(this);
+}
+Card.prototype.pushCard = function (card) {
+	
+}
+Card.prototype.updateCard = function (card) {
+	
+}
+
+
+
+
+
 
 //Emulate Class Card for CardService service;
 class Card extends e_CardService {
