@@ -4251,23 +4251,30 @@ class Navigation extends e_CardService {
 	}
 }
 //add new methods to the class;
-Card.prototype.popCard = function () {
+Navigation.prototype.popCard = function () {
+	cardStack.pop();
+	return this;
+}
+Navigation.prototype.popToNamedCard = function (cardName) {
 	
 }
-Card.prototype.popToNamedCard = function (cardName) {
-	
+Navigation.prototype.popToRoot = function () {
+	var length = cardStack.length;
+	for(var i = 1; i<length; i++) {
+		cardStack.pop();
+	}
+	return this;
 }
-Card.prototype.popToRoot = function () {
-	
-}
-Card.prototype.printJson = function () {
+Navigation.prototype.printJson = function () {
 	return JSON.stringify(this);
 }
-Card.prototype.pushCard = function (card) {
-	
+Navigation.prototype.pushCard = function (card) {
+	cardStack.push(card);
+	return this;
 }
-Card.prototype.updateCard = function (card) {
-	
+Navigation.prototype.updateCard = function (card) {
+	cardStack[cardStack.length-1] = card;
+	return this;
 }
 
 
@@ -4286,6 +4293,7 @@ class Card extends e_CardService {
 Card.prototype.printJSON = function () {
 	return JSON.stringify(this);
 }
+
 
 //Emulate Class Switch for CardService service;
 class Switch extends e_CardService {
@@ -4508,6 +4516,8 @@ CardBuilder.prototype.build = function () {
 			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
 		});
 	}
+	
+	cardStack.push(this);
 	
 	return this;
 };
@@ -5299,3 +5309,4 @@ const CardService       = new e_CardService();
 const PropertiesService = new e_PropertiesService();
 const CacheService      = new e_CacheService();
 const e                 = new e_EventObject();
+const cardStack         = [];
