@@ -4262,51 +4262,7 @@ async function performFetch(url,method,headers,payload) {
     return {code:0,headers:'',content:e.message}
   }
 }
-//=================================END PERFORM FETCH=================================//
-
-
-
-
-
-
-
-
-
-/**
- * Trims sender info from name and '<' & '>' characters;
- * @param {String} input -> sender info to trim
- * @return {String}
- */
-function trimFrom(input) {
-	var regEx1 = /\<.+@.+\>/;
-	var regEx2 = /[^\<].+@.+[^\>]/;
-	try {
-		var r = input.match(regEx1)[0];
-	} catch(e) {
-		return input;
-	}
-	var email = r.match(regEx2)[0];
-	return email;
-}
-
-/**
- * Trims sender name from "name <email>" input;
- * @return {String}
- */
-function trimSender(input) {
-  try {
-    var index = input.indexOf(' <');
-    if(index===-1) {
-      return '';
-    }else {
-      return input.replace(input.slice(index),'');
-    }
-  }
-  catch(e) {
-    return '';
-  }
-}
-//===========================================END BACKEND===========================================//
+//========================================END PERFORM FETCH========================================//
 
 //==========================================START GLOBALS==========================================//
 //card and section headers;
@@ -4466,7 +4422,7 @@ var globalQBShortDesc                = 'Fetches customer or supplier invoice or 
 
 //==========================================START GITHUB==========================================//
 //sample GitHub connector class;
-function GitHub() {
+callbacks.GitHub = function GitHub() {
   Connector.call(this);
   this.icon = globalGitHubIconUrl;
   this.name = 'GitHub';
@@ -4591,7 +4547,7 @@ GitHub.prototype = Object.create(Connector.prototype);
 
 //===========================================START FLOW===========================================//
 //Flow connector class;
-function Flow() {
+callbacks.Flow = function Flow() {
   Connector.call(this);
   this.icon  = globalFlowIconUrl;
   this.name  = 'Flow';
@@ -4645,7 +4601,7 @@ Flow.prototype = Object.create(Connector.prototype);
 
 //============================================START SHEETS========================================//
 //sample Sheets connector class;
-function Sheets() {
+callbacks.Sheets = function Sheets() {
   Connector.call(this);
   this.icon  = globalSheetsIconUrl;
   this.name  = 'Sheets';
@@ -4878,7 +4834,7 @@ Sheets.prototype = Object.create(Connector.prototype);
 //============================================END SHEETS========================================//
 
 //==========================================START PIPEDRIVE=====================================//
-function Pipedrive() {
+callbacks.Pipedrive = function Pipedrive() {
   Connector.call(this);
   this.icon = globalPipedriveIconUrl;
   this.name = 'Pipedrive';
@@ -5399,7 +5355,7 @@ Pipedrive.prototype = Object.create(Connector.prototype);
 var sbMode = false;
 
 //QB connector class;
-function QB() {
+callbacks.QB = function QB() {
   Connector.call(this);
   this.icon = "https://quickbooks.intuit.com/content/dam/intuit/quickbooks/common/qb_thumb.png";
   this.name = 'QB';
