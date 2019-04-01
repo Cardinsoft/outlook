@@ -80,7 +80,8 @@ body {
 }
 
 .ms-Panel-contentInner {
-	margin-top: 10px;
+	margin : 0;
+	padding : 0;
 }
 
 .ms-font-m-plus {
