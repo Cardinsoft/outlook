@@ -4310,166 +4310,159 @@ function trimSender(input) {
 //===========================================END BACKEND===========================================//
 
 //==========================================START GLOBALS==========================================//
-//headers;
-var globalWelcomeHeader          = 'Welcome to Cardin for Gmail!';
-var globalConfigHeader           = 'Connector configuration';
-var globalSettingsHeader         = 'Settings';
-var globalAdvancedHeader         = 'Advanced settings';
-var globalHelpHeader             = 'Help';
-var globalConfirmHeader          = 'Confirm action';
-var globalExistingConnectsHeader = 'Configured Connectors';
-var globalManualHeader           = 'Manual fetch';
-var globalAutoHeader             = 'Auto fetch';
-var globalShowHeader             = 'Record';
-var globalUnparsedHeader         = 'Unparsed data';
-var globalConfiguredHeader       = 'Configured Connectors';
-var globalChooseTypeHeader       = 'Available Connector types';
-var globalConfigErrorHeader      = 'Configuration error';
+//card and section headers;
+var globalAdvancedHeader             = 'Advanced settings';
+var globalChooseTypeHeader           = 'Available Connector types';
+var globalConfigErrorHeader          = 'Configuration error';
+var globalConfigHeader               = 'Connector configuration';
+var globalConfigListHeader           = 'Configured Connectors';
+var globalConfirmHeader              = 'Confirm action';
+var globalConnectorListHeader        = 'Other Connectors';
+var globalCustomIconHeader           = 'Connector icon';
+var globalErrorHeader                = 'Config error';
+var globalHelpHeader                 = 'Help';
+var globalSettingsHeader             = 'Settings';
+var globalShowHeader                 = 'Record';
+var globalUnparsedHeader             = 'Unparsed content';
+var globalWelcomeHeader              = 'Welcome to Cardin for Gmail!';
 
 //titles;
-var globalWelcomeWidgetTitle        = '';
-var globalHelpWidgetTitle           = '';
-var globalInstallWidgetTitle        = '';
-var globalCustomWidgetTitle         = '';
-var globalConfirmWidgetTitle        = '';
-var globalCustomWidgetNameTitle     = 'Connector name';
-var globalResetWidgetTitle          = 'Reset';
-var globalClearWidgetTitle          = 'Cache';
-var globalCodeWidgetTitle           = 'Code';
-var globalErrorWidgetTitle          = 'Error description';
-var globalUnparsedErrorWidgetTitle  = 'Parse failure reason';
-var globalUnparsedDataWidgetTitle   = 'Unparsed data';
-var globalNoDataWidgetTitle         = '';
-var globalExtraDataTitle            = '';
-var globalCustomWidgetFieldTitle    = 'Field';
-var globalConfigErrorWidgetTitle    = '';
-var globalAuthTypeErrorTitle        = 'Auth type mismatch';
+var globalAuthTypeErrorTitle         = 'Auth type mismatch';
+var globalConfigErrorWidgetTitle     = '';
+var globalConfirmWidgetTitle         = '';
+var globalCustomWidgetFieldTitle     = 'Field';
+var globalCustomWidgetIconTitle      = 'Connector icon';
+var globalCustomWidgetNameTitle      = 'Connector name';
+var globalErrorWidgetTitle           = 'Error description';
+var globalExtraDataTitle             = '';
+var globalHelpWidgetTitle            = '';
+var globalNoDataWidgetTitle          = 'No content';
+var globalResetWidgetTitle           = 'Reset';
+var globalUnparsedDataWidgetTitle    = 'Unparsed content';
+var globalUnparsedErrorWidgetTitle   = 'Parse failure reason';
+var globalWelcomeWidgetTitle         = '';
 
 //content - errors;
-var globalConfigErrorWidgetContent   = 'Seems like you have a configuration issue! Please, reset the Add-on if this is the only section you see. Otherwise, try removing any malformed Connectors before resetting';
 var globalAuthTypeErrorContent       = 'The Connector seems to require OAuth 2.0 authorization to work, but you set auth type to "none". Please configure OAuth properties in Settings';
-//content - others;
-var globalAuthTextWidgetContent      = 'This Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
-var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
-var globalConfirmResetWidgetContent  = 'Every configured Connector will be permanently deleted. Are you sure?';
+var globalConfigErrorWidgetContent   = 'Seems like you have a configuration issue! Please, reset the Add-on if this is the only section you see. Otherwise, try removing any malformed Connectors before resetting';
+var globalConnectorListErrorContent  = 'An error occured during Connector list generation';
+
+//content;
+var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
 var globalConfirmRemoveWidgetContent = 'The Connector will be permanently removed. Are you sure?';
-var globalHelpWidgetContent          = 'Visit our website for setup instructions and other support resources';
-var globalCustomWidgetContent        = 'You can create a custom Connector by completing the form below';
-var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
-var globalCustomWidgetSwitchText     = 'Manually invoke Connector';
+var globalConfirmResetWidgetContent  = 'Every configured Connector will be permanently deleted. Are you sure?';
 var globalCustomWidgetAuthText       = 'Authorization type';
-var globalIsDefaultWidgetSwitchText  = 'Run and display by default';
-var globalNoDataWidgetText           = 'The Connector returned with no data to be displayed';
+var globalCustomWidgetSwitchText     = 'Manually invoke Connector';
 var globalExtraDataText              = 'More data is available, but we trimmed it to avoid hitting the 100 field limit';
-var globalGoToSettings               = 'Go to settings';
-var globalSheetsContent              = 'Google Sheets';
-var globalFlowContent                = 'Microsoft flow';
-var globalZapierContent              = 'Zapier';
-var globalIftttContent               = 'IFTTT';
-var globalCustomTypeContent          = 'Custom';
-var globalNotAuthorizedContent       = 'Seems like the Connector you built requires authentication but no credentials were provided';
+var globalHelpWidgetContent          = 'Visit our website for setup instructions and other support resources';
+var globalIsDefaultWidgetSwitchText  = 'Run and display by default';
+var globalNoDataWidgetContent        = 'The Connector response has no content to display for';
+var globalNotAuthorizedContent       = 'Seems like the Connector you built has to be authorized or there was a change in required permissions and you need to reauthorize or you lost access to the API';
 var globalOptionalFieldsContent      = 'These fields are optional and can be left blank';
+var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
+var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
 
 //hints;
-var globalCustomWidgetNameHint      = 'Name to display in list of Connectors';
+var globalCustomWidgetNameHint       = 'Name to display in list of Connectors';
+var globalCustomIconHint             = 'Icon URL (public) to set to Connector';
 
 //button as labels texts;
-var globalSuccess                   = 'Success';
-var globalError                     = 'Error';
-var globalNoData                    = 'No data';
-var globalAuto                      = 'Auto';
-var globalManual                    = 'Manual';
+var globalAuto                       = 'Auto';
+var globalError                      = 'Error';
+var globalManual                     = 'Manual';
+var globalNoData                     = 'No data';
+var globalSuccess                    = 'Success';
 
 //button texts;
-var globalResetWidgetSubmitText     = 'Reset';
-var globalClearWidgetSubmitText     = 'Clear';
-var globalCreateConnectorText       = 'Create';
-var globalUpdateConnectorText       = 'Update';
-var globalRemoveConnectorText       = 'Remove';
-var globalUpdateShowText            = 'Update';
-var globalLoadExtraForwardText      = 'Next';
-var globalLoadExtraBackText         = 'Back';
-var globalRootText                  = 'Go back';
-var globalCardinUrlText             = 'cardinsoft.com';
-var globalYouTubeUrlText            = 'YouTube instructions';
-var globalOpenAuthText              = 'Authorize';
-var globalRevokeAuthText            = 'Revoke';
-var globalLoginText                 = 'Login';
-var globalConfirmText               = 'Confirm';
-var globalCancelText                = 'Cancel';
+var globalCancelText                 = 'Cancel';
+var globalCardinUrlText              = 'cardinsoft.com';
+var globalClearWidgetSubmitText      = 'Clear';
+var globalConfirmText                = 'Confirm';
+var globalCreateConnectorText        = 'Create';
+var globalLoadExtraBackText          = 'Back';
+var globalLoadExtraForwardText       = 'Next';
+var globalLoginText                  = 'Login';
+var globalOpenAuthText               = 'Authorize';
+var globalRemoveConnectorText        = 'Remove';
+var globalResetWidgetSubmitText      = 'Reset';
+var globalRevokeAuthText             = 'Revoke';
+var globalRootText                   = 'Go back';
+var globalUpdateConnectorText        = 'Update';
+var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalInfusionIconUrl = 'https://cardinsoft.github.io/outlook/assets/infusionsoft.png';
-var globalCardinUrl       = 'https://cardinsoft.com/cardin-gmail/';
-var globalYouTubeUrl      = 'https://youtube.com/';
-var globalCardinIconUrl   = 'https://cardinsoft.github.io/outlook/assets/cardin-logo.png';
-var globalGitHubIconUrl   = 'https://cardinsoft.github.io/outlook/assets/github.png';
-var globalSheetsIconUrl   = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
-var globalFlowIconUrl     = 'https://cardinsoft.github.io/outlook/assets/flow.png';
-var globalZapierIconUrl   = 'https://cardinsoft.github.io/outlook/assets/zapier.png';
-var globalIftttIconUrl    = 'https://cardinsoft.github.io/outlook/assets/ifttt.jpg';
-var globalCustomIconUrl   = 'https://cardinsoft.github.io/outlook/assets/custom.png';
-var globalTypesConfigUrl  = 'https://cardinsoft.github.io/outlook/types.json';
- 
+var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
+var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
+var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
+var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
+var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
+var globalInfusionIconUrl            = 'https://cardinsoft.com/wp-content/uploads/2019/03/infusionsoft.png';
+var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
+var globalSheetsIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/sheets.png';
+var globalYouTubeUrl                 = 'https://youtube.com/';
 
 //notifications, warnings and error messages
-var globalCreateSuccess       = 'Connector successfully created!';
-var globalCreateFailure       = 'Connector creation failed';
-var globalUpdateSuccess       = 'Connector successfully updated!';
-var globalUpdateFailure       = 'Connector update failed';
-var globalRemoveSuccess       = 'Connector successfully removed!';
-var globalRemoveFailure       = 'Connector removal failed';
-var globalClearSuccess        = 'Cache successfully cleared!';
-var globalIncorrectURL        = 'Please reconfigure the Connectors listed below as their URLs returned with an error';
-var globalInvalidURLnoMethod  = 'URLs should include http or https and a domain';
-var globalRevokeAccessSuccess = 'Access token successfully revoked!';
-var globalResetSuccess        = 'Add-on configuration successfully reset!';
-var globalResetFailure        = 'Add-on configuration reset failed!';
+var globalClearSuccess               = 'Cache successfully cleared!';
+var globalCreateFailure              = 'Connector creation failed';
+var globalCreateSuccess              = 'Connector successfully created!';
+var globalInvalidURLnoMethod         = 'URLs should include http or https and a domain';
+var globalRemoveFailure              = 'Connector removal failed';
+var globalRemoveSuccess              = 'Connector successfully removed!';
+var globalResetFailure               = 'Add-on configuration reset failed!';
+var globalResetSuccess               = 'Add-on configuration successfully reset!';
+var globalRevokeAccessSuccess        = 'Access token successfully revoked!';
+var globalUpdateFailure              = 'Connector update failed';
+var globalUpdateSuccess              = 'Connector successfully updated!';
 
-//field names and global parameters;
-var globalEnumRadio             = 'RADIO_BUTTON';
-var globalEnumCheckbox          = 'CHECK_BOX';
-var globalEnumDropdown          = 'DROPDOWN';
-var globalCustomUrlUrl          = '';
-var globalCustomNameName        = 'custom';
-var globalBaseClassName         = 'Connector';
-var globalIconFieldName         = 'icon';
-var globalNameFieldName         = 'name';
-var globalURLfieldName          = 'url';
-var globalManualFieldName       = 'manual';
-var globalDefaultFieldName      = 'isDefault';
-var globalUrlAuthFieldName      = 'urlAuth';
-var globalUrlTokenFieldName     = 'urlToken';
-var globalClientIdFieldName     = 'id';
-var globalSecretFieldName       = 'secret';
-var globalScopeFieldName        = 'scope';
-var globalRedirectFieldName     = 'redirect';
-var globalConfigName            = 'config';
-var globalTextButtonActionClick = 'click';
-var globalTextButtonActionLink  = 'link';
-var globalNumUncollapsible      = 5;
-var globalWidgetsCap            = 50;
-var globalInfusionsoftApptsCap  = 5;
-var globalInfusionsoftTasksCap  = 5;
+//field names;
+var globalBaseClassName              = 'Connector';
+var globalClientIdFieldName          = 'id';
+var globalCustomNameName             = 'custom';
+var globalCustomUrlUrl               = '';
+var globalDefaultFieldName           = 'isDefault';
+var globalEnumCheckbox               = 'CHECK_BOX';
+var globalEnumDropdown               = 'DROPDOWN';
+var globalEnumRadio                  = 'RADIO_BUTTON';
+var globalIconFieldName              = 'icon';
+var globalManualFieldName            = 'manual';
+var globalNameFieldName              = 'name';
+var globalRedirectFieldName          = 'redirect';
+var globalScopeFieldName             = 'scope';
+var globalSecretFieldName            = 'secret';
+var globalUrlAuthFieldName           = 'urlAuth';
+var globalURLfieldName               = 'url';
+var globalUrlTokenFieldName          = 'urlToken';
+
+//parameters;
+var globalIncludeGitHub              = true;
+var globalInfusionsoftApptsCap       = 5;
+var globalInfusionsoftTasksCap       = 5;
+var globalNumUncollapsible           = 5;
+var globalNumUncollapsibleList       = 3;
+var globalTextButtonActionAction     = 'action';
+var globalTextButtonActionClick      = 'click';
+var globalTextButtonActionLink       = 'link';
+var globalWidgetsCap                 = 50;
 
 //OAuth2 flow;
-var globalAlreadyAuthorized = 'Connector previously authorized!';
-var globalAlreadyRevoked    = 'Connector revoked or does not have access!';
-var globalRevokeAccess      = 'Revoke access';
-var globalAuthorize         = 'Please authorize the Connector';
-var globalAuthSuccess       = 'Successfully authorized! You can close the window now';
-var globalAuthFailure       = 'Authorization failed! You can close the window now';
-var globalAuthUrlInputHint  = 'Authorization URL';
-var globalTokenUrlInputHint = 'Token URL';
-var globalClientIdInputHint = 'Obtained from API';
-var globalSecretInputHint   = 'Obtained from API';
-var globalScopeInputHint    = 'Obtained from API';
+var globalAlreadyAuthorized          = 'Connector previously authorized!';
+var globalAlreadyRevoked             = 'Connector revoked or does not have access!';
+var globalAuthFailure                = 'Authorization failed!';
+var globalAuthorize                  = 'Please authorize the Connector';
+var globalAuthSuccess                = 'Successfully authorized!';
+var globalAuthUrlInputHint           = 'Authorization URL';
+var globalClientIdInputHint          = 'Obtained from API';
+var globalRevokeAccess               = 'Revoke access';
+var globalScopeInputHint             = 'Obtained from API';
+var globalSecretInputHint            = 'Obtained from API';
+var globalTokenUrlInputHint          = 'Token URL';
 
 //connector types specific globals;
-var globalInfusionShort = 'Fetches sales and marketing information from Infusionsoft by Keap CRM & marketing automation platform';
-var globalSheetsShort   = 'Fetches and displays data from a Google Sheet. Please, make sure that you have access rights to view it';
-var globalFlowShort     = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
-var globalQBShortDesc   = 'Fetches customer or supplier invoice or bill detail from connected QB company. Please authenticate to QB';
+var globalFlowShort                  = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
+var globalInfusionShort              = 'Fetches sales and marketing information from Infusionsoft by Keap CRM & marketing automation platform';
+var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
+var globalSheetsShort                = 'Fetches and displays data from a Google Sheet. Please, make sure that you have access rights to view it';
+var globalQBShortDesc                = 'Fetches customer or supplier invoice or bill detail from connected QB company. Please authenticate to QB';
 //==========================================END GLOBALS==========================================//
 
 //==========================================START GITHUB==========================================//
@@ -4498,20 +4491,25 @@ function GitHub() {
     urlToken: 'https://github.com/login/oauth/access_token',
     id: 'e6c7b5e9866ad262b1c8',
     secret: 'd53fe70345b269e96477a1559d844a29c0061251',
-    scope: 'malformed'
+    scope: 'malformed',
+    prompt: true
   };
   
   /**
    * method for performing fetch to external service;
-   * @param {Object} msg -> message object;
-   * @param {Object} connector -> connector config object;
-   * @param {Object} data -> custom data object to pass to payload;
+   * @param {Object} msg message object;
+   * @param {Object} connector connector config object;
+   * @param {Object} data custom data object to pass to payload;
    * @return {Function}
    */
   this.run = async function (msg,connector,data) { 
     //initiate authorization service;
-    var service = authService(connector.type,connector.scope);
-
+    var parameters = this.auth;
+        parameters.name = connector.name;
+    
+    
+    var service = authService(parameters);
+    
     //set method for url fetch ('get' or 'post' for now);
     var method = 'get';
   
@@ -4556,8 +4554,36 @@ function GitHub() {
       }
     });
     
-    //make some parsing;
-    return {'code':response.code,'headers':response.headers,'content':parsed};    
+    //button colour test;
+    parsed = [
+      {
+        header:'Button test',
+        widgets:[
+          {
+            type:'TextButton',
+            title:'Coloured button',
+            colour:'#DE009B',
+            action:'click',
+            content:'actionManual',
+            disabled:false
+          }
+        ]
+      }
+    ];
+    
+    //build return object;
+    var returned = {
+      code     : response.code,
+      headers  : response.headers,
+      content  : parsed,
+      hasMatch : {
+        value  : true,
+        text   : 'found',
+        colour : '#DE009B'
+      }
+    };
+    
+    return returned;
   }
 }
 //chain custom connector to base class;
@@ -4674,101 +4700,1292 @@ function Sheets() {
       result.code = 404;
       result.content = 'The spreadsheet with url < '+connector.url+' > could not be found or you do not have access to it';
       return result; 
+    }else if(spread===404) {
+      //access content;
+      var content = result.content;
+      
+      //create denied auth section;
+      var section = {
+        header: '',
+        isCollapsible: false,
+        widgets: []
+      };
+      
+      //access widgets;
+      var widgets = section.widgets;
+      
+      //create prompt widget;
+      var prompt = {
+        title: 'Spreadsheet missing',
+        type: 'KeyValue',
+        content: 'Seems like the spreadsheet you are trying to access is missing or you do not have access to it'
+      };
+      widgets.push(prompt);
+      
+      //create tip widget;
+      var tip = {
+        type: 'KeyValue',
+        content: 'You can try requesting access from the spreadsheet owner (if using multiple accounts, note that one of them might have access and you will be redericted to the spreadsheet instead)'
+      };
+      widgets.push(tip);
+      
+      
+      //create request auth widget;
+      var auth = {
+        type      : 'TextButton',
+        title     : 'Request access',
+        content   : connector.url,
+        action    : 'link',
+        disabled  : false,
+        filled    : false,
+        fullsized : false,
+        reload    : true
+      };
+      widgets.push(auth);
+      
+      //append section to result content;
+      content.push(section);
     }
     
     try {//temp for dev
 
-    if(spread!==null) {
-      var sheets = spread.getSheets();
-      var numsh  = sheets.length;
-
-      //loop through each sheet and perform fetching;
-      for(var i=0; i<numsh; i++) {
-        //check if sheet has email data in it;
-        var cursh        = sheets[i];
-        var shname       = cursh.getName();
-        var hasEmailData = hasEmail(cursh);
-        if(hasEmailData) {
-          
-          //get data dimentions and range;
-          var numrow = cursh.getLastRow();
-          var numcol = cursh.getLastColumn();
-          if(maxcol!==0) { numcol = maxcol; }
-          if(maxrow!==0) { numrow = maxrow+1; }
-
-          var dataRange = cursh.getRange(1,1,numrow,numcol);
-          
-          //get values and data validations;
-          var dataValues   = dataRange.getValues();
-          var dataValids   = dataRange.getDataValidations();
-          var dataFormats  = dataRange.getNumberFormats();
-          var dataDisplays = dataRange.getDisplayValues(); 
-          
-          //get headers;
-          var dataHeaders = dataValues[0];
-          
-          //loop through each values row;
-          for(var j=1; j<dataValues.length; j++) {
+      if(spread!==null&&spread!==404) {
+        var sheets = spread.getSheets();
+        var numsh  = sheets.length;
+  
+        //loop through each sheet and perform fetching;
+        for(var i=0; i<numsh; i++) {
+          //check if sheet has email data in it;
+          var cursh        = sheets[i];
+          var shname       = cursh.getName();
+          var hasEmailData = hasEmail(cursh);
+          if(hasEmailData) {
             
-            //get values, validations, formats and display values for current row; 
-            var values   = dataValues[j];
-            var valids   = dataValids[j];
-            var formats  = dataFormats[j];
-            var displays = dataDisplays[j]; 
+            //get data dimentions and range;
+            var numrow = cursh.getLastRow();
+            var numcol = cursh.getLastColumn();
+            if(maxcol!==0) { numcol = maxcol; }
+            if(maxrow!==0) { numrow = maxrow+1; }
+  
+            var dataRange = cursh.getRange(1,1,numrow,numcol);
             
-            //check if values row has match to an email;
-            var hasMatch = values.some(function(value) { return value===email; });
-            if(hasMatch) {
+            //get values and data validations;
+            var dataValues   = dataRange.getValues();
+            var dataValids   = dataRange.getDataValidations();
+            var dataFormats  = dataRange.getNumberFormats();
+            var dataDisplays = dataRange.getDisplayValues(); 
+            
+            //get headers;
+            var dataHeaders = dataValues[0];
+            
+            //loop through each values row;
+            for(var j=1; j<dataValues.length; j++) {
               
-              //create section for each email match;
-              var section = {
-                header: '"'+shname+'", matched on row '+j,
-                isCollapsible: true,
-                numUncollapsible: globalNumUncollapsible,
-                widgets: []
-              };             
+              //get values, validations, formats and display values for current row; 
+              var values   = dataValues[j];
+              var valids   = dataValids[j];
+              var formats  = dataFormats[j];
+              var displays = dataDisplays[j]; 
               
-              //create widgets for each field;
-              values.forEach(function(value,index){
+              //check if values row has match to an email;
+              var hasMatch = values.some(function(value) { return value===email; });
+              if(hasMatch) {
                 
-                //get validations, formats and display values for current value;
-                var valid   = valids[index];
-                var format  = formats[index];
-                var display = displays[index];
+                //create section for each email match;
+                var section = {
+                  header: '"'+shname+'", matched on row '+j,
+                  isCollapsible: true,
+                  numUncollapsible: globalNumUncollapsible,
+                  widgets: []
+                };             
                 
-                //create widget to display data;
-                var widget = {
-                  type: 'KeyValue',
-                  title: dataHeaders[index],
-                  content: display
-                };
+                //create widgets for each field;
+                values.forEach(function(value,index){
+                  
+                  //get validations, formats and display values for current value;
+                  var valid   = valids[index];
+                  var format  = formats[index];
+                  var display = displays[index];
+                  
+                  //create widget to display data;
+                  var widget = {
+                    type: 'KeyValue',
+                    title: dataHeaders[index],
+                    content: display
+                  };
+                  
+                  section.widgets.push(widget);
+                });
                 
-                section.widgets.push(widget);
-              });
-              
-              result.content.push(section);
+                result.content.push(section);
+              }
             }
             
-          }
+            
+          }else { continue; }
           
-          
-        }else { continue; }
+        }
         
       }
-      
-    }
     
     }
     catch(er) {}
     
-    if(result.content.length===0) { result.content = '[]'; }
+    //access content and check if no recods matched;
+    var content = result.content;
+    if(result.content.length===0) { 
+      
+      //create no contacts section;
+      var section = {
+        header        : 'No matches',
+        isCollapsible : false,
+        widgets       : []
+      };
+      
+      //access widgets;
+      var widgets = section.widgets;
+      
+      //create no record prompt;
+      var prompt = {
+        title   : '',
+        type    : 'KeyValue',
+        content : 'Seems like none of your records in the spreadsheet match!\rWould you like to create one?'
+      };
+      widgets.push(prompt);
+      
+      //create add record button;
+      var button = {
+        type  : 'TextButton',
+        title : 'Add',
+        content: connector.url,
+        action: 'link',
+        disabled: false,
+        filled: false,
+        fullsized: false,
+        reload: true        
+      };
+      widgets.push(button);
+      
+      content.push(section);
+    }
     
+    //log result and return it;
+    console.log(result);
     return result;
   }
 }
 //chain custom connector to base class;
 Sheets.prototype = Object.create(Connector.prototype);
 //============================================END SHEETS========================================//
+
+//==========================================START PIPEDRIVE=====================================//
+function Pipedrive() {
+  Connector.call(this);
+  this.icon = globalPipedriveIconUrl;
+  this.name = 'Pipedrive';
+  this.url  = 'https://api-proxy.pipedrive.com/';
+  this.short = globalPipedriveShort;
+  this.config = [
+    
+  ];
+  this.auth = {
+    name: 'Pipedrive',
+    urlAuth: 'https://oauth.pipedrive.com/oauth/authorize',
+    urlToken: 'https://oauth.pipedrive.com/oauth/token',
+    id: '12cefab496cfcb98',
+    secret: 'c4842d0956b6188431e300ca311a8d3832def793',
+    scope: 'contacts:read'
+  };
+  this.login = function(connector) {
+    var base = 'https://www.pipedrive.com/en/login';
+    var url = base;
+    return url;
+  }
+  this.run = async function(msg,connector,data) {
+    //set method for url fetch ('get' or 'post' for now);
+    var method = 'get';
+
+    //set headers for url fetch;
+    var headers = {};
+    
+    //set payload in case POST request will be triggered;
+    var trimmed = trimMessage(msg,true,true);    
+    
+    //access authoorization parameters and set service name;
+    var parameters      = this.auth;
+        parameters.name = connector.name;
+        
+    //create service and set authorization header;
+    var service = authService(parameters);
+    var bearer  = 'Bearer '+service.getAccessToken();
+    headers.Authorization = bearer;
+    
+    //initiate access endpoints;
+    var personsEP = '/persons';
+    var activsEP  = '/activities';
+    var dealsEP   = '/deals';
+    
+    //initate requests;
+    var responsePersons = await performFetch(this.url+personsEP,method,headers);
+    var responseActivs  = await performFetch(this.url+activsEP,method,headers);
+    var responseDeals   = await performFetch(this.url+dealsEP,method,headers);
+    
+    //access response codes;
+    var codePersons = responsePersons.code;
+    var codeActivs  = responseActivs.code;
+    var codeDeals   = responseDeals.code;
+    
+    //access and parse response contents;
+    var contentPersons = JSON.parse(responsePersons.content);
+    var contentActivs  = JSON.parse(responseActivs.content);
+    var contentDeals   = JSON.parse(responseDeals.content);
+    
+    //initialize info parsing on successful fetch;
+    if(codePersons>=200&&codePersons<300) {
+    
+      //initiate result array, sections and set required params;
+      var result = [];   
+    
+      //access content and check if it is not null;
+      var persons = contentPersons.data;
+      if(persons!==null) {
+        //set section show to false by default;
+        var matching = false;
+        
+        //access each person and create widgets;
+        persons.forEach(function(person){
+          //access person email addresses;
+          var emailLabels = [], emailAddresses = [];
+          var emails = person.email; 
+          emails.forEach(function(email){
+            var emailLabel   = email.label;
+            var emailAddress = email.value;
+            emailLabels.push(emailLabel);
+            emailAddresses.push(emailAddress);
+          });
+              
+          //check if there is email match;
+          var hasMatch = emailAddresses.some(function(email){
+            if(email===trimmed.email) { return email; }
+          });
+          
+          if(hasMatch) {
+          
+            //create separator;
+            var separator = {
+              type: 'KeyValue',
+              content: '\r'
+            };
+            
+            //create section persons;
+            var sectionPersons = {
+              header: 'Person info',
+              isCollapsible: true,
+              widgets: []
+            }; 
+            
+            //access widgets;
+            var widgetsPerson = sectionPersons.widgets;            
+          
+            //access person properties;
+            var company   = person.org_id;
+            var owner     = person.owner_id;
+            var first     = person.first_name;
+            var last      = person.last_name;
+            var phones    = person.phone;
+            var created   = person.add_time;
+            var updated   = person.update_time;
+            var label     = person.label;
+            var numOpen   = person.open_deals_count;
+            var numClosed = person.closed_deals_count;
+            var numWon    = person.won_deals_count;
+            var numLost   = person.lost_deals_count;
+            var numActiv  = person.activities_count;
+            var nextDate  = person.next_activity_date;
+            var nextTime  = person.next_activity_time;
+            
+            //create person name widget;
+            var fullname = '';
+            if(first!==null) { fullname += first; }
+            if(last!==null)  { fullname += ' '+last; }
+            var personName = {
+              icon    : 'PERSON',
+              title   : 'Full Name',
+              type    : 'KeyValue',
+              content : fullname
+            };
+            widgetsPerson.push(personName);
+            
+            //create person label widget;
+            if(label!==null) {
+              //set start and end tags and default color;
+              var sText = '<b><font color="';
+              var eText = '</font></b>';
+              var color = '#000000';
+              
+              //set label text and color;
+              if(label===1) { label = 'Customer';  color = '#007A00'; }
+              if(label===2) { label = 'Hot lead';  color = '#ff0000'; }
+              if(label===3) { label = 'Warm lead'; color = '#FFCE00'; }
+              if(label===4) { label = 'Cold lead'; color = '#4285F4'; }
+            
+              var personLabel = {
+                icon    : 'BOOKMARK',
+                type    : 'KeyValue',
+                content : sText+color+'">'+label+eText
+              };
+              widgetsPerson.push(personLabel);
+            }
+            
+            //create person email widgets;
+            if(emails!==null) {
+              emails.forEach(function(email){
+                var label     = email.label;
+                var value     = '<a href="mailto:'+email.value+'">'+email.value+'</a>';
+                var isPrimary = email.primary;
+                
+                var personEmail = {
+                  icon       : 'EMAIL',
+                  title      : label,
+                  type       : 'KeyValue',
+                  content    : value
+                };
+                if(isPrimary) { personEmail.buttonText = 'Primary'; }
+                widgetsPerson.push(personEmail);
+                
+              });
+            }
+            
+            //create person phone widgets;
+            if(phones!==null) {
+              phones.forEach(function(phone){
+                var label     = phone.label;
+                var value     = phone.value;
+                var isPrimary = phone.primary;
+                
+                var personPhone = {
+                  icon    : 'PHONE',
+                  title   : label,
+                  type    : 'KeyValue',
+                  content : value
+                };
+                if(isPrimary) { personPhone.buttonText = 'Primary'; }
+                widgetsPerson.push(personPhone);
+              }); 
+            }
+            
+            //create is active widget;
+            var active = 'Inactive', color = '#ff0000';
+            if(person.active_flag) { 
+              active = 'Active';
+              color  = '#007A00';
+            }
+            var personActive = {
+              type    : 'KeyValue',
+              content : '<font color="'+color+'">'+active.toString()+'</font>'     
+            };
+            widgetsPerson.push(personActive);            
+            
+            //set number of uncollapsible widgets to main info;
+            sectionPersons.numUncollapsible = widgetsPerson.length;
+            
+            //append separator;
+            widgetsPerson.push(separator);
+            
+            //create creation date widget;
+            var personCreated = {
+              icon    : 'INVITE',
+              title   : 'Created on',
+              type    : 'KeyValue',
+              content : created
+            };
+            widgetsPerson.push(personCreated);
+            
+            //create update date widget;
+            if(updated!==null) {
+              var pesronUpdated = {
+                icon    : 'INVITE',
+                title   : 'Updated on',
+                type    : 'KeyValue',
+                content : updated
+              };
+              widgetsPerson.push(pesronUpdated);
+            }
+            
+            //create deals section and widgets if are or were any;
+            if(numOpen>0||numClosed>0) {
+              //set single / multiple ending;
+              var modOpen = '', modClosed = '';
+              if(!endsOnOne(numOpen))   { modOpen   = 's'; }
+              if(!endsOnOne(numClosed)) { modClosed = 's'; }
+              
+              //create deals section;
+              var sectionDeals = {
+                header        : 'Deals',
+                isCollapsible : true,
+                widgets       : []
+              };
+              
+              //access section widgets;
+              var dealsWidgets = sectionDeals.widgets;
+              
+              //create number of won deals widget;
+              var won = {
+                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_thumbs_up_down_black_18dp.png',
+                type    : 'KeyValue',
+                content : numWon+' won | '+numLost+' lost'
+              };
+              dealsWidgets.push(won);
+              
+              //create number of open deals widget;
+              var open = {
+                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_work_outline_black_18dp.png',
+                type    : 'KeyValue',
+                content : numOpen + ' open deal' + modOpen
+              };
+              dealsWidgets.push(open);
+              
+              //create number of closed deals widget;
+              var closed = {
+                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_work_black_18dp.png',
+                type    : 'KeyValue',
+                content : numClosed + ' closed deal' + modClosed
+              };
+              dealsWidgets.push(closed);
+              
+            }//end deals section;
+            
+            //create activities section and widgets if are or were any;
+            if(numActiv>0) {
+              //create deals section;
+              var sectionActivs = {
+                header           : 'Activities',
+                isCollapsible    : true,
+                widgets          : []
+              };  
+              
+              //access section widgets;
+              var activsWidgets = sectionActivs.widgets;
+
+              //create number of activities widget;
+              var activsMod = 'ies';
+              if(endsOnOne(numActiv)) { activsMod = 'y'; }
+              var activs = {
+                icon    : 'EVENT_PERFORMER',
+                type    : 'KeyValue',
+                content : numActiv+' activit'+activsMod
+              };
+              activsWidgets.push(activs);
+              
+              //create next activity date;
+              if(nextDate!==null) {
+                var nextD = {
+                  icon    : 'INVITE',
+                  title   : 'Next activity on',
+                  type    : 'KeyValue',
+                  content : nextDate
+                };
+                activsWidgets.push(nextD);
+              }
+              
+              //create widgets for activities;
+              if(codeActivs>=200&&codeActivs<300) {
+                //access activities info;
+                var activities = contentActivs.data;
+                
+                //loop through activities;
+                activities.forEach(function(activity){
+                  //access properties;
+                  var personId = activity.person_id;
+                  var orgId    = activity.org_id;
+                  var dealName = activity.deal_title;
+                  var subject  = activity.subject;
+                  var type     = activity.type;
+                  var duration = activity.duration;
+                  var isDone   = activity.done;
+                  var note     = activity.note;
+                  var dueDate  = activity.due_date;
+                  var dueTime  = activity.due_time;
+                  
+                  //create separator widget;
+                  activsWidgets.push(separator);
+                  
+                  //create subject widget;
+                  var activSubject = {
+                    icon    : 'EVENT_PERFORMER',
+                    title   : 'Subject',
+                    type    : 'KeyValue',
+                    content : subject
+                  };
+                  activsWidgets.push(activSubject);
+                  
+                  //create notes widget;
+                  var activNotes = {
+                    icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_speaker_notes_black_18dp.png',
+                    title   : 'Notes',
+                    type    : 'KeyValue',
+                    content : note
+                  };
+                  activsWidgets.push(activNotes);
+                  
+                  //create due date and time widget;
+                  var activDue = {
+                    icon    : 'INVITE',
+                    title   : 'Due to',
+                    type    : 'KeyValue',
+                    content : dueDate+' '+dueTime
+                  };
+                  activsWidgets.push(activDue);
+                  
+                  //create duration widget;
+                  var activDur = {
+                    icon    : 'CLOCK',
+                    title   : 'Duration',
+                    type    : 'KeyValue',
+                    content : duration
+                  };
+                  activsWidgets.push(activDur);
+                  
+                  
+                });
+              
+              }//end actives success;
+              
+              /*
+			rec_master_activity_id = null,
+			reference_id = null,
+			active_flag = true,
+			source_timezone = null,
+			assigned_to_user_id = 8658926,
+			participants = [{
+				primary_flag = true,
+				person_id = 1
+			}],
+			rec_rule_extension = null,
+			reference_type = null,
+			rec_rule = null,
+			marked_as_done_time = ,
+			series = null,
+              */
+               
+              
+            }
+        
+            /*[{
+              email_messages_count = 0,
+              last_outgoing_mail_time = null,
+              last_activity_id = null,
+              last_incoming_mail_time = null,
+              undone_activities_count = 0,
+              last_activity_date = null,
+              next_activity_id = null,
+              notes_count = 0,
+              done_activities_count = 0
+            }]*/
+            
+            //create organization section and widgets;
+            if(company!==null) {
+              
+              //create organization section;
+              var sectionCompany = {
+                header        : 'Organization',
+                isCollapsible : false,
+                widgets       : []              
+              };
+              
+              //access widgets;
+              var widgetsCompany = sectionCompany.widgets;              
+              
+              //create organization name widget;
+              var companyName = {
+                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_business_black_18dp.png',
+                title   : 'Name',
+                type    : 'KeyValue',
+                content : company.name
+              };
+              widgetsCompany.push(companyName);
+              
+              //create organization address widget;
+              if(company.address!==null) {
+                var companyAddress = {
+                  icon    : 'MAP_PIN',
+                  title   : 'Address',
+                  type    : 'KeyValue',
+                  content : company.address
+                };
+                widgetsCompany.push(companyAddress);
+              }
+              
+            }//end company section; 
+            
+            //create person owner section and widgets;
+            if(owner!==null) {
+              
+              //create owner section;
+              var sectionOwner = {
+                header           : 'Contact owner',
+                isCollapsible    : true,
+                widgets          : []              
+              };
+              
+              //access widgets;
+              var widgetsOwner = sectionOwner.widgets;      
+              
+              //create owner name widget;
+              var ownerName = {
+                icon    : 'PERSON',
+                title   : 'Name',
+                type    : 'KeyValue',
+                content : owner.name
+              };
+              widgetsOwner.push(ownerName);
+              
+              //create owner email widget;
+              var ownerEmail = {
+                icon    : 'EMAIL',
+                title   : 'Email',
+                type    : 'KeyValue',
+                content : '<a href="mailto:'+owner.email+'">'+owner.email+'</a>'
+              };
+              widgetsOwner.push(ownerEmail);
+              
+              //create is active widget;
+              var active = 'Inactive', color = '#ff0000';
+              if(owner.active_flag) { 
+                active = 'Active';
+                color  = '#007A00';
+              }
+              var ownerActive = {
+                type    : 'KeyValue',
+                content : '<font color="'+color+'">'+active.toString()+'</font>'     
+              };
+              widgetsOwner.push(ownerActive);
+                            
+            }//end owner section;
+            
+            //append sections;
+            result.push(sectionPersons);
+            if(sectionCompany) { result.push(sectionCompany); }
+            if(sectionDeals)   { result.push(sectionDeals);   }
+            if(sectionActivs)  { result.push(sectionActivs);  }
+            if(sectionOwner)   { result.push(sectionOwner);   }        
+          
+          }//end has match;
+          
+        });//end persons loop;
+      
+      }//end persons not null;
+    
+    }//end on response success;
+    
+    //set content to return;
+    var returned = {
+      code    : codePersons,
+      headers : '',
+      content : JSON.stringify(result)
+    };    
+    
+    //print debug info;
+    console.log(returned); 
+    
+    //return parsed info;
+    return returned;
+  }
+}
+Pipedrive.prototype = Object.create(Connector.prototype);
+//===========================================END PIPEDRIVE======================================//
+
+//===========================================START QB======================================//
+// control sandbox mode here, at a code level
+var sbMode = false;
+
+//QB connector class;
+function QB() {
+  Connector.call(this);
+  this.icon = "https://quickbooks.intuit.com/content/dam/intuit/quickbooks/common/qb_thumb.png";
+  this.name = 'QB';
+  this.short = globalQBShortDesc;
+  
+  // allow power users to copy the icon URL from QB to uniquely ID multiple QB companies by logo
+  this.allowCustomIcons = true;  
+
+  // Authentication detail for 'Cardin for QB' app in Intuit store
+  this.auth = {
+    name: 'QB',
+    urlAuth: 'https://appcenter.intuit.com/connect/oauth2',
+    urlToken: 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+    id: (sbMode ? 'L0ZlJyFPZoBCRHSAQsLFjDMwKBURLH4uemB4dadwYiSbxRdDfu' : 'L0iTDowDGWB0YnpdBTwsyX2CoA1n8iKqd1Kqdc00UBcuey7ylS'),
+    secret: (sbMode ? '4TK5iwkLFEFbo4zlPFQ9AS0RCezt8GYeFZg29XgY': 'eCukdtng3KMd0zKH0TQcPUGp8fd1dCecCPIyEL5W'),
+    scope: 'com.intuit.quickbooks.accounting'
+  };
+  
+  // return the login URL 
+  this.login = function(type) {
+    
+    //set parameters and create authorization service;
+    var parameters      = this.auth;
+        parameters.name = type.name;
+    var service = authService(parameters);
+
+    // retrieve realmID (QuickBooks companyID), which was persisted by the OAuth2 callback function on authentication;
+    var OAuth2Params = service.getStorage().getValue(type.name + '_OAuth2Params');
+    
+    if (OAuth2Params) {
+
+      // deeplink / directlink to company login.
+      return ('https://' + (sbMode ? 'sandbox.qbo.intuit.com' : 'qbo.intuit.com') + '/login?deeplinkcompanyid=' + OAuth2Params.realmId);
+      
+           
+    }
+    else {
+      return ('https://' + (sbMode ? 'app.sandbox.' : '') + 'qbo.intuit.com/app/login');
+    }
+      
+  };
+  
+  
+  /**
+   * method for performing fetch to external service;
+   * @param {Object} msg message object;
+   * @param {Object} connector connector config object;
+   * @param {Object} data custom data object to pass to payload;
+   * @return {Function}
+   */
+  this.run = async function (msg,connector,data) {
+ 
+    //set parameters and create authorization service;
+    var parameters      = this.auth;
+        parameters.name = connector.name;
+    var service = authService(parameters);
+
+    //set method for url fetch ('get' or 'post' for now)
+    var method = 'get';
+    
+    // initially, assume we won't find data
+    var foundDataResp = false;
+   
+    //set payload in case POST request will be triggered
+    var trimmed = trimMessage(msg,true,true);
+    var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
+    var payload = {
+      'Bcc': msg.getBcc(),
+      'Cc': msg.getCc(),
+      'date': msg.getDate(),
+      'sender': trimmed.name,
+      'from': trimmed.email,
+      'id': msg.getId(),
+      'subject': msg.getSubject(),
+      'labels': labels
+    };
+    if(data!==undefined) { payload.data = data; }
+    
+    // retrieve realmID (QuickBooks companyID), which was persisted by the OAuth2 callback function on authentication;
+    var OAuth2Params = service.getStorage().getValue(connector.name + '_OAuth2Params');
+
+    // realmID is the QB company ID
+    var realmID = '';
+
+    if (OAuth2Params) {
+      // retrieve realmID (QuickBooks companyID), which was persisted by the OAuth2 callback function on authentication 
+      var realmId = service.getStorage().getValue(connector.name + '_OAuth2Params').realmId;
+    }
+    
+    // initialize our Card response to assume that no Customers or Vendors will be found
+    // cs index tracks which Card section we are building
+    var cs = 0;
+    var cardReply = [];
+    cardReply[cs] = {};
+    cardReply[cs].header = 'QB Customer / Vendor Query Status';
+    cardReply[cs].isCollapsible = true;
+    cardReply[cs].numUncollapsible = 3;
+    cardReply[cs].widgets = [];
+    
+    // build out default first section in case we get no results from customer/vendor query
+    // this will be overwritten on success.
+    cardReply[cs].widgets = [
+      {
+        'type': 'TextParagraph',
+        'name': 'Status',
+        'content': 'No Customers or Vendors match the sender of the currently-open email.'
+      },
+      {
+        type: 'TextButton',
+        title: 'Edit Customers',
+        content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + 'customers',
+        action: 'link',
+        disabled: false,
+        filled: false,
+        fullsized: true,
+        reload: true      
+        
+      },
+      {
+        type: 'TextButton',
+        title: 'Edit Vendors',
+        content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + 'vendors',
+        action: 'link',
+        disabled: false,
+        filled: false,
+        fullsized: true,
+        reload: true      
+        
+      }
+
+    ]
+      
+    // build QB query URL to find the company ID associated with this customer email address
+    var url = "https://" + (sbMode ? "sandbox-" : "") + "quickbooks.api.intuit.com/v3/company/" + realmId + "/query?query=" + encodeURIComponent("select * from Customer where PrimaryEmailAddr = '" + payload.from + "'");
+    
+    //set headers for url fetch;
+    var fetchHeaders = {
+      'Authorization' : 'Bearer '+ service.getAccessToken(),
+      'Accept': 'application/json'
+
+    };
+
+    //initiate QB customer lookup request with helper function
+    var response = await performFetch(url,method,fetchHeaders);
+    
+    // Parse response
+    var result = JSON.parse(response.content);
+    
+    // if a customer matches the sender email, then isolate 'Customer' portion of QueryResponse 
+    if (result.QueryResponse.Customer) {
+      
+      // note that we found at least one matching customer in QB
+      foundDataResp = 'CUSTOMER';
+      
+      var customer = result.QueryResponse.Customer[0];
+      
+      cardReply[cs] = buildCustomerVendorSection(customer, true);
+
+      // increment to next Card section
+      cs++;
+      
+      // now we've identified customer by QB Id, query invoices
+      var url = "https://" + (sbMode ? "sandbox-" : "") + "quickbooks.api.intuit.com/v3/company/" + realmId + "/query?query=" + encodeURIComponent("select * from Invoice where CustomerRef = '" + customer.Id + "'");
+      
+      //initiate QB invoice lookup request with helper function
+      var response = await performFetch(url,method,fetchHeaders);
+      
+      // Parse response
+      var result = JSON.parse(response.content);
+      
+      // isolate invoices from queryResult if invoices found, else return helpful message
+      if (result.QueryResponse.Invoice) {
+        var invoices = result.QueryResponse.Invoice;
+   
+        foundDataResp = '<font color="#007A00">INVOICE(S)</font>';
+        
+        // iterate invoices and create widgets for display in card
+        for (var i in invoices) {
+          
+          if (invoices[i].Balance) {
+            cardReply[cs] = buildInvoiceBillSection (invoices[i],true);
+          
+            // advance to next Card section (one section per Invoice)
+            cs++;
+          }
+        }
+        
+      }
+      else {
+        
+        // Add Card section indicating no invoices outstanding
+        cardReply[cs] = {};
+        cardReply[cs].header = 'Invoice Status';
+        cardReply[cs].isCollapsible = true;
+        cardReply[cs].numUncollapsible = 2;
+        cardReply[cs].widgets = [];
+        
+        cardReply[cs].widgets = [
+          {
+            'type': 'KeyValue',
+            'title': '',
+            'content': 'No invoices outstanding'
+          },
+          {
+            type: 'TextButton',
+            title: 'Add New Invoice',
+            content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + 'invoice',
+            action: 'link',
+            disabled: false,
+            filled: false,
+            fullsized: true,
+            reload: true      
+            
+          }
+
+          
+        ]
+      }  
+    }
+   
+    // setup to handle QB Bills, here.
+    
+    lastName = payload.sender.split(' ').slice(-1);
+    
+    // build QB query URL to find the Vendor ID associated with the last name indicated in this email address
+    var url = "https://" + (sbMode ? "sandbox-" : "") + "quickbooks.api.intuit.com/v3/company/" + realmId + "/query?query=" + encodeURIComponent("select * from vendor where FamilyName = '" + lastName + "'");
+
+    //initiate QB Vendor lookup request with helper function
+    var response = await performFetch(url,method,fetchHeaders);
+    
+    // Parse response
+    var result = JSON.parse(response.content);
+    
+    // if a single Vendor matches on FamilyName, then isolate 'Vendor' portion of QueryResponse 
+    if (result.QueryResponse.Vendor) {
+     
+      // note that we found at least one matching Vendor in QB
+      foundDataResp = 'VENDOR';
+
+      var vendor = result.QueryResponse.Vendor;
+
+      // if there is more than one vendor that matches on last name, then provide the user with the capacity to select from drop down which they wish to see
+      if (vendor.length > 1) {
+        
+        // add this handling in future; for now, assume single vendor match
+      }        
+      else {
+
+        // assume array of length 1 as single match
+        vendor = vendor[0];
+        
+        // add vendor detail section
+        cardReply[cs] = buildCustomerVendorSection(vendor, false);
+        
+        // increment to next Card section
+        cs++;
+        
+        // now we've identified vendor by QB Id, query bills
+        var url = "https://" + (sbMode ? "sandbox-" : "") + "quickbooks.api.intuit.com/v3/company/" + realmId + "/query?query=" + encodeURIComponent("select * from bill where VendorRef = '" + vendor.Id + "'");
+        
+        //initiate QB bill lookup request with helper function
+        var response = await performFetch(url,method,fetchHeaders);
+        
+        // Parse response
+        var result = JSON.parse(response.content);
+
+        // isolate invoices from queryResult if invoices found, else return helpful message
+        if (result.QueryResponse.Bill) {
+          var bills = result.QueryResponse.Bill;
+          
+          foundDataResp = 'BILL(S)';   
+          
+          // iterate bills and create widgets for display in card
+          for (var i in bills) {
+            
+            if (bills[i].Balance) {
+              cardReply[cs] = buildInvoiceBillSection (bills[i],false);
+              
+              // advance to next Card section (one section per Bill)
+              cs++;
+            }
+          }
+        
+        }
+        else {
+          
+          // Add Card section indicating no bills outstanding
+          cardReply[cs] = {};
+          cardReply[cs].header = 'Bill Status';
+          cardReply[cs].isCollapsible = true;
+          cardReply[cs].numUncollapsible = 3;
+          cardReply[cs].widgets = [];
+          
+          cardReply[cs].widgets = [
+            {
+              'type': 'KeyValue',
+              'title': '',
+              'content': 'No bills outstanding'
+            },
+            {
+              type: 'TextButton',
+              title: 'Add New Bill',
+              content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + 'bill',
+              action: 'link',
+              disabled: false,
+              filled: false,
+              fullsized: true,
+              reload: true      
+              
+            },
+            {
+              type: 'TextButton',
+              title: 'Add New Expense',
+              content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + 'expense',
+              action: 'link',
+              disabled: false,
+              filled: false,
+              fullsized: true,
+              reload: true      
+              
+            }
+            
+          ]
+        }  
+
+        
+      }
+    }  
+    
+    // Add login button, here
+    cs = cardReply.push(Object());
+
+    // .push retruns new length, so index of tail element is returnvalue - 1
+    cs--;
+    
+    cardReply[cs].header = 'Login to edit this company';
+    cardReply[cs].isCollapsible = false;
+    cardReply[cs].numUncollapsible = 1;
+    cardReply[cs].widgets = [];
+        
+    cardReply[cs].widgets[0] = 
+      {
+        type: 'TextButton',
+        title: 'Login',
+        content: this.login(connector),
+        action: 'link',
+        disabled: false,
+        filled: false,
+        fullsized: false,
+        reload: true      
+        
+      }
+    
+    cs++;
+/*    
+    var returnValue = {
+      code : response.code,
+      headers : response.headers,
+      content : cardReply };
+    
+    if foundDataResp {
+      returnValue.hasMatch = {
+        value : true,
+        text : foundDataResp
+    
+ */   
+    // return result
+    return {code:response.code,headers:response.headers,content:cardReply, hasMatch : {value : (foundDataResp != false), text : foundDataResp}};    
+  }
+}
+//chain custom connector to base class;
+QB.prototype = Object.create(Connector.prototype);
+
+// Helper function for formatting dollar values received from QB API
+function formatMoney(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+// Helper function to caclulate the number of days between two Date objects
+function daysBetween (firstDate, secondDate) {
+  var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+  
+  return (Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay))));
+}
+
+// Helper function which builds the card section detailing either a Vendor or a Customer and returns a Section object
+// Sections have a few header fields and conclude with an array of widgets
+function buildCustomerVendorSection (QBrecord,custOrvendor) {
+
+  // Build card section detailing Customer or Vendor info
+  section = {};
+  section.header = (custOrvendor) ? 'Customer Detail' : 'Vendor Detail';
+  section.isCollapsible = true;
+  
+  // Create date object reflecting date customer was created in QB
+  var createdDate = new Date(QBrecord.MetaData.CreateTime);
+
+  // check to see if email address field is defined; othewise set to indicate not found
+  if (QBrecord.PrimaryEmailAddr) { var emailResult = QBrecord.PrimaryEmailAddr.Address } else { emailResult = 'no email in QB' }; 
+  
+  section.widgets = [
+    {
+      'type': 'KeyValue',
+      'title': 'Name',
+      'content': QBrecord.DisplayName,
+      "icon": "PERSON"
+
+    },
+    {
+      icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_business_black_18dp.png',
+      title   : 'Company',
+      type    : 'KeyValue',
+      content : QBrecord.CompanyName ? QBrecord.CompanyName : ''
+    },
+    {
+      'type': 'KeyValue',
+      'title': 'Outstanding unpaid balance',
+      'content': '$' + formatMoney(QBrecord.Balance),
+      'icon' : 'DOLLAR'
+    },
+    {
+      'type': 'KeyValue',
+      'title': 'Currency',
+      'content': QBrecord.CurrencyRef.value,
+      'icon' : 'DOLLAR'
+    },
+    {
+      'type': 'KeyValue',
+      'title': 'First created in QB',
+      'content': createdDate.toDateString(),
+      'icon' : 'INVITE'
+    },
+    {
+      'type': 'KeyValue',
+      'title': 'Email in QB',
+      'content': emailResult,
+      'icon' : 'EMAIL'
+    },
+    {
+      type: 'TextButton',
+      title: 'Edit in QB',
+      content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + (custOrvendor ? 'customerdetail' : 'vendordetail') + '?nameId=' + QBrecord.Id,
+      action: 'link',
+      disabled: false,
+      filled: false,
+      fullsized: true,
+      reload: true      
+      
+    }
+    
+  ];             
+
+  
+  
+  // set to expand fully
+  section.numUncollapsible = section.widgets.length;
+ 
+  return section;
+}
+
+// Helper function which builds the card section detailing either an Invoice and or Bill and returns a section object
+// custOrvendor == true for Customer and false for Vendor
+function buildInvoiceBillSection (QBrecord,custOrvendor) {
+
+  // parse dates
+  var txnDate = new Date(QBrecord.TxnDate);
+  var dueDate = new Date(QBrecord.DueDate);
+  var currentDate = new Date();
+  var dueDays = daysBetween(dueDate, currentDate);
+  
+  //console.log( {message: 'dates', data: [dueDate, emailDate, daysBetween(emailDate, dueDate)]});
+  
+  // Build out invoice / bill detail
+  var section = {};
+  section.header = 'Outstanding ' + (custOrvendor ? ('Invoice Number ' + QBrecord.DocNumber) : 'Bill');
+  section.isCollapsible = true;
+  section.numUncollapsible = 3;
+  section.widgets = [];
+  
+  // track current widget
+  var cw = 0;
+
+  // Balance outstanding and date created
+  section.widgets[cw] =
+    {
+      'type': 'KeyValue',
+      'title': 'Created '+ txnDate.toDateString(),
+      'icon' : 'DOLLAR',
+      'content': 'Balance $' + formatMoney(QBrecord.Balance)
+    };
+  cw++; // next widget
+
+  // Due date: insert date and number of days until due or overdue
+  section.widgets[cw] =
+    {
+      'type': 'KeyValue',
+      'title': 'Due '+ dueDate.toDateString(),
+      'icon' : 'INVITE',
+      'content': currentDate < dueDate ? 'Due in ' + dueDays + ' days' : 'Overdue for ' + dueDays + ' days'
+    };
+
+/*
+  cw++; // next widget
+
+  // Balance outstanding and date created
+  section.widgets[cw] =
+    {
+      'type': 'KeyValue',
+      'title': (custOrvendor ? 'Invoice ' : 'Bill ') + 'detail',
+      'icon' : 'DESCRIPTION',
+      'content': 'click below to expand line items:'
+    };
+    
+ */   
+  
+/*  
+  cw++; // next widget
+
+  // present individual invoice detail as a Dropdown widget with each line represented by an option for drill-down
+  section.widgets[cw] = {};
+  section.widgets[cw].type = 'DROPDOWN';
+  section.widgets[cw].content = [];
+  section.widgets[cw].name = 'record' + QBrecord.Id;
+
+  // for each invoice, get line item detail for reference
+  for (var j in QBrecord.Line) {
+    if (QBrecord.Line[j].DetailType == 'SalesItemLineDetail' || QBrecord.Line[j].DetailType == 'AccountBasedExpenseLineDetail') {
+      section.widgets[cw].content[j] = {};
+      section.widgets[cw].content[j].text = '$' + formatMoney(QBrecord.Line[j].Amount,0) + ' - ' + QBrecord.Line[j].Description.slice(0,30);// + '..' + ' Qty: ' + QBrecord.Line[j].SalesItemLineDetail.Qty;// + ' Tax: (per) ' + QBrecord.Line[j].SalesItemLineDetail.TaxCodeRef.value;
+      section.widgets[cw].content[j].value = j;
+      section.widgets[cw].content[j].selected = true;
+      
+    }
+  }
+  
+*/
+
+  // present individual invoice / bill lines as keyvalue widgets, one per line
+  for (var j in QBrecord.Line) {
+    if (QBrecord.Line[j].DetailType == 'SalesItemLineDetail' || QBrecord.Line[j].DetailType == 'AccountBasedExpenseLineDetail') {
+      // advance to next widget
+      cw++;
+
+
+      section.widgets[cw] = {
+        type : 'KeyValue',
+        title : QBrecord.Line[j].Description.slice(0,30),
+        icon : 'DOLLAR',
+        content :  (custOrvendor ? (  'Qty: ' + QBrecord.Line[j].SalesItemLineDetail.Qty + ' x Rate: $' + formatMoney(QBrecord.Line[j].UnitPrice,0) + ' =') : '') + '$' + formatMoney(QBrecord.Line[j].Amount,2),
+        buttonText : 'Line ' + QBrecord.Line[j].LineNum
+      }
+    }  
+  }
+    
+  
+  cw++; // next widget
+  
+  // insert direct link to either Invoice or Bill
+  section.widgets[cw] = {};
+  section.widgets[cw] = 
+    {
+
+      type: 'TextButton',
+      title: 'Edit in QB',
+      content: 'https://app.' + (sbMode ? "sandbox." : "") + 'qbo.intuit.com/app/' + (custOrvendor ? 'invoice' : 'bill') + '?txnId=' + QBrecord.Id,
+      action: 'link',
+      disabled: false,
+      filled: false,
+      fullsized: true,
+      reload: true      
+
+
+    };
+  cw++; // next widget
+  
+  return section;
+}
+//============================================END QB=======================================//
 
 //emulate event object;
 class e_EventObject {
