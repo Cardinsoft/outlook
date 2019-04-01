@@ -91,7 +91,7 @@ body {
 .row {
 	display: flex;
 	align-items: center;
-	margin: 1em 0;
+	margin: 12px 0;
 	width: 100%;
 	min-height: 35px;
 }
