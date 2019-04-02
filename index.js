@@ -2784,6 +2784,7 @@ function actionCallback(action,element) {
 		}
 		
 		console.log(this);
+		console.log(GLOBAL);
 		
 		e.parameters = parameters;
 		
@@ -6298,7 +6299,7 @@ Switch.prototype.appendToUi = function (parent) {
 		}
 	});
 	
-	if(action!==undefined) { 
+	if(action) { 
 		wrapToggle.addEventListener('click',actionCallback(action,input)); 
 	}
 	
@@ -7257,3 +7258,4 @@ const PropertiesService = new e_PropertiesService();
 const CacheService      = new e_CacheService();
 const e                 = new e_EventObject();
 const cardStack         = [];
+const GLOBAL            = this;
