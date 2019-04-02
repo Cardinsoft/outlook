@@ -2783,7 +2783,7 @@ function actionCallback(action,element) {
 					if(name!=='') {
 						
 						//temp solution to check forSwitches;
-						const isSwitch = input.classList.includes('ms-Toggle-input');
+						const isSwitch = input.classList.contains('ms-Toggle-input');
 				
 						if(!isSwitch||value==='true') {
 							e.formInput[name]  = value;	
