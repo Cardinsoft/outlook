@@ -6339,6 +6339,9 @@ Switch.prototype.setValue = function (value) {
 	return this;	
 };
 Switch.prototype.appendToUi = function (parent) {
+	
+	console.log(this);
+	
 	//access Switch parameters;
 	const fieldName = this.fieldName;
 	const action    = this.action;
