@@ -6333,6 +6333,8 @@ Switch.prototype.appendToUi = function (parent) {
 	const selected  = this.selected;
 	const value     = this.value;
 	
+	if(typeof value!=='string') { value = value.toString(); }
+	
 	//create toggler paragraph;
 	const pToggle = document.createElement('p');
 	parent.append(pToggle);
@@ -6350,17 +6352,9 @@ Switch.prototype.appendToUi = function (parent) {
 	input.name      = fieldName;
 	input.value     = value;
 	
-	//append toggler wrap and set state listener;
+	//append toggler wrap;
 	wrapToggle.append(input);	
-	wrapToggle.addEventListener('click',function(e){
-		let val = input.value;
-		if(val==='true') {
-			input.value = 'false'; 
-		}else {
-			input.value = 'true'; 
-		}
-	});
-	
+
 	//set action if provided;
 	if(action) { 
 		wrapToggle.addEventListener('click',actionCallback(action,input)); 
@@ -6372,6 +6366,18 @@ Switch.prototype.appendToUi = function (parent) {
 	}else {
 		label.className = 'ms-Toggle-field';
 	}
+	
+	//set state listener;
+	wrapToggle.addEventListener('click',function(e){
+		let val = input.value;
+		if(val==='true') {
+			input.value = 'false'; 
+		}else {
+			input.value = 'true'; 
+		}
+	});	
+	
+	
 	wrapToggle.append(label);
 	
 	new fabric['Toggle'](wrapToggle);
