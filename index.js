@@ -6567,8 +6567,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	}
 	section.dir = 'ltr';
 
+	//access header text and set section header if provided;
 	const headerText = this.header;
-	console.log(headerText);
 	if(headerText&&headerText!=='') {
 		const header = document.createElement('p');
 		header.className = 'ms-font-m-plus sectionHeader';
@@ -6576,22 +6576,35 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		section.append(header);
 	}
 	
+	//append widgets wrapper and handle collapsed Ui;
 	const widgetsWrap = document.createElement('div');
 	if(collapsible) { widgetsWrap.className = 'closed'; }
 	section.append(widgetsWrap);
 	
+	//access widgets and append;
 	const widgets = this.widgets;
 	if(widgets.length!==0) {
 		
+		//check if at least one widget is a form input;
 		var hasInput = widgets.some(function(widget){ 
 			
-			var name = widget.className;
+			//access widget's parameters;
+			var name      = widget.className;
+			var hasSwitch = widget.switchToSet;
 			
-			console.log(name);
+			//check if widget is a form element;
+			var isFormElem = name==='TextInput'||name==='SelectionInput'||hasSwitch;
+			
+			//return true if found;
+			if(isFormElem) {
+				return widget;
+			}
 			
 		});
 		
+		console.log(hasInput);
 		
+		//append widgets to Ui;
 		widgets.forEach(function(widget,index){
 			widget.appendToUi(widgetsWrap,index);
 		});
