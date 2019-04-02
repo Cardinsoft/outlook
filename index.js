@@ -3218,11 +3218,11 @@ function performFullReset(e) {
 				var config = await getProperty('config','user');
 				if(config.length!==0) {
 				  config.forEach(function(connector){
-					var auth = new this[connector.type]().auth;
-					if(Object.keys(auth).length!==0) {
+					//var auth = new this[connector.type]().auth;
+					//if(Object.keys(auth).length!==0) {
 					  //var service = authService(auth);
 					  //service.reset();
-					}
+					//}
 				  });
 				}
 			}
