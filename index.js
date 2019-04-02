@@ -2761,21 +2761,27 @@ function actionCallback(action,element) {
 		}
 		
 		//get form and access formInputs;
-		const form = document.getElementsByTagName('form');
+		const forms = document.getElementsByTagName('form');
 		
-		//if has form -> construct formInput object;
-		if(form) {
-			const formInputs = form.elements;
-			formInputs.forEach(function(input){
-				//access input parameter;
-				let name  = input.name;
-				let value = input.value;
+		//if has forms -> set event objects formInput and formInputs params;
+		if(forms) {
+			forms.forEach(function(form){
 				
-				//set formInput parameters;
-				e.formInput.name = value;
+				//access form parameters;
+				const formInputs = form.elements;
 				
-				//set formInputs parameters - for now, just add an Array;
-				e.formInputs.name = [value];
+				formInputs.forEach(function(input){
+					//access input parameter;
+					let name  = input.name;
+					let value = input.value;
+					
+					//set formInput parameters;
+					e.formInput.name = value;
+					
+					//set formInputs parameters - for now, just add an Array;
+					e.formInputs.name = [value];
+				});
+			
 			});
 		}
 		console.log(e);
