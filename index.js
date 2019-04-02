@@ -2761,9 +2761,24 @@ function actionCallback(action,element) {
 		}
 		
 		//get form and access formInputs;
-		var form = document.getElementsByTagName('form');
-		console.log(form);
-		//var formInputs = form.elements;
+		const form = document.getElementsByTagName('form');
+		
+		//if has form -> construct formInput object;
+		if(form) {
+			const formInputs = form.elements;
+			formInputs.forEach(function(input){
+				//access input parameter;
+				let name  = input.name;
+				let value = input.value;
+				
+				//set formInput parameters;
+				e.formInput.name = value;
+				
+				//set formInputs parameters - for now, just add an Array;
+				e.formInputs.name = [value];
+			});
+		}
+		console.log(e);
 		
 		
 		
