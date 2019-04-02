@@ -6820,7 +6820,7 @@ TextButton.prototype.appendToUi = function (parent) {
 		
 	const btnContent = document.createElement('span');
 	btnContent.className = 'ms-Button-label';
-	btnContent.textContent = text;
+	btnContent.innerHTML = text;
 	button.append(btnContent);
 	
 	if(!openLink) {
@@ -6965,7 +6965,7 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	}
 	const content = document.createElement('span');
 	content.className = 'ms-font-m-plus KeyValueText';
-	content.textContent = this.content;
+	content.innerHTML = this.content;
 	wrapText.append(content);
 	
 	//handle button or switch creation;
