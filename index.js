@@ -2779,11 +2779,11 @@ function actionCallback(action,element) {
 					let name  = input.name;
 					let value = input.value;
 					
-					//set formInput parameters;
-					e.formInput[name] = value;
-					
-					//set formInputs parameters - for now, just add an Array;
-					e.formInputs[name] = [value];
+					//set formInput and formInputs properties;
+					if(name!=='') {
+						e.formInput[name] = value;	
+						e.formInputs[name] = [value];
+					}
 				}			
 				
 			}
