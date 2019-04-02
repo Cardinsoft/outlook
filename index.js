@@ -6480,8 +6480,10 @@ CardBuilder.prototype.build = function () {
 	}
 		
 	if(cardSections.length!==0) {
+		
 		let serialize = true;
-		if(cardSections.length!==1) { serialize = true; }else { serialize = false; }
+		if(cardSections.length===1) { serialize = false; }
+		
 		cardSections.forEach(function(cardSection){
 			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
 		});
@@ -6580,6 +6582,16 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	const widgets = this.widgets;
 	if(widgets.length!==0) {
+		
+		var hasInput = widgets.some(function(widget){ 
+			
+			var name = widget.className;
+			
+			console.log(name);
+			
+		});
+		
+		
 		widgets.forEach(function(widget,index){
 			widget.appendToUi(widgetsWrap,index);
 		});
@@ -7105,7 +7117,7 @@ ActionResponseBuilder.prototype.setStateChanged = function (stateChanged) {
 }
 ActionResponseBuilder.prototype.build = function () {
 	const notif = this.notification;
-	if(notif!==undefined) {
+	if(notif) {
 		const ui = $('#main-Ui-wrap');
 		notif.appendToUi(ui);
 		return this;
