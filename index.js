@@ -3220,8 +3220,8 @@ function performFullReset(e) {
 				  config.forEach(function(connector){
 					var auth = new this[connector.type]().auth;
 					if(Object.keys(auth).length!==0) {
-					  var service = authService(auth);
-					  service.reset();
+					  //var service = authService(auth);
+					  //service.reset();
 					}
 				  });
 				}
@@ -7379,12 +7379,6 @@ function makeRequest(url,params) {
 //===========================================END URL FETCH===========================================//
 
 //===========================================TEST====================================================//
-//deletes all properties;
-function testDeleteAll() {
-  deleteAllProperties('user');
-  //deleteAllProperties('script');
-}
-testDeleteAll();
 
 //initiate services to be able to access them;
 const UrlFetchApp       = new e_UrlFetchApp();
