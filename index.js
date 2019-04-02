@@ -5976,9 +5976,9 @@ class e_EventObject {
 			accessToken : '',
 			messageId : ''
 		};
-		this.formInput;
+		this.formInput  = {};
 		this.clientPlatform;
-		this.formInputs;
+		this.formInputs = {};
 		this.parameters = {};
 		this.userLocale;
 		this.userTimezone = {
