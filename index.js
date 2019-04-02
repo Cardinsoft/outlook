@@ -2801,7 +2801,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
-		//await GLOBAL[functionName](e,element); UNCOMMENT WHEN DONE;
+		if(!form) {await GLOBAL[functionName](e,element);}
 		
 		//$('#app-overlay').hide();
 		
