@@ -2781,8 +2781,14 @@ function actionCallback(action,element) {
 					
 					//set formInput and formInputs properties;
 					if(name!=='') {
-						e.formInput[name] = value;	
-						e.formInputs[name] = [value];
+						
+						//temp solution to check forSwitches;
+						const isSwitch = input.classList.includes('ms-Toggle-input');
+				
+						if(!isSwitch||value==='true') {
+							e.formInput[name]  = value;	
+							e.formInputs[name] = [value];
+						}
 					}
 				}			
 				
@@ -2795,9 +2801,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
-		await GLOBAL[functionName](e,element);
-		
-		
+		//await GLOBAL[functionName](e,element); UNCOMMENT WHEN DONE;
 		
 		//$('#app-overlay').hide();
 		
