@@ -2742,53 +2742,29 @@ function error(text) {
 //===========================================END NOTIFICATIONS===========================================//
 
 //===============================================CALLBACKS===============================================//
-
-//sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
-function cardActionCallback(cardAction) {
-	return function(e) {
-		const functionName  = cardAction.functionName;
-		const loadIndicator = cardAction.loadIndicator;
-		const parameters    = cardAction.parameters;
-		
-		if(loadIndicator!=='NONE') {
-			const overlay = $('#app-overlay');
-			overlay.show();
-			
-			const indicator = document.createElement('div');
-			indicator.id = 'main-Ui-spinner';
-			indicator.className = 'ms-Spinner ms-Spinner--large';
-			$('#main-Ui-wrap').append(indicator);
-			new fabric['Spinner'](indicator);			
-		}
-		
-		window[functionName](parameters)
-		.then(function(){
-			if(loadIndicator!=='NONE') { 
-				//overlay.hide();
-				//$('#main-Ui-spinner').remove(); 
-			}
-		});
-	}
-}
-
-//sets load indicator if provided, executes function by its name when an event is registered, awaits for function to resolve then removes indicator;
+/**
+ * Initiates callback function and updates Ui;
+ * @param {Action} action object with action config (function name, load indicator and parameters);
+ * @param {HtmlElement} element document markup element calling action;
+ */
 function actionCallback(action,element) {
 	return async function() {
+		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
+		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			const overlay = $('#app-overlay');
 			//overlay.show();
 		}
 		
-		console.log(this);
-		console.log(GLOBAL);
-		
+		//set parameters to event object;
 		e.parameters = parameters;
 		
-		await GLOBAL[functionName](e,element)
+		//invoke callback and await response;
+		await GLOBAL[functionName](e,element);
 		
 		//$('#app-overlay').hide();
 		
@@ -2796,121 +2772,116 @@ function actionCallback(action,element) {
 }
 //=============================================END CALLBACKS=============================================//
 
-//=============================================START ACTIONS=============================================//
-const callbacks = {
-	
-	blink : function (parameters) { //blink is a debug function and is not used outside testing environment!
-		return new Promise(
-			function(resolve) {
-				setTimeout(function() { resolve(); },3000);
-			}
-		);
-	},
-	/**
-	 * Updates connector add / edit settings card on auth select change;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	chooseAuth : function chooseAuth(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
+//=============================================START ACTIONS=============================================//	
+/**
+ * Updates connector add / edit settings card on auth select change;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function chooseAuth(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
 			  
-			  var data       = e.formInput;
-			  var authType   = data.auth;
-			  var parameters = e.parameters;
-			  var isEdit     = parameters.isEdit;
+			var data       = e.formInput;
+			var authType   = data.auth;
+			var parameters = e.parameters;
+			var isEdit     = parameters.isEdit;
 			  
-			  var custom = new Connector();
+			var custom = new Connector();
 			  
-			  e.parameters.icon = data[globalIconFieldName];
-			  e.parameters.name = data[globalNameFieldName];
-			  e.parameters.url  = data[globalURLfieldName];
+			e.parameters.icon = data[globalIconFieldName];
+			e.parameters.name = data[globalNameFieldName];
+			e.parameters.url  = data[globalURLfieldName];
 			  
-			  for(var input in data) {
+			for(var input in data) {
 				var val = data[input];
 				e.parameters[input] = val;
-			  }
-			  if(data.manual===undefined)    { e.parameters.manual = false;    }
-			  if(data.isDefault===undefined) { e.parameters.isDefault = false; }
+			}
+			if(data.manual===undefined)    { e.parameters.manual = false;    }
+			if(data.isDefault===undefined) { e.parameters.isDefault = false; }
 			  
-			  e.parameters.authType = authType;
+			e.parameters.authType = authType;
 			  
-			  e.parameters.auth     = JSON.stringify({});
-			  e.parameters.basic    = JSON.stringify(custom.basic);
-			  e.parameters.config   = JSON.stringify(custom.config);
-			  e.parameters.type     = custom.name;
+			e.parameters.auth     = JSON.stringify({});
+			e.parameters.basic    = JSON.stringify(custom.basic);
+			e.parameters.config   = JSON.stringify(custom.config);
+			e.parameters.type     = custom.name;
 			  
-			  if(isEdit==='true') {  
+			if(isEdit==='true') {  
 				if(data.scope) {
-				  e.parameters.urlAuth  = data.urlAuth; 
-				  e.parameters.urlToken = data.urlToken;
-				  e.parameters.id       = data.id;
-				  e.parameters.secret   = data.secret;
-				  e.parameters.scope    = data.scope; 
+					e.parameters.urlAuth  = data.urlAuth; 
+					e.parameters.urlToken = data.urlToken;
+					e.parameters.id       = data.id;
+					e.parameters.secret   = data.secret;
+					e.parameters.scope    = data.scope; 
 				}
-			  }
-			  
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
-			  builder.setStateChanged(true);
-			  return builder.build();
 			}
-		);
-	},
-	/**
-	 * Updates widget by provided index to generate form input instead of clickable field;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	editSectionAdvanced : function editSectionAdvanced(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
+			  
+			builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
+			builder.setStateChanged(true);
+			return builder.build();
+		}
+	);
+}
 
-			  //access content;
-			  var connector = e.parameters;
-			  var content   = connector.content;
+
+/**
+ * Updates widget by provided index to generate form input instead of clickable field;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function editSectionAdvanced(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+
+			//access content;
+			var connector = e.parameters;
+			var content   = connector.content;
 			  
-			  //parse content;
-			  content = parseData(content);
+			//parse content;
+			content = parseData(content);
 			  
-			  //access section and widget index;
-			  var sectionIdx = +connector.sectionIdx;
-			  var widgetIdx  = +connector.widgetIdx;
+			//access section and widget index;
+			var sectionIdx = +connector.sectionIdx;
+			var widgetIdx  = +connector.widgetIdx;
 			  
-			  //change widget being edited to input;
-			  content[sectionIdx].widgets[widgetIdx].type = 'TextInput';
+			//change widget being edited to input;
+			content[sectionIdx].widgets[widgetIdx].type = 'TextInput';
 			  
-			  //stringify content to send to event object;
-			  e.parameters.content = JSON.stringify(content);
+			//stringify content to send to event object;
+			e.parameters.content = JSON.stringify(content);
 			  
-			  //set data state change and navigate to display card;
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
-			  builder.setStateChanged(true);
-			  return builder.build();				
-			}
-		);
-	},
-	/**
-	 * Updates data with form input values, performs request and calls display with updated response;
-	 * @param {Object} e event object;
-	 */
-	updateSectionAdvanced : function updateSectionAdvanced(e) {
-		return new Promise(
-			async function (resolve) {
-			  var connector = e.parameters;
-			  var data      = connector.content;
+			//set data state change and navigate to display card;
+			builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+			builder.setStateChanged(true);
+			return builder.build();				
+		}
+	);
+}
+
+
+/**
+ * Updates data with form input values, performs request and calls display with updated response;
+ * @param {Object} e event object;
+ */
+function updateSectionAdvanced(e) {
+	return new Promise(
+		async function (resolve) {
+			var connector = e.parameters;
+			var data      = connector.content;
 			  
-			  //parse content; 
-			  data = parseData(data);
+			//parse content; 
+			data = parseData(data);
 			  
-			  //access form inputs;
-			  var form  = e.formInput;
-			  var forms = e.formInputs;
+			//access form inputs;
+			var form  = e.formInput;
+			var forms = e.formInputs;
 			  
-			  data.forEach(function(elem){
+			data.forEach(function(elem){
 				var widgets = elem.widgets;
 				widgets.forEach(function(widget){
 				  var type = widget.type;
@@ -2951,198 +2922,214 @@ const callbacks = {
 				  }
 				  
 				});
-			  });
+			});
 			 
-			  var msg   = getToken(e);
-			  var cType = new this[connector.type]();
-			  var resp  = await cType.run(msg,connector,data);
+			var msg   = getToken(e);
+			var cType = new this[connector.type]();
+			var resp  = await cType.run(msg,connector,data);
 			  
-			  //override event object parameters with response data;
-			  e.parameters.code    = resp.code;
-			  e.parameters.content = resp.content;
+			//override event object parameters with response data;
+			e.parameters.code    = resp.code;
+			e.parameters.content = resp.content;
 			  
-			  return actionShow(e);
-			}
-		);
-	},
-	/**
-	 * Checks if URL entered is valid and displays a warning if it is not;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	checkURL : function checkURL(e) {
-		return new Promise(
-			function (resolve) {
-			  var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
-			  var url = e.formInput.connectionURL;
-			  var test = regExp.test(url);
-			  if(!test) {
+			return actionShow(e);
+		}
+	);
+}
+	
+
+/**
+ * Checks if URL entered is valid and displays a warning if it is not;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function checkURL(e) {
+	return new Promise(
+		function (resolve) {
+			var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
+			var url = e.formInput.connectionURL;
+			var test = regExp.test(url);
+			if(!test) {
 				var action = CardService.newActionResponseBuilder();
 					action.setNotification(warning(globalInvalidURLnoMethod));
 				return action.build();
-			  }	
-			}
-		);
-	},
-	/**
-	 * Removes card from navigation and loads previous card in stack;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	goBack : function goBack(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  //set data state change and pop card from stack;
-			  builder.setNavigation(CardService.newNavigation().popCard());
-			  builder.setStateChanged(true);
-			  return builder.build();  		
-			}
-		);
-	},
-	/**
-	 * Removes all cards from navigation and loads root (first) card in stack;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	goRoot : function goRoot(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  //set data state change and navigate to main card;
-			  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
-			  builder.setStateChanged(true);  
-			  return builder.build(); 		
-			}
-		);
-	},
-	/**
-	 * Pushes settings card on stack top and loads it;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	goSettings : function goSettings(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  //set data state change and navigate to settings card;
-			  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
-			  builder.setStateChanged(true);  
-			  return builder.build(); 				
-			}
-		);
-	},
-	/**
-	 * Pushes confirmation card on stack top and loads it;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	actionConfirm : function actionConfirm(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  //set data state change and navigate to confirmation card;
-			  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
-			  builder.setStateChanged(false);
-			  return builder.build();			
-			}
-		);
-	},
-	/**
-	 * Pushes connector update card on stack top and loads it;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	actionEdit : function actionEdit(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  //set data state change and navigate to edit connector card;
-			  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
-			  builder.setStateChanged(true);
-			  return builder.build();				
-			}
-		);
-	},
-	/**
-	 * Pushes display card on stack top with data provided and loads it;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	actionShow : function actionShow(e) {
-		return new Promise(
-			function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-				  
-			  var code = +e.parameters.code;
-			  
-			  //handle failed responses;
-			  if(code<200||code>=300) {
-				e.parameters.content  = '[]';
-			  }
-			  
-			  //set data state change and navigate to display card;
-			  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-			  builder.setStateChanged(true);
-			  return builder.build();			
-			}
-		);
-	},
-	/**
-	 * Pushes display card on stack top after performing data fetch; 
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	actionManual : function actionManual(e) {
-		return new Promise(
-			async function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-			  
-			  var msg       = getToken(e); 
-			  var connector = e.parameters;
+			}	
+		}
+	);
+}
 
-			  var cType = new this[connector.type]();
-			  var cAuth = cType.auth;
-				
-			  //try to perform request;
-			  var response;
+
+/**
+ * Removes card from navigation and loads previous card in stack;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function goBack(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
 			  
-			  try { 
+			//set data state change and pop card from stack;
+			builder.setNavigation(CardService.newNavigation().popCard());
+			builder.setStateChanged(true);
+			return builder.build();  		
+		}
+	);
+}
+
+
+/**
+ * Removes all cards from navigation and loads root (first) card in stack;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function goRoot(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+			  
+			//set data state change and navigate to main card;
+			builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
+			builder.setStateChanged(true);  
+			return builder.build(); 		
+		}
+	);
+}
+
+
+/**
+ * Pushes settings card on stack top and loads it;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function goSettings(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+			  
+			//set data state change and navigate to settings card;
+			builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
+			builder.setStateChanged(true);  
+			return builder.build(); 				
+		}
+	);
+}
+
+
+/**
+ * Pushes confirmation card on stack top and loads it;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function actionConfirm(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+			  
+			//set data state change and navigate to confirmation card;
+			builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+			builder.setStateChanged(false);
+			return builder.build();			
+		}
+	);
+}
+
+
+/**
+ * Pushes connector update card on stack top and loads it;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function actionEdit(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+			  
+			//set data state change and navigate to edit connector card;
+			builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
+			builder.setStateChanged(true);
+			return builder.build();				
+		}
+	);
+}
+
+
+/**
+ * Pushes display card on stack top with data provided and loads it;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function actionShow(e) {
+	return new Promise(
+		function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+				  
+			var code = +e.parameters.code;
+			  
+			//handle failed responses;
+			if(code<200||code>=300) {
+				e.parameters.content  = '[]';
+			}
+			  
+			//set data state change and navigate to display card;
+			builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+			builder.setStateChanged(true);
+			return builder.build();			
+		}
+	);
+}
+
+
+/**
+ * Pushes display card on stack top after performing data fetch; 
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function actionManual(e) {
+	return new Promise(
+		async function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+			  
+			var msg       = getToken(e); 
+			var connector = e.parameters;
+
+			var cType = new this[connector.type]();
+			var cAuth = cType.auth;
+				
+			//try to perform request;
+			var response;
+			  
+			try { 
 				response = await cType.run(msg,connector); 
-			  }
-			  catch(error) { 
+			}
+			catch(error) { 
 				//set empty response headers and content to error message;
 				response = {headers:'',content:error.message}; 
 				
 				//check if error is caused by code or fetch fail;
 				var isAuthError = checkAgainstErrorTypes(error);
 				if(isAuthError) {
-				  response.code = 401;
+					response.code = 401;
 				}else {
-				  response.code = 0;
+					response.code = 0;
 				}
-			  }
+			}
 			  
-			  //access response code and content;
-			  var code    = response.code;
-			  var content = response.content;
+			//access response code and content;
+			var code    = response.code;
+			var content = response.content;
 			  
-			  e.parameters.code = code;
+			e.parameters.code = code;
 			  
-			  //handle responses;
-			  if(code>=200&&code<300) {
+			//handle responses;
+			if(code>=200&&code<300) {
 				
 				//if content has data in it -> check for length;
 				if(content&&content!==null) { var len = content.length; }
@@ -3150,37 +3137,39 @@ const callbacks = {
 				//if content has one or more data items -> pass to params;
 				if(len>0) { e.parameters.content = content; }
 				
-			  }else {
+			}else {
 			  
 				e.parameters.content  = '[]';
 				e.parameters.error    = content;
 				
-			  }
-			  
-			  //set data state change and navigate to display card;
-			  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-			  builder.setStateChanged(true);
-			  return builder.build();
 			}
-		);
-	},
-	/**
-	 * Performs reset of every user preference;
-	 * @param {Object} e event object;
-	 * @returns {ActionResponse}
-	 */
-	performFullReset : function performFullReset(e) {
-		return new Promise(
-			async function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
 			  
-			  //custom text ot pass to notifications;
-			  var onSuccessText = e.parameters.success;
-			  var onFailureText = e.parameters.failure;
+			//set data state change and navigate to display card;
+			builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+			builder.setStateChanged(true);
+			return builder.build();
+		}
+	);
+}
+
+
+/**
+ * Performs reset of every user preference;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+function performFullReset(e) {
+	return new Promise(
+		async function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
 			  
-			  //try to delete all OAuth2.0 specific properties;
-			  try {
+			//custom text ot pass to notifications;
+			var onSuccessText = e.parameters.success;
+			var onFailureText = e.parameters.failure;
+			  
+			//try to delete all OAuth2.0 specific properties;
+			try {
 				var config = await getProperty('config','user');
 				if(config.length!==0) {
 				  config.forEach(function(connector){
@@ -3191,60 +3180,60 @@ const callbacks = {
 					}
 				  });
 				}
-			  }
-			  catch(err) {
+			}
+			catch(err) {
 				//log error to stackdriver;
 				console.log(err);
-			  }  
+			}  
 			 
-			  //try to delete all user properties and notify;
-			  try {
+			//try to delete all user properties and notify;
+			try {
 				await deleteAllProperties('user');
 				builder.setNotification(notification(onSuccessText));
-			  }
-			  catch(err) {
-				builder.setNotification(error(onFailureText));
-			  }
-			  
-			  //set data state change and navigate to main card;
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
-			  builder.setStateChanged(true);
-			  return builder.build();			
 			}
-		);
-	},
-	//=================================END ACTIONS=================================//
+			catch(err) {
+				builder.setNotification(error(onFailureText));
+			}
+			  
+			//set data state change and navigate to main card;
+			builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+			builder.setStateChanged(true);
+			return builder.build();			
+		}
+	);
+}
+//=================================END ACTIONS=================================//
 	
-	//==============================CONNECTOR ACTIONS==============================//
-	/**
-	 * Creates new connector and saves it to properties;
-	 * @param {Object} e event object;
-	 */	
-	createConnector : function createConnector(e) {
-		return new Promise(
-			async function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
+//==============================CONNECTOR ACTIONS==============================//
+/**
+ * Creates new connector and saves it to properties;
+ * @param {Object} e event object;
+ */	
+function createConnector(e) {
+	return new Promise(
+		async function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
 			  
-			  //access form input parameters;
-			  var data      = e.formInput;
-			  var multi     = e.formInputs;
-			  var isDefault = data.isDefault;
-			  var useManual = data.manual;
+			//access form input parameters;
+			var data      = e.formInput;
+			var multi     = e.formInputs;
+			var isDefault = data.isDefault;
+			var useManual = data.manual;
 			  
-			  //set to false if switched off;
-			  if(isDefault===undefined) { isDefault = false; }
-			  if(useManual===undefined) { useManual = false; }
+			//set to false if switched off;
+			if(isDefault===undefined) { isDefault = false; }
+			if(useManual===undefined) { useManual = false; }
 			  
-			  //initialize connector type;
-			  var type = e.parameters.type;
-			  var cType = new this[type]();
+			//initialize connector type;
+			var type = e.parameters.type;
+			var cType = new this[type]();
 			  
-			  //connector default properties;
-			  var connector = {type:type,isDefault:isDefault,manual:useManual};  
+			//connector default properties;
+			var connector = {type:type,isDefault:isDefault,manual:useManual};  
 			  
-			  //set connector properties;
-			  for(var key in data) {
+			//set connector properties;
+			for(var key in data) {
 				var value = data[key];
 				
 				//set multiple values if select input is present;
@@ -3265,10 +3254,10 @@ const callbacks = {
 				  if(key===globalNameFieldName) { connector[key] = globalCustomNameName; }
 				  if(key===globalURLfieldName)  { connector[key] = globalCustomUrlUrl;   }
 				}
-			  }
+			}
 			  
-			  //set icon and url for typed connectors;
-			  if(type!==globalBaseClassName) {
+			//set icon and url for typed connectors;
+			if(type!==globalBaseClassName) {
 				//handle connector icon creation;
 				if(data.hasOwnProperty(globalIconFieldName)&&data[globalIconFieldName]!=='') { 
 				  connector[globalIconFieldName] = data[globalIconFieldName]; 
@@ -3285,11 +3274,11 @@ const callbacks = {
 				}else if(cType.hasOwnProperty(globalURLfieldName)) { 
 				  connector[globalURLfieldName] = cType[globalURLfieldName]; 
 				}
-			  }  
+			}  
 				 
-			  //add auth type property if connector type does not specify any;
-			  var cAuth = new this[type]().auth;
-			  if(Object.keys(cAuth).length===0) {
+			//add auth type property if connector type does not specify any;
+			var cAuth = new this[type]().auth;
+			if(Object.keys(cAuth).length===0) {
 				var auth  = data.auth;
 				if(data.auth===undefined) { auth = 'none'; }
 				connector.auth = auth;
@@ -3311,11 +3300,11 @@ const callbacks = {
 				  if(offline) { connector.offline = offline; }
 				  if(prompt)  { connector.prompt = prompt; }
 				}
-			  }else {
+			}else {
 				connector.auth = 'OAuth2'; //until added auth types - hardcoded;
-			  }
+			}
 			  
-			  try {
+			try {
 				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
 			  
 				//get configuration or create a new one if none found;
@@ -3335,51 +3324,53 @@ const callbacks = {
 				config.push(connector);
 				await setProperty('config',config,'user');
 				builder.setNotification(notification(globalCreateSuccess));
-			  }
-			  catch(err) {
+			}
+			catch(err) {
 				//notify the user that connector creation failed;
 				console.error(err);
 				builder.setNotification(error(globalCreateFailure));  
-			  }
-			  
-			  //change data state and build settings card;
-			  builder.setStateChanged(true); 
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-			  return builder.build();
 			}
-		);
-	},
-	/**
-	 * Updates connector and saves it to properties;
-	 * @param {Object} e event object;
-	 */
-	updateConnector : function updateConnector(e) {
-		return new Promise(
-			async function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
 			  
-			  var data      = e.formInput;
-			  var multi     = e.formInputs;
-			  var icon      = data[globalIconFieldName];
-			  var name      = data[globalNameFieldName];
-			  var url       = data[globalURLfieldName];
-			  
-			  var isDefault = data.isDefault;
-			  var useManual = data.manual;
-			  
-			  if(isDefault!==undefined) { isDefault = true; }else { isDefault = false; }
-			  if(useManual!==undefined) { useManual = true; }else { useManual = false; }
-			  
-			  //initialize connector type;
-			  var type = e.parameters.type;
-			  var cType = new this[type](icon,name,url);
+			//change data state and build settings card;
+			builder.setStateChanged(true); 
+			builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			return builder.build();
+		}
+	);
+}
 
-			  //connector default properties;
-			  var connector = {type:type,isDefault:isDefault,manual:useManual};  
+
+/**
+ * Updates connector and saves it to properties;
+ * @param {Object} e event object;
+ */
+function updateConnector(e) {
+	return new Promise(
+		async function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
 			  
-			  //set connector properties;
-			  for(var key in data) {
+			var data      = e.formInput;
+			var multi     = e.formInputs;
+			var icon      = data[globalIconFieldName];
+			var name      = data[globalNameFieldName];
+			var url       = data[globalURLfieldName];
+			  
+			var isDefault = data.isDefault;
+			var useManual = data.manual;
+			  
+			if(isDefault!==undefined) { isDefault = true; }else { isDefault = false; }
+			if(useManual!==undefined) { useManual = true; }else { useManual = false; }
+			  
+			//initialize connector type;
+			var type = e.parameters.type;
+			var cType = new this[type](icon,name,url);
+
+			//connector default properties;
+			var connector = {type:type,isDefault:isDefault,manual:useManual};  
+			  
+			//set connector properties;
+			for(var key in data) {
 				var value = data[key];
 				
 				//set multiple values if select input is present;
@@ -3400,10 +3391,10 @@ const callbacks = {
 				  if(key===globalNameFieldName) { connector[key] = globalCustomNameName; }
 				  if(key===globalURLfieldName)  { connector[key] = globalCustomUrlUrl;   }
 				}
-			  }
+			}
 
-			  //set icon and url for typed connectors;
-			  if(type!==globalBaseClassName) {
+			//set icon and url for typed connectors;
+			if(type!==globalBaseClassName) {
 				//handle connector icon creation;
 				if(data.hasOwnProperty(globalIconFieldName)) { 
 				  connector[globalIconFieldName] = data[globalIconFieldName]; 
@@ -3420,11 +3411,11 @@ const callbacks = {
 				}else if(cType.hasOwnProperty(globalURLfieldName)) { 
 				  connector[globalURLfieldName] = cType[globalURLfieldName]; 
 				}
-			  }  
+			}  
 
-			  //add auth type property if connector type does not specify any;
-			  var cAuth = new this[type]().auth;
-			  if(Object.keys(cAuth).length===0) {
+			//add auth type property if connector type does not specify any;
+			var cAuth = new this[type]().auth;
+			if(Object.keys(cAuth).length===0) {
 				var auth = data.auth;
 				if(data.auth===undefined) { auth = 'none'; }
 				connector.auth = auth;
@@ -3446,15 +3437,15 @@ const callbacks = {
 				  if(offline) { connector.offline = offline; }
 				  if(prompt)  { connector.prompt = prompt; }
 				}
-			  }else {
+			}else {
 				connector.auth = 'OAuth2'; //until added auth types - hardcoded;
-			  }
+			}
 
-			  //connector index (for ease of flow);
-			  var config = await getProperty('config','user');
-			  var index  = getIndex(config,e.parameters);
+			//connector index (for ease of flow);
+			var config = await getProperty('config','user');
+			var index  = getIndex(config,e.parameters);
 
-			  try {
+			try {
 				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
 			  
 				//get configuration;
@@ -3471,34 +3462,36 @@ const callbacks = {
 				config[index] = connector;
 				await setProperty('config',config,'user');
 				builder.setNotification(notification(globalUpdateSuccess));
-			  }
-			  catch(err) {
+			}
+			catch(err) {
 				//notify the user that connector update failed;
 				builder.setNotification(error(globalUpdateFailure));
-			  }
-			  
-			  //change data state and build settings card;
-			  builder.setStateChanged(true);
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-			  return builder.build();
 			}
-		);
-	},
-	/**
-	 * Removes connector and saves properties;
-	 * @param {Object} e event object;
-	 */	
-	removeConnector : function removeConnector(e) {
-		return new Promise(
-			async function (resolve) {
-			  //create action response builder;
-			  var builder = CardService.newActionResponseBuilder();
-
-			  //connector index (for ease of flow);
-			  var config = await getProperty('config','user');
-			  var index  = getIndex(config,e.parameters);
 			  
-			  try {
+			//change data state and build settings card;
+			builder.setStateChanged(true);
+			builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			return builder.build();
+		}
+	);
+}
+
+
+/**
+ * Removes connector and saves properties;
+ * @param {Object} e event object;
+ */	
+function removeConnector(e) {
+	return new Promise(
+		async function (resolve) {
+			//create action response builder;
+			var builder = CardService.newActionResponseBuilder();
+
+			//connector index (for ease of flow);
+			var config = await getProperty('config','user');
+			var index  = getIndex(config,e.parameters);
+			  
+			try {
 				//throw new Error('TEST'); //debug error test - uncomment first one if needed;
 			  
 				//get configuration;
@@ -3510,22 +3503,20 @@ const callbacks = {
 				});
 				await setProperty('config',src,'user');
 				builder.setNotification(notification(globalRemoveSuccess));
-			  }
-			  catch(err) {
+			}
+			catch(err) {
 				//notify the user that connector removal failed;
 				builder.setNotification(error(globalRemoveFailure));    
-			  }
-			  
-			  //change data state and build settings card;
-			  builder.setStateChanged(true);
-			  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-			  return builder.build();  
 			}
-		);
-	}
-	//============================END CONNECTOR ACTIONS============================//
+			  
+			//change data state and build settings card;
+			builder.setStateChanged(true);
+			builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+			return builder.build();  
+		}
+	);
 }
-//===================================END ACTIONS===================================//
+//============================END CONNECTOR ACTIONS============================//
 
 //==============================UNIVERSAL ACTIONS==============================//
 function universalHome(e) {
@@ -6023,7 +6014,10 @@ function getToken(e) {
 class e_CardService {
 	constructor() {
 		this.className = 'CardService';
-		this.ComposedEmailType = {REPLY_AS_DRAFT:'REPLY_AS_DRAFT',STANDALONE_DRAFT:'STANDALONE_DRAFT'};
+		this.ComposedEmailType = {
+									REPLY_AS_DRAFT   : 'REPLY_AS_DRAFT',
+									STANDALONE_DRAFT : 'STANDALONE_DRAFT'
+								};
 		this.ContentType;
 		this.Icon = {
 			NONE 					 : '',	
@@ -6058,14 +6052,38 @@ class e_CardService {
 			VIDEO_CAMERA 			 : 'https://cardinsoft.github.io/outlook/assets/icons/',
 			VIDEO_PLAY 				 : 'https://cardinsoft.github.io/outlook/assets/icons/'
 		};
-		this.ImageStyle = {SQUARE:'SQUARE',CIRCLE:'CIRCLE'};
-		this.LoadIndicator = {NONE:'NONE',SPINNER:'SPINNER'};
-		this.NotificationType = {INFO:'INFO',WARNING:'WARNING',ERROR:'ERROR'};
-		this.OnClose = {RELOAD_ADD_ON:'RELOAD_ADD_ON',NOTHING:'NOTHING'};
-		this.OpenAs = {OVERLAY:'OVERLAY',FULL_SIZE:'FULL_SIZE'};
-		this.SelectionInputType = {CHECK_BOX:'CHECK_BOX',RADIO_BUTTON:'RADIO_BUTTON',DROPDOWN:'DROPDOWN'};
-		this.TextButtonStyle = {FILLED:'FILLED'};
-		this.UpdateDraftBodyType = {IN_PLACE_INSERT:'IN_PLACE_INSERT'};
+		this.ImageStyle          = {
+										SQUARE : 'SQUARE',
+										CIRCLE : 'CIRCLE'
+									};
+		this.LoadIndicator       = {
+										NONE    : 'NONE',
+										SPINNER : 'SPINNER'
+									};
+		this.NotificationType    = {
+										INFO    : 'INFO',
+										WARNING : 'WARNING',
+										ERROR   : 'ERROR'
+									};
+		this.OnClose             = {
+										RELOAD_ADD_ON : 'RELOAD_ADD_ON',
+										NOTHING       : 'NOTHING'
+									};
+		this.OpenAs              = {
+										OVERLAY   : 'OVERLAY',
+										FULL_SIZE : 'FULL_SIZE'
+									};
+		this.SelectionInputType  = {
+										CHECK_BOX    : 'CHECK_BOX',
+										RADIO_BUTTON : 'RADIO_BUTTON',
+										DROPDOWN     : 'DROPDOWN'
+									};
+		this.TextButtonStyle     = {
+										FILLED : 'FILLED'
+									};
+		this.UpdateDraftBodyType = {
+										IN_PLACE_INSERT : 'IN_PLACE_INSERT'
+									};
 	}
 }
 //add new methods to the class;
@@ -6439,12 +6457,12 @@ CardBuilder.prototype.build = function () {
 	wrap.className = 'ms-Panel-contentInner';	
 	$('#app-body').append(wrap);
 	
-	if(this.cardHeader!==undefined) {
+	if(this.cardHeader) {
 		const headerWrap = document.createElement('div');
 		headerWrap.id = 'main-Ui-header';
 		$('.ms-CommandBar-mainArea').prepend(headerWrap);
 		
-		if(this.cardHeader.imageUrl!==undefined) {
+		if(this.cardHeader.imageUrl) {
 			const icon = document.createElement('img');
 			icon.src = this.cardHeader.imageUrl;
 			icon.className = 'headerIcon';
@@ -6545,7 +6563,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 
 	const headerText = this.header;
 	console.log(headerText);
-	if(headerText!==undefined&&headerText!=='') {
+	if(headerText&&headerText!=='') {
 		const header = document.createElement('p');
 		header.className = 'ms-font-m-plus sectionHeader';
 		header.textContent = headerText;
@@ -6648,7 +6666,7 @@ TextInput.prototype.appendToUi = function (parent) {
 	row.className = 'column';
 	widget.append(row);
 	
-	if(title!==undefined) {	
+	if(title) {	
 		const topLabel = document.createElement('label');
 		topLabel.className = 'ms-fontSize-s TextInputTopLabel';
 		topLabel.textContent = title;
@@ -6667,12 +6685,12 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.type = 'text';
 	input.className = 'ms-TextField-field TextInputInput';
 	input.value = value;
-	if(action!==undefined) { input.addEventListener('focusout',actionCallback(action,input)); }
+	if(action) { input.addEventListener('focusout',actionCallback(action,input)); }
 	inputWrap.append(input);
 	
 	new fabric['TextField'](inputWrap);
 	
-	if(hint!==undefined) {
+	if(hint) {
 		const bottomLabel = document.createElement('label');
 		bottomLabel.className = 'ms-fontSize-s TextInputBottomLabel';
 		bottomLabel.textContent = hint;
@@ -6727,7 +6745,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	row.className = 'column';
 	widget.append(row);
 	
-	if(title!==undefined) {	
+	if(title) {	
 		const topLabel = document.createElement('label');
 		topLabel.className = 'ms-fontSize-s SelectionInputTopLabel';
 		topLabel.textContent = title;
@@ -6805,7 +6823,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	btnContent.textContent = text;
 	button.append(btnContent);
 	
-	if(openLink===undefined) {
+	if(!openLink) {
 		new fabric['Button'](button, actionCallback(action,button) );	
 	}else {
 		new fabric['Button'](button, function(){
@@ -6916,13 +6934,13 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	widget.tabindex = index;
 	parent.append(widget);
 	
-	if(this.action!==undefined) {
+	if(this.action) {
 		const action = this.action;
 		widget.addEventListener('click',actionCallback(action));
 	}
 	
 	//handle image creation;
-	if(this.url!==undefined) {
+	if(this.url) {
 		const wrapImg = document.createElement('div');
 		wrapImg.className = 'column-icon';
 		widget.append(wrapImg);
@@ -6939,7 +6957,7 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	wrapText.className = 'column-text';
 	widget.append(wrapText);
 	
-	if(this.topLabel!==undefined) {	
+	if(this.topLabel) {	
 		const label = document.createElement('label');
 		label.className = 'ms-fontSize-s KeyValueLabel';
 		label.textContent = this.topLabel;
@@ -6954,12 +6972,12 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	const btn = this.button;
 	const sw  = this.switchToSet;
 	
-	if(btn!==undefined||sw!==undefined) {
+	if(btn||sw) {
 		const wrapButton = document.createElement('div');
 		wrapButton.className = 'column';
 		widget.append(wrapButton);	
 	
-		if(btn!==undefined) {
+		if(btn) {
 			const backgroundColor = btn.backgroundColor;
 			const text 			  = btn.text;
 			const disabled 		  = btn.disabled;
@@ -6983,7 +7001,7 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 			new fabric['Button'](button, actionCallback(action,button) );
 		}
 		
-		if(sw!==undefined) {
+		if(sw) {
 			sw.appendToUi(wrapButton);
 		}
 		
@@ -7112,22 +7130,27 @@ Notification.prototype.appendToUi = function (/*parent*/) {
 	const text = this.text;
 	const parent = $('#app-notif');
 	parent.empty();
+	
 	//message bar;
 	const notification = document.createElement('div');
 	notification.className = 'ms-MessageBar';
 	parent.append(notification);
+	
 	//message bar content;
 	const content = document.createElement('div');
 	content.className = 'ms-MessageBar-content';
 	notification.append(content);
+	
 	//message bar icon;
 	const icon = document.createElement('div');
 	icon.className = 'ms-MessageBar-icon';
 	content.append(icon);
+	
 	//message bar icon content;
 	const icontent = document.createElement('i');
 	icontent.className = 'ms-Icon';
 	icon.append(icontent);
+	
 	//message bar text;
 	const txt = document.createElement('div');
 	txt.className = 'ms-MessageBar-text';
