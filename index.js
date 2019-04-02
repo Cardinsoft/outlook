@@ -2765,7 +2765,9 @@ function actionCallback(action,element) {
 		
 		//if has forms -> set event objects formInput and formInputs params;
 		if(forms) {
-			forms.forEach(function(form){
+			
+			for(let i=0; i<forms.length; i++) {
+				let form = forms.item(i);
 				
 				//access form parameters;
 				const formInputs = form.elements;
@@ -2780,9 +2782,10 @@ function actionCallback(action,element) {
 					
 					//set formInputs parameters - for now, just add an Array;
 					e.formInputs.name = [value];
-				});
+				});				
+				
+			}
 			
-			});
 		}
 		console.log(e);
 		
