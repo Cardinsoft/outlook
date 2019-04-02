@@ -2811,6 +2811,10 @@ function actionCallback(action,element) {
 		//invoke callback and await response;
 		await GLOBAL[functionName](e,element);
 		
+		//clear formInput and formInputs;
+		e.formInput  = {};
+		e.formInputs = {};
+		
 		//$('#app-overlay').hide();
 		
 	}
