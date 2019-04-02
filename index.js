@@ -2783,9 +2783,17 @@ function actionCallback(action,element) {
 					if(name!=='') {
 						
 						//temp solution to check forSwitches;
-						const isSwitch = input.classList.contains('ms-Toggle-input');
-				
-						if(!isSwitch||value==='true') {
+						const cl = input.classList;
+						const isSwitch = cl.contains('ms-Toggle-input');
+						if(isSwitch) { 
+							const isSelected = cl.contains('is-selected'); 
+							
+							if(isSelected) {
+								e.formInput[name]  = value;	
+								e.formInputs[name] = [value];								
+							}
+							
+						}else {
 							e.formInput[name]  = value;	
 							e.formInputs[name] = [value];
 						}
@@ -6335,9 +6343,7 @@ Switch.prototype.appendToUi = function (parent) {
 	const fieldName = this.fieldName;
 	const action    = this.action;
 	const selected  = this.selected;
-	let value       = this.value;
-	
-	if(typeof value!=='string') { value = value.toString(); }
+	const value     = this.value;
 	
 	//create toggler paragraph;
 	const pToggle = document.createElement('p');
@@ -6353,7 +6359,7 @@ Switch.prototype.appendToUi = function (parent) {
 	input.id        = fieldName;
 	input.className = 'ms-Toggle-input';
 	input.type      = 'checkbox';
-	input.name      = fieldName;
+	input.name      = fieldName;	
 	input.value     = value;
 	
 	//append toggler wrap;
@@ -6365,23 +6371,21 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	const label = document.createElement('label');
-	if(value==='true') {
+	if(selected==='true') {
+		input.className = 'ms-Toggle-input is-selected';
 		label.className = 'ms-Toggle-field is-selected';
 	}else {
+		input.className = 'ms-Toggle-input';
 		label.className = 'ms-Toggle-field';
 	}
 	
 	//set state listener;
 	wrapToggle.addEventListener('click',function(e){
 		let val = input.value;
-		if(val==='true') {
-			input.value = 'false'; 
-		}else {
-			input.value = 'true'; 
-		}
+		input.toggle('is-selected');
 	});	
 	
-	
+	//append toggle label to wrapper;
 	wrapToggle.append(label);
 	
 	new fabric['Toggle'](wrapToggle);
