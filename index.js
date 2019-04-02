@@ -6588,8 +6588,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	if(collapsible) { widgetsWrap.className = 'closed'; }
 	section.append(widgetsWrap);
 	
-	//set parent to wrapper;
-	let parent = widgetsWrap;
+	//set wrapper to widgets wrapper;
+	let wrapper = widgetsWrap;
 	
 	//access widgets and append;
 	const widgets = this.widgets;
@@ -6612,16 +6612,16 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			
 		});
 		
-		//if found form input -> append form element;
+		//if found form input -> append form element and set wrapper to form;
 		if(hasInput) {
 			const formElem = document.createElement('form');
 			widgetsWrap.append(formElem);
-			parent = formElem;
+			wrapper = formElem;
 		}
 		
 		//append widgets to Ui;
 		widgets.forEach(function(widget,index){
-			widget.appendToUi(parent,index);
+			widget.appendToUi(wrapper,index);
 		});
 	}
 
