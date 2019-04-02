@@ -3218,11 +3218,11 @@ function performFullReset(e) {
 				var config = await getProperty('config','user');
 				if(config.length!==0) {
 				  config.forEach(function(connector){
-					//var auth = new this[connector.type]().auth;
-					//if(Object.keys(auth).length!==0) {
-					  //var service = authService(auth);
-					  //service.reset();
-					//}
+					var auth = new this[connector.type]().auth;
+					if(Object.keys(auth).length!==0) {
+					  var service = authService(auth);
+					  service.reset();
+					}
 				  });
 				}
 			}
@@ -7377,8 +7377,6 @@ function makeRequest(url,params) {
 	});
 }
 //===========================================END URL FETCH===========================================//
-
-//===========================================TEST====================================================//
 
 //initiate services to be able to access them;
 const UrlFetchApp       = new e_UrlFetchApp();
