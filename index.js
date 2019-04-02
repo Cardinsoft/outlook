@@ -2760,6 +2760,13 @@ function actionCallback(action,element) {
 			//overlay.show();
 		}
 		
+		//get form and access formInputs;
+		var form = document.getElementsByTagName('form');
+		console.log(form);
+		//var formInputs = form.elements;
+		
+		
+		
 		//set parameters to event object;
 		e.parameters = parameters;
 		
@@ -6586,14 +6593,14 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	if(widgets.length!==0) {
 		
 		//check if at least one widget is a form input;
-		var hasInput = widgets.some(function(widget){ 
+		const hasInput = widgets.some(function(widget){ 
 			
 			//access widget's parameters;
-			var name      = widget.className;
-			var hasSwitch = widget.switchToSet;
+			let name      = widget.className;
+			let hasSwitch = widget.switchToSet;
 			
 			//check if widget is a form element;
-			var isFormElem = name==='TextInput'||name==='SelectionInput'||hasSwitch;
+			let isFormElem = name==='TextInput'||name==='SelectionInput'||hasSwitch;
 			
 			//return true if found;
 			if(isFormElem) {
@@ -6602,7 +6609,12 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			
 		});
 		
-		console.log(hasInput);
+		//if found form input -> append form element;
+		if(hasInput) {
+			const formElem = document.createElement('form');
+			widgetsWrap.append(formElem);
+			widgetsWrap = formElem;
+		}
 		
 		//append widgets to Ui;
 		widgets.forEach(function(widget,index){
