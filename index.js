@@ -6301,23 +6301,30 @@ Switch.prototype.setValue = function (value) {
 	return this;	
 };
 Switch.prototype.appendToUi = function (parent) {
+	//access Switch parameters;
 	const fieldName = this.fieldName;
 	const action    = this.action;
 	const selected  = this.selected;
 	const value     = this.value;
 	
+	//create toggler paragraph;
 	const pToggle = document.createElement('p');
 	parent.append(pToggle);
 	
+	//create toggler wrapper and set required parameters;
 	const wrapToggle = document.createElement('div');
 	wrapToggle.className = 'ms-Toggle ms-font-m-plus '+this.className;
 	pToggle.append(wrapToggle);
 	
-	const input = document.createElement('input');
-	input.type = 'checkbox';
-	input.id = fieldName;
+	//create input and set required parameters;
+	const input     = document.createElement('input');
+	input.id        = fieldName;
 	input.className = 'ms-Toggle-input';
-	input.value = value;
+	input.type      = 'checkbox';
+	input.name      = fieldName;
+	input.value     = value;
+	
+	//append toggler wrap and set state listener;
 	wrapToggle.append(input);	
 	wrapToggle.addEventListener('click',function(e){
 		let val = input.value;
@@ -6328,6 +6335,7 @@ Switch.prototype.appendToUi = function (parent) {
 		}
 	});
 	
+	//set action if provided;
 	if(action) { 
 		wrapToggle.addEventListener('click',actionCallback(action,input)); 
 	}
