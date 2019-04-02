@@ -2759,6 +2759,11 @@ function actionCallback(action,element) {
 			const overlay = $('#app-overlay');
 			//overlay.show();
 		}
+
+		
+		//clear formInput and formInputs;
+		e.formInput  = {};
+		e.formInputs = {};
 		
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
@@ -2810,10 +2815,6 @@ function actionCallback(action,element) {
 		
 		//invoke callback and await response;
 		await GLOBAL[functionName](e,element);
-		
-		//clear formInput and formInputs;
-		e.formInput  = {};
-		e.formInputs = {};
 		
 		//$('#app-overlay').hide();
 		
