@@ -6331,7 +6331,7 @@ Switch.prototype.appendToUi = function (parent) {
 	const fieldName = this.fieldName;
 	const action    = this.action;
 	const selected  = this.selected;
-	const value     = this.value;
+	let value       = this.value;
 	
 	if(typeof value!=='string') { value = value.toString(); }
 	
