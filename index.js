@@ -7369,7 +7369,7 @@ function makeRequest(url,params) {
 			resolve(statusText);
 		}
 		
-		if(params.payload!==undefined) {
+		if(params.payload) {
 			request.send(params.payload);
 		}else {
 			request.send();
@@ -7377,6 +7377,14 @@ function makeRequest(url,params) {
 	});
 }
 //===========================================END URL FETCH===========================================//
+
+//===========================================TEST====================================================//
+//deletes all properties;
+function testDeleteAll() {
+  deleteAllProperties('user');
+  //deleteAllProperties('script');
+}
+testDeleteAll();
 
 //initiate services to be able to access them;
 const UrlFetchApp       = new e_UrlFetchApp();
