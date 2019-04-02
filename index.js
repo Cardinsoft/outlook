@@ -2764,7 +2764,7 @@ function actionCallback(action,element) {
 		const forms = document.getElementsByTagName('form');
 		
 		//if has forms -> set event objects formInput and formInputs params;
-		if(forms) {
+		if(forms.length>0) {
 			
 			for(let f=0; f<forms.length; f++) {
 				let form = forms.item(f);
@@ -2801,7 +2801,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
-		if(!forms) {await GLOBAL[functionName](e,element);}
+		if(forms.length===0) {await GLOBAL[functionName](e,element);}
 		
 		//$('#app-overlay').hide();
 		
