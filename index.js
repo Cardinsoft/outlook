@@ -6659,7 +6659,7 @@ class TextInput extends Widget {
 	constructor() {
 		super();
 		this.className = 'TextInput';
-		this.fieldName;
+		this.fieldName = '';
 		this.hint;
 		this.multiline;
 		this.action;
@@ -6710,6 +6710,7 @@ TextInput.prototype.appendToUi = function (parent) {
 	row.className = 'column';
 	widget.append(row);
 	
+	//append title text if provided;
 	if(title) {	
 		const topLabel = document.createElement('label');
 		topLabel.className = 'ms-fontSize-s TextInputTopLabel';
@@ -6725,15 +6726,23 @@ TextInput.prototype.appendToUi = function (parent) {
 	label.className = 'ms-Label TextInputLabel';
 	inputWrap.append(label);
 
-	const input = document.createElement('input');
-	input.type = 'text';
+	//create input element and set required parameters;
+	const input     = document.createElement('input');
+	input.type      = 'text';
 	input.className = 'ms-TextField-field TextInputInput';
-	input.value = value;
+	input.value     = value;
+	input.name      = fieldName;
+	
+	//set optional parameters to input;
 	if(action) { input.addEventListener('focusout',actionCallback(action,input)); }
+	
+	//append input to wrapper;
 	inputWrap.append(input);
 	
+	//initiate Fabric;
 	new fabric['TextField'](inputWrap);
 	
+	//append hint text if provided;
 	if(hint) {
 		const bottomLabel = document.createElement('label');
 		bottomLabel.className = 'ms-fontSize-s TextInputBottomLabel';
