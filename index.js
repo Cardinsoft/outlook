@@ -2801,7 +2801,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
-		if(forms.length===0) {await GLOBAL[functionName](e,element);}
+		await GLOBAL[functionName](e,element);
 		
 		//$('#app-overlay').hide();
 		
