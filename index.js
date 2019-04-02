@@ -2783,6 +2783,8 @@ function actionCallback(action,element) {
 			//overlay.show();
 		}
 		
+		console.log(this);
+		
 		e.parameters = parameters;
 		
 		await callbacks[functionName](e,element)
