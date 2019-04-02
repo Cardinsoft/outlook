@@ -2780,10 +2780,10 @@ function actionCallback(action,element) {
 					let value = input.value;
 					
 					//set formInput parameters;
-					e.formInput.name = value;
+					e.formInput[name] = value;
 					
 					//set formInputs parameters - for now, just add an Array;
-					e.formInputs.name = [value];
+					e.formInputs[name] = [value];
 				}			
 				
 			}
@@ -2791,13 +2791,13 @@ function actionCallback(action,element) {
 		}
 		console.log(e);
 		
-		
-		
 		//set parameters to event object;
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
 		await GLOBAL[functionName](e,element);
+		
+		
 		
 		//$('#app-overlay').hide();
 		
