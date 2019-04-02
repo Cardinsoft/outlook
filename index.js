@@ -6306,7 +6306,7 @@ class Switch extends e_CardService {
 		this.fieldName;
 		this.action;
 		this.selected;
-		this.value;
+		this.value     = 'true';
 	}
 }
 //add new methods to the class;
