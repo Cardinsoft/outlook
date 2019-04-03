@@ -2121,7 +2121,7 @@ function createWidgetChooseAuth(section,isEdit,selected) {
 function createWidgetSwitchManual(section,isManual) {
   
   //parse stringified boolean parameters;
-  if(!isManual||isManual==='true') { isManual = true; }else if(isManual==='false') { isManual = false; }
+  if(isManual===undefined||isManual==='true') { isManual = true; }else if(isManual==='false') { isManual = false; }
   
   //create Switch for manual / auto behaviour choice;
   var widget = switchWidget('',globalCustomWidgetSwitchText,globalManualFieldName,isManual,true);
@@ -2141,7 +2141,7 @@ function createWidgetSwitchManual(section,isManual) {
 function createWidgetSwitchDefault(section,isDefault) {
   
   //parse stringified boolean parameters;
-  if(!isDefault||isDefault==='false') { isDefault = false; }else if(isDefault==='true') { isDefault = true; }
+  if(isDefault===undefined||isDefault==='false') { isDefault = false; }else if(isDefault==='true') { isDefault = true; }
   
   //create Switch for default / listed behaviour choice;
   var widget = switchWidget('',globalIsDefaultWidgetSwitchText,globalDefaultFieldName,isDefault,true);
@@ -6349,8 +6349,6 @@ Switch.prototype.appendToUi = function (parent) {
 	const action    = this.action;
 	const selected  = this.selected;
 	const value     = this.value;
-	
-	console.log('TYPE: %s, VALUE: %s',typeof selected,selected);
 	
 	//create toggler paragraph;
 	const pToggle = document.createElement('p');
