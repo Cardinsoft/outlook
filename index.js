@@ -3508,6 +3508,7 @@ function updateConnector(e) {
 				}
 				
 				//update connector and notify the user of success;
+				console.log(connector);
 				config[index] = connector;
 				await setProperty('config',config,'user');
 				builder.setNotification(notification(globalUpdateSuccess));
