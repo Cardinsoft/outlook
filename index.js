@@ -6349,6 +6349,8 @@ Switch.prototype.appendToUi = function (parent) {
 	const selected  = this.selected;
 	const value     = this.value;
 	
+	console.log('TYPE: %s, VALUE: %s',typeof selected,value);
+	
 	//create toggler paragraph;
 	const pToggle = document.createElement('p');
 	parent.append(pToggle);
