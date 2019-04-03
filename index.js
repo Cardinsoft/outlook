@@ -2760,7 +2760,6 @@ function actionCallback(action,element) {
 			//overlay.show();
 		}
 
-		
 		//clear formInput and formInputs;
 		e.formInput  = {};
 		e.formInputs = {};
@@ -6343,10 +6342,7 @@ Switch.prototype.setValue = function (value) {
 	this.value = value;
 	return this;	
 };
-Switch.prototype.appendToUi = function (parent) {
-	
-	console.log(this);
-	
+Switch.prototype.appendToUi = function (parent) {	
 	//access Switch parameters;
 	const fieldName = this.fieldName;
 	const action    = this.action;
