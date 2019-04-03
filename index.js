@@ -6386,7 +6386,6 @@ Switch.prototype.appendToUi = function (parent) {
 	
 	//set state listener;
 	wrapToggle.addEventListener('click',function(e){
-		let val = input.value;
 		input.classList.toggle('is-selected');
 	});	
 	
