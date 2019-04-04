@@ -1,6 +1,9 @@
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(function () {
+		
+		deleteProperty('config','user');
+		
 		cardOpen(e);
 		
 		$('#home').click(function(){
