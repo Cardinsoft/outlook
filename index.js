@@ -6217,7 +6217,7 @@ class OAuth2 {
 }
 //add new methods to the class;
 OAuth2.prototype.createService = function (name) {
-	this.service = function(name){ return new Service(name); }
+	this.service = new Service(name);
 	console.log(this.service);
 	return this.service;
 }
@@ -6225,15 +6225,21 @@ OAuth2.prototype.createService = function (name) {
 //emulate service object creation;
 class Service {
 	constructor(name) {
-		this.parameters = {providerID:name};
+		this.params = {
+			providerID : name
+		};
 	}
-	let params = this.parameters;
-	this.JSO = function(params) {return new JSO(params); }
+	JSO() {return new JSO(this.params); }
 }
 //add new methods to the class;
 Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {};
 Service.prototype.setTokenUrl = function(urlToken) {};   
-Service.prototype.setClientId = function(clientId) {};
+Service.prototype.setClientId = function(clientId) {
+	//access parameters;
+	let params = this.params;
+	params.client_id = clientId;
+	return this;
+};
 Service.prototype.setClientSecret = function(secret) {};
 Service.prototype.setScope = function(scope) {};
 Service.prototype.setCallbackFunction = function(callback) {};
