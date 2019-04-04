@@ -6207,6 +6207,43 @@ function revokeAuth(e) {
 
 
 //===========================================START APPS SCRIPT===========================================//
+
+
+//Emulate OAuth2 object (instead of library call);
+class OAuth2 {
+	constructor() {
+		this.service;
+	}
+}
+//add new methods to the class;
+OAuth2.prototype.createService = function (name) {
+	this.service = function(name){ return new Service(name); }
+	console.log(this.service);
+	return this.service;
+}
+
+//emulate service object creation;
+class Service {
+	constructor(name) {
+		this.parameters = {providerID:name};
+	}
+	let params = this.parameters;
+	this.JSO = function(params) {return new JSO(params); }
+}
+//add new methods to the class;
+Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {};
+Service.prototype.setTokenUrl = function(urlToken) {};   
+Service.prototype.setClientId = function(clientId) {};
+Service.prototype.setClientSecret = function(secret) {};
+Service.prototype.setScope = function(scope) {};
+Service.prototype.setCallbackFunction = function(callback) {};
+
+
+Service.prototype.setPropertyStore = function(userStore) {};
+Service.prototype.setCache = function(userCache) {};
+Service.prototype.setLock = function(userLock) {};
+
+
 //Emulate CardService service;
 class e_CardService {
 	constructor() {
