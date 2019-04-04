@@ -6104,7 +6104,7 @@ function createOAuth2ResultUi(isAuthed,name,obj) {
  */
 function authService(parameters) {
   //access active user's email;
-  var active = Session.getActiveUser().getEmail();
+  //var active = Session.getActiveUser().getEmail();
   
   //access auth parameters;
   var name     = parameters.name;
