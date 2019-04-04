@@ -5716,6 +5716,11 @@ Service.prototype.setPropertyStore = function(userStore) {
 };
 Service.prototype.setCache = function(userCache) {};
 Service.prototype.setLock = function(userLock) {};
+Service.prototype.hasAccess = async function() {
+	//await for token;
+	let token = await this.getToken();
+	if(token) { return true; }else { return false; }
+};
 Service.prototype.clear = function() {
 	this.wipeTokens();
 };
