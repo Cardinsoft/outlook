@@ -5647,6 +5647,9 @@ class Service {
 	JSO() {return new JSO(this.params); }
 }
 //add new methods to the class;
+Service.prototype.getAuthorizationUrl = function(params) {
+	
+}
 Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
 	//access parameters;
 	let params = this.params;	
@@ -5708,7 +5711,9 @@ Service.prototype.setParam = function(key,value) {
 };
 
 
-Service.prototype.setPropertyStore = function(userStore) {};
+Service.prototype.setPropertyStore = function(userStore) {
+	this
+};
 Service.prototype.setCache = function(userCache) {};
 Service.prototype.setLock = function(userLock) {};
 Service.prototype.clear = function() {
