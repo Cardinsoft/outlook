@@ -5653,6 +5653,12 @@ Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
 	params.authorization = urlAuth;
 	return this;
 };
+Service.prototype.setRedirectUri = function(redirectUri) {
+	//access parameters;
+	let params = this.params;
+	params.redirect_uri = redirectUri;
+	return this;
+}
 Service.prototype.setTokenUrl = function(urlToken) {
 	//access parameters;
 	let params = this.params;
@@ -5681,8 +5687,19 @@ Service.prototype.setScope = function(scope) {
 	scopes.request = [];
 	scopes.require = [];
 	
+	//access request & require;
+	let request = scopes.request;
+	let require = scopes.require;
+	
+	//add scope to scopes list;
+	request.push(scope);
+	require.push(scope);
+	
+	return this;
 };
-Service.prototype.setCallbackFunction = function(callback) {};
+Service.prototype.setCallbackFunction = function(callback) {
+	
+};
 Service.prototype.setParam = function(key,value) {
 	//access parameters;
 	let params = this.params;
@@ -5694,6 +5711,9 @@ Service.prototype.setParam = function(key,value) {
 Service.prototype.setPropertyStore = function(userStore) {};
 Service.prototype.setCache = function(userCache) {};
 Service.prototype.setLock = function(userLock) {};
+Service.prototype.clear = function() {
+	this.wipeTokens();
+};
 
 
 //Emulate CardService service;
