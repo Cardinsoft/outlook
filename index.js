@@ -5640,22 +5640,48 @@ e_OAuth2.prototype.createService = function (name) {
 class Service {
 	constructor(name) {
 		this.params = {
-			providerID : name
+			providerID : name,
+			
 		};
 	}
 	JSO() {return new JSO(this.params); }
 }
 //add new methods to the class;
-Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {};
-Service.prototype.setTokenUrl = function(urlToken) {};   
+Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
+	//access parameters;
+	let params = this.params;	
+	params.authorization = urlAuth;
+	return this;
+};
+Service.prototype.setTokenUrl = function(urlToken) {
+	//access parameters;
+	let params = this.params;
+	params.token = urlToken;
+	return this;
+};   
 Service.prototype.setClientId = function(clientId) {
 	//access parameters;
 	let params = this.params;
 	params.client_id = clientId;
 	return this;
 };
-Service.prototype.setClientSecret = function(secret) {};
-Service.prototype.setScope = function(scope) {};
+Service.prototype.setClientSecret = function(secret) {
+	//access parameters;
+	let params = this.params;
+	params.client_secret = secret;
+	return this;
+};
+Service.prototype.setScope = function(scope) {
+	//access parameters;
+	let params = this.params;
+	params.scopes = {};
+	
+	//access scopes;
+	let scopes = params.scopes;
+	scopes.request = [];
+	scopes.require = [];
+	
+};
 Service.prototype.setCallbackFunction = function(callback) {};
 
 
