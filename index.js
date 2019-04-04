@@ -5640,8 +5640,7 @@ e_OAuth2.prototype.createService = function (name) {
 class Service {
 	constructor(name) {
 		this.params = {
-			providerID : name,
-			
+			providerID : name
 		};
 	}
 	JSO() {return new JSO(this.params); }
@@ -5656,30 +5655,35 @@ Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
 	params.authorization = urlAuth;
 	return this;
 };
+
 Service.prototype.setRedirectUri = function(redirectUri) {
 	//access parameters;
 	let params = this.params;
 	params.redirect_uri = redirectUri;
 	return this;
-}
+};
+
 Service.prototype.setTokenUrl = function(urlToken) {
 	//access parameters;
 	let params = this.params;
 	params.token = urlToken;
 	return this;
-};   
+};  
+ 
 Service.prototype.setClientId = function(clientId) {
 	//access parameters;
 	let params = this.params;
 	params.client_id = clientId;
 	return this;
 };
+
 Service.prototype.setClientSecret = function(secret) {
 	//access parameters;
 	let params = this.params;
 	params.client_secret = secret;
 	return this;
 };
+
 Service.prototype.setScope = function(scope) {
 	//access parameters;
 	let params = this.params;
@@ -5703,6 +5707,7 @@ Service.prototype.setScope = function(scope) {
 Service.prototype.setCallbackFunction = function(callback) {
 	
 };
+
 Service.prototype.setParam = function(key,value) {
 	//access parameters;
 	let params = this.params;
@@ -5721,8 +5726,16 @@ Service.prototype.hasAccess = async function() {
 	let token = await this.getToken();
 	if(token) { return true; }else { return false; }
 };
-Service.prototype.clear = function() {
-	this.wipeTokens();
+Service.prototype.getToken = async function() {
+	//initiate JSO with set parameters;
+	const service = this.JSO();
+	
+	//obtain token;
+	const token = await service.getToken();
+	return token;
+}
+Service.prototype.clear = async function() {
+	await this.wipeTokens();
 };
 
 
@@ -7094,11 +7107,11 @@ function makeRequest(url,params) {
 //===========================================END URL FETCH===========================================//
 
 //initiate services to be able to access them;
-const UrlFetchApp       = new e_UrlFetchApp();
-const CardService       = new e_CardService();
-const PropertiesService = new e_PropertiesService();
 const CacheService      = new e_CacheService();
+const CardService       = new e_CardService();
+const e                 = new e_EventObject();
 const OAuth2			= new e_OAuth2();
-let e                   = new e_EventObject();
+const PropertiesService = new e_PropertiesService();
+const UrlFetchApp       = new e_UrlFetchApp();
 const cardStack         = [];
 const GLOBAL            = this;
