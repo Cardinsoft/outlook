@@ -6210,13 +6210,13 @@ function revokeAuth(e) {
 
 
 //Emulate OAuth2 object (instead of library call);
-class OAuth2 {
+class e_OAuth2 {
 	constructor() {
 		this.service;
 	}
 }
 //add new methods to the class;
-OAuth2.prototype.createService = function (name) {
+e_OAuth2.prototype.createService = function (name) {
 	this.service = new Service(name);
 	console.log(this.service);
 	return this.service;
@@ -7570,6 +7570,7 @@ const UrlFetchApp       = new e_UrlFetchApp();
 const CardService       = new e_CardService();
 const PropertiesService = new e_PropertiesService();
 const CacheService      = new e_CacheService();
+const OAuth2			= new e_OAuth2();
 let e                   = new e_EventObject();
 const cardStack         = [];
 const GLOBAL            = this;
