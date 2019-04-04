@@ -5734,7 +5734,7 @@ Service.prototype.getToken = async function() {
 	const token = await service.getToken();
 	return token;
 }
-Service.prototype.clear = async function() {
+Service.prototype.reset = async function() {
 	await this.wipeTokens();
 };
 
@@ -7115,3 +7115,10 @@ const PropertiesService = new e_PropertiesService();
 const UrlFetchApp       = new e_UrlFetchApp();
 const cardStack         = [];
 const GLOBAL            = this;
+
+console.log(new JSO({
+	providerID: "google",
+	client_id: "541950296471.apps.googleusercontent.com",
+	redirect_uri: "http://localhost:8080/", // The URL where you is redirected back, and where you perform run the callback() function.
+	authorization: "https://accounts.google.com/o/oauth2/auth",
+	scopes: { request: ["https://www.googleapis.com/auth/userinfo.profile"]}}))
