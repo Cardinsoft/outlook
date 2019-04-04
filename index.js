@@ -5810,6 +5810,9 @@ class e_CardService {
 e_CardService.prototype.newAction = function () {
 	return new Action();
 }
+e_CardService.prototype.newAuthorizationAction = function () {
+	return new AuthorizationAction();
+}
 e_CardService.prototype.newActionResponseBuilder = function () {
 	return new ActionResponseBuilder();
 }
@@ -6867,6 +6870,24 @@ OpenLink.prototype.setOnClose = function (onClose) {
 }
 OpenLink.prototype.setOpenAs = function (openAs) {
 	this.openAs = openAs;
+	return this;
+}
+
+//Emulates class AuthorizationAction extending Action for CardService service;
+class AuthorizationAction extends e_CardService {
+	constructor() {
+		super();
+		this.className = 'AuthorizationAction';
+		this.authorizationUrl;
+	}
+}
+/**
+ * Sets authorization url to action to open;
+ * @param {String} authorizationUrl url string to set;
+ * @returns {Object}
+ */
+AuthorizationAction.prototype.setAuthorizationUrl = function(authorizationUrl) {
+	this.authorizationUrl = authorizationUrl;
 	return this;
 }
 
