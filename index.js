@@ -6319,10 +6319,7 @@ TextParagraph.prototype.setText = function (text) {
 	this.content = text;
 	return this;
 }
-TextParagraph.prototype.appendToUi = function(parent) {
-	//access widget parameters;
-	const content = this.content;
-	
+TextParagraph.prototype.appendToUi = function(parent) {	
 	//append row;
 	const widget = document.createElement('div');
 	widget.className = 'row '+this.className;
