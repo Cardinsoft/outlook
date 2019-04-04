@@ -5683,6 +5683,12 @@ Service.prototype.setScope = function(scope) {
 	
 };
 Service.prototype.setCallbackFunction = function(callback) {};
+Service.prototype.setParam = function(key,value) {
+	//access parameters;
+	let params = this.params;
+	params[key] = value;
+	return this;
+};
 
 
 Service.prototype.setPropertyStore = function(userStore) {};
