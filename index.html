@@ -75,18 +75,24 @@
 		
 		function loadLibs() {
 		
+			const head = document.head;
 			const body = document.body;
 			
-			const sources = ['https://unpkg.com/jso/dist/jso.js','index.js'];
+			const sourcesToHead = ['https://unpkg.com/jso/dist/jso.js'];
+			const sourcesToBody = ['index.js'];
 			
-			sources.forEach(function(source){
-				
+			sourcesToHead.forEach(function(source){
 				const script = document.createElement('script');
 				script.type  = 'text/javascript';
 				script.src   = source;
-				
-				body.appendChild(script);
+				head.appendChild(script);
+			});
 			
+			sourcesToBody.forEach(function(source){
+				const script = document.createElement('script');
+				script.type  = 'text/javascript';
+				script.src   = source;
+				body.appendChild(script);
 			});
 		
 		}
