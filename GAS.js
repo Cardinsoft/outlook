@@ -18,12 +18,24 @@ class Service {
 			providerID : name
 		};
 	}
-	build() {return new jso.JSO(this.params); }
+	build() {
+		const service = new jso.JSO(this.params); 
+		service.setLoader(Popup);
+	}
 }
-//add new methods to the class;
+//add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
 Service.prototype.getAuthorizationUrl = function(params) {
 	
-}
+	//initiate parameters;
+	const parameters = {
+		client_id: this.client_id,
+		response_type: 'code',
+		redirect_uri: this.getRedirectUri()	
+	};
+	
+	
+};
+
 Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
 	//access parameters;
 	let params = this.params;	
@@ -108,6 +120,10 @@ Service.prototype.getToken = async function() {
 	//obtain token;
 	const token = await service.getToken();
 	return token;
+}
+Service.prototype.getAccessToken = function() {
+	
+	
 }
 Service.prototype.reset = async function() {
 	await this.wipeTokens();
