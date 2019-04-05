@@ -1407,7 +1407,6 @@ e_CacheService.prototype.getUserCache = function () {
 //initiate services to be able to access them;
 const CacheService      = new e_CacheService();
 const CardService       = new e_CardService();
-const e                 = new e_EventObject();
 const OAuth2			= new e_OAuth2();
 const PropertiesService = new e_PropertiesService();
 const UrlFetchApp       = new e_UrlFetchApp();
