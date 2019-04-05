@@ -1,6 +1,3 @@
-//===========================================START APPS SCRIPT===========================================//
-
-
 //Emulate OAuth2 object (instead of library call);
 class e_OAuth2 {
 	constructor() {
@@ -1402,7 +1399,6 @@ e_CacheService.prototype.getUserCache = function () {
 	//future releases;
 	return this;
 }
-//===========================================END APPS SCRIPT===========================================//
 
 //initiate services to be able to access them;
 const CacheService      = new e_CacheService();
