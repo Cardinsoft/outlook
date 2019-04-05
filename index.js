@@ -4331,6 +4331,8 @@ class e_EventObject {
 	}
 }
 
+const e = new e_EventObject();
+
 //Emulate Message class that is obtained from current message auth flow;
 class Message {
 	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId,msgThread) {
