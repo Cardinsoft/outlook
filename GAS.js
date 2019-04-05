@@ -30,7 +30,7 @@ Service.prototype.getAuthorizationUrl = function(params) {
 	const parameters = {
 		client_id: this.client_id,
 		response_type: 'code',
-		redirect_uri: this.getRedirectUri()	
+		redirect_uri: 'https://cardinsoft.github.io/outlook/OAuth2-result.html' //redirect Uri for Outlook is always https://{Domain}/OAuth2-result.html
 	};
 	
 	
