@@ -1409,4 +1409,3 @@ const CacheService      = new e_CacheService();
 const CardService       = new e_CardService();
 const OAuth2			= new e_OAuth2();
 const PropertiesService = new e_PropertiesService();
-const UrlFetchApp       = new e_UrlFetchApp();
