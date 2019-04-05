@@ -1,7 +1,7 @@
 //sample GitHub connector class;
 function GitHub() {
   Connector.call(this);
-  this.icon   = globalGitHubIconUrl;
+  this.icon   = index.globalGitHubIconUrl;
   this.name   = 'GitHub';
   this.short  = globalGitHubShort;
   this.url    = 'https://api.github.com/user';
