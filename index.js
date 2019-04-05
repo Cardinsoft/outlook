@@ -5643,7 +5643,7 @@ class Service {
 			providerID : name
 		};
 	}
-	JSO() {return new JSO(this.params); }
+	build() {return new jso.JSO(this.params); }
 }
 //add new methods to the class;
 Service.prototype.getAuthorizationUrl = function(params) {
@@ -5728,7 +5728,7 @@ Service.prototype.hasAccess = async function() {
 };
 Service.prototype.getToken = async function() {
 	//initiate JSO with set parameters;
-	const service = this.JSO();
+	const service = this.build();
 	
 	//obtain token;
 	const token = await service.getToken();
