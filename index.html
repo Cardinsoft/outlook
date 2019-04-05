@@ -10,13 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cardin</title>
 
-    <!-- Office JavaScript API -->
+    <!-- CDN JS -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/jso/dist/jso.js"></script>
 
-    <!-- CDN -->
+    <!-- CDN styles -->
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.min.css" />
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.components.min.css" />
 
+	<!-- append app style -->
     <link href="app.css" rel="stylesheet" type="text/css" />
 	
 </head>
@@ -69,35 +71,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/js/fabric.min.js"></script>
 	<script type="text/javasctipt" src="function-file/function-file.js"></script>
-	<!--<script type="text/javascript" src="index.js"></script>-->
+	
+	<script type="text/javascript" src="index.js"></script>
 	
 	<script type="text/javascript">
-		
-		function loadLibs() {
-		
-			const head = document.head;
-			const body = document.body;
-			
-			const sourcesToHead = ['https://unpkg.com/jso/dist/jso.js'];
-			const sourcesToBody = ['index.js'];
-			
-			sourcesToHead.forEach(function(source){
-				const script = document.createElement('script');
-				script.type  = 'text/javascript';
-				script.src   = source;
-				head.appendChild(script);
-			});
-			
-			sourcesToBody.forEach(function(source){
-				const script = document.createElement('script');
-				script.type  = 'text/javascript';
-				script.src   = source;
-				body.appendChild(script);
-			});
-		
-		}
 	
-		window.onload = function() { loadLibs(); }
+		console.log(new JSO());
 	
 		const CommandBarElements = document.querySelectorAll(".ms-CommandBar");
 		for (let i = 0; i < CommandBarElements.length; i++) {
