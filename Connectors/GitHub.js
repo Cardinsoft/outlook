@@ -10,8 +10,8 @@ function GitHub() {
     name: 'GitHub',
     urlAuth: 'https://github.com/login/oauth/authorize',
     urlToken: 'https://github.com/login/oauth/access_token',
-    id: 'e6c7b5e9866ad262b1c8',
-    secret: 'd53fe70345b269e96477a1559d844a29c0061251',
+    id: '346b6610e8ebf7dd79b8',
+    secret: '8eafafbc6f4cae236c5a17576f12d73b584fce10',
     scope: 'malformed',
     prompt: true
   };
