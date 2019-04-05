@@ -21,6 +21,7 @@ class Service {
 	build() {
 		const service = new jso.JSO(this.params); 
 		service.setLoader(jso.Popup);
+		return service;
 	}
 }
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
