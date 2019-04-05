@@ -4569,6 +4569,8 @@ e_UrlFetchApp.prototype.fetch = function (url,params) {
 	return promise;
 }
 
+const UrlFetchApp = new e_UrlFetchApp();
+
 function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		let request = new XMLHttpRequest();
