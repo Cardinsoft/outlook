@@ -80,7 +80,7 @@ Thread.prototype.getLabels = async function () {
 	//access current id;
 	const id = curr.itemId;
 	
-	try {
+	/*
 	//get access token;
 	const options = {isRest: true};
 	Office.context.mailbox.getCallbackTokenAsync(options,async function(token){
@@ -99,10 +99,7 @@ Thread.prototype.getLabels = async function () {
 		console.log(message);		
 		
 	});
-	}
-	catch(error) {
-		console.log(error);
-	}
+	*/
 	
 	return [];
 }
