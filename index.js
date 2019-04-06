@@ -4528,9 +4528,6 @@ function makeRequest(url,params) {
 			//access headers to set with request;
 			const hs = params.headers;
 			
-			//if has authorization header -> use credentials;
-			if(hs.Authorization) { request.withCredentials = true; }
-			
 			//set request header for each param header;
 			for(var key in hs) {
 				let value = hs[key];
