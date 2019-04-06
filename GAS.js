@@ -80,20 +80,31 @@ Thread.prototype.getLabels = async function () {
 	//access current id;
 	const id = curr.itemId;
 	
+	//obtain code;
+	const base      = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?';
+	const client_id = 'c64e3d68-18b1-4c38-8a52-a1dd01935999';
+	const codeURL   = base+'client_id='+client_id+'&response_type=code&response_mode=query&scope=offline_access%20user.read%20mail.read';
+	const codeResp  = await UrlFetchApp.fetch(codeURL);
+	
+	console.log(codeResp);
+	
 	//construct Url for API request;
 	const url = 'https://graph.microsoft.com/v1.0/me/messages/'+id;
 	
+	
+	/*
 	//make request to Graph API;
 	const parameters = {
-		method : 'get'
+		method : 'get',
 		headers : {
 			Authorization : 'Bearer '+
 		}
 	};
+	
 	const message = await UrlFetchApp.fetch(url,parameters);
 	
 	console.log(message);
-	
+	*/
 	return [];
 }
 Thread.prototype.removeLabel = function (label) {}
