@@ -4508,8 +4508,22 @@ function makeRequest(url,params) {
 		let request = new XMLHttpRequest();
 			request.timeout = 29000;
 			request.open(params.method.toUpperCase(),url);
+		
+		//if content type is provided -> set request Content-Type header;
 		if(params.contentType) { request.setRequestHeader('Content-Type',params.contentType); }
+		
+		//
+		if(params.headers) {
+			//access headers to set with request;
+			const hs = params.headers;
 			
+			//set request header for each param header;
+			for(var key in hs) {
+				let value = hs[key];
+				if(value) { request.setRequestHeader(key,value); }
+			}
+		}
+		
 		request.onload = function () {
 			let status     = request.status;
 			let response   = request.response;
