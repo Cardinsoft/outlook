@@ -117,10 +117,14 @@ TextButton.prototype.appendToUi = function (parent) {
 	
 	if(!openLink&&!authAction) {
 		new fabric['Button'](button, actionCallback(action,button) );	
-	}else {
+	}else if(openLink) {
 		new fabric['Button'](button, function(){
 			Office.context.ui.displayDialogAsync(openLink.url);
 		} );
+	}else {
+		new fabric['Button'](button, function(){
+			Office.context.ui.displayDialogAsync(authAction.url);
+		} );		
 	}
 }
 
