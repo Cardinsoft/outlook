@@ -4513,8 +4513,9 @@ function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		
 		//default to GET method if no params provided;
-		if(!params) { const params = {method : 'get'}; }
+		if(!params) { params = {method : 'get'}; }
 		
+		//initiate and open XMLHttpRequest;
 		let request = new XMLHttpRequest();
 			request.timeout = 29000;
 			request.open(params.method.toUpperCase(),url);
