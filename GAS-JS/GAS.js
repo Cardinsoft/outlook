@@ -915,7 +915,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 }
 
 //Emulate Class Action for CardService service;
-class Action extends e_CardService {
+class Action {
 	constructor() {
 		super();
 		this.className = 'Action';
