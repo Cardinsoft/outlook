@@ -118,7 +118,6 @@ Service.prototype.setLock = function(userLock) {};
 Service.prototype.hasAccess = async function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
-	service.callback();
 	
 	//await for token;
 	let token = await service.checkToken();
