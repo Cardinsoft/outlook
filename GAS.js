@@ -221,17 +221,13 @@ Service.prototype.hasAccess = async function() {
 	let token = await this.getToken();
 	if(token) { return true; }else { return false; }
 };
-Service.prototype.getToken = async function() {
+Service.prototype.getAccessToken = async function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
 	//obtain token;
 	const token = await service.getToken();
 	return token;
-}
-Service.prototype.getAccessToken = function() {
-	
-	
 }
 Service.prototype.reset = async function() {
 	await this.wipeTokens();
