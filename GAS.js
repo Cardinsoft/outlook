@@ -88,7 +88,7 @@ Thread.prototype.getLabels = async function () {
 		const parameters = {
 			method : 'get',
 			headers : {
-				Authorization : 'Bearer '+
+				Authorization : 'Bearer '+token.value
 			}
 		};
 		const message = await UrlFetchApp.fetch(url,parameters);
