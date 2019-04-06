@@ -930,7 +930,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 //Emulate Class Action for CardService service;
 class Action {
 	constructor() {
-		super();
 		this.className = 'Action';
 		this.functionName;
 		this.loadIndicator;
