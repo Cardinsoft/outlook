@@ -55,7 +55,7 @@ function makeRequest(url,params) {
 		//if content type is provided -> set request Content-Type header;
 		if(params.contentType) { request.setRequestHeader('Content-Type',params.contentType); }
 		
-		//
+		//add headers if provided;
 		if(params.headers) {
 			//access headers to set with request;
 			const hs = params.headers;

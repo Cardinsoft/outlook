@@ -221,7 +221,7 @@ Service.prototype.hasAccess = async function() {
 	const service = this.build();	
 	
 	//await for token;
-	let token = await service.getToken();
+	let token = await service.checkToken();
 	if(token) { return true; }else { return false; }
 };
 Service.prototype.getAccessToken = async function() {
