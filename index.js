@@ -4503,8 +4503,18 @@ e_UrlFetchApp.prototype.fetch = function (url,params) {
 
 const UrlFetchApp = new e_UrlFetchApp();
 
+/**
+ * Makes a HTTP request with parameters (optional);
+ * @param {String} url url to request;
+ * @param {Object=} params parameters object;
+ * @returns {Promise}
+ */
 function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
+		
+		//default to GET method if no params provided;
+		if(!params) { const params = {method : 'get'}; }
+		
 		let request = new XMLHttpRequest();
 			request.timeout = 29000;
 			request.open(params.method.toUpperCase(),url);
