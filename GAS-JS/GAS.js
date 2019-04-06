@@ -126,8 +126,7 @@ class Service {
 		};
 	}
 	build() {
-		const service = new jso.JSO(this.params); 
-		service.setLoader(jso.Popup);
+		const service = new jso.JSO(this.params);
 		return service;
 	}
 }
@@ -209,7 +208,6 @@ Service.prototype.setParam = function(key,value) {
 	params[key] = value;
 	return this;
 };
-
 
 Service.prototype.setPropertyStore = function(userStore) {
 	this
