@@ -471,7 +471,10 @@ ButtonSet.prototype.appendToUi = function(parent) {
 		const textButtonStyle = button.textButtonStyle;	
 		const action          = button.action;
 		const openLink        = button.openLink;
-		const authAction      = button.authorizationAction; 		
+		const authAction      = button.authorizationAction; 
+
+		console.log(openLink)
+		console.log(authAction)
 			
 		const btn = document.createElement('button');
 		if(disabled) {
