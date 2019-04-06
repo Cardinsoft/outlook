@@ -86,6 +86,9 @@ Thread.prototype.getLabels = async function () {
 	//make request to Graph API;
 	const parameters = {
 		method : 'get'
+		headers : {
+			Authorization : 'Bearer '+
+		}
 	};
 	const message = await UrlFetchApp.fetch(url,parameters);
 	
