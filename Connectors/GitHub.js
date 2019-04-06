@@ -42,7 +42,7 @@ function GitHub() {
     //set payload in case POST request will be triggered;
     var trimmed = trimMessage(msg,true,true);
     //var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
-	var labels = msg.getThread();
+	var labels = msg.getThread().getLabels();
 	console.log(labels);
     var payload = {
       'Bcc': msg.getBcc(),
