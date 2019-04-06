@@ -3830,20 +3830,6 @@ function getTimeframe(start,end) {
   return timeframe;
 }
 
-
-/**
- * Fetches authorization token for current email
- * @param {Object} e event object;
- * @returns {Message}
- */
-function getToken(e) {
-  var accessToken = e.messageMetadata.accessToken;
-  var messageId = e.messageMetadata.messageId;
-  GmailApp.setCurrentMessageAccessToken(accessToken);
-  var msg = GmailApp.getMessageById(messageId);
-  return msg;
-}
-
 /**
  * Checks whether a sheet has any data that matches email regExp;
  * @param {Sheet} sheet sheet currently being looped through;
