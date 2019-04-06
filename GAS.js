@@ -82,7 +82,7 @@ Thread.prototype.getLabels = async function () {
 	
 	//get access token;
 	const options = {isRest: true};
-	Office.context.mailbox.getCallbackTokenAsync(options,function(token){
+	Office.context.mailbox.getCallbackTokenAsync(options,async function(token){
 		
 		//make request to Graph API;
 		const parameters = {
