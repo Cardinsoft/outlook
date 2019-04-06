@@ -1,3 +1,100 @@
+/**
+ * Fetches authorization token for current email
+ * @param {Object} e -> event object;
+ * @returns {Message}
+ */
+function getToken(e) {
+	const item = Office.context.mailbox.item;
+	
+	const name = Office.context.mailbox.item.sender.displayName;
+	const email = Office.context.mailbox.item.sender.emailAddress;
+	const msgFrom = `${name} <${email}>`;
+	
+	const msg = new Message( msgFrom,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.normalizedSubject, item.itemId, item );
+	return msg;
+}
+
+//Emulate Message class that is obtained from current message auth flow;
+class Message {
+	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId,msgThread) {
+		this.msgFrom      = msgFrom;
+		this.msgBcc       = msgBcc;
+		this.msgCc        = msgCc;
+		this.msgDate      = msgDate;
+		this.msgPlainBody = msgPlainBody;
+		this.msgSubject   = msgSubject;
+		this.msgId        = msgId;
+		this.msgThread    = msgThread;
+	}
+}
+Message.prototype.getId = function () {
+	return this.msgId;
+}
+Message.prototype.getBcc = function () {
+	return this.msgBcc;
+}
+Message.prototype.getCc = function () {
+	return this.msgCc;
+}
+Message.prototype.getDate = function () {
+	return this.msgDate;
+}
+Message.prototype.getFrom = function () {
+	return this.msgFrom;
+}
+Message.prototype.getPlainBody = function () {
+	return this.msgPlainBody;
+}
+Message.prototype.getSubject = function () {
+	return this.msgSubject;
+}
+Message.prototype.getThread = function () {
+	return new Thread(this.msgThread);
+}
+
+//Emulate GmailThread class (partially);
+class Thread {
+	constructor(msgThread) {
+		this.id;
+		this.labels;
+		this.messages = [msgThread];
+	}
+
+}
+Thread.prototype.getId = function () {
+		//access current message;
+		const curr = this.messages[0];
+		
+		//return conversation Id;
+		return curr.conversationId;
+	}
+	
+/**
+ * Emulates getLabels method with Categories API (as categories are not in core yet);
+ * @returns {Array}
+ */
+Thread.prototype.getLabels = async function () {
+	//access current message;
+	const curr = this.messages[0];
+	
+	//access current id;
+	const id = curr.itemId;
+	
+	//construct Url for API request;
+	const url = 'https://graph.microsoft.com/v1.0/me/messages/'+id;
+	
+	//make request to Graph API;
+	const parameters = {
+		method : 'get'
+	};
+	const message = await UrlFetchApp.fetch(url,parameters);
+	
+	console.log(message);
+	
+	return [];
+}
+Thread.prototype.removeLabel = function (label) {}
+
 //Emulate OAuth2 object (instead of library call);
 class e_OAuth2 {
 	constructor() {
