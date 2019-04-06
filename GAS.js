@@ -233,7 +233,10 @@ Service.prototype.getAccessToken = async function() {
 	return token;
 }
 Service.prototype.reset = async function() {
-	await this.wipeTokens();
+	//initiate JSO with set parameters;
+	const service = this.build();	
+	
+	await service.wipeTokens();
 };
 
 
