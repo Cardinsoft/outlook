@@ -220,6 +220,9 @@ Service.prototype.hasAccess = async function() {
 	
 	//await for token;
 	let token = await service.checkToken();
+	
+	console.log(token);
+	
 	if(token) { return true; }else { return false; }
 };
 Service.prototype.getAccessToken = async function() {
