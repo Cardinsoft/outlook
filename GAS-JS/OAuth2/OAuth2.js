@@ -34,14 +34,29 @@ class Service {
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
 Service.prototype.getAuthorizationUrl = function(params) {
 	
+	/*
 	//initiate parameters;
 	const parameters = {
 		client_id: this.client_id,
 		response_type: 'code',
 		redirect_uri: 'https://cardinsoft.github.io/outlook/OAuth2-result.html' //redirect Uri for Outlook is always https://{Domain}/OAuth2-result.html
 	};
+	*/
 	
+	//initiate params;
+	const params = this.params;
 	
+	/*
+	https://github.com/login/oauth/authorize?
+	response_type=id_token%20token
+	&state=cc3766b4-2eff-4fbb-a705-1ae381db21e3
+	&client_id=346b6610e8ebf7dd79b8
+	&scope=malformed
+	*/
+	
+	const url = params.authorization;
+	
+	return url;
 };
 
 Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
