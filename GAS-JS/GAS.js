@@ -466,11 +466,13 @@ ButtonSet.prototype.appendToUi = function(parent) {
 	
 	buttons.forEach(function(button) {
 		const backgroundColor = button.backgroundColor;
-		const text = button.text;
-		const disabled = button.disabled;
+		const text            = button.text;
+		const disabled        = button.disabled;
 		const textButtonStyle = button.textButtonStyle;	
-		const action = button.action;
-		
+		const action          = button.action;
+		const openLink        = button.openLink;
+		const authAction      = button.authorizationAction; 		
+			
 		const btn = document.createElement('button');
 		if(disabled) {
 			btn.className = 'ms-Button ms-Button--small'+button.className;
@@ -485,7 +487,18 @@ ButtonSet.prototype.appendToUi = function(parent) {
 		btnContent.textContent = text;
 		btn.append(btnContent);
 
-		new fabric['Button'](btn, actionCallback(action,btn) );	
+		if(!openLink&&!authAction) {
+			new fabric['Button'](btn, actionCallback(action,btn) );	
+		}else if(openLink) {
+			new fabric['Button'](btn, function(){
+				Office.context.ui.displayDialogAsync(openLink.url);
+			} );
+		}else {
+			new fabric['Button'](btn, function(){
+				Office.context.ui.displayDialogAsync(authAction.url);
+			} );		
+		}		
+		
 	});
 
 }
