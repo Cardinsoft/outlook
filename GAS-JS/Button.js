@@ -93,6 +93,9 @@ TextButton.prototype.appendToUi = function (parent) {
 	const openLink        = this.openLink;
 	const authAction      = this.authorizationAction; 
 	
+	console.log(openLink)
+	console.log(authAction)
+	
 	const btnRow = document.createElement('div');
 	btnRow.className = 'row '+this.className;
 	parent.append(btnRow);
