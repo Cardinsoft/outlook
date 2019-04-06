@@ -37,6 +37,10 @@ Service.prototype.getAuthorizationUrl = function(params) {
 	
 	//initiate params;
 	const parameters = this.params;
+	const mapped = Object.keys(parameters).map(function(key){
+		let par = parameters[key];
+		return key+'='+par;
+	});
 	
 	/*
 	https://github.com/login/oauth/authorize?
@@ -46,9 +50,13 @@ Service.prototype.getAuthorizationUrl = function(params) {
 	&scope=malformed
 	*/
 	
-	const url = parameters.authorization;
+	const map = [parameters.authorization,parameters.client_id];
 	
-	return url;
+	const authURL = url+'?'+map.join('&');
+	
+	console.log(authURL);
+	
+	return authURL;
 };
 
 Service.prototype.setAuthorizationBaseUrl = function(urlAuth) {
