@@ -11,8 +11,8 @@ function Pipedrive() {
     name: 'Pipedrive',
     urlAuth: 'https://oauth.pipedrive.com/oauth/authorize',
     urlToken: 'https://oauth.pipedrive.com/oauth/token',
-    id: '12cefab496cfcb98',
-    secret: 'c4842d0956b6188431e300ca311a8d3832def793',
+    id: 'af088eef2609bb63',
+    secret: 'fee255f22bf1b15f1eced5cd3a0ddbc021522b6c',
     scope: 'contacts:read'
   };
   this.login = function(connector) {
