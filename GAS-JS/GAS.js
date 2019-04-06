@@ -967,7 +967,7 @@ class AuthorizationAction extends e_CardService {
 	constructor() {
 		super();
 		this.className = 'AuthorizationAction';
-		this.authorizationUrl;
+		this.url;
 	}
 }
 /**
@@ -976,7 +976,7 @@ class AuthorizationAction extends e_CardService {
  * @returns {Object}
  */
 AuthorizationAction.prototype.setAuthorizationUrl = function(authorizationUrl) {
-	this.authorizationUrl = authorizationUrl;
+	this.url = authorizationUrl;
 	return this;
 }
 
