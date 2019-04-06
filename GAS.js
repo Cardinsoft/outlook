@@ -217,8 +217,11 @@ Service.prototype.setPropertyStore = function(userStore) {
 Service.prototype.setCache = function(userCache) {};
 Service.prototype.setLock = function(userLock) {};
 Service.prototype.hasAccess = async function() {
+	//initiate JSO with set parameters;
+	const service = this.build();	
+	
 	//await for token;
-	let token = await this.getToken();
+	let token = await service.getToken();
 	if(token) { return true; }else { return false; }
 };
 Service.prototype.getAccessToken = async function() {
