@@ -1,6 +1,6 @@
 /**
  * Fetches authorization token for current email
- * @param {Object} e -> event object;
+ * @param {Object} e event object;
  * @returns {Message}
  */
 function getToken(e) {
