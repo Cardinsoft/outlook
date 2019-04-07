@@ -34,7 +34,6 @@ class Service {
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
 Service.prototype.getAuthorizationUrl = function(params) {
 	
-	
 	//initiate params;
 	const parameters = this.params;
 	const mapped = Object.keys(parameters).map(function(key){
@@ -126,6 +125,8 @@ Service.prototype.hasAccess = async function() {
 	
 	//await for token;
 	let token = await service.checkToken();
+	
+	console.log(token);
 	
 	if(token!==null) { return true; }else { return false; }
 };
