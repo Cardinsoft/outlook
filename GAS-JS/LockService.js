@@ -1,5 +1,5 @@
 //Emulate LockService service;
-class LockService {
+class e_LockService {
 	constructor() {
 		this.className = 'LockService';
 	}
@@ -8,7 +8,7 @@ class LockService {
  * Gets document Lock - FOR FUTURE RELEASE, NOT USED;
  * @returns {Lock}
  */
-LockService.prototype.getDocumentLock = function () {
+e_LockService.prototype.getDocumentLock = function () {
 	const api = '';
 	
 	//create an instance of Lock with ;
@@ -19,7 +19,7 @@ LockService.prototype.getDocumentLock = function () {
  * Gets script Lock using ;
  * @returns {Lock}
  */
-LockService.prototype.getScriptLock = function () {
+e_LockService.prototype.getScriptLock = function () {
 	const api = '';
 	
 	//create an instance of Lock with ;
@@ -30,7 +30,7 @@ LockService.prototype.getScriptLock = function () {
  * Gets user Lock using ;
  * @returns {Lock}
  */
-LockService.prototype.getUserLock = function () {
+e_LockService.prototype.getUserLock = function () {
 	const api = '';
 	
 	//create an instance of Lock with ;
@@ -49,3 +49,6 @@ Lock.prototype.hasLock = function () {}
 Lock.prototype.releaseLock = function () {}
 Lock.prototype.tryLock = function (timeoutInMillis) {}
 Lock.prototype.waitLock = function (timeoutInMillis) {}
+
+//Initiate LockService;
+const LockService = new e_LockService();
