@@ -126,6 +126,7 @@ Service.prototype.hasAccess = async function() {
 	//await for token;
 	let token = await service.checkToken();
 	
+	console.log('TOKEN');
 	console.log(token);
 	
 	if(token&&token!==null) { return true; }else { return false; }
