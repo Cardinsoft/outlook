@@ -4,6 +4,7 @@ class e_OAuth2 {
 		this.service;
 	}
 }
+
 /**
  * Create OAuth2 service object;
  * @param {String} name service name to set;
@@ -158,7 +159,5 @@ Service.prototype.reset = async function() {
 	
 	await service.wipeTokens();
 };
-
-
 
 const OAuth2 = new e_OAuth2();
