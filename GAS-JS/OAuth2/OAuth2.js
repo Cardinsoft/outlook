@@ -126,11 +126,7 @@ Service.prototype.hasAccess = async function() {
 	//await for token;
 	let token = await service.checkToken();
 	
-	console.log('TOKEN');
-	console.log(token);
-	console.log(token!==null);
-	
-	if(token!==null) { return true; }else { return false; }
+	if(token!==null) { return true; }else { return {v:false,t:token}; }
 };
 Service.prototype.getAccessToken = async function() {
 	//initiate JSO with set parameters;
