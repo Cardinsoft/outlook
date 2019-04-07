@@ -6,14 +6,14 @@ class e_CacheService {
 }
 /**
  * Gets document Cache - FOR FUTURE RELEASE, NOT USED;
- * @returns {Storage}
+ * @returns {Cache}
  */
 e_CacheService.prototype.getDocumentCache = function () {
 	return this;
 }
 /**
  * Gets script Cache using Window.sessionStorage API;
- * @returns {Storage}
+ * @returns {Cache}
  */
 e_CacheService.prototype.getScriptCache = function () {
 	//access session storage;
@@ -25,7 +25,7 @@ e_CacheService.prototype.getScriptCache = function () {
 }
 /**
  * Gets user Cache using Window.localStorage API;
- * @returns {Storage}
+ * @returns {Cache}
  */
 e_CacheService.prototype.getUserCache = function () {
 	//access session storage;
