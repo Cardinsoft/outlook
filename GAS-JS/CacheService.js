@@ -142,7 +142,21 @@ Cache.prototype.removeAll = function (keys) {
 }
 
 //Storage API does not have expiration methods;
-Cache.prototype.put = function (key,value,expirationInSeconds) { this.put(key,value); }
+Cache.prototype.put = function (key,value,expirationInSeconds) { 
+	//access storage;
+	const cache = this.storage;
+	
+	//if value is an object, stringify;
+	if(typeof value!=='string') { value = JSON.stringify(value); }
+	
+	//set key-value pair to cache;
+	try {
+		cache.setItem(key,value);	
+	}
+	catch(error) {
+		console.log(error);
+	}
+}
 Cache.prototype.putAll = function (values,expirationInSeconds) { this.putAll(values); }
 
 //Initiate CacheService;
