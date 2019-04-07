@@ -93,6 +93,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	const openLink        = this.openLink;
 	const authAction      = this.authorizationAction; 
 	
+	console.log(disabled)
 	console.log(openLink)
 	console.log(authAction)
 	
