@@ -128,9 +128,6 @@ function textButtonWidgetAuth(text,disabled,isFilled,url) {
   var widget = CardService.newTextButton();
       widget.setText(text);
       widget.setDisabled(disabled);
-	  
-	  console.log(disabled)
-	  console.log(typeof disabled)
       
   if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
   
