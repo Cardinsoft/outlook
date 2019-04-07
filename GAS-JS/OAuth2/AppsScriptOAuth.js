@@ -541,20 +541,10 @@ Service_.prototype.getAuthorizationUrl = function(optAdditionalParameters) {
     'Authorization base URL': this.authorizationBaseUrl_
   });
 
-  var stateTokenBuilder = eval('Script' + 'App').newStateToken()
-      .withMethod(this.callbackFunctionName_)
-      .withArgument('serviceName', this.serviceName_)
-      .withTimeout(3600);
-  if (optAdditionalParameters) {
-    Object.keys(optAdditionalParameters).forEach(function(key) {
-      stateTokenBuilder.withArgument(key, optAdditionalParameters[key]);
-    });
-  }
   var params = {
     client_id: this.clientId_,
     response_type: 'code',
-    redirect_uri: this.getRedirectUri(),
-    state: stateTokenBuilder.createToken()
+    redirect_uri: this.getRedirectUri()
   };
   params = extend_(params, this.params_);
   return buildUrl_(this.authorizationBaseUrl_, params);
