@@ -9,10 +9,10 @@ class LockService {
  * @returns {Lock}
  */
 LockService.prototype.getDocumentLock = function () {
-	const lock = '';
+	const api = '';
 	
 	//create an instance of Lock with ;
-	const lock = new Lock(lock);
+	const lock = new Lock(api);
 	return lock;
 }
 /**
@@ -20,10 +20,10 @@ LockService.prototype.getDocumentLock = function () {
  * @returns {Lock}
  */
 LockService.prototype.getScriptLock = function () {
-	const lock = '';
+	const api = '';
 	
 	//create an instance of Lock with ;
-	const lock = new Lock(lock);
+	const lock = new Lock(api);
 	return lock;	
 }
 /**
@@ -31,10 +31,10 @@ LockService.prototype.getScriptLock = function () {
  * @returns {Lock}
  */
 LockService.prototype.getUserLock = function () {
-	const lock = '';
+	const api = '';
 	
 	//create an instance of Lock with ;
-	const lock = new Lock(lock);
+	const lock = new Lock(api);
 	return lock;
 }
 
