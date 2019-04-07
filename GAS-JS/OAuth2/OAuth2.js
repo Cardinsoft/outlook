@@ -42,17 +42,7 @@ Service.prototype.getAuthorizationUrl = function(params) {
 		return key+'='+par;
 	});
 	
-	/*
-	https://github.com/login/oauth/authorize?
-	response_type=id_token%20token
-	&state=cc3766b4-2eff-4fbb-a705-1ae381db21e3
-	&client_id=346b6610e8ebf7dd79b8
-	&scope=malformed
-	*/
-	
-	const map = [parameters.authorization,parameters.client_id];
-	
-	const authURL = url+'?'+map.join('&');
+	const authURL = parameters.authorization+'?'+map.join('&');
 	
 	console.log(authURL);
 	
