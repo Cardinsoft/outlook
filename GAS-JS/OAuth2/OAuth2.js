@@ -37,8 +37,19 @@ Service.prototype.getAuthorizationUrl = function(params) {
 	//initiate params;
 	const parameters = this.params;
 	const mapped = Object.keys(parameters).map(function(key){
+		
 		let par = parameters[key];
-		return key+'='+par;
+		
+		if(key!=='redirect_uri') {
+			
+			if(key==='scope') {
+				return key+'='+par.request.join('');
+			}else {
+				//if key is not scope -> return key-value pair; 
+				return key+'='+par;
+			}
+		}
+
 	});
 	
 	const authURL = parameters.authorization+'?'+mapped.join('&');
