@@ -33,9 +33,14 @@ class Service {
 }
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
 Service.prototype.getAuthorizationUrl = function(params) {
+	//initiate JSO with set parameters;
+	const service = this.build();
+	
+	//set iframe loader;
+	service.setLoader(jso.IFramePassive);
 	
 	//initiate params;
-	const parameters = this.params;
+	const parameters = service.params;
 	const mapped = Object.keys(parameters).map(function(key){
 		
 		let par = parameters[key];
