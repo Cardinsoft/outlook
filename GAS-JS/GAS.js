@@ -1168,7 +1168,7 @@ Cache.prototype.getAll = function (keys) {
 			//access value by key;
 			let value = cache.getItem(key);	
 			if(value!==null) { values[key] = value; }
-		}
+		});
 	}else { 
 		return null; 
 	}
