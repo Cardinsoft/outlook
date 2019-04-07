@@ -42,7 +42,7 @@ Service.prototype.getAuthorizationUrl = function(params) {
 		return key+'='+par;
 	});
 	
-	const authURL = parameters.authorization+'?'+map.join('&');
+	const authURL = parameters.authorization+'?'+mapped.join('&');
 	
 	console.log(authURL);
 	
