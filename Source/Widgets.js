@@ -65,6 +65,9 @@ function createWidgetRevoke(builder,text,parameters) {
   
   //check if service does not have access;
   var disableRevoke = !service.hasAccess();
+  
+  console.log('DISABLE REVOKE')
+  console.log(disableRevoke)
  
   //create widget for revoking authorization;
   var widget  = textButtonWidget(text,disableRevoke,false,'revokeAuth',parameters);
