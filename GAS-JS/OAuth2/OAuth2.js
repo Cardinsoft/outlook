@@ -128,6 +128,7 @@ Service.prototype.hasAccess = async function() {
 	
 	console.log('TOKEN');
 	console.log(token);
+	console.log(token!==null);
 	
 	if(token&&token!==null) { return true; }else { return false; }
 };
