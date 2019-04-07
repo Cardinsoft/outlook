@@ -87,6 +87,9 @@ Cache.prototype.put = function (key,value) {
 	//access storage;
 	const cache = this.storage;
 	
+	//if value is an object, stringify;
+	if(typeof value!=='string') { value = JSON.stringify(value); }
+	
 	//set key-value pair to cache;
 	try {
 		cache.setItem(key,value);	
