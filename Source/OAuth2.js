@@ -58,8 +58,8 @@ function authService(parameters) {
   
   //access user properties, cache and lock services;
   var userStore = PropertiesService.getUserProperties();
-  var userCache = {}//CacheService.getUserCache();
-  var userLock  = {}//LockService.getUserLock();
+  var userCache = CacheService.getUserCache();
+  var userLock  = LockService.getUserLock();
   
   //set service parameters;
   var service = OAuth2.createService(name);
