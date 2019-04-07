@@ -157,7 +157,20 @@ Cache.prototype.put = function (key,value,expirationInSeconds) {
 		console.log(error);
 	}
 }
-Cache.prototype.putAll = function (values,expirationInSeconds) { this.putAll(values); }
+Cache.prototype.putAll = function (values,expirationInSeconds) { 
+	//access storage;
+	const cache = this.storage;
+	
+	if(values.length>0) {
+		values.forEach(function(value){
+			//access key from key-value pair;
+			let key = Object.keys(value)[0];
+			let val = value[key];
+			
+			cache.setItem(key,val);
+		});
+	}
+}
 
 //Initiate CacheService;
 const CacheService = new e_CacheService();
