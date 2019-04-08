@@ -49,19 +49,21 @@
         
       <p>You can close the window now or it will be closed in</p>
 	  
-      <p id="count" class="centered">20</p>
+      <p id="count" class="centered">5</p>
 	  
     </div>
     <script>
-      var w = top.window;
-      var c = document.querySelector('#count');
+      //access window, #count DOM element and window URL;
+	  const w = top.window;
+      const c = document.querySelector('#count');
+	  const l = w.location;
 	  
 	  console.log(w.location);
-      
+      /*
       setTimeout(function(){ 
         w.close();
-      },20000);
-     
+      },5000);
+      */
       setInterval(function(){   
         if(c.textContent>0) { c.textContent -= 1; }
       },1000);
