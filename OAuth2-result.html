@@ -3,6 +3,14 @@
   <head>
     <base target="_top">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	
+	<!-- include services -->
+	<script type="text/javascript" src="GAS-JS/CacheService.js"></script>
+	<script type="text/javascript" src="GAS-JS/LockService.js"></script>
+	<script type="text/javascript" src="GAS-JS/PropertiesService.js"></script>
+	<script type="text/javascript" src="GAS-JS/UrlFetchApp.js"></script>
+	<script type="text/javascript" src="GAS-JS/OAuth2/AppsScriptOAuth.js"></script>
+	
   </head>
   <style>
     * {
@@ -52,6 +60,7 @@
       <p id="count" class="centered">5</p>
 	  
     </div>
+	
     <script>
       //access window, #count DOM element and window URL;
 	  const w = top.window;
