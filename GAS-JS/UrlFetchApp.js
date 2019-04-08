@@ -67,6 +67,8 @@ function makeRequest(url,params) {
 			}
 		}
 		
+		console.log(request);
+		
 		request.onload = function () {
 			let status     = request.status;
 			let response   = request.response;
