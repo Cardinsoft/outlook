@@ -58,8 +58,9 @@
       const c = document.querySelector('#count');
 	  const l = w.location;
 	  const s = l.search;
+	  const params = s.split('=');
 	  
-	  console.log(s);
+	  console.log(params);
       /*
       setTimeout(function(){ 
         w.close();
