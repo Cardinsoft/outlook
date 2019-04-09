@@ -67,9 +67,11 @@
       const c = document.querySelector('#count');
 	  const l = w.location;
 	  const s = l.search;
-	  const params = s.split('=');
+	  const code = s.split('=')[1];
 	  
-	  console.log(params);
+	  //initiate service;
+	  
+	  console.log(code);
       /*
       setTimeout(function(){ 
         w.close();
