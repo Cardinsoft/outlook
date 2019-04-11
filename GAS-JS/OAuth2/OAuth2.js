@@ -24,7 +24,8 @@ e_OAuth2.prototype.createService = function (name) {
 class Service {
 	constructor(name) {
 		this.params = {
-			providerID : name
+			providerID : name,
+			redirect_uri : 'https://cardinsoft.github.io/outlook/OAuth2-result.html'
 		};
 	}
 	build() {
