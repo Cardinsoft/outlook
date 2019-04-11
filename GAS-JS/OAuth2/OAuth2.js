@@ -33,7 +33,7 @@ class Service {
 	}
 }
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
-Service.prototype.getAuthorizationUrl = function() {
+Service.prototype.getAuthorizationUrl = function(parameters) {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
@@ -41,7 +41,6 @@ Service.prototype.getAuthorizationUrl = function() {
 	service.setLoader(jso.Popup);
 	
 	//initiate params;
-	const parameters = service.params;
 	const mapped = Object.keys(parameters).map(function(key){
 		
 		let par = parameters[key];
