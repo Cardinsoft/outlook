@@ -37,29 +37,7 @@ Service.prototype.getAuthorizationUrl = function(parameters) {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
-	//set iframe loader;
-	service.setLoader(jso.Popup);
-	
-	//initiate params;
-	const mapped = Object.keys(parameters).map(function(key){
-		
-		let par = parameters[key];
-		
-		if(key!=='redirect_uri') {
-			
-			if(key==='scope') {
-				return key+'='+par.request.join('');
-			}else {
-				//if key is not scope -> return key-value pair; 
-				return key+'='+par;
-			}
-		}
-
-	});
-	
-	const authURL = parameters.authorization+'?'+mapped.join('&');
-	
-	console.log(authURL);
+	const authURL = this.authorization;	
 	
 	return authURL;
 };
