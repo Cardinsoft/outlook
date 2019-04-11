@@ -140,7 +140,7 @@ Service.prototype.getAccessToken = async function() {
 	const captured = null;
 	
 	//obtain token;
-	await service.getToken()
+	service.getToken()
 	.then(function(token){
 		captured = token;
 		console.log(token);
@@ -148,6 +148,8 @@ Service.prototype.getAccessToken = async function() {
 	.catch(function(error){
 		console.log(error);
 	})
+	
+	console.log(captured);
 	
 	return captured;
 }
