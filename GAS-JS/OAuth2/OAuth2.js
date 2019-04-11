@@ -137,6 +137,8 @@ Service.prototype.getAccessToken = async function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
+	service.setLoader(jso.IFramePassive);
+	
 	const captured = null;
 	
 	//obtain token;
