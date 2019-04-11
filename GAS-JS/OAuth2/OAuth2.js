@@ -139,10 +139,8 @@ Service.prototype.hasAccess = function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
-	service.setLoader(jso.IFramePassive);
-	
 	//await for token;
-	service.getToken()
+	service.checkToken()
 	.then(function(token){
 		console.log(token);
 		return true;
