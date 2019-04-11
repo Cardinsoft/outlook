@@ -43,7 +43,7 @@ Service.prototype.getAuthorizationUrl = function(parameters) {
 	
 	const base = params.authorization+'?';
 
-	const id = 'clientId='+params.client_id;
+	const id = 'client_id='+params.client_id;
 	
 	console.log(base+id);
 	
