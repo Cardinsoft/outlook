@@ -125,7 +125,7 @@ Service.prototype.hasAccess = function() {
 	const service = this.build();
 	
 	//await for token;
-	let token = service.checkToken();
+	const token = service.checkToken();
 	
 	if(token!==null) { return true; }else { return false; }
 };
