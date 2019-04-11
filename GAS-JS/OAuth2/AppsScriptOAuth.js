@@ -543,7 +543,7 @@ Service_.prototype.getAuthorizationUrl = function(optAdditionalParameters) {
 
   var params = {
     client_id: this.clientId_,
-    response_type: 'code',
+    response_type: 'token',
     redirect_uri: this.getRedirectUri()
   };
   params = extend_(params, this.params_);
