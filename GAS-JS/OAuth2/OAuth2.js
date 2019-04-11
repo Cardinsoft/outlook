@@ -33,12 +33,12 @@ class Service {
 	}
 }
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
-Service.prototype.getAuthorizationUrl = function(params) {
+Service.prototype.getAuthorizationUrl = function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
 	//set iframe loader;
-	service.setLoader(jso.IFramePassive);
+	service.setLoader(jso.Popup);
 	
 	//initiate params;
 	const parameters = service.params;
@@ -134,8 +134,11 @@ Service.prototype.setParam = function(key,value) {
 Service.prototype.setPropertyStore = function(userStore) {
 	this
 };
+
 Service.prototype.setCache = function(userCache) {};
+
 Service.prototype.setLock = function(userLock) {};
+
 Service.prototype.hasAccess = function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
@@ -149,9 +152,19 @@ Service.prototype.getAccessToken = async function() {
 	//initiate JSO with set parameters;
 	const service = this.build();
 	
+	const captured = null;
+	
 	//obtain token;
-	const token = await service.getToken();
-	return token;
+	await service.getToken()
+	.then(function(token){
+		captured = token;
+		console.log(token);
+	})
+	.catch(function(error){
+		console.log(error);
+	})
+	
+	return captured;
 }
 Service.prototype.reset = async function() {
 	//initiate JSO with set parameters;
