@@ -39,9 +39,11 @@ Service.prototype.getAuthorizationUrl = function(parameters) {
 	
 	service.setLoader(jso.Popup);
 	
-	const base = this.authorization+'?';
+	const params = this.params;
+	
+	const base = params.authorization+'?';
 
-	const id = 'clientId='+this.clientId;
+	const id = 'clientId='+params.clientId;
 	
 	console.log(base+id);
 	
