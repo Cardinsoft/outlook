@@ -47,9 +47,9 @@ Service.prototype.getAuthorizationUrl = function(parameters) {
 		params = parameters;
 	}
 	
-	const base = params.authorization+'?';
+	let base = params.authorization+'?';
 	
-	for(var key in params) {
+	for(let key in params) {
 		if(key!=='scope') {
 			base += key+'='+params[key];
 		}
