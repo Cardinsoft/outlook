@@ -140,15 +140,12 @@ Service.prototype.hasAccess = function() {
 	const service = this.build();
 	
 	//await for token;
-	service.checkToken()
-	.then(function(token){
-		console.log(token);
-		return true;
-	})
-	.catch(function(error){
-		console.log(error);
-		return false;
-	})	
+	const hasToken = service.checkToken();
+	
+	console.log(hasToken);
+	
+	return false;
+
 	
 	//if(token!==null) { return true; }else { return false; }
 };
