@@ -40,14 +40,8 @@ Service.prototype.getAuthorizationUrl = function(parameters) {
 	
 	service.setLoader(jso.Popup);
 	
-	let params;
-	
-	if(!parameters) {
-		params = this.params
-	}else {
-		params = parameters;
-	}
-	
+	let params = this.params;
+
 	let base = params.authorization+'?';
 	
 	for(let key in params) {
