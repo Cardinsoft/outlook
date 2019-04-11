@@ -21,12 +21,6 @@
 
 	<SupportUrl DefaultValue="https://cardinsoft.github.io/outlook/support.html" />
 
-	<!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
-	<AppDomains>
-		<AppDomain>AppDomain1</AppDomain>
-		<AppDomain>AppDomain2</AppDomain>
-		<AppDomain>AppDomain3</AppDomain>
-	</AppDomains>
 	<Hosts>
 		<Host Name="Mailbox" />
 	</Hosts>
