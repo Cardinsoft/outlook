@@ -21,7 +21,7 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 	
 		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,cardOpen);
-		Office.context.mailbox.getUserIdentityTokenAsync(callbackUI);
+		//Office.context.mailbox.getUserIdentityTokenAsync(callbackUI);
 	
 	});
 };
