@@ -46,7 +46,7 @@ Properties.prototype.deleteAllProperties = function () {
 		*/
 
 		console.log(key)
-		console.log(value);
+		console.log(obj);
 		
 	});
 	
