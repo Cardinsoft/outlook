@@ -99,7 +99,7 @@ function actionCallback(action,element) {
 		//await GLOBAL[functionName](e,element);
 		
 		
-		await function (e) { return new Promise ( function (resolve) { GLOBAL[functionName](e) } ); }
+		await function (e,element) { return new Promise ( function (resolve) { GLOBAL[functionName](e,element) } ); }
 	
 		
 		//$('#app-overlay').hide();
