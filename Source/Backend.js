@@ -17,6 +17,9 @@ async function sortConfig(config) {
   var orderType = await getProperty('order','user');
   var reverse   = await getProperty('reverse','user');
   
+  console.log(orderType)
+  console.log(reverse)
+  
   switch(orderType) {
     case 'alphabet' :
       config.sort(function(a,b){return order(a.name,b.name,reverse);});

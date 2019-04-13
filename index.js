@@ -99,7 +99,6 @@ function actionCallback(action,element) {
 			}
 			
 		}
-		console.log(e);
 		
 		//set parameters to event object;
 		e.parameters = parameters;

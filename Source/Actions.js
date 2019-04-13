@@ -11,9 +11,6 @@ function applySort(e) {
 		  
 		  //access settings form;
 		  var data = e.formInput;
-		 
-		  console.log('APPLY SORT')
-		  console.log(e)
 		  
 		  //access reverse input;
 		  var isReverse = data.reverse;
