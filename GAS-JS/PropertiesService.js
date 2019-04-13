@@ -41,13 +41,17 @@ Properties.prototype.deleteAllProperties = function () {
 	settings.saveAsync(); 
 	
 	//reload settings object;
-	if(type==='user') { this.settings = Office.context.roamingSettings; }
+	if(type==='user') { settings = Office.context.roamingSettings; }
+	const updated = new Properties(settings);
+	return updated;	
 }
 Properties.prototype.deleteProperty = function (key) {
 	let settings = this.settings;
 	settings.remove(key);
 	settings.saveAsync();
 	const type = this.type;
+	
+	//reload settings object;
 	if(type==='user') { settings = Office.context.roamingSettings; }
 	const updated = new Properties(settings);
 	return updated;	
