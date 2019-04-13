@@ -1,19 +1,3 @@
-/**
- * Fetches authorization token for current email
- * @param {Object} e event object;
- * @returns {Message}
- */
-function getToken(e) {
-	const item = Office.context.mailbox.item;
-	
-	const name = Office.context.mailbox.item.sender.displayName;
-	const email = Office.context.mailbox.item.sender.emailAddress;
-	const msgFrom = `${name} <${email}>`;
-	
-	const msg = new Message( msgFrom,'',item.cc,item.dateTimeCreated.toUTCString(),item.body,item.normalizedSubject, item.itemId, item );
-	return msg;
-}
-
 //Emulate Message class that is obtained from current message auth flow;
 class Message {
 	constructor(msgFrom,msgBcc,msgCc,msgDate,msgPlainBody,msgSubject,msgId,msgThread) {
