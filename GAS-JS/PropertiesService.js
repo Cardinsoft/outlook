@@ -26,15 +26,22 @@ class Properties {
 }
 //add new methods to the class;
 Properties.prototype.deleteAllProperties = function () {
-	const settings = this.settings;
+	//initiate settings storage;
+	let settings = this.settings;
 	
+	//access configured keys;
 	let keys = Object.keys(settings);
 	
+	//delete every key found;
 	keys.forEach(function (key) { 
-		settings.remove(key); 
-		settings.saveAsync(); 
+		settings.remove(key);
 	});
 	
+	//persist changes;
+	settings.saveAsync(); 
+	
+	//reload settings object;
+	if(type==='user') { this.settings = Office.context.roamingSettings; }
 }
 Properties.prototype.deleteProperty = function (key) {
 	let settings = this.settings;
