@@ -40,6 +40,8 @@ Properties.prototype.deleteAllProperties = function () {
 	//persist changes;
 	settings.saveAsync(); 
 	
+	const type = this.type;
+	
 	//reload settings object;
 	if(type==='user') { settings = Office.context.roamingSettings; }
 	const updated = new Properties(settings);
