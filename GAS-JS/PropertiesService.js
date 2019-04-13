@@ -35,7 +35,12 @@ Properties.prototype.deleteAllProperties = function () {
 	//delete every key found;
 	keys.forEach(function (key) { 
 		
-		let value = settings[key];
+		let obj = settings[key];
+		if(obj!==null) {
+			for(let property in obj) {
+				settings.remove(property);
+			}
+		}
 
 		console.log(key)
 		console.log(value);
