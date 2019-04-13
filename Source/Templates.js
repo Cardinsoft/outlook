@@ -84,7 +84,7 @@ function suggestion(suggestions) {
 function buttonSet(buttons) {
   var widget = CardService.newButtonSet();
   
-  if(buttons.length!==0) {
+  if(buttons.length>0) {
     buttons.forEach(function(button){
       widget.addButton(button);
     });
@@ -253,6 +253,9 @@ function switchWidget(top,content,name,selected,value,changeFunc,hasSpinner,para
 
   //set top title if found;
   if(top&&top!=='') { keyValue.setTopLabel(top); }
+  
+  //convert strings to boolean;
+  if(typeof selected==='string') { selected = selected==='true'; }
   
   //create Switch widget and set required parameters;
   var widget = CardService.newSwitch();

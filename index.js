@@ -111,7 +111,7 @@ class e_EventObject {
 	constructor() {
 		this.messageMetadata = {
 			accessToken : '',
-			messageId : ''
+			messageId : Office.context.mailbox.item.itemId
 		};
 		this.formInput  = {};
 		this.clientPlatform;
@@ -123,6 +123,15 @@ class e_EventObject {
 			id : ''
 		}
 	}
+	Office.context.mailbox.getUserIdentityTokenAsync(callbackUI)
+}
+
+/**
+ * Callback function to asyncronous call to get User Identity Token
+ * @param {Object} tokenObj async Office context call result;
+ */
+function callbackUI(tokenObj) {
+	e.messageMetadata.accessToken = tokenObj.value;
 }
 
 const e = new e_EventObject();

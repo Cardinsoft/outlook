@@ -6,14 +6,13 @@
  * @returns {KeyValue}
  */
 function createWidgetNotAuthorized(section,content,code) {
-  //create widget;
+  //create widget with not authorized prompt;
   var widget = simpleKeyValueWidget(code,content,true);
   
   //append to section and return;
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates KeyValue widget with text explaining auth type mismatch;
@@ -30,7 +29,6 @@ function createWidgetAuthTypeErr(section,content) {
   return widget;  
 }
 
-
 /**
  * Creates TextButton widget with action set to open Auth link;
  * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
@@ -45,12 +43,11 @@ function createWidgetOpenAuth(builder,text,parameters) {
   //create widget for initiating authorization flow;
   var widget = textButtonWidgetAuth(text,false,false,service.getAuthorizationUrl(parameters));
   
-  //append button or add to ButtonSet and return it;
+  //append button or add to ButtonSet and return;
   try{ builder.addWidget(widget); }
   catch(error) { builder.addButton(widget); }
   return widget;
 }
-
 
 /**
  * Creates TextButton widget with action set to revoke Auth;
@@ -69,19 +66,18 @@ function createWidgetRevoke(builder,text,parameters) {
   //create widget for revoking authorization;
   var widget  = textButtonWidget(text,disableRevoke,false,'revokeAuth',parameters);
   
-  //append button or add to ButtonSet and return it;
+  //append button or add to ButtonSet and return;
   try{ builder.addWidget(widget); }
   catch(error) { builder.addButton(widget); }
   return widget;
 }
-
 
 /**
  * Creates TextButton widget with action set to open login link;
  * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
  * @param {String} text text to appear on the button;
  * @param {String} url URL to open link text;
- * return {TextButton}
+ * @returns {TextButton}
  */
 function createWidgetLogin(builder,text,url) { 
   
@@ -93,7 +89,6 @@ function createWidgetLogin(builder,text,url) {
   catch(error) { builder.addButton(widget); }
   return widget;
 }
-
 
 /**
  * Creates KeyValue widget for prompting user that this is a first-time use;
@@ -110,7 +105,6 @@ function createWidgetWelcomeText(section) {
   return widget;
 }
 
-
 /**
  * Creates KeyValue widget for help card section;
  * @param {CardSection} section section to append widget sets;
@@ -126,7 +120,6 @@ function createWidgetHelpText(section) {
   return widget;
 }
 
-
 /**
  * Creates TextButton widget for Cardin homepage link open;
  * @param {CardSection} section section to append widget sets;
@@ -141,7 +134,6 @@ function createWidgetGoToCardin(section) {
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates widget for diplaying hint for optional fields usage;
@@ -159,7 +151,6 @@ function createWidgetFieldsText(section,text) {
   return widget;
 }
 
-
 /**
  * Creates widget for displaying prompt that Connector allows custom icons;
  * @param {CardSection} section section to append widget sets;
@@ -176,7 +167,6 @@ function createWidgetCustomIconPrompt(section,title,content) {
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates TextInput widget with custom field name and content;
@@ -200,7 +190,6 @@ function createWidgetCustomInput(section,fieldName,title,hint,content) {
   return widget;
 }
 
-
 /**
  * Creates KeyValue widget for accessing connector config;
  * @param {CardSection} section section to append widget sets;
@@ -208,16 +197,6 @@ function createWidgetCustomInput(section,fieldName,title,hint,content) {
  * @returns {KeyValue}
  */
 function createWidgetCreateType(section,type) {
-  
-  /*
-  try {
-    var str = propertiesToString(type);
-    Logger.log(str);
-  }
-  catch(e) {
-    Logger.log(e)
-  }
-  */
 
   //access parameters in type;
   var params = {
@@ -245,7 +224,6 @@ function createWidgetCreateType(section,type) {
   return widget;
 }
 
-
 /**
  * Creates TextButton widget for Connector creation;
  * @param {CardSection} section section to append widget sets;
@@ -265,7 +243,6 @@ function createWidgetCreateConnector(section,text,type) {
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates TextButton widget for Connector update;
@@ -288,7 +265,6 @@ function createWidgetUpdateConnector(builder,text,connector) {
   return widget;
 }
 
-
 /**
  * Creates TextButton widget for connector removal;
  * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
@@ -308,13 +284,12 @@ function createWidgetRemoveConnector(builder,text,connector) {
 
   //create TextButton widget with Connector removal action;
   var widget = textButtonWidget(globalRemoveConnectorText,false,false,'actionConfirm',connector);
-  
+
   //append button to section or to ButtonSet and return;
   try{ builder.addWidget(widget); }
   catch(error) { builder.addButton(widget); }
   return widget;  
 }
-
 
 /**
  * Creates KeyValue widget with reset feature description;
@@ -333,9 +308,8 @@ function createWidgetShortText(section,title,content) {
   return widget;
 }
 
-
 /**
- * Creates KeyValue widget with reset feature prompt;
+ * Creates KeyValue widget with reset prompt;
  * @param {CardSection} section section to append widget sets;
  * @returns {KeyValue}
  */
@@ -348,7 +322,6 @@ function createWidgetResetText(section) {
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates TextButton widget that performs full reset when clicked;
@@ -373,6 +346,46 @@ function createWidgetResetSubmit(section) {
   section.addWidget(widget);
   return widget;
 }
+
+/**
+ * Creates KeyValue prompt and SelectionInput widgets for ordering type choice;
+ * @param {CardSection} section section to append widget sets;
+ * @returns {Array}
+ */
+function createWidgetSortBy(section) {
+
+  //create KeyValue prompt for order type choice;
+  var prompt = simpleKeyValueWidget(globalOrderingWidgetTitle,globalOrderingWidgetContent,true);
+  section.addWidget(prompt);
+  
+  //create options array for order type;
+  var options = [
+    { text:'Alphabetical',   value:'alphabet', selected:false },
+    { text:'Connector type', value:'type',     selected:false },
+    { text:'Creation order', value:'creation', selected:true }
+  ];
+  
+  //select current order type;
+  var orderType = getProperty('order','user');
+  if(orderType!==null) {
+    options.forEach(function(option){
+      if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
+    });
+  }
+
+  //access reverse setting and create SelectionInput;
+  var isReverse = getProperty('reverse','user');
+  if(isReverse===null||isReverse==='false') { isReverse = false; }else if(isReverse==='true') { isReverse = true; }
+  var reverse = selectionInputWidget('',globalOrderReverseFieldName,globalEnumCheckbox,[{text:'Reverse',value:'true',selected:isReverse}],'applySort',true);
+  section.addWidget(reverse);
+
+  //create SelectionInput for order type options;
+  var select = selectionInputWidget('',globalOrderTypeFieldName,globalEnumDropdown,options,'applySort',true);
+  section.addWidget(select);
+
+  return [prompt,select,reverse];
+}
+
 
 
 /**
@@ -420,7 +433,6 @@ function createWidgetChooseAuth(section,isEdit,selected) {
   return widget;
 }
 
-
 /**
  * Creates Switch widget for setting connector to be invoked manually;
  * @param {CardSection} section section to append widget sets;
@@ -440,7 +452,6 @@ function createWidgetSwitchManual(section,isManual) {
   return widget;
 }
 
-
 /**
  * Creates Switch widget for setting connector to be loaded by default;
  * @param {CardSection} section section to append widget sets;
@@ -459,7 +470,6 @@ function createWidgetSwitchDefault(section,isDefault) {
   section.addWidget(widget);
   return widget;
 }
-
 
 /**
  * Creates ButtonSet for going to root card;
@@ -483,7 +493,6 @@ function createWidgetsBackAndToRoot(section,index) {
   return widget;
 }
 
-
 /**
  * Create ButtonSet for confirming and cancelling;
  * @param {CardSection} section section to append widget sets;
@@ -505,5 +514,15 @@ function createWidgetsConfirm(section,e) {
   //create ButtonSet with confirm and cancel buttons;
   var widget = buttonSet([btnConfirm,btnCancel]);
   section.addWidget(widget);
+  
+  //create KeyValue prompt and SelectionInput for uninstall;
+  var urlRevoke = params.urlRevoke;
+  if(urlRevoke) {
+    var revokePrompt   = simpleKeyValueWidget(globalConfirmWidgetTitle,globalRevokeWidgetContent,true);
+    var revokeCheckbox = selectionInputWidget(globalConfirmWidgetTitle,'uninstall',globalEnumCheckbox,[{text:'Uninstall',value:true,selected:false}]);
+    section.addWidget(revokePrompt);
+    section.addWidget(revokeCheckbox);
+  }  
+  
   return widget;
 }

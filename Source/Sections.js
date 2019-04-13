@@ -50,7 +50,6 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
   return section;
 }
 
-
 /**
  * Creates section with a list of configured Connectors to display;
  * @param {CardBuilder} builder card builder to append section to;
@@ -70,6 +69,9 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
   if(header!=='') { section.setHeader(header); }
   if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsibleList); }
   
+  //sort configuration;
+  sortConfig(config);
+  
   //add Connectors representation;
   config.forEach(function(connector){
     //get required parameters;
@@ -81,7 +83,7 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
     var authType  = connector.auth;
     
     //default to empty url if nothing is in source;
-    if(url===undefined) { 
+    if(!url) { 
       url = ''; 
       connector.url===''; 
     }
@@ -186,7 +188,6 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
   return section;
 }
 
-
 /**
  * Creates section with a list of configured Connectors to edit;
  * @param {CardBuilder} builder card builder to append section to;
@@ -205,6 +206,9 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
   if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsible); }
       
   try {
+    //sort configuration;
+    sortConfig(config);
+  
     config.forEach(function(connector) {
       var icon = connector.icon;
       var name = connector.name;
@@ -232,7 +236,6 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
     createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
   }
 }
-
 
 /**
  * Creates section with configuration error info and reset button and prompt;
@@ -264,7 +267,6 @@ function createConfigErrorSection(builder,isCollapsed,header,title,content) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section with partial data and navigation Ui for traversing full data (100 widgets cap handling);
@@ -318,7 +320,6 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,data,connector
   return section;
 }
 
-
 /**
  * Creates section prompting use that there is no data to show;
  * @param {CardBuilder} builder card builder to append section to;
@@ -345,7 +346,6 @@ function createNoFieldsSection(builder,isCollapsed,msg) {
   return section;
 }
 
-
 /**
  * Creates section containing buttons for going back and/or to root card;
  * @param {CardBuilder} builder card builder to append section to;
@@ -366,7 +366,6 @@ function createSectionBack(builder,isCollapsed,index) {
   return section;
 }
 
-
 /**
  * Creates section containing promp to confirm action and set of buttons to proceed;
  * @param {CardBuilder} builder card builder to append section to;
@@ -386,7 +385,6 @@ function createSectionConfirm(builder,isCollapsed,e) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section containing error message and unparsed data;
@@ -416,7 +414,6 @@ function createUnparsedSection(builder,isCollapsed,error,content) {
   return section;
 }
 
-
 /**
  * Creates section containing error code and error text;
  * @param {CardBuilder} builder card builder to append section to;
@@ -431,7 +428,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
       section.setNumUncollapsibleWidgets(1);
   
   //initiate error title and content;
-  var header = '', content = '';
+  var header = 'Connector error', content = '';
   
   //create user-friendly prompts for http errors;
   if(code!==0) {
@@ -448,9 +445,6 @@ function createErrorSection(builder,isCollapsed,code,error) {
         content += 'By default, our Add-on makes POST requests to external APIs - please, let us know if you need to be able to choose methods for this Connector type';
     }
     
-  
-  }else {
-    //extra error-specific info - for future release;
   }
   
   //set section's header;
@@ -468,7 +462,6 @@ function createErrorSection(builder,isCollapsed,code,error) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section with authorization and revoke buttons;
@@ -521,7 +514,6 @@ function createSectionAuth(builder,connector,auth) {
   return section;
 }
 
-
 /**
  * Creates section with a number of custom field inputs;
  * @param {CardBuilder} builder card builder to append section to;
@@ -561,7 +553,6 @@ function createSectionFields(builder,isCollapsible,numFields,connector) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section from widgets config;
@@ -665,7 +656,6 @@ function createSectionConfig(builder,config) {
   return section;
 }
 
-
 /**
  * Handles sections generation if a simple json schema (an array of objects with key-value pairs) is provided;
  * @param {CardBuilder} builder card builder to append section to;
@@ -696,7 +686,6 @@ function createSectionSimple(builder,data,isCollapsed,index) {
     return section;  
   }
 }
-
 
 /**
  * Handles sections generation if a complex json schema is provided;
@@ -833,7 +822,6 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   }
 }
 
-
 /**
  * Creates section containing widgets representing connector types;
  * @param {CardBuilder} builder card builder to append section to;
@@ -851,7 +839,7 @@ function createSectionChooseType(builder,isCollapsed,header) {
   if(header) { section.setHeader(header); }
   
   //create class instance to get config data;
-  //var quickbooks = new QB();
+  var quickbooks = new QB();
   var sheets     = new Sheets();
   var flow       = new Flow();
   var pipedrive  = new Pipedrive();
@@ -859,7 +847,7 @@ function createSectionChooseType(builder,isCollapsed,header) {
   //var infusion = new InfusionSoft(); //future release due to endpoint app approval issue;
   
   //create an array of used types;
-  var types = [sheets,flow,pipedrive];
+  var types = [quickbooks,sheets,flow,pipedrive];
   
   //add github conn if in testing mode;
   if(globalIncludeGitHub) {
@@ -876,7 +864,6 @@ function createSectionChooseType(builder,isCollapsed,header) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section with manual and default switches + add connector button;
@@ -920,7 +907,6 @@ function createSectionAddConnector(builder,isCollapsed,header,type) {
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section with manual and default switches + edit connector button and sets input values;
@@ -985,7 +971,6 @@ function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,a
   return section;   
 }
 
-
 /**
  * Creates section for connector type description;
  * @param {CardBuilder} builder card builder to append section to;
@@ -1010,7 +995,6 @@ function createDescriptionSection(builder,isCollapsed,short,header) {
   builder.addSection(section);
   return section; 
 }
-
 
 /**
  * Creates section for Connector custom icon input;
@@ -1055,6 +1039,9 @@ function createAdvanced(builder,isCollapsed,header) {
   //set optional parameters;
   if(header) { section.setHeader(header); }
 
+  //create sorting widgets;
+  createWidgetSortBy(section);
+
   //create reset prompt;
   createWidgetResetText(section);
   
@@ -1065,7 +1052,6 @@ function createAdvanced(builder,isCollapsed,header) {
   builder.addSection(section);
   return section;  
 }
-
 
 /**
  * Creates section for welcome info;
@@ -1083,14 +1069,13 @@ function createSectionWelcome(builder,isCollapsed,header) {
   //set optional parameters;
   if(header) { section.setHeader(header); }
   
-  //create FTU prompt;
+  //create FTU prompt widget;
   createWidgetWelcomeText(section);
   
   //append section and return it;
   builder.addSection(section);
   return section;
 }
-
 
 /**
  * Creates section for help info;
