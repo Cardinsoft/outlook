@@ -9,7 +9,7 @@ class e_GmailApp {
  * Sets message access token;
  * @param {String} accessToken token to set;
  */
-GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {
+e_GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {
 	
 }
 
@@ -17,7 +17,7 @@ GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {
  * Gets message by its Id;
  * @param {String} messageId message Id to lookup;
  */
-GmailApp.prototype.getMessageById = function (messageId) {
+e_GmailApp.prototype.getMessageById = function (messageId) {
 	const item = Office.context.mailbox.item;
 	
 	const name = Office.context.mailbox.item.sender.displayName;
