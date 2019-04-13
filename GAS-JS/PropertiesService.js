@@ -34,7 +34,11 @@ Properties.prototype.deleteAllProperties = function () {
 	
 	//delete every key found;
 	keys.forEach(function (key) { 
+		
+		console.log('KEY: '+key);
+		
 		settings.remove(key);
+		
 	});
 	
 	//persist changes;
