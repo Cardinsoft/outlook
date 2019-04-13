@@ -28,7 +28,7 @@ class Properties {
 Properties.prototype.deleteAllProperties = function () {
 	const settings = this.settings;
 	
-	console.log(Object.keys(typeof settings));
+	console.log(Object.keys(settings));
 }
 Properties.prototype.deleteProperty = function (key) {
 	let settings = this.settings;
