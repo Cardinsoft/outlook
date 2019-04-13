@@ -209,6 +209,9 @@ function getTimeframe(start,end) {
  * @returns {Message}
  */
 function getToken(e) {
+	
+	console.log(e)
+	
   var accessToken = e.messageMetadata.accessToken;
   var messageId = e.messageMetadata.messageId;
   GmailApp.setCurrentMessageAccessToken(accessToken);
