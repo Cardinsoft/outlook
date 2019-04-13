@@ -14,8 +14,6 @@ e_OAuth2.prototype.createService = function (name) {
 	//initiate Service;
 	this.service = new Service(name);
 	
-	console.log(this.service);
-	
 	//return Service;
 	return this.service;
 }
