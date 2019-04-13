@@ -46,7 +46,11 @@ Properties.prototype.deleteAllProperties = function () {
 			
 			console.log(typeof obj);
 			
-			settings.remove('config');
+			let props = Object.keys(obj);
+			
+			if(props.length>0) { settings.remove(props); }
+			
+			
 			
 			console.log(settings);
 			console.log(key);
