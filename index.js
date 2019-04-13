@@ -123,7 +123,7 @@ class e_EventObject {
 			id : ''
 		}
 	}
-	Office.context.mailbox.getUserIdentityTokenAsync(callbackUI)
+	//Office.context.mailbox.getUserIdentityTokenAsync(callbackUI)
 }
 
 /**

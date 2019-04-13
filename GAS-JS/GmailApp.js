@@ -5,7 +5,13 @@ class e_GmailApp {
 	}
 }
 
-GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {}
+/**
+ * Sets message access token;
+ * @param {String} accessToken token to set;
+ */
+GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {
+	
+}
 
 /**
  * Gets message by its Id;
