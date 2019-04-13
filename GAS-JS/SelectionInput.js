@@ -129,7 +129,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			inputWrap.append(input);
 			
 			//initiate Fabric;
-			new fabric['Dropdown'](dropdown);
+			new fabric['Dropdown'](inputWrap);
 			
 			break;
 	}
