@@ -4,6 +4,9 @@ class e_GmailApp {
 		this.className = 'GmailApp';
 	}
 }
+
+GmailApp.prototype.setCurrentMessageAccessToken = function (accessToken) {}
+
 /**
  * Gets message by its Id;
  * @param {String} messageId message Id to lookup;
