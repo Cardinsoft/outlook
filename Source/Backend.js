@@ -203,7 +203,6 @@ function getTimeframe(start,end) {
   return timeframe;
 }
 
-
 /**
  * Fetches authorization token for current email
  * @param {Object} e event object;
