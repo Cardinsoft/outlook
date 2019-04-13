@@ -383,7 +383,7 @@ async function performFullReset(e) {
  
   //try to delete all user properties and notify;
   try {
-    deleteAllProperties('user');
+    await deleteAllProperties('user');
     builder.setNotification(notification(onSuccessText));
   }
   catch(err) {
