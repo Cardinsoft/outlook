@@ -89,25 +89,23 @@ SelectionInput.prototype.appendToUi = function (parent) {
 		case 'DROPDOWN':
 			
 			//create wrapper and append to row;
-			const dropdown = document.createElement('div');
-			dropdown.className = 'ms-Dropdown';
-			row.append(dropdown);
-			
+			const inputWrap = document.createElement('div');
+			inputWrap.className = 'ms-Dropdown';
+			row.append(inputWrap);
 			
 			const label = document.createElement('label');
 			label.className = 'ms-Label TextInputLabel';
-			dropdown.append(label);
+			inputWrap.append(label);
 			
 			//create chevron;
 			const chevron = document.createElement('i');
 			chevron.className = 'ms-Dropdown-caretDown ms-Icon ms-Icon--ChevronDown';
-			dropdown.append(chevron);
+			inputWrap.append(chevron);
 			
 			//create actual select;
-			const select = document.createElement('select');
-			select.className = 'ms-Dropdown-select';
-			select.name      = fieldName;
-			dropdown.append(select);
+			const input = document.createElement('select');
+			input.className = 'ms-Dropdown-select';
+			input.name      = fieldName;
 			
 			//append options;
 			options.forEach(function(option){
@@ -121,9 +119,16 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				opt.value       = value;
 				opt.textContent = text;
 				opt.selected    = toBoolean(selected);
-				select.append(opt);
+				input.append(opt);
 			});
 			
+			//set optional parameters to input;
+			if(action) { input.addEventListener('focusout',actionCallback(action,input)); }
+			
+			//append input to wrapper;
+			inputWrap.append(input);
+			
+			//initiate Fabric;
 			new fabric['Dropdown'](dropdown);
 			
 			break;
