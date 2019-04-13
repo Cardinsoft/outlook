@@ -24,6 +24,16 @@ Office.initialize = (reason) => {
 };
 
 //===============================================CALLBACKS===============================================//
+
+/**
+ * Triggers cardOpen with global event object preserved (panel change issue);
+ * @param {Object} obj event object containing curr message data;
+ * @returns {Function}
+ */
+function trigger(obj) {
+	return cardOpen(e);
+}
+
 /**
  * Initiates callback function and updates Ui;
  * @param {Action} action object with action config (function name, load indicator and parameters);
@@ -139,5 +149,5 @@ function toBoolean(input) {
 }
 
 const e = new e_EventObject();
-const cardStack         = [];
-const GLOBAL            = this;
+const cardStack = [];
+const GLOBAL    = this;
