@@ -69,12 +69,8 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
   if(header!=='') { section.setHeader(header); }
   if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsibleList); }
   
-  console.log(config)
-  
   //sort configuration;
   sortConfig(config);
-  
-  console.log(config)
   
   //add Connectors representation;
   config.forEach(function(connector){
