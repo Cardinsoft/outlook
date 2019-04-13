@@ -40,7 +40,11 @@ Properties.prototype.deleteAllProperties = function () {
 		//remove every setting;
 		if(obj!==null) {
 			let props = Object.keys(obj);
-			if(props.length>0) { settings.remove(props); }
+			if(props.length>0) { 
+				props.forEach(function(prop){
+					settings.remove(prop);
+				});
+			}
 		}
 		
 	});
