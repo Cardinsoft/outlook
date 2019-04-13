@@ -17,9 +17,6 @@ function sortConfig(config) {
   var orderType = getProperty('order','user');
   var reverse   = getProperty('reverse','user');
   
-  console.log(orderType)
-  console.log(reverse)
-  
   switch(orderType) {
     case 'alphabet' :
       config.sort(function(a,b){return order(a.name,b.name,reverse);});
