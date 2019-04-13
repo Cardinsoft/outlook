@@ -2,7 +2,7 @@
 Office.initialize = (reason) => {
 	$(document).ready(function () {
 		
-		cardOpen(e);
+		trigger();
 		
 		$('#home').click(function(){
 			universalHome(e);
@@ -18,7 +18,7 @@ Office.initialize = (reason) => {
 		
 		$('#app-body').show();
 	
-		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,cardOpen);
+		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,trigger);
 	
 	});
 };
