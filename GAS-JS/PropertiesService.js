@@ -38,15 +38,15 @@ Properties.prototype.deleteAllProperties = function () {
 		let obj = settings[key];
 		
 		/*
-		if(obj!==null) {
 			for(let property in obj) {
 				settings.remove(property);
 			}
-		}
 		*/
-
-		console.log(key)
-		console.log(obj);
+		if(obj!==null) {
+			console.log(settings);
+			console.log(key);
+			console.log(obj);
+		}
 		
 	});
 	
