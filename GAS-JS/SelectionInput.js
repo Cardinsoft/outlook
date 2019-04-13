@@ -93,6 +93,11 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			dropdown.className = 'ms-Dropdown';
 			row.append(dropdown);
 			
+			
+			const label = document.createElement('label');
+			label.className = 'ms-Label TextInputLabel';
+			dropdown.append(label);
+			
 			//create chevron;
 			const chevron = document.createElement('i');
 			chevron.className = 'ms-Dropdown-caretDown ms-Icon ms-Icon--ChevronDown';
