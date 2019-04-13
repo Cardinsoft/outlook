@@ -96,11 +96,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//invoke callback and await response;
-		//await GLOBAL[functionName](e,element);
-		
-		
-		await function (e,element) { return new Promise ( function (resolve) { GLOBAL[functionName](e,element) } ); }
-	
+		await GLOBAL[functionName](e,element);
 		
 		//$('#app-overlay').hide();
 		
