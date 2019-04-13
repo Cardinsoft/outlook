@@ -123,7 +123,9 @@ class e_EventObject {
 			id : ''
 		}
 	}
-	Office.context.mailbox.getUserIdentityTokenAsync(callbackUI)
+	setAccessToken() {
+		Office.context.mailbox.getUserIdentityTokenAsync(callbackUI);
+	}
 }
 
 /**
@@ -135,5 +137,7 @@ function callbackUI(tokenObj) {
 }
 
 const e = new e_EventObject();
+	  e.setAccessToken();
+
 const cardStack         = [];
 const GLOBAL            = this;
