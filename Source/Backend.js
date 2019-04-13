@@ -1,4 +1,78 @@
 /**
+ * Creates Id for the Connector and push to Properties store;
+ * @param {Object} connector connector object;
+ */
+function createId(connector) {
+  var id = Math.ceil(Math.random())
+  console.log(id);
+}
+
+/**
+ * Helper function to sort config array;
+ * @param {Array} config an array of Connector settings objects;
+ */
+async function sortConfig(config) {
+
+  //sort configuration;
+  var orderType = await getProperty('order','user');
+  var reverse   = await getProperty('reverse','user');
+  
+  switch(orderType) {
+    case 'alphabet' :
+      config.sort(function(a,b){return order(a.name,b.name,reverse);});
+      break;
+    case 'type' : 
+      config.sort(function(a,b){return order(a.type,b.type,reverse);});
+      break;
+    case 'creation' :
+      if(reverse) { config.reverse(); }
+      break;
+  }
+
+}
+
+/**
+ * Performs a simple sort of input provided;
+ * @param {String|Date|Number} A prior input;
+ * @param {String|Date|Number} B posterior input;
+ * @param {Boolean} reverse truthy value to toggle sorting order reverse;
+ * @returns {Integer}
+ */
+function order(A,B,reverse) {
+  //perform implicit boolean conversion;
+  if(reverse==='true') { reverse = true; }else if(reverse==='false'||reverse===null) { reverse = false; }
+
+  //check if both inputs are of the same type and which one;
+  var areStrings = (typeof A==='string') && (typeof B==='string');
+  var areDates   = (A instanceof Date) && (B instanceof Date);
+  var areNumbers = (typeof A==='number') && (typeof B==='number');
+  
+  if(!areStrings&&!areDates&&!areNumbers) {
+    //if types differ from expected -> do not sort;
+    return 0;
+  }else if(areStrings) {
+    //if both are strings -> sort alphabetically;
+    A = A.toLowerCase();
+    B = B.toLowerCase();
+    if(reverse) { 
+      if(A>B) { return -1; }else if(A<B) { return 1; }  
+    }else { 
+      if(A>B) { return 1; }else if(A<B) { return -1; } 
+    }
+  }else if(areNumbers) {
+    //if both numbers -> subtract A from B (or reverse);
+    if(reverse) { return B - A; }else { return A - B; }
+  }else if(areDates) {
+    //if both are dates -> subtract value of A from value of B (or reverse);
+    A = A.valueOf();
+    B = B.valueOf();
+    if(reverse) { return B - A; }else { return A - B; }
+  }
+  
+  return 0;
+}
+
+/**
  * Checks if input ends with 1;
  * @param {Number|String} input input to check;
  * @returns {Boolean}
@@ -127,6 +201,20 @@ function getTimeframe(start,end) {
   timeframe.years   = years
   
   return timeframe;
+}
+
+
+/**
+ * Fetches authorization token for current email
+ * @param {Object} e event object;
+ * @returns {Message}
+ */
+function getToken(e) {
+  var accessToken = e.messageMetadata.accessToken;
+  var messageId = e.messageMetadata.messageId;
+  GmailApp.setCurrentMessageAccessToken(accessToken);
+  var msg = GmailApp.getMessageById(messageId);
+  return msg;
 }
 
 /**
@@ -498,9 +586,9 @@ function parseData(data) {
  * Creates settings storage;
  * @param {String} content content to pass to JSON file;
  */
-async function createSettings(content) {
+function createSettings(content) {
   if(!content) { content = []; }
-  await setProperty('config',content,'user');
+  setProperty('config',content,'user');
 }
 
 /**

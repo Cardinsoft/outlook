@@ -78,7 +78,6 @@ function cardCreate(e) {
   return builder.build();
 }
 
-
 /**
  * Creates and shows card with Connector update form;
  * @param {Object} e event object;
@@ -177,7 +176,6 @@ function cardUpdate(e) {
 
   return builder.build();
 }
-
 
 /**
  * Creates and shows card with connector display according to data passed with event object;
@@ -480,7 +478,6 @@ async function cardOpen(e) {
   }
 }
 
-
 /**
  * Generates settings card according to configuration;
  * @param {Object} e event object;
@@ -506,7 +503,6 @@ async function cardSettings(e) {
   return builder.build();
 }
 
-
 /**
  * Generates help card;
  * @param {Object} e event object;
@@ -519,7 +515,6 @@ function cardHelp(e) {
 
   return builder.build();
 }
-
 
 /**
  * Generates card for confirming or cancelling action;
