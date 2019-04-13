@@ -34,27 +34,13 @@ Properties.prototype.deleteAllProperties = function () {
 	
 	//delete every key found;
 	keys.forEach(function (key) { 
-		
+		//access settings props;
 		let obj = settings[key];
 		
-		/*
-			for(let property in obj) {
-				settings.remove(property);
-			}
-		*/
+		//remove every setting;
 		if(obj!==null) {
-			
-			console.log(typeof obj);
-			
 			let props = Object.keys(obj);
-			
 			if(props.length>0) { settings.remove(props); }
-			
-			
-			
-			console.log(settings);
-			console.log(key);
-			console.log(obj);
 		}
 		
 	});
