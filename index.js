@@ -19,7 +19,6 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 	
 		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,cardOpen);
-		//Office.context.mailbox.getUserIdentityTokenAsync(callbackUI);
 	
 	});
 };
@@ -122,14 +121,6 @@ class e_EventObject {
 			id : ''
 		}
 	}
-}
-
-/**
- * Callback function to asyncronous call to get User Identity Token
- * @param {Object} tokenObj async Office context call result;
- */
-function callbackUI(tokenObj) {
-	e.messageMetadata.accessToken = tokenObj.value;
 }
 
 /**
