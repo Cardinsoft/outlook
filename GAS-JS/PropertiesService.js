@@ -30,7 +30,7 @@ Properties.prototype.deleteAllProperties = function () {
 	
 	let keys = Object.keys(settings);
 	
-	keys.forEach( (key) => { console.log(settings[key]) }
+	keys.forEach( (key) => { console.log(settings[key]) });
 	
 }
 Properties.prototype.deleteProperty = function (key) {
