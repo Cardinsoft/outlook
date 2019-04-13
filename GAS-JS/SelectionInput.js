@@ -123,7 +123,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			});
 			
 			//set optional parameters to input;
-			if(action) { input.addEventListener('focusout',actionCallback(action,input)); }
+			if(action) { input.addEventListener('change',actionCallback(action,input)); }
 			
 			//append input to wrapper;
 			inputWrap.append(input);
