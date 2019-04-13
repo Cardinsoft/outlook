@@ -11,11 +11,11 @@ function createId(connector) {
  * Helper function to sort config array;
  * @param {Array} config an array of Connector settings objects;
  */
-async function sortConfig(config) {
+function sortConfig(config) {
 
   //sort configuration;
-  var orderType = await getProperty('order','user');
-  var reverse   = await getProperty('reverse','user');
+  var orderType = getProperty('order','user');
+  var reverse   = getProperty('reverse','user');
   
   console.log(orderType)
   console.log(reverse)
