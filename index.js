@@ -134,6 +134,21 @@ function callbackUI(tokenObj) {
 	e.messageMetadata.accessToken = tokenObj.value;
 }
 
+/**
+ * Parses input into Boolean;
+ * @param {*=} input input to parse;
+ * @returns {Boolean}
+ */
+function toBoolean(input) {
+	const output = false;
+	
+	const isString = typeof input==='string';
+	
+	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
+	
+	return output;
+}
+
 const e = new e_EventObject();
 const cardStack         = [];
 const GLOBAL            = this;
