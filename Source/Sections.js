@@ -59,7 +59,7 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
  * @param {GmailMessage} msg current meassge object;
  * @returns {CardSection}
  */
-function createConnectorListSection(builder,isCollapsed,header,config,msg) {
+async function createConnectorListSection(builder,isCollapsed,header,config,msg) {
 
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -69,8 +69,12 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
   if(header!=='') { section.setHeader(header); }
   if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsibleList); }
   
+  console.log(config)
+  
   //sort configuration;
-  sortConfig(config);
+  await sortConfig(config);
+  
+  console.log(config)
   
   //add Connectors representation;
   config.forEach(function(connector){
