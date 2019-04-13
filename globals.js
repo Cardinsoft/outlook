@@ -46,10 +46,11 @@ var globalExtraDataText              = 'More data is available, but we trimmed i
 var globalHelpWidgetContent          = 'Visit our website for setup instructions and other support resources';
 var globalIsDefaultWidgetSwitchText  = 'Run and display by default';
 var globalNoDataWidgetContent        = 'The Connector response has no content to display for';
-var globalNotAuthorizedContent       = 'Seems like the Connector you built has to be authorized or there was a change in required permissions and you need to reauthorize or you lost access to the API';
+var globalNotAuthorizedContent       = 'Seems like the Connector you built has to be authorized or there was a change in required permissions and you need to reauthorize or you lost access';
 var globalOptionalFieldsContent      = 'These fields are optional and can be left blank';
 var globalOrderingWidgetContent      = 'Choose how to sort your configured Connectors (order of creation by default)';
 var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
+var globalRevokeWidgetContent        = 'If you wish to uninstall Cardin for Gmail from your account, tick the checkbox below';
 var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
 
 //hints;
@@ -116,6 +117,8 @@ var globalEnumRadio                  = 'RADIO_BUTTON';
 var globalIconFieldName              = 'icon';
 var globalManualFieldName            = 'manual';
 var globalNameFieldName              = 'name';
+var globalOrderTypeFieldName         = 'order';
+var globalOrderReverseFieldName      = 'reverse';
 var globalRedirectFieldName          = 'redirect';
 var globalScopeFieldName             = 'scope';
 var globalSecretFieldName            = 'secret';
@@ -124,7 +127,7 @@ var globalURLfieldName               = 'url';
 var globalUrlTokenFieldName          = 'urlToken';
 
 //parameters;
-var globalIncludeGitHub              = true;
+var globalIncludeGitHub              = false;
 var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
