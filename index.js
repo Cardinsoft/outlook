@@ -2,8 +2,6 @@
 Office.initialize = (reason) => {
 	$(document).ready(function () {
 		
-		deleteProperty('config','user');
-		
 		cardOpen(e);
 		
 		$('#home').click(function(){
