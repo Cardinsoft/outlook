@@ -135,6 +135,5 @@ function callbackUI(tokenObj) {
 }
 
 const e = new e_EventObject();
-
 const cardStack         = [];
 const GLOBAL            = this;
