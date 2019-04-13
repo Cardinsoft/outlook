@@ -10,7 +10,7 @@ async function performFetch(url,method,headers,payload) {
     var params = {
       'method':method,
       'muteHttpExceptions':true,
-      //'contentType':'application/json',
+      'contentType':'application/json',
       'headers':headers
     };
     if(method!=='get') { params.payload = JSON.stringify(payload); }
