@@ -28,8 +28,11 @@ class e_UrlFetchApp {
 		this.className = 'UrlFetchApp';
 	}
 }
-e_UrlFetchApp.prototype.fetch = function (url,params) {
-	let promise = makeRequest(url,params);
+e_UrlFetchApp.prototype.fetch = async function (url,params) {
+	let promise = await makeRequest(url,params);
+	
+	console.log(promise);
+	
 	return promise;
 }
 
