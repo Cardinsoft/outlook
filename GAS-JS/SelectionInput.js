@@ -95,7 +95,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					input.type      = 'checkbox';
 					input.className = 'ms-CheckBox-input';
 					input.checked   = checked;
-					input.value     = checked;
+					input.value     = value;
 					input.name      = fieldName;
 					inputWrap.append(input);
 				
@@ -111,7 +111,17 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(label);
 					
 				//set optional parameters to input;
-				if(action) { input.addEventListener('click',actionCallback(action,input)); }				
+				if(action) { 
+					input.addEventListener('click',function(e){
+						if(checked) { 
+							input.checked = false; 
+						}else { 
+							input.checked = true; 
+						}
+						label.classList.toggle('is-checked');
+						actionCallback(action,input);
+					});
+				};				
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
