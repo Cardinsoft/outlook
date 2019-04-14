@@ -367,18 +367,12 @@ async function createWidgetSortBy(section) {
   
   //select current order type;
   var orderType = getProperty('order','user');
-
-  console.log(orderType);
-  
-  console.log(options);
   
   if(orderType!==null) {
     options.forEach(function(option){
       if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
     });
   }
-  
-  console.log(options);
 
   //access reverse setting and create SelectionInput;
   var isReverse = getProperty('reverse','user');
@@ -389,6 +383,7 @@ async function createWidgetSortBy(section) {
 
   //create SelectionInput for order type options;
   var select = selectionInputWidget('',globalOrderTypeFieldName,globalEnumDropdown,options,'applySort',true);
+  console.log(select)
   section.addWidget(select);
 
   return [prompt,select,reverse];
