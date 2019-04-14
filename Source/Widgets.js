@@ -384,7 +384,6 @@ function createWidgetSortBy(section) {
 
   //create SelectionInput for order type options;
   var select = selectionInputWidget('',globalOrderTypeFieldName,globalEnumDropdown,options,'applySort',true);
-  console.log(select)
   section.addWidget(select);
 
   return [prompt,select,reverse];
