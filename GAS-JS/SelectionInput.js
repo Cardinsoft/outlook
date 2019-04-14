@@ -117,7 +117,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				console.log('SELECT CHECK')
 				console.log(selected)
-				console.log(toBoolean(selected)
+				console.log(toBoolean(selected))
 				
 				
 				//create option with params;
