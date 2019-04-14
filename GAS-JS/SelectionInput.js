@@ -112,7 +112,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				function curry(action,input,label){
 					return async function(e) { 
 						await label.classList.toggle('is-checked');
-						await input.checked = true;
+						await (input) => { input.checked = true; }(input);
 						
 						console.log(action);
 						console.log(label);
