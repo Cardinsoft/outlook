@@ -73,7 +73,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	
 	//create wrapper element;
 	const inputWrap = document.createElement('div');
-	let label       = document.createElement('label');
 	
 	//SelectionInput Ui
 	switch(type) {
@@ -100,6 +99,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(input);
 				
 				//set label class name, append & check;
+				let label       = document.createElement('label');
 				label.className = 'ms-CheckBox-field';
 				inputWrap.append(label);
 				if(checked) { label.classList.add('is-checked'); }
