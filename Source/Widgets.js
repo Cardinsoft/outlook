@@ -373,6 +373,8 @@ async function createWidgetSortBy(section) {
       if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
     });
   }
+  
+  console.log(options);
 
   //access reverse setting and create SelectionInput;
   var isReverse = getProperty('reverse','user');
