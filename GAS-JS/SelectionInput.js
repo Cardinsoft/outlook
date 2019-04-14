@@ -105,9 +105,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				if(checked) { className += ' is-checked'; }
 				
 				let label = document.createElement('label');
-					label.role      = 'checkbox';
-					label.className = className;
-					label.name      = fieldName;
+					label.role         = 'checkbox';
+					label.className    = className;
+					label.name         = fieldName;
+					label.aria-checked = checked;
 					inputWrap.append(label);
 					
 				//set optional parameters to input;
