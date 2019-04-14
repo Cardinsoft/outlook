@@ -110,8 +110,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				inputWrap.addEventListener('click',curry(action,input,label),false);	
 
 				function curry(action,input,label){
-					return function(e) { 
-						console.log(input); 
+					return async function(e) { 
+						await console.log(input);
 					}
 				}				
 				
