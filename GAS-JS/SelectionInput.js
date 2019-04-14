@@ -120,7 +120,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//create option with params;
 				let opt = document.createElement('option');
-				opt.value       = toBoolean(selected);
+				opt.value       = value;
 				opt.textContent = text;
 				opt.selected    = toBoolean(selected);
 				input.append(opt);
@@ -131,8 +131,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			//append input to wrapper;
 			inputWrap.append(input);
-			
-			console.log(input)
 			
 			//initiate Fabric;
 			new fabric['Dropdown'](inputWrap);
