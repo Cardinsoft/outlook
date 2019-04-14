@@ -106,6 +106,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					
 				//set optional parameters to input;
 				if(action) {
+					
 					inputWrap.addEventListener('click',function(action,input,label){
 						
 						return function(e) {
@@ -113,9 +114,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 							actionCallback(action,input);				
 						}
 						
-					});
-					
-					
+					},{passive:true});
 					
 				};				
 				
