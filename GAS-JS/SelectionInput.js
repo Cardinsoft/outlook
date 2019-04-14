@@ -95,6 +95,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			const label = document.createElement('label');
 			label.className = 'ms-Label TextInputLabel';
+			label.textContent = title;
 			inputWrap.append(label);
 			
 			//create chevron;
