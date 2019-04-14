@@ -29,11 +29,18 @@ class e_UrlFetchApp {
 	}
 }
 e_UrlFetchApp.prototype.fetch = async function (url,params) {
-	let promise = await makeRequest(url,params);
+	let response = await makeRequest(url,params);
 	
-	console.log(promise);
+	//check if response is an object and if it has properties;
+	const checkResp  = typeof response==='object';
+	const checkProps = &&Object.keys(response).length>0;
 	
-	return promise;
+	//make sure response is parsed correctly and return HTTPResponse instance;
+	if(checkResp) {
+		if(checkProps) {
+			return new HTTPResponse(response.headers,response.content,response.code);
+		}
+	}
 }
 
 const UrlFetchApp = new e_UrlFetchApp();
