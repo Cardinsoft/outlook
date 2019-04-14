@@ -110,7 +110,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						
 						await label.classList.toggle('is-checked');
 						
-						return actionCallback(action,input));
+						return actionCallback(action,input);
 						
 					});
 					
