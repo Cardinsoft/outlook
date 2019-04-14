@@ -107,7 +107,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(label);
 					
 				//set optional parameters to input;
-				if(action) { input.addEventListener('change',actionCallback(action,input)); }				
+				if(action) { input.addEventListener('click',actionCallback(action,input)); }				
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
