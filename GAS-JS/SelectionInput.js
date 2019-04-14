@@ -94,6 +94,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let input = document.createElement('input');
 					input.type      = 'checkbox';
 					input.className = 'ms-CheckBox-input';
+					input.checked   = checked;
 					input.value     = value;
 					input.name      = fieldName;
 					inputWrap.append(input);

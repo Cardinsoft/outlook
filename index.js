@@ -83,7 +83,7 @@ function actionCallback(action,element) {
 						
 						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input');
 						if(valueIndiff) { 
-							const isSelected = cl.contains('is-selected')||cl.contains('is-checked'); 
+							const isSelected = cl.contains('is-selected')||cl.checked; 
 							
 							if(isSelected) {
 								e.formInput[name]  = value;	
