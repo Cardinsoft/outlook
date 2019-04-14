@@ -132,6 +132,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			//append input to wrapper;
 			inputWrap.append(input);
 			
+			console.log(input)
+			
 			//initiate Fabric;
 			new fabric['Dropdown'](inputWrap);
 
