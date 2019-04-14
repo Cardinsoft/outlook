@@ -141,13 +141,9 @@ function toBoolean(input) {
 	
 	if(typeof input==='boolean') { return input; }
 	
-	const output = false;
-	
 	const isString = typeof input==='string';
 	
 	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
-	
-	return output;
 }
 
 const e = new e_EventObject();
