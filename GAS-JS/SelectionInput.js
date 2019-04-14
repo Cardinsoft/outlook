@@ -114,13 +114,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let value    = option.value;
 				let selected = option.selected;
 				
-				console.log(value)
-				console.log(selected)
-				console.log(toBoolean(selected))
-				
 				//create option with params;
 				let opt = document.createElement('option');
-				opt.value       = value;
+				opt.value       = toBoolean(selected);
 				opt.textContent = text;
 				opt.selected    = toBoolean(selected);
 				input.append(opt);
