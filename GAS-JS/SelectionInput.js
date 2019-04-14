@@ -111,13 +111,11 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
 						await label.classList.toggle('is-checked');
 						
-						console.log(action);
-						console.log(label);
-						
-						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
-						await inputWrap.dispatchEvent(new Event('dblclick'));
-						await inputWrap.removeEventListener('dblclick',actionCallback);
-						
+						if(action) {
+							await inputWrap.addEventListener('dblclick',actionCallback(action,input));
+							await inputWrap.dispatchEvent(new Event('dblclick'));
+							await inputWrap.removeEventListener('dblclick',actionCallback);
+						}
 					}
 				}				
 				
