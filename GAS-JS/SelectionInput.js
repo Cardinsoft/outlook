@@ -117,7 +117,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						console.log(action);
 						console.log(label);
 						
-						actionCallback(action,input);
+						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
+						await inputWrap.dispatchEvent(new Event('dblclick'));
+						
 					}
 				}				
 				
