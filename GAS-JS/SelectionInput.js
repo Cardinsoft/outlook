@@ -114,7 +114,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 							actionCallback(action,input);				
 						}
 						
-					},{passive:true});
+					});
 					
 				};				
 				
