@@ -380,11 +380,11 @@ async function createWidgetSortBy(section) {
   var isReverse = getProperty('reverse','user');
   
   console.log(isReverse)
-  
+  /*
   if(isReverse===null||isReverse==='false') { isReverse = false; }else if(isReverse==='true') { isReverse = true; }
   var reverse = selectionInputWidget('',globalOrderReverseFieldName,globalEnumCheckbox,[{text:'Reverse',value:'true',selected:isReverse}],'applySort',true);
   section.addWidget(reverse);
-
+*/
   //create SelectionInput for order type options;
   var select = selectionInputWidget('',globalOrderTypeFieldName,globalEnumDropdown,options,'applySort',true);
   section.addWidget(select);
