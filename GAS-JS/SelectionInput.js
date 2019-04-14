@@ -111,8 +111,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				inputWrap.addEventListener('click',curry(action,input,label),false);
 				function curry(action,input,label){
 					return async function(e) { 
+						input.checked = true;
 						await label.classList.toggle('is-checked');
-						await (input) => { input.checked = true; }(input);
 						
 						console.log(action);
 						console.log(label);
