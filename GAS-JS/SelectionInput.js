@@ -109,16 +109,13 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//add a chain of listeners;
 				inputWrap.addEventListener('click',curry(action,input,label),false);
 				async function curry(action,input,label){
-					return await async function(e) { 
+					return async function(e) { 
 						await label.classList.toggle('is-checked');
 						
 						console.log(action);
 						console.log(label);
 						
-						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
-						await inputWrap.dispatchEvent(new Event('dblclick'));
-						inputWrap.removeEventListener('dblclick',actionCallback);
-						
+						actionCallback(action,input);
 					}
 				}				
 				
