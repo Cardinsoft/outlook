@@ -109,7 +109,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				inputWrap.addEventListener('click',curry(action,input,label),false);	
 
-				var curry = function(action,input,label){
+				function curry(action,input,label){
 					return function(e) { 
 						console.log(input); 
 					}
