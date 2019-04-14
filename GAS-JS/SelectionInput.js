@@ -84,7 +84,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//access option params;
 				let text     = option.text;
 				let value    = option.value;
-				let checked  = option.checked;
+				let checked  = option.selected;
 				
 				//set class name and append to row;
 				inputWrap.className = 'ms-CheckBox';
@@ -106,7 +106,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				let label = document.createElement('label');
 					label.role      = 'checkbox';
-					label.className = '';
+					label.className = className;
 					label.name      = fieldName;
 					inputWrap.append(label);
 					
