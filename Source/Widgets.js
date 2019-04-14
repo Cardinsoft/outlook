@@ -352,7 +352,7 @@ function createWidgetResetSubmit(section) {
  * @param {CardSection} section section to append widget sets;
  * @returns {Array}
  */
-async function createWidgetSortBy(section) {
+function createWidgetSortBy(section) {
 
   //create KeyValue prompt for order type choice;
   var prompt = simpleKeyValueWidget(globalOrderingWidgetTitle,globalOrderingWidgetContent,true);
