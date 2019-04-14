@@ -114,6 +114,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						
 						console.log(action);
 						console.log(label);
+						console.log(document.forms);
 						
 						actionCallback(action,input);
 					}
