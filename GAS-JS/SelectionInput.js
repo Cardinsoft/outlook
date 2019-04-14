@@ -111,7 +111,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					
 				//set optional parameters to input;
 				if(action) { 
-					input.addEventListener('click',function(e){
+					inputWrap.addEventListener('click',function(e){
 						if(this.checked) { 
 							input.checked = false;
 							label.setAttribute('aria-checked',false);
@@ -122,7 +122,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						//label.classList.toggle('is-checked');
 						
 					});
-					input.addEventListener('click',actionCallback(action,input));
+					inputWrap.addEventListener('click',actionCallback(action,input));
 				};				
 				
 				//create label text;
