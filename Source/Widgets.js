@@ -366,7 +366,10 @@ async function createWidgetSortBy(section) {
   ];
   
   //select current order type;
-  var orderType = await getProperty('order','user');
+  var orderType = getProperty('order','user');
+  
+  console.log(orderType)
+  
   if(orderType!==null) {
     options.forEach(function(option){
       if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
@@ -374,7 +377,10 @@ async function createWidgetSortBy(section) {
   }
 
   //access reverse setting and create SelectionInput;
-  var isReverse = await getProperty('reverse','user');
+  var isReverse = getProperty('reverse','user');
+  
+  console.log(isReverse)
+  
   if(isReverse===null||isReverse==='false') { isReverse = false; }else if(isReverse==='true') { isReverse = true; }
   var reverse = selectionInputWidget('',globalOrderReverseFieldName,globalEnumCheckbox,[{text:'Reverse',value:'true',selected:isReverse}],'applySort',true);
   section.addWidget(reverse);
