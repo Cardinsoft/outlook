@@ -105,6 +105,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.className = 'ms-CheckBox-field';
 					label.name      = fieldName;
 					inputWrap.append(label);
+					
+				//set optional parameters to input;
+				if(action) { input.addEventListener('change',actionCallback(action,input)); }				
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
@@ -113,9 +116,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.append(labelTxt);
 			});
 	
-			//set optional parameters to input;
-			if(action) { input.addEventListener('change',actionCallback(action,input)); }
-			
 			//initiate Fabric;
 			new fabric['CheckBox'](inputWrap);
 			
