@@ -88,7 +88,6 @@ function actionCallback(action,element) {
 							const isSelected = cl.contains('is-selected')||input.checked; 
 							
 							if(isSelected) {
-								e.formInput[name]  = value;	
 								
 								if(!e.formInputs[name]) { 
 									e.formInputs[name] = [value]; 
