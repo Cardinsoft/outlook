@@ -368,6 +368,10 @@ async function createWidgetSortBy(section) {
   //select current order type;
   var orderType = getProperty('order','user');
 
+  console.log(orderType);
+  
+  console.log(options);
+  
   if(orderType!==null) {
     options.forEach(function(option){
       if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
