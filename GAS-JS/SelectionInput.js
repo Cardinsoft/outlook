@@ -99,15 +99,23 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(input);
 				
 				let label = document.createElement('label');
-					label.role         = 'checkbox';
-					label.className    = 'ms-CheckBox-field';
-					label.name         = fieldName;
-					label.setAttribute('aria-checked',checked);
+					label.className = 'ms-CheckBox-field';
 					inputWrap.append(label);
+					
+					if(checked) { label.classList.add('is-checked'); }
 					
 				//set optional parameters to input;
 				if(action) {
-					inputWrap.addEventListener('click',actionCallback(action,input));
+					inputWrap.addEventListener('click',async function(){
+						
+						await 
+						
+						return actionCallback(action,input));
+						
+					});
+					
+					
+					
 				};				
 				
 				//create label text;
@@ -117,7 +125,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.append(labelTxt);
 			
 				//initiate Fabric;
-				new fabric['CheckBox'](inputWrap);
+				//new fabric['CheckBox'](inputWrap);
 			});
 			
 			break;
