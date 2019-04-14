@@ -73,7 +73,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	
 	//create wrapper element;
 	const inputWrap = document.createElement('div');
-	
+	let label       = document.createElement('label');
 	
 	//SelectionInput Ui
 	switch(type) {
@@ -99,15 +99,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					input.name      = fieldName;
 					inputWrap.append(input);
 				
-				let label = document.createElement('label');
-					label.className = 'ms-CheckBox-field';
-					inputWrap.append(label);
+				//set label class name, append & check;
+				label.className = 'ms-CheckBox-field';
+				inputWrap.append(label);
+				if(checked) { label.classList.add('is-checked'); }
 					
-					if(checked) { label.classList.add('is-checked'); }
-					
-				
-		
-				//add a chain of listeners;
+				//add event listener chain ( check/uncheck -> callback );
 				inputWrap.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
 					return async function(e) { 
@@ -119,6 +116,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						
 						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
 						await inputWrap.dispatchEvent(new Event('dblclick'));
+						await inputWrap.removeEventListener('dblclick',actionCallback);
 						
 					}
 				}				
@@ -128,13 +126,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					labelTxt.className = 'ms-Label';
 					labelTxt.textContent = text;
 					label.append(labelTxt);
-			
-				//initiate Fabric;
-				//new fabric['CheckBox'](inputWrap);
 			});
 			
 			break;
 		case 'RADIO_BUTTON':
+			
+			
 			
 			break;
 		case 'DROPDOWN':
