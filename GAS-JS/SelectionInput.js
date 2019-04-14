@@ -102,7 +102,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//create label;
 				let className = 'ms-CheckBox-field';
 				console.log(checked)
-				if(checked) { className += 'is-checked'; }
+				if(checked) { className += ' is-checked'; }
 				
 				let label = document.createElement('label');
 					label.role      = 'checkbox';
