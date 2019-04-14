@@ -87,8 +87,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			break;
 		case 'DROPDOWN':
-		
-			console.log(options)
 			
 			//create wrapper and append to row;
 			const inputWrap = document.createElement('div');

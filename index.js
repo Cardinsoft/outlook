@@ -138,6 +138,9 @@ class e_EventObject {
  * @returns {Boolean}
  */
 function toBoolean(input) {
+	
+	if(typeof input==='boolean') { return input; }
+	
 	const output = false;
 	
 	const isString = typeof input==='string';
