@@ -122,7 +122,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						}
 						label.classList.toggle('is-checked');
 						actionCallback(action,input);
-					});
+					},{passive:true});
 				};				
 				
 				//create label text;
