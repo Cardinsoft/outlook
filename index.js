@@ -70,6 +70,8 @@ function actionCallback(action,element) {
 				
 				for(let i=0; i<inputs.length; i++) {
 					let input = inputs.item(i);
+					
+					console.log(input);
 
 					//access input parameter;
 					let name  = input.name;
@@ -83,7 +85,7 @@ function actionCallback(action,element) {
 						
 						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input');
 						if(valueIndiff) { 
-							const isSelected = cl.contains('is-selected')||cl.checked; 
+							const isSelected = cl.contains('is-selected')||input.checked; 
 							
 							if(isSelected) {
 								e.formInput[name]  = value;	
