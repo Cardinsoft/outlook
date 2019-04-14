@@ -78,11 +78,12 @@ function actionCallback(action,element) {
 					//set formInput and formInputs properties;
 					if(name!=='') {
 						
-						//temp solution to check forSwitches;
+						//temp solution to check for Switches & Checkboxes;
 						const cl = input.classList;
-						const isSwitch = cl.contains('ms-Toggle-input');
-						if(isSwitch) { 
-							const isSelected = cl.contains('is-selected'); 
+						
+						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input');
+						if(valueIndiff) { 
+							const isSelected = cl.contains('is-selected')||cl.contains('is-checked'); 
 							
 							if(isSelected) {
 								e.formInput[name]  = value;	

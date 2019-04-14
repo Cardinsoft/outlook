@@ -110,18 +110,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(label);
 					
 				//set optional parameters to input;
-				if(action) { 
-					inputWrap.addEventListener('click',function(e){
-						if(this.checked) { 
-							input.checked = false;
-							label.setAttribute('aria-checked',false);
-						}else { 
-							input.checked = true; 
-							label.setAttribute('aria-checked',true);
-						}
-						//label.classList.toggle('is-checked');
-						
-					});
+				if(action) {
 					inputWrap.addEventListener('click',actionCallback(action,input));
 				};				
 				
