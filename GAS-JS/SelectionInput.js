@@ -100,9 +100,13 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputWrap.append(input);
 				
 				//create label;
+				let className = 'ms-CheckBox-field';
+				console.log(checked)
+				if(checked) { className += 'is-checked'; }
+				
 				let label = document.createElement('label');
 					label.role      = 'checkbox';
-					label.className = 'ms-CheckBox-field';
+					label.className = '';
 					label.name      = fieldName;
 					inputWrap.append(label);
 					
