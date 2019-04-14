@@ -114,6 +114,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let value    = option.value;
 				let selected = option.selected;
 				
+				console.log(value)
 				console.log(selected)
 				console.log(toBoolean(selected))
 				
