@@ -62,17 +62,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	const title     = this.title;
 	const type      = this.type;
 	const options   = this.options;
-	
-	const widget = document.createElement('div');
-	widget.className = 'row '+this.className;
-	parent.append(widget);
-	
-	const row = document.createElement('div');
-	row.className = 'column';
-	widget.append(row);
-	
-	//create wrapper element;
-	const inputWrap = document.createElement('div');
+
+	let widget    = document.createElement('div');
+	let row       = document.createElement('div');
+	let inputWrap = document.createElement('div');
 	
 	//SelectionInput Ui
 	switch(type) {
@@ -85,7 +78,15 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let value    = option.value;
 				let checked  = option.selected;
 				
-				//set class name and append to row;
+				//set row;
+				widget.className = 'row '+this.className;
+				parent.append(widget);				
+				
+				//set column;
+				row.className = 'column';
+				widget.append(row);				
+				
+				//set input;
 				inputWrap.className = 'ms-CheckBox';
 				row.append(inputWrap);
 
@@ -133,6 +134,14 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			break;
 		case 'DROPDOWN':
+			
+			//set row;
+			widget.className = 'row '+this.className;
+			parent.append(widget);				
+				
+			//set column;
+			row.className = 'column';
+			widget.append(row);				
 			
 			//set class name and append to row;
 			inputWrap.className = 'ms-Dropdown';
