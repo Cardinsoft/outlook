@@ -71,16 +71,53 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	row.className = 'column';
 	widget.append(row);
 	
-	if(title) {	
-		const topLabel = document.createElement('label');
-		topLabel.className = 'ms-fontSize-s SelectionInputTopLabel';
-		topLabel.textContent = title;
-		row.append(topLabel);
-	}
+	//create wrapper element;
+	const inputWrap = document.createElement('div');
+	
 	
 	//SelectionInput Ui
 	switch(type) {
 		case 'CHECK_BOX':
+		
+			//create inputs;
+			options.forEach(function(option){
+				//access option params;
+				let text     = option.text;
+				let value    = option.value;
+				let checked  = option.checked;
+				
+				//set class name and append to row;
+				inputWrap.className = 'ms-CheckBox';
+				row.append(inputWrap);
+
+				//create input;
+				let input = document.createElement('input');
+					input.type      = 'checkbox';
+					input.className = 'ms-CheckBox-input';
+					input.checked   = checked;
+					input.value     = value;
+					input.name      = fieldName;
+					inputWrap.append(input);
+				
+				//create label;
+				let label = document.createElement('label');
+					label.role      = 'checkbox';
+					label.className = 'ms-CheckBox-field';
+					label.name      = fieldName;
+					inputWrap.append(label);
+				
+				//create label text;
+				let labelTxt = document.createElement('span');
+					labelTxt.className = 'ms-Label';
+					labelTxt.textContent = text;
+					label.append(labelTxt);
+			});
+	
+			//set optional parameters to input;
+			if(action) { input.addEventListener('change',actionCallback(action,input)); }
+			
+			//initiate Fabric;
+			new fabric['CheckBox'](inputWrap);
 			
 			break;
 		case 'RADIO_BUTTON':
@@ -88,11 +125,11 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			break;
 		case 'DROPDOWN':
 			
-			//create wrapper and append to row;
-			const inputWrap = document.createElement('div');
+			//set class name and append to row;
 			inputWrap.className = 'ms-Dropdown';
 			row.append(inputWrap);
 			
+			//create label;
 			const label = document.createElement('label');
 			label.className = 'ms-Label TextInputLabel';
 			label.textContent = title;
@@ -104,7 +141,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			inputWrap.append(chevron);
 			
 			//create actual select;
-			const input = document.createElement('select');
+			let input = document.createElement('select');
 			input.className = 'ms-Dropdown-select';
 			input.name      = fieldName;
 			
