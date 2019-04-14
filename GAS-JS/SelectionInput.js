@@ -120,7 +120,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 							input.checked = true; 
 							label.setAttribute('aria-checked',true);
 						}
-						label.classList.toggle('is-checked');
+						//label.classList.toggle('is-checked');
 						actionCallback(action,input);
 					},{passive:true});
 				};				
