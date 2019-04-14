@@ -114,10 +114,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					labelTxt.className = 'ms-Label';
 					labelTxt.textContent = text;
 					label.append(labelTxt);
+			
+				//initiate Fabric;
+				new fabric['CheckBox'](inputWrap);
 			});
-	
-			//initiate Fabric;
-			new fabric['CheckBox'](inputWrap);
 			
 			break;
 		case 'RADIO_BUTTON':
