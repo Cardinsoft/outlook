@@ -105,25 +105,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					if(checked) { label.classList.add('is-checked'); }
 					
 				
-				inputWrap.addEventListener('click',function(action,input,label){
-					
-					return async function() {
-						
-						console.log(input);
-						
-						//await label.classList.toggle('is-checked');
-					/*
-					if(action) {
-						
-						function dispatch () {}
-						
-						inputWrap.addEventListener('dblclick'
-						
-					}
-					*/
-					}
-					
-				});			
+				
+				var curry = function(action,input,label){
+					return function() { console.log(input); }
+				}
+				
+				inputWrap.addEventListener('click',curry(action,input,label));			
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
