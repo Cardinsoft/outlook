@@ -104,17 +104,24 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					
 					if(checked) { label.classList.add('is-checked'); }
 					
-				//set optional parameters to input;
-				if(action) {
+				
+				inputWrap.addEventListener('click',function(action,input,label){
 					
-					inputWrap.addEventListener('click',function(action,input,label){
-						return function() {
-							label.classList.toggle('is-checked');
-							//actionCallback(action,input);				
-						}
-					});
+					return async function() {
 					
-				};				
+					await label.classList.toggle('is-checked');
+					/*
+					if(action) {
+						
+						function dispatch () {}
+						
+						inputWrap.addEventListener('dblclick'
+						
+					}
+					*/
+					}
+					
+				});			
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
