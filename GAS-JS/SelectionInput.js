@@ -113,7 +113,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//set optional parameters to input;
 				if(action) { 
 					input.addEventListener('click',function(e){
-						if(checked) { 
+						if(this.checked) { 
 							input.checked = false;
 							label.setAttribute('aria-checked',false);
 						}else { 
