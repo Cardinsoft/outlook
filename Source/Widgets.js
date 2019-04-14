@@ -389,7 +389,7 @@ async function createWidgetSortBy(section) {
   var select = selectionInputWidget('',globalOrderTypeFieldName,globalEnumDropdown,options,'applySort',true);
   section.addWidget(select);
 
-  return [prompt,select,reverse];
+  return [prompt,select/*,reverse*/];
 }
 
 
