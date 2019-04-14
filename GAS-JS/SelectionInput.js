@@ -94,17 +94,13 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let input = document.createElement('input');
 					input.type      = 'checkbox';
 					input.className = 'ms-CheckBox-input';
-					input.checked   = checked;
+					input.value     = value;
 					input.name      = fieldName;
 					inputWrap.append(input);
 				
-				//create label;
-				let className = 'ms-CheckBox-field';
-				if(checked) { className += ' is-checked'; }
-				
 				let label = document.createElement('label');
 					label.role         = 'checkbox';
-					label.className    = className;
+					label.className    = 'ms-CheckBox-field';
 					label.name         = fieldName;
 					label.setAttribute('aria-checked',checked);
 					inputWrap.append(label);
