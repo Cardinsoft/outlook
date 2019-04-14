@@ -106,11 +106,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					
 				//set optional parameters to input;
 				if(action) {
-					inputWrap.addEventListener('click',async function(){
+					inputWrap.addEventListener('click',function(action,input){
 						
-						await label.classList.toggle('is-checked');
-						
-						return actionCallback(action,input);
+						return async function(e) {
+							await label.classList.toggle('is-checked');
+							actionCallback(action,input);				
+						}
 						
 					});
 					
