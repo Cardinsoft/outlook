@@ -89,7 +89,13 @@ function actionCallback(action,element) {
 							
 							if(isSelected) {
 								e.formInput[name]  = value;	
-								e.formInputs[name] = [value];								
+								
+								if(!e.formInputs[name]) { 
+									e.formInputs[name] = [value]; 
+								}else { 
+									e.formInputs[name].push(value); 
+								}
+																
 							}
 							
 						}else {
