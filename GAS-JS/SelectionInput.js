@@ -131,7 +131,61 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			break;
 		case 'RADIO_BUTTON':
+
+			//set row;
+			widget = document.createElement('div');
+			widget.className = 'row '+className;
+			parent.append(widget);		
 			
+			//set column;
+			row = document.createElement('div');
+			row.className = 'column';
+			widget.append(row);			
+		
+			//create input group;
+			const group = document.createElement('div');
+			group.className = 'ms-ChoiceFieldGroup';
+			row.append(group);
+			
+			//create input list;
+			const list = document.createElement('ul');
+			list.className = 'ms-ChoiceFieldGroup-list';
+			group.append(list);
+			
+			//create inputs;
+			options.forEach(function(option){
+				
+				//access option params;
+				let text     = option.text;
+				let value    = option.value;
+				let checked  = option.selected;
+				
+				//set input;
+				inputWrap = document.createElement('li');
+				inputWrap.className = 'ms-RadioButton';
+				row.append(inputWrap);				
+				
+				//set actual input;
+				let input = document.createElement('input');
+					input.type      = 'radio';
+					input.className = 'ms-RadioButton-input';
+					input.checked   = checked;
+					input.name      = fieldName;
+					inputWrap.append(input);
+				
+				//set radio label;
+				let label = document.createElement('label');
+					label.className = 'ms-RadioButton-field';
+					inputWrap.append(label);
+				
+				//create label text;
+				let labelTxt = document.createElement('span');
+					labelTxt.className = 'ms-Label';
+					labelTxt.textContent = text;
+					label.append(labelTxt);
+  
+				
+			});		
 			
 			
 			break;
