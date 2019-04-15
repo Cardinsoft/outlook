@@ -56,6 +56,9 @@ function actionCallback(action,element) {
 		e.formInput  = {};
 		e.formInputs = {};
 		
+		console.log('E AFTER CLEAR');
+		console.log(e);
+		
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
 		
@@ -87,16 +90,15 @@ function actionCallback(action,element) {
 							
 							if(isSelected) {
 								
-								let exists = Object.keys(e.formInput).some( (key) => { return key===name; } );
+								let exists = Object.keys(e.formInput).some((key) => { return key===name; });
 								
-								e.formInput[name]  = value;
-								
+								e.formInput[name] = value;
 								if(!exists) { 
 									e.formInputs[name] = [value];
 								}else { 
 									e.formInputs[name].push(value); 
 								}
-																
+									
 							}
 							
 						}else {
