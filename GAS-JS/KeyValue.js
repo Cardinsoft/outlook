@@ -10,7 +10,10 @@ class KeyValue {
 		this.multiline;
 		this.switchToSet;
 		this.topLabel;
+		this.action;
 		this.authorizationAction;
+		this.openLink;
+		this.composedEmailType;
 	}
 }
 /**
