@@ -64,6 +64,10 @@ body {
 	padding: 4px 15px !important;
 }
 
+.ms-Dropdown-title {
+	border : none;
+}
+
 .TextButton {
 	margin-right: 8px;
 }
