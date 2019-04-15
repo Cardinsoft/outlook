@@ -130,3 +130,5 @@ e_CardService.prototype.newTextParagraph = function () {
 e_CardService.prototype.newUniversalActionResponseBuilder = function () {
 	return new UniversalActionResponseBuilder(); 
 }
+
+const CardService = new e_CardService();
