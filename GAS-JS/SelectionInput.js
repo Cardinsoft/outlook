@@ -108,16 +108,16 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				if(checked) { label.classList.add('is-checked'); }
 					
 				//add event listener chain ( check/uncheck -> callback );
-				inputWrap.addEventListener('click',curry(action,input,label,checked),false);
+				label.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
 					return async function(e) { 
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
 						await label.classList.toggle('is-checked');
 						
 						if(action) {
-							await inputWrap.addEventListener('dblclick',actionCallback(action,input));
-							await inputWrap.dispatchEvent(new Event('dblclick'));
-							await inputWrap.removeEventListener('dblclick',actionCallback);
+							await label.addEventListener('dblclick',actionCallback(action,input));
+							await label.dispatchEvent(new Event('dblclick'));
+							await label.removeEventListener('dblclick',actionCallback);
 						}
 					}
 				}				
@@ -198,6 +198,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					}
 				}
 			}
+			
+			new Fabric['Dropdown'](inputWrap);
 
 			break;
 	}
