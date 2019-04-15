@@ -199,7 +199,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				}
 			}
 			
-			new Fabric['Dropdown'](inputWrap);
+			new fabric['Dropdown'](inputWrap);
 
 			break;
 	}
