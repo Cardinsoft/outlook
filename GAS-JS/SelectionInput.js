@@ -85,7 +85,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//set column;
 				row = document.createElement('div');
 				row.className = 'column';
-				widget.append(row);				
+				widget.append(row);
 				
 				//set input;
 				inputWrap = document.createElement('div');

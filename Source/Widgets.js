@@ -379,7 +379,6 @@ function createWidgetSortBy(section) {
   
   if(isReverse===null||isReverse==='false') { isReverse = false; }else if(isReverse==='true') { isReverse = true; }
   var reverse = selectionInputWidget('',globalOrderReverseFieldName,globalEnumCheckbox,[{text:'Reverse',value:'true',selected:isReverse}],'applySort',true);
-  console.log(reverse)
   section.addWidget(reverse);
 
   //create SelectionInput for order type options;
