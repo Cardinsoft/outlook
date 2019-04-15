@@ -69,11 +69,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 	//SelectionInput Ui
 	switch(type) {
 		case 'CHECK_BOX':
-				//set row;
-				widget = document.createElement('div');
-				widget.className = 'row '+className;
-				parent.append(widget);	
-				
+		
 			//create inputs;
 			options.forEach(function(option){
 				//access option params;
@@ -81,7 +77,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let value    = option.value;
 				let checked  = option.selected;
 				
-			
+				//set row;
+				widget = document.createElement('div');
+				widget.className = 'row '+className;
+				parent.append(widget);				
 				
 				//set column;
 				row = document.createElement('div');
