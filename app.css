@@ -14,8 +14,8 @@ body {
     margin : 0.6em 0;
 }
 
-.KeyValue:hover, .KeyValue .ms-Button.is-disabled, .KeyValue .ms-Button:disabled {
-	cursor : pointer !important;
+.pointer {
+	cursor : pointer;
 }
 
 .KeyValueImage {
