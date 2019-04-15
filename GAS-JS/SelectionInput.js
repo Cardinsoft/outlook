@@ -178,14 +178,27 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.className = 'ms-RadioButton-field';
 					inputWrap.append(label);
 				if(checked) { label.classList.add('is-checked'); }
-				
+			
+				//add event listener chain ( check/uncheck -> callback );
+				label.addEventListener('click',curry(action,input,label,checked),false);
+				function curry(action,input,label,checked){
+					return async function(e) { 
+						if(!input.checked) { input.checked = true; }else { input.checked = false; }
+						await label.classList.toggle('is-checked');
+						
+						if(action) {
+							await label.addEventListener('dblclick',actionCallback(action,input));
+							await label.dispatchEvent(new Event('dblclick'));
+							await label.removeEventListener('dblclick',actionCallback);
+						}
+					}
+				}	
+			
 				//create label text;
 				let labelTxt = document.createElement('span');
 					labelTxt.className = 'ms-Label';
 					labelTxt.textContent = text;
 					label.append(labelTxt);
-  
-				
 			});		
 			
 			
