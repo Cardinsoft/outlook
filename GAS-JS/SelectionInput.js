@@ -133,6 +133,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 		case 'RADIO_BUTTON':
 			
 			let inputs = [];
+			let labels = [];
 			
 			//set row;
 			widget = document.createElement('div');
@@ -182,18 +183,20 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.className = 'ms-RadioButton-field';
 					inputWrap.append(label);
 				if(checked) { label.classList.add('is-checked'); }
+				
+				labels.push(label);
 			
 				//add event listener chain ( check/uncheck -> callback );
 				label.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
 					return async function(e) { 
 						
-						await inputs.forEach(function(i){
+						await inputs.forEach(function(i,index){
 							if(input===i&&!input.checked) { 
-								label.classList.add('is-checked');
+								labels[index].classList.add('is-checked');
 								i.checked = true;
 							}else {
-								label.classList.remove('is-checked');
+								labels[index].classList.remove('is-checked');
 								i.checked = false;
 							}
 						});
