@@ -167,7 +167,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			//create actual select;
 			let input = document.createElement('select');
-				input.className = 'select';
+				input.className = 'ms-Dropdown-select';
 				input.name      = fieldName;
 				inputWrap.append(input);
 			
@@ -190,6 +190,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			input.addEventListener('change',curry(action,input,options),false);
 			function curry(action,input,label,checked){
 				return async function(e) { 
+				
 					if(action) {
 						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
 						await inputWrap.dispatchEvent(new Event('dblclick'));
