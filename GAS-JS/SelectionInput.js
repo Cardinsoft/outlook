@@ -192,16 +192,16 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					inputs.forEach(function(i){
 						
 						if(input===i&&!input.checked) { 
+							
+							await label.classList.add('is-checked');
 							i.checked = true;
 						}else {
+							await label.classList.remove('is-checked');
 							i.checked = false;
 						}
 						
 					});
 						
-						
-						//if(!input.checked) { input.checked = true; }else { input.checked = false; }
-						await label.classList.toggle('is-checked');
 						
 						if(action) {
 							await label.addEventListener('dblclick',actionCallback(action,input));
