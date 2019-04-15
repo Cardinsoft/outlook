@@ -251,7 +251,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			let input = document.createElement('select');
 				input.className = 'ms-Dropdown-select';
 				input.name      = fieldName;
-				inputWrap.append(input);
+			inputWrap.append(input);
 			
 			//append options;
 			options.forEach(function(option){
@@ -282,7 +282,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			}
 			
 			new fabric['Dropdown'](inputWrap);
-
+			
+			//quick fix for dropdown Ui;
+			inputWrap.querySelector('.ms-Dropdown-truncator').classList.add('hidden');
+			
 			break;
 	}
 
