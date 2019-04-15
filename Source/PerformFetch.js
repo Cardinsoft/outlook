@@ -26,6 +26,7 @@ async function performFetch(url,method,headers,payload) {
   }
   catch(e) {
     //handles request exceptions not caught by muteHttpExceptions;
+	console.error(e);
     return {code:0,headers:'',content:e.message}
   }
 }
