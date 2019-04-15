@@ -223,17 +223,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			//set row;
 			widget = document.createElement('div');
 			widget.className = 'row '+this.className;
-			parent.append(widget);				
-				
-			//set column;
-			row = document.createElement('div');
-			row.className = 'column';
-			widget.append(row);				
+			parent.append(widget);			
 	
 			//set class name and append to row;
 			inputWrap = document.createElement('div');
 			inputWrap.className = 'ms-Dropdown';
-			row.append(inputWrap);
+			widget.append(inputWrap);
 			
 			//append title text if provided;
 			if(title) {	
