@@ -78,7 +78,9 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.name      = fieldName;
 	
 	//set optional parameters to input;
-	if(action) { input.addEventListener('focusout',actionCallback(action,input)); }
+	if(action) { 
+		input.addEventListener('focusout',actionCallback(action,input)); 
+	}
 	
 	//append input to wrapper;
 	inputWrap.append(input);
