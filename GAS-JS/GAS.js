@@ -627,7 +627,3 @@ Notification.prototype.appendToUi = function (/*parent*/) {
 	},3000);
 	
 }
-
-
-//initiate services to be able to access them;
-const CardService       = new e_CardService();
