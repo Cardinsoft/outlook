@@ -89,8 +89,9 @@ function actionCallback(action,element) {
 								
 								e.formInput[name]  = value;
 								
-								if(!e.formInputs[name]) {
-									e.formInputs[name] = [value]; 
+								let exists = Object.keys(e.formInput).some( (key) => { return key===name; } );
+								if(!exists) { 
+									e.formInputs[name] = [value];
 								}else { 
 									e.formInputs[name].push(value); 
 								}
