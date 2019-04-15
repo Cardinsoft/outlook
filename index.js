@@ -70,8 +70,6 @@ function actionCallback(action,element) {
 				
 				for(let i=0; i<inputs.length; i++) {
 					let input = inputs.item(i);
-					
-					console.log(input);
 
 					//access input parameter;
 					let name  = input.name;
