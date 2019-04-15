@@ -81,7 +81,7 @@ KeyValue.prototype.setIcon = function (icon) {
 	//acces Icons Enum and check for match;
 	const icons = new GLOBAL['e_CardService']().Icon;
 	for(let key in icons) {
-		if(icons[key]===icon) { this.icon = icon; }
+		if(icons[key]===icon) { this.icon = icons[key]; }
 	}
 	
 	return this;
