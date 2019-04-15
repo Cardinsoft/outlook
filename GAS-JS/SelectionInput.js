@@ -57,6 +57,7 @@ SelectionInput.prototype.setType = function (type) {
 	return this;
 }
 SelectionInput.prototype.appendToUi = function (parent) {
+	const className = this.className;
 	const fieldName = this.fieldName;
 	const action    = this.action;
 	const title     = this.title;
@@ -78,7 +79,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//set row;
 				widget = document.createElement('div');
-				widget.className = 'row '+this.className;
+				widget.className = 'row '+className;
 				parent.append(widget);				
 				
 				//set column;
