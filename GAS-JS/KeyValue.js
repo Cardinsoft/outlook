@@ -1,7 +1,6 @@
 //Emulate Class KeyValue for CardService service;
 class KeyValue {
 	constructor() {
-		super();
 		this.className = 'KeyValue';
 		this.button;
 		this.content;
