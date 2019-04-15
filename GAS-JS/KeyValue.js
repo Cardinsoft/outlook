@@ -79,7 +79,7 @@ KeyValue.prototype.setContent = function (text) {
 KeyValue.prototype.setIcon = function (icon) {
 	
 	//acces Icons Enum and check for match;
-	const icons = new GLOBAL['e_CardService']().Icon;
+	const icons = new e_CardService().Icon;
 	for(let key in icons) {
 		if(icons[key]===icon) { this.icon = icons[key]; }
 	}
