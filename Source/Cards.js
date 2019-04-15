@@ -243,6 +243,7 @@ async function cardDisplay(e) {
             createSectionAdvanced(builder,section,j,connector,layout[j]); 
           }
           catch(er) {
+			console.error(er);
             //try to handle nested objects that do not conform to our schema;
             createSectionSimple(builder,section,true,j);
           }
