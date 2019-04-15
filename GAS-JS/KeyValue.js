@@ -109,7 +109,9 @@ KeyValue.prototype.setTopLabel = function (text) {
 KeyValue.prototype.appendToUi = function (parent,index) {
 	
 	//access parameters;
-	const action = this.action;
+	const action  = this.action;
+	const iconUrl = this.url;
+	const icon    = this.icon;
 	
 	//create row element;
 	const widget = document.createElement('div');
@@ -133,15 +135,17 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	}
 	
 	//handle image creation;
-	if(this.url) {
+	if(iconUrl||icon) {
 		const wrapImg = document.createElement('div');
 		wrapImg.className = 'column-icon';
 		widget.append(wrapImg);
 		
 		const img = document.createElement('img');
 		img.className = 'KeyValueImage';
-		img.src = this.url;
-		if(this.altText!==undefined) { img.alt = this.altText; }
+		
+		if(iconUrl) { img.src = iconUrl; }else { img.src = icon; } 
+	
+		if(this.altText) { img.alt = this.altText; }
 		wrapImg.append(img);
 	}
 	
