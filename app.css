@@ -1,47 +1,47 @@
-/* 
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    width   : 100%;
+    height  : 100%;
+    margin  : 0;
+    padding : 0;
+}
+
+.select {
+	-webkit-appearance : none;
+    appearance         : none;	
 }
 
 .KeyValue p {
-    margin: 0.6em 0;
+    margin : 0.6em 0;
 }
 
 .KeyValue:hover, .KeyValue .ms-Button.is-disabled, .KeyValue .ms-Button:disabled {
-	cursor: pointer !important;
+	cursor : pointer !important;
 }
 
 .KeyValueImage {
-	margin-top: 5px;
-	width: 26px;
-	height: 26px;
-	border-radius: 5px;
+	margin-top    : 5px;
+	width         : 26px;
+	height        : 26px;
+	border-radius : 5px;
 }
 
 .KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
-	display: block;
-	margin-bottom: 5px;
-	color: #c8c8c8;
+	display       : block;
+	margin-bottom : 5px;
+	color         : #c8c8c8;
 }
 
 .ms-TextField {
-	width: 100%;
+	width : 100%;
 }
 
 .TextInputInput, .TextInputLabel {
-	padding: 0 !important;
+	padding : 0 !important;
 }
 
 .TextInputLabel {
-	width: 0 !important;
+	width : 0 !important;
 }
 
 .CardSection {

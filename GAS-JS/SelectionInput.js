@@ -146,17 +146,19 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			row = document.createElement('div');
 			row.className = 'column';
 			widget.append(row);				
-			
+	
+			//append title text if provided;
+			if(title) {	
+				const topLabel = document.createElement('label');
+				topLabel.className = 'ms-fontSize-s TextInputTopLabel';
+				topLabel.textContent = title;
+				row.append(topLabel);
+			}
+	
 			//set class name and append to row;
 			inputWrap = document.createElement('div');
 			inputWrap.className = 'ms-Dropdown';
 			row.append(inputWrap);
-			
-			//create label;
-			const label = document.createElement('label');
-			label.className = 'ms-Label TextInputLabel';
-			label.textContent = title;
-			inputWrap.append(label);
 			
 			//create chevron;
 			const chevron = document.createElement('i');
@@ -165,7 +167,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			//create actual select;
 			let input = document.createElement('select');
-				input.className = 'ms-Dropdown-select';
+				input.className = 'select';
 				input.name      = fieldName;
 				inputWrap.append(input);
 			
@@ -185,22 +187,14 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			});
 		
 			//add event listener chain ( check/uncheck -> callback );
-			input.addEventListener('change',curry(action,input,label,options),false);
+			input.addEventListener('change',curry(action,input,options),false);
 			function curry(action,input,label,checked){
 				return async function(e) { 
-				
-					await options.forEach(function(o){
-						
-					});
-				
-						/*
-						await label.classList.toggle('is-checked');
-						
-						if(action) {
-							await inputWrap.addEventListener('dblclick',actionCallback(action,input));
-							await inputWrap.dispatchEvent(new Event('dblclick'));
-							await inputWrap.removeEventListener('dblclick',actionCallback);
-						}*/
+					if(action) {
+						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
+						await inputWrap.dispatchEvent(new Event('dblclick'));
+						await inputWrap.removeEventListener('dblclick',actionCallback);
+					}
 				}
 			}
 
