@@ -84,7 +84,7 @@ function actionCallback(action,element) {
 						//temp solution to check for Switches & Checkboxes;
 						const cl = input.classList;
 						
-						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input');
+						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input')||cl.contains('ms-RadioButton-input');
 						if(valueIndiff) { 
 							const isSelected = cl.contains('is-selected')||input.checked; 
 							
