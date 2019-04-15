@@ -184,7 +184,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				function curry(action,input,label,checked){
 					return async function(e) { 
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
-						await label.classList.toggle('is-checked');
+						//await label.classList.toggle('is-checked');
 						
 						if(action) {
 							await label.addEventListener('dblclick',actionCallback(action,input));
@@ -201,6 +201,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					label.append(labelTxt);
 			});		
 			
+			
+			new fabric['ChoiceFieldGroup'](group);
 			
 			break;
 		case 'DROPDOWN':
