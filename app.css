@@ -19,10 +19,11 @@ body {
 }
 
 .KeyValueImage {
-	margin-top    : 5px;
+    position      : relative;
+    top           : 2px;
 	width         : 26px;
-	height        : 26px;
-	border-radius : 5px;
+    height        : 26px;
+    border-radius : 5px;
 }
 
 .KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
@@ -70,7 +71,7 @@ body {
 }
 
 .TextButton {
-	margin-right: 8px;
+	margin-right : 8px;
 }
 
 .Switch {
@@ -101,78 +102,78 @@ body {
 }
 
 .column {
-	flex-grow: 1;
+	flex-grow : 1;
 }
 
 .column-icon {
-	margin-right: 1.5em;
+	margin-right : 1.5em;
 }
 
 .column-text {
-	flex-grow: 100;
+	flex-grow : 100;
 }
 
 .ms-MessageBar {
-	width: 93.5%;
+	width : 93.5%;
 }
 
 .separated {
-	border: solid #d0d0d0;
-	border-width: 1px 0 0 0;
+	border       : solid #d0d0d0;
+	border-width : 1px 0 0 0;
 }
 
 .collapsible {
-	transition: max-height 1s;
-	-webkit-transition: max-height 1s;
-	transition-timing-function: ease-out;
+	transition                 : max-height 1s;
+	-webkit-transition         : max-height 1s;
+	transition-timing-function : ease-out;
 }
 
 .closed {
-	overflow: hidden;
-	max-height: 0px;
+	overflow   : hidden;
+	max-height : 0px;
 }
 
 .opened {
-	max-height: 999px;
+	max-height : 999px;
 }
 
 .centered {
-	text-align: center;
+	text-align : center;
 }
 
 .toggler {
-	margin: 8px 0;
-	width: 100%;
+	margin : 8px 0;
+	width  : 100%;
 }
 
 .navbar {
-	height: 45px;
-	background-color: #0078d4;
-	color: white;
+	height           : 45px;
+	background-color : #0078d4;
+	color            : white;
 }
 
 .navbar .main, .navbar .side {
-	height: 100%;
-	float: left;
+	height : 100%;
+	float  : left;
 }
 
 .navbar .main {
-	width: 82%;
+	width : 82%;
 }
 
 .navbar .side {
-	text-align: center;
-	width: 18%;
+	text-align : center;
+	width      : 18%;
 }
 
 .side i {
-	padding: 27%;
+	padding : 27%;
 }
 
 .side i:hover {
-	color: #d0d0d0;
+	color : #d0d0d0;
 }
 
 .hidden {
-	display: none;
+	display : none;
 }
