@@ -145,12 +145,13 @@ function updateSectionAdvanced(e) {
 				  if(type===globalEnumRadio||type===globalEnumCheckbox||type===globalEnumDropdown) {
 					var content = widget.content;
 					content.forEach(function(option){
+					  var isContained = false;
 					  try {
-						var isContained = forms[key].some(function(val){
+						isContained = forms[key].some(function(val){
 						  if(val===option.value) { return val; }
 						});
 					  }
-					  catch(error) { isContained = false; }
+					  catch(error) { console.error(error); }
 					  if(isContained) { option.selected = true; }else { option.selected = false; }
 					});
 				  }else if(type==='KeyValue') {
@@ -160,6 +161,16 @@ function updateSectionAdvanced(e) {
 				  }
 				}
 			  }
+			  
+			  //perform additional check for all inputs switched off;
+			  if(!Object.keys(form).some(function(key){ return key===widget.name; })) {
+				if(type===globalEnumRadio||type===globalEnumCheckbox) {
+				  var content = widget.content;
+				  content.forEach(function(option){
+					option.selected = false;
+				  });            
+				}
+			  }			  
 			  
 			  if(type==='TextInput') {
 				widget.state = 'editable';
