@@ -131,7 +131,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			break;
 		case 'RADIO_BUTTON':
-
+			
+			let inputs = [];
+			
 			//set row;
 			widget = document.createElement('div');
 			widget.className = 'row '+className;
@@ -172,6 +174,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					input.checked   = checked;
 					input.name      = fieldName;
 					inputWrap.append(input);
+					
+				inputs.push(input);
 				
 				//set radio label;
 				let label = document.createElement('label');
@@ -183,8 +187,17 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				label.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
 					return async function(e) { 
+						
+						
+					inputs.forEach(function(i){
+						
+						if(input!==i) { input.checked = false; }
+						
+					});
+						
+						
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
-						//await label.classList.toggle('is-checked');
+						await label.classList.toggle('is-checked');
 						
 						if(action) {
 							await label.addEventListener('dblclick',actionCallback(action,input));
@@ -199,10 +212,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					labelTxt.className = 'ms-Label';
 					labelTxt.textContent = text;
 					label.append(labelTxt);
-			});		
-			
-			
-			new fabric['ChoiceFieldGroup'](group);
+			});
 			
 			break;
 		case 'DROPDOWN':
