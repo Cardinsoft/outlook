@@ -56,9 +56,6 @@ function actionCallback(action,element) {
 		e.formInput  = {};
 		e.formInputs = {};
 		
-		console.log('E AFTER CLEAR');
-		console.log(e);
-		
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
 		
@@ -111,8 +108,6 @@ function actionCallback(action,element) {
 			}
 			
 		}
-		
-		console.log(e);
 		
 		//set parameters to event object;
 		e.parameters = parameters;

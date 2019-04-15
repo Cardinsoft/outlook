@@ -31,6 +31,8 @@ class e_UrlFetchApp {
 e_UrlFetchApp.prototype.fetch = async function (url,params) {
 	let response = await makeRequest(url,params);
 	
+	console.log(response);
+	
 	//check if response is an object and if it has properties;
 	const checkResp  = typeof response==='object';
 	const checkProps = Object.keys(response).length>0;
@@ -76,8 +78,6 @@ function makeRequest(url,params) {
 				if(value) { request.setRequestHeader(key,value); }
 			}
 		}
-		
-		console.log(request);
 		
 		request.onload = function () {
 			let status     = request.status;
