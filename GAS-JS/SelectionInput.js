@@ -191,7 +191,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						
 					inputs.forEach(function(i){
 						
-						if(input!==i) { i.checked = false; }
+						if(input!==i&&!input.checked) { input.checked = true; i.checked = false; }
 						
 					});
 						
