@@ -230,18 +230,17 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			row.className = 'column';
 			widget.append(row);				
 	
-			//append title text if provided;
-			if(title) {	
-				const topLabel = document.createElement('label');
-				topLabel.className = 'ms-fontSize-s TextInputTopLabel';
-				topLabel.textContent = title;
-				row.append(topLabel);
-			}
-	
 			//set class name and append to row;
 			inputWrap = document.createElement('div');
 			inputWrap.className = 'ms-Dropdown';
 			row.append(inputWrap);
+			
+			//append title text if provided;
+			if(title) {	
+				let label = document.createElement('label');
+					label.className = 'ms-Label';
+					inputWrap.append(label);
+			}
 			
 			//create chevron;
 			const chevron = document.createElement('i');
@@ -263,9 +262,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//create option with params;
 				let opt = document.createElement('option');
-				opt.value       = value;
-				opt.textContent = text;
-				opt.selected    = selected;
+					opt.value       = value;
+					opt.textContent = text;
+					opt.selected    = selected;
 				input.append(opt);
 			});
 		
