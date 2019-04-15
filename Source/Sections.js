@@ -233,7 +233,8 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
     builder.addSection(section);
     return section;
   }
-  catch(error) {  
+  catch(error) {
+	console.error(error);
     //catch configuration error and create erro info section instead;
     createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
   }
