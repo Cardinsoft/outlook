@@ -163,7 +163,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//set input;
 				inputWrap = document.createElement('li');
 				inputWrap.className = 'ms-RadioButton';
-				row.append(inputWrap);				
+				list.append(inputWrap);				
 				
 				//set actual input;
 				let input = document.createElement('input');
@@ -177,6 +177,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let label = document.createElement('label');
 					label.className = 'ms-RadioButton-field';
 					inputWrap.append(label);
+				if(checked) { label.classList.add('is-checked'); }
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
