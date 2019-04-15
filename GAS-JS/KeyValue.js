@@ -119,6 +119,9 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	
 	//add event listener chain ( click -> callback );
 	if(action) {
+		
+		widget.classList.add('pointer');
+		
 		widget.addEventListener('click',curry(action,widget),false);
 		function curry(action){
 			return async function(e) { 	
