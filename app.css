@@ -9,10 +9,15 @@ body {
 .select {
 	cursor             : pointer;
 	border             : 0;
-    width              : 100%;
     min-height         : 35px;
     -webkit-appearance : none;
     appearance         : none;
+}
+
+.select::after {
+	content : '\E70D';
+	color: #212121;
+	font-size: 12px;
 }
 
 .KeyValue p {
