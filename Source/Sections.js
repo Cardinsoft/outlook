@@ -174,6 +174,8 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
       label      = globalManual;
     }
     
+	console.log(connector);
+	
     //stringify parameters to pass to action;
     connector = propertiesToString(connector);
     
