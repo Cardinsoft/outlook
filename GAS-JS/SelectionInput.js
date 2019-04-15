@@ -188,18 +188,16 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				function curry(action,input,label,checked){
 					return async function(e) { 
 						
-						
-					inputs.forEach(function(i){
-						if(input===i&&!input.checked) { 
-							await label.classList.add('is-checked');
-							i.checked = true;
-						}else {
-							await label.classList.remove('is-checked');
-							i.checked = false;
-						}
-					});
-						
-						
+						await inputs.forEach(function(i){
+							if(input===i&&!input.checked) { 
+								label.classList.add('is-checked');
+								i.checked = true;
+							}else {
+								label.classList.remove('is-checked');
+								i.checked = false;
+							}
+						});
+							
 						if(action) {
 							await label.addEventListener('dblclick',actionCallback(action,input));
 							await label.dispatchEvent(new Event('dblclick'));
