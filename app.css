@@ -1,3 +1,7 @@
+* {
+	list-style-type: none;
+}
+
 html,
 body {
     width   : 100%;
