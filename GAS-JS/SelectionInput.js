@@ -165,8 +165,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			
 			//create actual select;
 			let input = document.createElement('select');
-			input.className = 'ms-Dropdown-select';
-			input.name      = fieldName;
+				input.className = 'ms-Dropdown-select';
+				input.name      = fieldName;
+				inputWrap.append(input);
 			
 			//append options;
 			options.forEach(function(option){
@@ -179,18 +180,27 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				let opt = document.createElement('option');
 				opt.value       = value;
 				opt.textContent = text;
-				opt.selected    = toBoolean(selected);
+				opt.selected    = selected;
 				input.append(opt);
 			});
-			
-			//set optional parameters to input;
-			if(action) { input.addEventListener('change',actionCallback(action,input)); }
-			
-			//append input to wrapper;
-			inputWrap.append(input);
-			
-			//initiate Fabric;
-			new fabric['Dropdown'](inputWrap);
+		
+			//add event listener chain ( check/uncheck -> callback );
+			input.addEventListener('change',curry(action,input,label,options),false);
+			function curry(action,input,label,checked){
+				return async function(e) { 
+				
+					await 
+				
+						/*
+						await label.classList.toggle('is-checked');
+						
+						if(action) {
+							await inputWrap.addEventListener('dblclick',actionCallback(action,input));
+							await inputWrap.dispatchEvent(new Event('dblclick'));
+							await inputWrap.removeEventListener('dblclick',actionCallback);
+						}*/
+				}
+			}
 
 			break;
 	}
