@@ -174,6 +174,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					input.className = 'ms-RadioButton-input';
 					input.checked   = checked;
 					input.name      = fieldName;
+					input.value     = value;
 					inputWrap.append(input);
 					
 				inputs.push(input);
