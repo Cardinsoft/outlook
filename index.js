@@ -49,13 +49,13 @@ class Spinner {
 	setSize(size) {
 		if(size==='large') { 
 			this.size   = 'ms-Spinner--large';
-			this.circle = 'circle-185';
+			this.circle = 'circle-98';
 		}else if(size==='medium') {
 			this.size   = 'ms-Spinner--medium';
-			this.circle = 'circle-184';
+			this.circle = 'circle-99';
 		}else if(size==='small') {
 			this.size   = 'ms-Spinner--small';
-			this.circle = 'circle-183';
+			this.circle = 'circle-100';
 		}
 		return this;
 	}
