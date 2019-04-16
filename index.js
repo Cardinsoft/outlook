@@ -59,7 +59,7 @@ class Overlay {
 	}
 }
 Overlay.prototype.hide = function() {
-	this.element.parentNode.remove(this.element)
+	this.element.parentNode.remove(this.element);
 }
 
 
@@ -106,11 +106,13 @@ function actionCallback(action,element) {
 			const appBody = document.querySelector('#app-body');
 			const overlay = document.createElement('div');
 			appBody.append(overlay);
-			const spinner = document.createElement('div');
+			
+			//const spinner = document.createElement('div');
 
-			const o = new Overlay(appBody,overlay);
+			const o = new Overlay(overlay);
 			o.setColor('black');
 			o.show();
+			overlay.addEventListener('click',function(o) {return function(e){ o.hide(); } } );
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
