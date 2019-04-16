@@ -69,7 +69,7 @@ class Overlay {
 			}else { 
 				list.add('overlay-light'); 
 			}
-			list.style.backgroundColor = this.color;
+			c.style.backgroundColor = this.color;
 		}
 		return this;
 	}
