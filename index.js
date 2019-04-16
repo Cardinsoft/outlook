@@ -48,11 +48,9 @@ class Overlay {
 		this.color = color;
 		return this;
 	}
-	show(parent,child) {
+	show(child) {
 
 		if(this.color) { child.style.backgroundColor = this.color; }
-		
-		
 		
 		return this;
 	}
@@ -109,7 +107,7 @@ function actionCallback(action,element) {
 			
 			const o = new Overlay();
 			o.setColor('black');
-			o.show(p,c);
+			o.show(c);
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
