@@ -123,14 +123,10 @@ body {
 }
 
 .collapsible {
+	overflow                   : auto;
 	transition                 : max-height 1s;
 	-webkit-transition         : max-height 1s;
-	transition-timing-function : ease-out;
-}
-
-.collapsible {
-	overflow   : auto;
-	transition : max-height 1s linear;
+	transition-timing-function : linear;
 }
 
 .closed {
