@@ -49,10 +49,18 @@ class Overlay {
 		return this;
 	}
 	show() {
+		
+		const doc = GLOBAL.document;
+		
+		const parent = doc.querySelector('#app-body');
+		
+		const overlay = doc.createElement('div');
+		//if(this.color) { overlay.style.backgroundColor = this.color; }
+		
 		console.log(this);
 		console.log(GLOBAL);		
 		//let element = this.element;
-		//if(this.color) { element.style.backgroundColor = this.color; }
+		
 		return this;
 	}
 	hide() {
