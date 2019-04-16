@@ -52,7 +52,7 @@ class Overlay {
 
 		if(this.color) { child.style.backgroundColor = this.color; }
 		
-		parent.append(child);
+		
 		
 		return this;
 	}
@@ -105,6 +105,7 @@ function actionCallback(action,element) {
 			
 			const p = document.querySelector('#app-body');
 			const c = document.createElement('div');
+			p.append(c);
 			
 			const o = new Overlay();
 			o.setColor('black');
