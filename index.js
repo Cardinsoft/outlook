@@ -34,6 +34,37 @@ function trigger(obj) {
 	return cardOpen(e);
 }
 
+
+/**
+ * Creates an instance of Spinner;
+ */
+class Spinner() {
+	constructor(parent,element){
+		this.element;
+		this.className = 'ms-Spinner-circle';
+		this.size;
+		this.circle;
+	}
+	setSize(size) {
+		if(size==='large') { 
+			this.size   = 'ms-Spinner--large';
+			this.circle = 'circle-185';
+		}else if(size==='medium') {
+			this.size   = 'ms-Spinner--medium';
+			this.circle = 'circle-184';
+		}else if(size==='small') {
+			this.size   = 'ms-Spinner--small';
+			this.circle = 'circle-183';
+		}
+		return this;
+	}
+	build() {
+		parent.append(element);
+		return this;
+	}
+}
+
+
 /**
  * Initiates callback function and updates Ui;
  * @param {Action} action object with action config (function name, load indicator and parameters);
@@ -49,7 +80,18 @@ function actionCallback(action,element) {
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			const overlay = $('#app-overlay');
+			
+			const spinner = document.createElement('div');
+			spinner.className = ' circle-185 x-hidden-focus';
+			overlay.append(spinner);
 			//overlay.show();
+			
+			const s = new Spinner(overlay,spinner);
+			s.setSize('large');
+			s.build();
+			
+	
+			
 		}
 
 		//clear formInput and formInputs;
