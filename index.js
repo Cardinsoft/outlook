@@ -107,7 +107,7 @@ function actionCallback(action,element) {
 		if(loadIndicator!=='NONE') {
 			
 
-			const o = new Overlay($('#app-body');
+			const o = new Overlay($('#app-body'));
 			o.setColor('black');
 			
 			const s = new Spinner(o,'div');
