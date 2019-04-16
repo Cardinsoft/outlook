@@ -195,7 +195,15 @@ body {
     top      : 0;
     height   : 100%;
 	width    : 100%;
-    opacity  : 0.1;
+    
+}
+
+.overlay-dark {
+	opacity : 0.5;
+}
+
+.overlay-light {
+	opacity : 0.1;
 }
 
 .spinner {
