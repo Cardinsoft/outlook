@@ -104,7 +104,7 @@ function actionCallback(action,element) {
 		if(loadIndicator!=='NONE') {
 			
 			const p = document.querySelector('#app-body');
-			const c = documen.createElement('div');
+			const c = document.createElement('div');
 			
 			const o = new Overlay();
 			o.setColor('black');
