@@ -73,7 +73,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   sortConfig(config);
   
   //add Connectors representation;
-  await config.forEach(function(connector){
+  await config.forEach(async function(connector){
     //get required parameters;
     var type      = connector.type;
     var icon      = connector.icon;
@@ -110,7 +110,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     
     if(!manual) {
       //perform request and parse response if connector is not manual;
-      try { var response = cType.run(msg,connector); }
+      try { var response = await cType.run(msg,connector); }
       catch(error) {
 		console.error('Encountered an error while trying to run Connector type: %s',error);
         //temporary solution for uncaught 401 error;
