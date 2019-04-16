@@ -196,7 +196,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						const isLastChecked = input.checked&&inputs.every(function(i){ 
 							if(input!==i) { 
 								return i.checked===false; 
-							} 
+							}else {
+								return true;
+							}
 						});
 						
 						if(!isLastChecked) {
