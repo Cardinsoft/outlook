@@ -29,9 +29,22 @@ class e_UrlFetchApp {
 	}
 }
 e_UrlFetchApp.prototype.fetch = async function (url,params) {
-	let response = await makeRequest(url,params);
 	
-	console.log(response);
+	let response;
+	
+	//if muteHttpExceptions is provided -> handle errors;
+	if(params.muteHttpExceptions===true) {
+		
+		try {
+			response = await makeRequest(url,params);
+		}
+		catch(error) {
+			console.log(error);
+		}
+		
+	}else {
+		response = await makeRequest(url,params);
+	}	
 	
 	//check if response is an object and if it has properties;
 	const checkResp  = typeof response==='object';
@@ -77,19 +90,7 @@ function makeRequest(url,params) {
 				let value = hs[key];
 				if(value) { request.setRequestHeader(key,value); }
 			}
-		}
-		
-		//if muteHttpExceptions is provided -> handle errors;
-		if(params.muteHttpExceptions===true) {
-			request.onerror = function () {
-				
-				resolve({code:0,content:'',headers:{}});
-				
-			}
-		}
-		
-		
-		
+		}	
 		
 		//handle load event (set headers and resolve objects);
 		request.onload = function () {
