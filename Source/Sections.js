@@ -183,6 +183,9 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
     //set label and create widget representing connector;
     button = textButtonWidget(label,false,false,actionName,connector);
     widget = actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
+	
+	console.log(widget);
+	
     section.addWidget(widget);
   });
       
