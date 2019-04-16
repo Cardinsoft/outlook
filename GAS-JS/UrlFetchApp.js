@@ -44,7 +44,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 				response = error;
 			}else {
 				response = {
-					code    : 0,
+					code    : 400,
 					headers : {},
 					content : error.message
 				};
@@ -78,7 +78,8 @@ const UrlFetchApp = new e_UrlFetchApp();
 function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		
-		if(url==='') { throw new Error('WTF?'); }
+		//prefent defaulting to location.href and throw an error message;
+		if(url==='') { throw new Error('Attribute provided with no value: url'); }
 		
 		//default to GET method if no params provided;
 		if(!params) { params = {method : 'get'}; }
