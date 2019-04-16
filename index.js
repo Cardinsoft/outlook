@@ -44,19 +44,9 @@ class Spinner {
 		this.element   = element;
 		this.className = 'ms-Spinner-circle';
 		this.size;
-		this.circle;
 	}
 	setSize(size) {
-		if(size==='large') { 
-			this.size   = 'ms-Spinner--large';
-			this.circle = 'circle-98';
-		}else if(size==='medium') {
-			this.size   = 'ms-Spinner--medium';
-			this.circle = 'circle-99';
-		}else if(size==='small') {
-			this.size   = 'ms-Spinner--small';
-			this.circle = 'circle-100';
-		}
+		this.size = ['spinner',size];
 		return this;
 	}
 	build() {
@@ -66,7 +56,7 @@ class Spinner {
 		let size      = this.size;
 		let circle    = this.circle;
 		
-		element.className = [baseClass,size,circle].join(' ');
+		element.className = [baseClass,size.join(' ')].join(' ');
 		
 		parent.append(element);
 		return this;
