@@ -53,11 +53,11 @@ class Overlay {
 		let element = this.element;
 		
 		if(this.color) { element.style.backgroundColor = this.color; }
-		parent.append(element);
+		parent.appendChild(element);
 		return this;
 	}
 	hide() {
-		parent.remove(this.element);
+		parent.removeChild(this.element);
 		return this;
 	}
 }
@@ -85,7 +85,7 @@ class Spinner {
 		
 		element.className = [base,size].join(' ');
 		
-		parent.append(element);
+		parent.appendChild(element);
 		return this;
 	}
 }
