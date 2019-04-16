@@ -42,21 +42,20 @@ class Spinner {
 	constructor(parent,element){
 		this.parent    = parent;
 		this.element   = element;
-		this.className = 'ms-Spinner-circle';
+		this.className = 'spinner';
 		this.size;
 	}
 	setSize(size) {
-		this.size = ['spinner','spinner-'+size];
+		this.size = 'spinner-'+size;
 		return this;
 	}
 	build() {
-		let parent    = this.parent;
-		let element   = this.element;
-		let baseClass = this.className;
-		let size      = this.size;
-		let circle    = this.circle;
+		let parent  = this.parent;
+		let element = this.element;
+		let base    = this.className;
+		let size    = this.size;
 		
-		element.className = [baseClass,size.join(' ')].join(' ');
+		element.className = size.join(' ');
 		
 		parent.append(element);
 		return this;
