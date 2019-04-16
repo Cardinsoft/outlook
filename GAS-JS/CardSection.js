@@ -44,7 +44,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		header.textContent = headerText;
 		section.append(header);
 	}
-	
+	console.log(headerText);
 	//append widgets wrapper and handle collapsed Ui;
 	const widgetsWrap = document.createElement('div');
 	if(collapsible) { widgetsWrap.className = 'collapsible closed'; }
