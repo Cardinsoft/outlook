@@ -36,6 +36,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	}
 	section.dir = 'ltr';
 
+	console.log(this);
+	
 	//access header text and set section header if provided;
 	const headerText = this.header;
 	if(headerText&&headerText!=='') {
