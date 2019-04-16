@@ -40,8 +40,6 @@ function trigger(obj) {
  */
 class Overlay {
 	constructor() {
-		this.parent;
-		this.element;
 		this.className;
 		this.color;
 		this.tone;
@@ -57,8 +55,8 @@ class Overlay {
 	show(selector) {
 		const doc = GLOBAL.document;
 		
-		const p = doc.querySelector(selector);
-		const c = doc.createElement('div');
+		let p = doc.querySelector(selector);
+		let c = doc.createElement('div');
 		
 		p.append(c);
 		
@@ -73,14 +71,11 @@ class Overlay {
 			c.style.backgroundColor = this.color;
 		}
 		
-		this.parent  = p;
-		this.element = c;
-		
 		return this;
 	}
-	hide() {
-		let p = this.parent;
-		let c = this.element;
+	hide(selector) {
+		let p = doc.querySelector(selector);
+		let c = p.children.item(0);
 		
 		p.remove(c);
 
