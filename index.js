@@ -109,12 +109,11 @@ function actionCallback(action,element) {
 
 			const o = new Overlay($('#app-body'));
 			o.setColor('black');
+			o.show();
 			
 			const s = new Spinner(o,'div');
 			s.setSize('large');
 			s.build();
-			
-			o.show();
 			
 	
 			
