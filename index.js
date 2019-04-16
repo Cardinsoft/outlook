@@ -61,9 +61,10 @@ class Overlay {
 		const c = doc.createElement('div');
 		
 		this.parent  = p;
-		this.element = c;
 		
 		p.append(c);
+		
+		this.element = c;
 	
 		if(this.color) {
 			let list = c.classList;
