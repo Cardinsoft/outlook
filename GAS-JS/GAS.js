@@ -351,7 +351,6 @@ CardBuilder.prototype.addCardAction = function (action) {
 	return this;
 };
 CardBuilder.prototype.addSection = function (section) {
-	console.log(section);
 	this.sections.push(section);
 	return this;
 };
@@ -367,6 +366,8 @@ CardBuilder.prototype.build = function () {
 	const cardHeader   = this.cardHeader;
 	const cardSections = this.sections;
 	const cardAction   = this.action;
+	
+	console.log(cardSections)
 	
 	$('#main-Ui-header').empty();
 	$('#app-body').empty();
