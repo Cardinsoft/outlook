@@ -40,7 +40,8 @@ function trigger(obj) {
  */
 class Spinner {
 	constructor(parent,element){
-		this.element;
+		this.parent    = parent;
+		this.element   = element;
 		this.className = 'ms-Spinner-circle';
 		this.size;
 		this.circle;
@@ -59,6 +60,9 @@ class Spinner {
 		return this;
 	}
 	build() {
+		let parent  = this.parent;
+		let element = this.element;
+		
 		parent.append(element);
 		return this;
 	}
@@ -82,8 +86,6 @@ function actionCallback(action,element) {
 			const overlay = $('#app-overlay');
 			
 			const spinner = document.createElement('div');
-			spinner.className = ' circle-185 x-hidden-focus';
-			overlay.append(spinner);
 			//overlay.show();
 			
 			const s = new Spinner(overlay,spinner);
