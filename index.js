@@ -105,13 +105,9 @@ function actionCallback(action,element) {
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			const appBody = document.querySelector('#app-body');
-			const overlay = document.createElement('div');
-			appBody.append(overlay);
-			
 			//const spinner = document.createElement('div');
 
-			const o = new Overlay(overlay);
+			const o = new Overlay();
 			o.setColor('black');
 			o.show();
 			/*
