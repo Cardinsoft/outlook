@@ -73,8 +73,10 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   sortConfig(config);
   
   //add Connectors representation;
-  await config.forEach(async function(connector){
-    //get required parameters;
+  for(var key in config) {
+	  var connector = config[key];
+	  
+	//get required parameters;
     var type      = connector.type;
     var icon      = connector.icon;
     var name      = connector.name;
@@ -186,8 +188,10 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     button = textButtonWidget(label,false,false,actionName,connector);
     widget = actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
 	
-    await section.addWidget(widget);
-  });
+    await section.addWidget(widget);	  
+	  
+	  
+  }
       
   //append section and return it;   
   await builder.addSection(section);   
