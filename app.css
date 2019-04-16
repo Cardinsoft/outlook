@@ -144,8 +144,8 @@ body {
 .toggler {
 	margin : 8px 0;
 	width  : 100%;
-	transition                 : transform 1s;
-	-webkit-transition         : transform 1s;
+	transition                 : transform 0.5s;
+	-webkit-transition         : transform 0.5s;
 	transition-timing-function : linear;	
 }
 
