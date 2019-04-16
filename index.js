@@ -39,9 +39,9 @@ function trigger(obj) {
  * Creates an instance of Overlay;
  */
 class Overlay {
-	constructor(parent) {
+	constructor(parent,element) {
 		this.parent    = parent;
-		this.element   = document.createElement('div');
+		this.element   = element;
 		this.className = 'overlay';
 		this.color;
 	}
@@ -67,9 +67,9 @@ class Overlay {
  * Creates an instance of Spinner;
  */
 class Spinner {
-	constructor(parent,tag){
+	constructor(parent,element){
 		this.parent    = parent;
-		this.element   = document.createElement(tag);
+		this.element   = element;
 		this.className = 'spinner';
 		this.size;
 	}
@@ -107,12 +107,14 @@ function actionCallback(action,element) {
 		if(loadIndicator!=='NONE') {
 			
 			const appBody = document.querySelector('#app-body');
+			const overlay = document.createElement('div');
+			const spinner = document.createElement('div');
 
-			const o = new Overlay(appBody);
+			const o = new Overlay(appBody,overlay);
 			o.setColor('black');
 			o.show();
 			
-			const s = new Spinner(o,'div');
+			const s = new Spinner(o,spinner);
 			s.setSize('large');
 			s.build();
 			
