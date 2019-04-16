@@ -47,7 +47,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	//append widgets wrapper and handle collapsed Ui;
 	const widgetsWrap = document.createElement('div');
-	if(collapsible) { widgetsWrap.className = 'closed'; }
+	if(collapsible) { widgetsWrap.className = 'collapsible closed'; }
 	section.append(widgetsWrap);
 	
 	//set wrapper to widgets wrapper;
@@ -99,7 +99,6 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			classes.toggle('ms-Icon--ChevronUp');
 			
 			const widgetsClasses = widgetsWrap.classList;
-			widgetsClasses.add('collapsible');
 			widgetsClasses.toggle('closed');
 			widgetsClasses.toggle('opened');
 			
