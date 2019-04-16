@@ -203,7 +203,7 @@ function actionCallback(action,element) {
 		await GLOBAL[functionName](e,element);
 		
 		if(loadIndicator!=='NONE') {
-			o.hide();
+			o.hide('#app-overlay');
 		}
 		
 	}
