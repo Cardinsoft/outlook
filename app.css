@@ -128,8 +128,12 @@ body {
 	transition-timing-function : ease-out;
 }
 
-.closed {
+.collapsible {
 	overflow   : hidden;
+	transition : max-height 1s linear;
+}
+
+.closed {
 	max-height : 0px;
 }
 

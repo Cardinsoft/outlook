@@ -99,6 +99,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			classes.toggle('ms-Icon--ChevronUp');
 			
 			const widgetsClasses = widgetsWrap.classList;
+			widgetsClasses.add('collapsible');
 			widgetsClasses.toggle('closed');
 			widgetsClasses.toggle('opened');
 			
