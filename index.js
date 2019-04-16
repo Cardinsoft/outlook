@@ -49,19 +49,17 @@ class Overlay {
 		return this;
 	}
 	show() {
+		console.log(this);
+		console.log(GLOBAL);		
 		//let element = this.element;
 		//if(this.color) { element.style.backgroundColor = this.color; }
 		return this;
 	}
 	hide() {
+
 		//parent.remove(this.element);
 		return this;
 	}
-}
-Overlay.prototype.hide = function() {
-	console.log(this);
-	console.log(GLOBAL);
-	//this.element.parentNode.remove(this.element);
 }
 
 
