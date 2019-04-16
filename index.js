@@ -55,7 +55,8 @@ class Overlay {
 		const parent = doc.querySelector('#app-body');
 		
 		const overlay = doc.createElement('div');
-		//if(this.color) { overlay.style.backgroundColor = this.color; }
+		if(this.color) { overlay.style.backgroundColor = this.color; }
+		parent.append(overlay);
 		
 		console.log(this);
 		console.log(GLOBAL);		
