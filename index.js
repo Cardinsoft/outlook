@@ -101,7 +101,7 @@ function actionCallback(action,element) {
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			const p = document.querySelector('#app-body');
+			const p = document.querySelector('#app-overlay');
 			const c = document.createElement('div');
 			p.append(c);
 			
