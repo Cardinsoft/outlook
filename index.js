@@ -43,13 +43,17 @@ class Overlay {
 		this.element;
 		this.className;
 		this.color;
+		this.tone;
 	}
 	setColor(color) {
 		this.color = color;
 		return this;
 	}
+	setTone(tone) {
+		this.tone = tone;
+		return this;
+	}
 	show(selector) {
-
 		const doc = GLOBAL.document;
 		
 		const p = doc.querySelector(selector);
@@ -57,11 +61,16 @@ class Overlay {
 		
 		p.append(c);
 	
-		if(this.color) { 
-			c.className = 'overlay';
+		if(this.color) {
+			let list = c.classList;
+			list.add('overlay');
+			if(this.tone) { 
+				c.add('overlay-'+this.tone); 
+			}else { 
+				c.add('overlay-light'); 
+			}
 			c.style.backgroundColor = this.color;
 		}
-		
 		return this;
 	}
 	hide() {
