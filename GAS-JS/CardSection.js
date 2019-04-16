@@ -35,8 +35,6 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		section.className = this.className;
 	}
 	section.dir = 'ltr';
-
-	console.log(this);
 	
 	//access header text and set section header if provided;
 	const headerText = this.header;
@@ -46,7 +44,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		header.textContent = headerText;
 		section.append(header);
 	}
-	console.log(headerText);
+
 	//append widgets wrapper and handle collapsed Ui;
 	const widgetsWrap = document.createElement('div');
 	if(collapsible) { widgetsWrap.className = 'collapsible closed'; }
@@ -54,11 +52,9 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	//set wrapper to widgets wrapper;
 	let wrapper = widgetsWrap;
-	console.log(wrapper);
+
 	//access widgets and append;
 	const widgets = this.widgets;
-	console.log(widgets);
-	console.log(widgets.length);
 	
 	if(widgets.length!==0) {
 
