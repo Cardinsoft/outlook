@@ -108,13 +108,9 @@ function actionCallback(action,element) {
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			const p = document.querySelector('#app-overlay');
-			const c = document.createElement('div');
-			p.append(c);
-			
 			const o = new Overlay();
 			o.setColor('black');
-			o.show(c);
+			o.show('#app-overlay');
 			
 			console.log(o);
 			/*
