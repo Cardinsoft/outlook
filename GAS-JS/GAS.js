@@ -367,8 +367,6 @@ CardBuilder.prototype.build = function () {
 	const cardSections = this.sections;
 	const cardAction   = this.action;
 	
-	console.log(cardSections)
-	
 	$('#main-Ui-header').empty();
 	$('#app-body').empty();
 	
