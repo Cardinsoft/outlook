@@ -36,12 +36,40 @@ function trigger(obj) {
 
 
 /**
+ * Creates an instance of Overlay;
+ */
+class Overlay {
+	constructor(parent) {
+		this.parent    = parent;
+		this.element   = document.createElement('div');
+		this.className = 'overlay';
+		this.color;
+	}
+	setColor(color) {
+		this.color = color;
+		return this;
+	}
+	show() {
+		let element = this.element;
+		
+		if(this.color) { element.style.backgroundColor = this.color; }
+		parent.append(element);
+		return this;
+	}
+	hide() {
+		parent.remove(this.element);
+		return this;
+	}
+}
+
+
+/**
  * Creates an instance of Spinner;
  */
 class Spinner {
-	constructor(parent,element){
+	constructor(parent,tag){
 		this.parent    = parent;
-		this.element   = element;
+		this.element   = document.createElement(tag);
 		this.className = 'spinner';
 		this.size;
 	}
@@ -77,14 +105,16 @@ function actionCallback(action,element) {
 		
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
-			const overlay = $('#app-overlay');
 			
-			const spinner = document.createElement('div');
-			//overlay.show();
+
+			const o = new Overlay($('#app-body');
+			o.setColor('black');
 			
-			const s = new Spinner(overlay,spinner);
+			const s = new Spinner(o,'div');
 			s.setSize('large');
 			s.build();
+			
+			o.show();
 			
 	
 			

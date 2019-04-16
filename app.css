@@ -190,6 +190,11 @@ body {
 	to { transform: rotate(360deg); }
 }
 
+.overlay {
+	position : absolute;
+    top      : 8%;
+}
+
 .spinner {
 	box-sizing                : border-box;
     animation-name            : spin;
