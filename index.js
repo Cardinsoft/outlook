@@ -65,11 +65,11 @@ class Overlay {
 			let list = c.classList;
 			list.add('overlay');
 			if(this.tone) { 
-				c.add('overlay-'+this.tone); 
+				list.add('overlay-'+this.tone); 
 			}else { 
-				c.add('overlay-light'); 
+				list.add('overlay-light'); 
 			}
-			c.style.backgroundColor = this.color;
+			list.style.backgroundColor = this.color;
 		}
 		return this;
 	}
