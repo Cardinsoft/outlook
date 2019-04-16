@@ -55,7 +55,7 @@ class Spinner {
 		let base    = this.className;
 		let size    = this.size;
 		
-		element.className = size.join(' ');
+		element.className = [base,size].join(' ');
 		
 		parent.append(element);
 		return this;
