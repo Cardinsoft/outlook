@@ -333,6 +333,10 @@ function actionShow(e) {
 		  //handle failed responses;
 		  if(code<200||code>=300) {
 			e.parameters.content  = '[]';
+		  }else {
+			  
+			console.log(e);
+			  
 		  }
 		  
 		  //set data state change and navigate to display card;
