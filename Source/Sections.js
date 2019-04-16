@@ -138,6 +138,8 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
         //handle successful requests;
         content = parseData(content);
         var length = content.length;
+		
+		console.log(content);
         
         if(hasMatch) {
           
