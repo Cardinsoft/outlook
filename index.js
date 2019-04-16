@@ -59,7 +59,7 @@ class Overlay {
 		parent.append(overlay);
 		
 		console.log(this);
-		console.log(GLOBAL);		
+		console.log(GLOBAL.document);		
 		//let element = this.element;
 		
 		return this;
