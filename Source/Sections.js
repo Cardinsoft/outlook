@@ -73,7 +73,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   sortConfig(config);
   
   //add Connectors representation;
-  config.forEach(function(connector){
+  await config.forEach(async function(connector){
     //get required parameters;
     var type      = connector.type;
     var icon      = connector.icon;
