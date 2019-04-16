@@ -108,6 +108,8 @@ function actionCallback(action,element) {
 			const o = new Overlay();
 			o.setColor('black');
 			o.show(c);
+			
+			console.log(o);
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
