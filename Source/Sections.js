@@ -59,7 +59,7 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
  * @param {GmailMessage} msg current meassge object;
  * @returns {CardSection}
  */
-function createConnectorListSection(builder,isCollapsed,header,config,msg) {
+async function createConnectorListSection(builder,isCollapsed,header,config,msg) {
 
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -110,7 +110,7 @@ function createConnectorListSection(builder,isCollapsed,header,config,msg) {
     
     if(!manual) {
       //perform request and parse response if connector is not manual;
-      try { var response = cType.run(msg,connector); }
+      try { var response = await cType.run(msg,connector); }
       catch(error) {
 		console.error('Encountered an error while trying to run Connector type: %s',error);
         //temporary solution for uncaught 401 error;
