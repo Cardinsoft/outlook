@@ -94,9 +94,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		section.append(toggler);
 		
 		toggler.addEventListener('click',function(e) {
-			const classes = this.classList;			
-			//classes.toggle('ms-Icon--ChevronDown');
-			//classes.toggle('ms-Icon--ChevronUp');
+			const classes = this.classList;		
+			classes.toggle('toggler-up');
 			
 			const widgetsClasses = widgetsWrap.classList;
 			widgetsClasses.toggle('closed');
