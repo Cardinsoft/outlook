@@ -315,7 +315,7 @@ async function cardDisplay(e) {
     
   //create Connectors representation for those that are left;
   if(config.length!==0) {
-    createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
+    await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
   }
   
   return builder.build();
