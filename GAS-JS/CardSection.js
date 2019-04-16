@@ -58,10 +58,10 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	console.log(widgets);
 	
+	console.log(widgets.length);
+	
 	if(widgets.length!==0) {
-		
-		try {
-			
+
 		//check if at least one widget is a form input;
 		const hasInput = widgets.some(function(widget){ 
 			
@@ -92,10 +92,6 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			widget.appendToUi(wrapper,index);
 		});
 		
-		}
-		catch(e) {
-			console.log(e)
-		}
 	}
 
 	if(collapsible) {
