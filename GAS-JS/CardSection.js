@@ -60,6 +60,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	if(widgets.length!==0) {
 		
+		try {
+			
 		//check if at least one widget is a form input;
 		const hasInput = widgets.some(function(widget){ 
 			
@@ -83,8 +85,6 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			widgetsWrap.append(formElem);
 			wrapper = formElem;
 		}
-		
-		try {
 		
 		//append widgets to Ui;
 		widgets.forEach(function(widget,index){
