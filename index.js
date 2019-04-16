@@ -60,12 +60,8 @@ class Overlay {
 		const p = doc.querySelector(selector);
 		const c = doc.createElement('div');
 		
-		this.parent  = p;
-		
 		p.append(c);
 		
-		this.element = c;
-	
 		if(this.color) {
 			let list = c.classList;
 			list.add('overlay');
@@ -76,6 +72,10 @@ class Overlay {
 			}
 			c.style.backgroundColor = this.color;
 		}
+		
+		this.parent  = p;
+		this.element = c;
+		
 		return this;
 	}
 	hide() {
