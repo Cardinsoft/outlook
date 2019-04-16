@@ -79,6 +79,19 @@ function makeRequest(url,params) {
 			}
 		}
 		
+		//if muteHttpExceptions is provided -> handle errors;
+		if(params.muteHttpExceptions===true) {
+			request.onerror = function () {
+				
+				resolve({code:0,content:'',headers:{}});
+				
+			}
+		}
+		
+		
+		
+		
+		//handle load event (set headers and resolve objects);
 		request.onload = function () {
 			let status     = request.status;
 			let response   = request.response;
@@ -102,7 +115,8 @@ function makeRequest(url,params) {
 				reject(obj);
 			}
 		}
-			
+		
+		//handle timeout event;
 		request.ontimeout = function () {
 			let statusText = request.statusText; 
 			resolve(statusText);
