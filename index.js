@@ -39,8 +39,7 @@ function trigger(obj) {
  * Creates an instance of Overlay;
  */
 class Overlay {
-	constructor(parent,element) {
-		this.parent    = parent;
+	constructor(element) {
 		this.element   = element;
 		this.className = 'overlay';
 		this.color;
@@ -51,15 +50,16 @@ class Overlay {
 	}
 	show() {
 		let element = this.element;
-		
 		if(this.color) { element.style.backgroundColor = this.color; }
-		parent.append(element);
-		return element;
+		return this;
 	}
 	hide() {
 		parent.remove(this.element);
 		return this;
 	}
+}
+Overlay.prototype.hide = function() {
+	this.element.parentNode.remove(this.element)
 }
 
 
@@ -67,7 +67,7 @@ class Overlay {
  * Creates an instance of Spinner;
  */
 class Spinner {
-	constructor(parent,element){
+	constructor(element){
 		this.parent    = parent;
 		this.element   = element;
 		this.className = 'spinner';
@@ -78,14 +78,11 @@ class Spinner {
 		return this;
 	}
 	build() {
-		let parent  = this.parent;
 		let element = this.element;
 		let base    = this.className;
 		let size    = this.size;
 		
 		element.className = [base,size].join(' ');
-		
-		parent.append(element);
 		return this;
 	}
 }
@@ -108,6 +105,7 @@ function actionCallback(action,element) {
 			
 			const appBody = document.querySelector('#app-body');
 			const overlay = document.createElement('div');
+			appBody.append(overlay);
 			const spinner = document.createElement('div');
 
 			const o = new Overlay(appBody,overlay);
