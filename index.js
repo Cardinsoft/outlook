@@ -39,9 +39,9 @@ function trigger(obj) {
  * Creates an instance of Overlay;
  */
 class Overlay {
-	constructor(element) {
-		this.element   = element;
-		this.className = 'overlay';
+	constructor() {
+		this.element;
+		this.className;
 		this.color;
 	}
 	setColor(color) {
@@ -49,17 +49,19 @@ class Overlay {
 		return this;
 	}
 	show() {
-		let element = this.element;
-		if(this.color) { element.style.backgroundColor = this.color; }
+		//let element = this.element;
+		//if(this.color) { element.style.backgroundColor = this.color; }
 		return this;
 	}
 	hide() {
-		parent.remove(this.element);
+		//parent.remove(this.element);
 		return this;
 	}
 }
 Overlay.prototype.hide = function() {
-	this.element.parentNode.remove(this.element);
+	console.log(this);
+	console.log(GLOBAL);
+	//this.element.parentNode.remove(this.element);
 }
 
 
@@ -112,7 +114,6 @@ function actionCallback(action,element) {
 			const o = new Overlay(overlay);
 			o.setColor('black');
 			o.show();
-			overlay.addEventListener('dblclick',function(o) {return function(e){ o.hide(); } } );
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
