@@ -80,7 +80,7 @@ class Overlay {
 	}
 	hide() {
 		let p = this.parent;
-		let c = this.child;
+		let c = this.element;
 		
 		p.remove(c);
 
