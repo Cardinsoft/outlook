@@ -82,14 +82,14 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
-var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
-var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
+var globalCardinUrl                  = 'https://cardinsoft.com/';
+var globalCardinIconUrl              = 'https://cardinsoft.github.io/outlook/assets/cardin-logo.png';
+var globalCustomIconUrl              = 'https://cardinsoft.github.io/outlook/assets/custom.png';
 var globalFlowIconUrl                = 'https://cardinsoft.github.io/outlook/assets/flow.png';
 var globalGitHubIconUrl              = 'https://cardinsoft.github.io/outlook/assets/github.png';
-var globalInfusionIconUrl            = 'https://cardinsoft.com/wp-content/uploads/2019/03/infusionsoft.png';
+var globalInfusionIconUrl            = 'https://cardinsoft.github.io/outlook/assets/infusionsoft.png';
 var globalPipedriveIconUrl           = 'https://cardinsoft.github.io/outlook/assets/Pipedrive.png';
-var globalSheetsIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/sheets.png';
+var globalSheetsIconUrl              = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
 var globalYouTubeUrl                 = 'https://youtube.com/';
 
 //notifications, warnings and error messages
