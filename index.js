@@ -60,8 +60,11 @@ class Spinner {
 		return this;
 	}
 	build() {
-		let parent  = this.parent;
-		let element = this.element;
+		let parent    = this.parent;
+		let element   = this.element;
+		let baseClass = this.className;
+		
+		element.className = [baseClass,size,circle].join(' ');
 		
 		parent.append(element);
 		return this;
