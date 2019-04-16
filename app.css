@@ -144,6 +144,12 @@ body {
 .toggler {
 	margin : 8px 0;
 	width  : 100%;
+	-webkit-transition         : transform 1s;
+	transition-timing-function : linear;	
+}
+
+.toggler-up {
+	transform: rotate(20deg);
 }
 
 .navbar {
