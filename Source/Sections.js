@@ -190,7 +190,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   });
       
   //append section and return it;   
-  await builder.addSection(section);   
+  builder.addSection(section);   
   return section;
 }
 
