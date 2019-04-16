@@ -57,7 +57,7 @@ class Overlay {
 		
 		p.append(c);
 	
-		if(this.color) { child.style.backgroundColor = this.color; }
+		if(this.color) { c.style.backgroundColor = this.color; }
 		
 		return this;
 	}
