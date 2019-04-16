@@ -40,6 +40,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 		}
 		catch(error) {
 			console.log(error);
+			await response = error;
 		}
 		
 	}else {
