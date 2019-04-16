@@ -54,7 +54,7 @@ class Overlay {
 		
 		if(this.color) { element.style.backgroundColor = this.color; }
 		parent.append(element);
-		return this;
+		return element;
 	}
 	hide() {
 		parent.remove(this.element);
@@ -113,11 +113,11 @@ function actionCallback(action,element) {
 			const o = new Overlay(appBody,overlay);
 			o.setColor('black');
 			o.show();
-			
+			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
 			s.build();
-			
+			*/
 	
 			
 		}
