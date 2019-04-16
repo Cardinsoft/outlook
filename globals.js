@@ -85,10 +85,10 @@ var globalUpdateShowText             = 'Update';
 var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
-var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
-var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
+var globalFlowIconUrl                = 'https://cardinsoft.github.io/outlook/assets/flow.png';
+var globalGitHubIconUrl              = 'https://cardinsoft.github.io/outlook/assets/github.png';
 var globalInfusionIconUrl            = 'https://cardinsoft.com/wp-content/uploads/2019/03/infusionsoft.png';
-var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
+var globalPipedriveIconUrl           = 'https://cardinsoft.github.io/outlook/assets/Pipedrive.png';
 var globalSheetsIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/sheets.png';
 var globalYouTubeUrl                 = 'https://youtube.com/';
 
