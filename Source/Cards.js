@@ -411,7 +411,7 @@ async function cardOpen(e) {
       }
     
       //perform request and parse response if connector is not manual;
-      try { var response = cType.run(msg,def); }
+      try { var response = await cType.run(msg,def); }
       catch(error) {
         //temporary solution for uncaught 401 error;
         var response = {headers:'', content:error.message};
