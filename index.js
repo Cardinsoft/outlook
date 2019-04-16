@@ -38,7 +38,7 @@ function trigger(obj) {
 /**
  * Creates an instance of Spinner;
  */
-class Spinner() {
+class Spinner {
 	constructor(parent,element){
 		this.element;
 		this.className = 'ms-Spinner-circle';
