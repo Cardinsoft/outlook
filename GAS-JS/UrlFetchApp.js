@@ -40,7 +40,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 		catch(error) {
 			console.log(error);
 			
-			if(typeof error==='object') {
+			if(!error instanceof Error) {
 				response = error;
 			}else {
 				response = {
