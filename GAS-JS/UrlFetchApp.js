@@ -69,6 +69,7 @@ function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		
 		console.log(url);
+		console.log(typeof url);
 		
 		//default to GET method if no params provided;
 		if(!params) { params = {method : 'get'}; }
