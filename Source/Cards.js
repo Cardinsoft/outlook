@@ -457,7 +457,7 @@ async function cardOpen(e) {
       
         //build section with a list of configured Connectors;
         try {
-          createConnectorListSection(builder,false,'',config,msg);
+          await createConnectorListSection(builder,false,'',config,msg);
         }
         catch(er) {
           //log error to stackdriver and build Connectors list error section;

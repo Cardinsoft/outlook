@@ -188,11 +188,9 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
 	
     await section.addWidget(widget);
   });
-  
-  console.log(section);
       
   //append section and return it;   
-  builder.addSection(section);   
+  await builder.addSection(section);   
   return section;
 }
 
