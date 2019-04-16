@@ -324,7 +324,7 @@ function actionEdit(e) {
  */
 function actionShow(e) {
 	return new Promise(
-		function (resolve) {
+		async function (resolve) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 			  
@@ -336,7 +336,7 @@ function actionShow(e) {
 		  }
 		  
 		  //set data state change and navigate to display card;
-		  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
 		}
