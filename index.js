@@ -58,7 +58,6 @@ class Overlay {
 		if(this.color) { overlay.style.backgroundColor = this.color; }
 		parent.append(overlay);
 		
-		console.log(this);
 		console.log(GLOBAL.document);		
 		//let element = this.element;
 		
