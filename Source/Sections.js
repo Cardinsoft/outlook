@@ -186,8 +186,10 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
 	
 	console.log(widget);
 	
-    section.addWidget(widget);
+    await section.addWidget(widget);
   });
+  
+  console.log(section);
       
   //append section and return it;   
   builder.addSection(section);   
