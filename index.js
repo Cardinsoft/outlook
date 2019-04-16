@@ -48,8 +48,15 @@ class Overlay {
 		this.color = color;
 		return this;
 	}
-	show(child) {
+	show(selector) {
 
+		const doc = GLOBAL.document;
+		
+		const p = doc.querySelector(selector);
+		const c = doc.createElement('div');
+		
+		p.append(c);
+	
 		if(this.color) { child.style.backgroundColor = this.color; }
 		
 		return this;
