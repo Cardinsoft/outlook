@@ -84,11 +84,18 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 			wrapper = formElem;
 		}
 		
+		try {
+		
 		//append widgets to Ui;
 		widgets.forEach(function(widget,index){
 			console.log(widget);
 			widget.appendToUi(wrapper,index);
 		});
+		
+		}
+		catch(e) {
+			console.log(e)
+		}
 	}
 
 	if(collapsible) {
