@@ -63,6 +63,8 @@ class Spinner {
 		let parent    = this.parent;
 		let element   = this.element;
 		let baseClass = this.className;
+		let size      = this.size;
+		let circle    = this.circle;
 		
 		element.className = [baseClass,size,circle].join(' ');
 		
