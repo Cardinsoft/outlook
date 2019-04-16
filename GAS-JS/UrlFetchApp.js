@@ -68,8 +68,7 @@ const UrlFetchApp = new e_UrlFetchApp();
 function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		
-		console.log(url);
-		console.log(typeof url);
+		if(url==='') { throw new Error('WTF?'); }
 		
 		//default to GET method if no params provided;
 		if(!params) { params = {method : 'get'}; }
