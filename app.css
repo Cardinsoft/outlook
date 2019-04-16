@@ -129,7 +129,7 @@ body {
 }
 
 .collapsible {
-	overflow   : hidden;
+	overflow   : auto;
 	transition : max-height 1s linear;
 }
 
