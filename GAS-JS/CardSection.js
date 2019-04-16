@@ -52,7 +52,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 	//set wrapper to widgets wrapper;
 	let wrapper = widgetsWrap;
-	
+	console.log(wrapper);
 	//access widgets and append;
 	const widgets = this.widgets;
 	console.log(widgets);
