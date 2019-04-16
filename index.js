@@ -57,7 +57,10 @@ class Overlay {
 		
 		p.append(c);
 	
-		if(this.color) { c.style.backgroundColor = this.color; }
+		if(this.color) { 
+			c.className = 'overlay';
+			c.style.backgroundColor = this.color;
+		}
 		
 		return this;
 	}
