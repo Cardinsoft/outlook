@@ -48,25 +48,16 @@ class Overlay {
 		this.color = color;
 		return this;
 	}
-	show() {
+	show(parent,child) {
+
+		if(this.color) { child.style.backgroundColor = this.color; }
 		
-		const doc = GLOBAL.document;
-		
-		const parent = doc.querySelector('#app-body');
-		
-		const over = doc.createElement('div');
-		if(this.color) { over.style.backgroundColor = this.color; }
-		parent.appendChild(over);
-		
-		console.log(over);
-		console.log(parent);		
-		//let element = this.element;
+		parent.append(child);
 		
 		return this;
 	}
 	hide() {
 
-		//parent.remove(this.element);
 		return this;
 	}
 }
@@ -112,11 +103,12 @@ function actionCallback(action,element) {
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			//const spinner = document.createElement('div');
-
+			const p = document.querySelector('#app-body');
+			const c = documen.createElement('div');
+			
 			const o = new Overlay();
 			o.setColor('black');
-			o.show();
+			o.show(p,c);
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
