@@ -112,7 +112,7 @@ function actionCallback(action,element) {
 			const o = new Overlay(overlay);
 			o.setColor('black');
 			o.show();
-			overlay.addEventListener('click',function(o) {return function(e){ o.hide(); } } );
+			overlay.addEventListener('dblclick',function(o) {return function(e){ o.hide(); } } );
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
