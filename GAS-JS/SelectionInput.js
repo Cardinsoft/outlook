@@ -192,15 +192,24 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				function curry(action,input,label,checked){
 					return async function(e) { 
 						
-						await inputs.forEach(function(i,index){
-							if(input===i&&!input.checked) { 
-								labels[index].classList.add('is-checked');
-								i.checked = true;
-							}else {
-								labels[index].classList.remove('is-checked');
-								i.checked = false;
-							}
+						//check if every other radio button is switched off;
+						const isLastChecked = input.checked&&inputs.every(function(i){ 
+							if(input!==i) { 
+								return i.checked===false; 
+							} 
 						});
+						
+						if(!isLastChecked) {
+							await inputs.forEach(function(i,index){
+								if(input===i&&!input.checked) { 
+									labels[index].classList.add('is-checked');
+									i.checked = true;
+								}else {
+									labels[index].classList.remove('is-checked');
+									i.checked = false;
+								}
+							});
+						}
 							
 						if(action) {
 							await label.addEventListener('dblclick',actionCallback(action,input));
