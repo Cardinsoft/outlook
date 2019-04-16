@@ -46,7 +46,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 				response = {
 					code    : 0,
 					headers : {},
-					content : error,
+					content : error
 				};
 			}
 			
