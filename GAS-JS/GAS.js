@@ -351,6 +351,7 @@ CardBuilder.prototype.addCardAction = function (action) {
 	return this;
 };
 CardBuilder.prototype.addSection = function (section) {
+	console.log(section);
 	this.sections.push(section);
 	return this;
 };
