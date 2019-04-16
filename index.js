@@ -40,6 +40,7 @@ function trigger(obj) {
  */
 class Overlay {
 	constructor() {
+		this.parent;
 		this.element;
 		this.className;
 		this.color;
@@ -59,6 +60,9 @@ class Overlay {
 		const p = doc.querySelector(selector);
 		const c = doc.createElement('div');
 		
+		this.parent  = p;
+		this.element = c;
+		
 		p.append(c);
 	
 		if(this.color) {
@@ -74,6 +78,10 @@ class Overlay {
 		return this;
 	}
 	hide() {
+		let p = this.parent;
+		let c = this.child;
+		
+		p.remove(c);
 
 		return this;
 	}
@@ -117,14 +125,15 @@ function actionCallback(action,element) {
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
+		let o;
+		
 		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			const o = new Overlay();
+			o = new Overlay();
 			o.setColor('black');
 			o.show('#app-overlay');
-			
-			console.log(o);
+
 			/*
 			const s = new Spinner(o,spinner);
 			s.setSize('large');
@@ -197,7 +206,9 @@ function actionCallback(action,element) {
 		//invoke callback and await response;
 		await GLOBAL[functionName](e,element);
 		
-		//$('#app-overlay').hide();
+		if(loadIndicator!=='NONE') {
+			o.hide();
+		}
 		
 	}
 }
