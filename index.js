@@ -287,8 +287,8 @@ function expand(trigger,element,delay,increment) {
         var bB = +childComp.borderWidth.replace('px','');
         var pT = +childComp.paddingTop.replace('px','');
         var pB = +childComp.paddingBottom.replace('px','');
-        var mT = +childComp.marginTop.replace('px','');
-        var mB = +childComp.marginBottom.replace('px','');        
+        var mT = 0//+childComp.marginTop.replace('px','');
+        var mB = 0//+childComp.marginBottom.replace('px','');        
         
         var isBB = overlayComp['box-sizing']==='border-box';
 
