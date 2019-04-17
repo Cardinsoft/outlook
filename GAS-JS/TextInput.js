@@ -78,6 +78,19 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.name      = fieldName;
 	
 	//set optional parameters to input;
+	if(action) {
+		input.addEventListener('focusout',curry(action,input),false);
+		function curry(action){
+			return async function(e) { 	
+				await input.addEventListener('dblclick',actionCallback(action));
+				await input.dispatchEvent(new Event('dblclick'));
+				await input.removeEventListener('dblclick',actionCallback);
+			}
+		}
+	}
+	
+	
+	
 	if(action) { 
 		input.addEventListener('focusout',actionCallback(action,input)); 
 	}
