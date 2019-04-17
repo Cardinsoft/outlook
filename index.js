@@ -11,9 +11,14 @@ Office.initialize = (reason) => {
 			o.setTone('dark');
 			o.show('#app-overlay');
 			
+			let s = new Spinner();
+			s.setSize('large');
+			s.show();
+			
 			await universalHome(e);
 			
 			o.hide('#app-overlay');
+			s.hide();
 			
 		});
 		
@@ -24,9 +29,14 @@ Office.initialize = (reason) => {
 			o.setTone('dark');
 			o.show('#app-overlay');			
 			
+			let s = new Spinner();
+			s.setSize('large');
+			s.show();			
+			
 			await universalSettings(e);
 			
 			o.hide('#app-overlay');
+			s.hide();
 			
 		});
 		
@@ -35,11 +45,16 @@ Office.initialize = (reason) => {
 			let o = new Overlay();
 			o.setColor('white');
 			o.setTone('dark');
-			o.show('#app-overlay');				
+			o.show('#app-overlay');		
+
+			let s = new Spinner();
+			s.setSize('large');
+			s.show();			
 			
 			await universalHelp(e);
 			
 			o.hide('#app-overlay');
+			s.hide();
 			
 		});
 		
