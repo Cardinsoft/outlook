@@ -260,6 +260,69 @@ function actionCallback(action,element) {
 }
 //=========================================END CALLBACKS========================================//
 
+/**
+ * Expands or collapses element;
+ * @param {HtmlElement} trigger element trggering event;
+ * @param {Htmlelement} element element to toggle;
+ * @param {Integer} speed animation speed;
+ */
+function expand(trigger,element,speed) {
+	return function() {
+      trigger.disabled = true;
+      
+      var overlayComp  = window.getComputedStyle(element);
+      var overlayStyle = element.style;
+      var overlayCompHeight = +overlayComp.height.replace('px','');
+      
+      //set full height;
+      var fullHeight = 0;
+      var children = element.children;
+      for(var i=0; i<children.length; i++) {
+      	var child     = children.item(i);
+        var childComp = window.getComputedStyle(child);
+        
+        var h  = +childComp.height.replace('px','');
+        var bT = +childComp.borderWidth.replace('px','');
+        var bB = +childComp.borderWidth.replace('px','');
+        var pT = +childComp.paddingTop.replace('px','');
+        var pB = +childComp.paddingBottom.replace('px','');
+        var mT = +childComp.marginTop.replace('px','');
+        var mB = +childComp.marginBottom.replace('px','');        
+        
+        var isBB = overlayComp['box-sizing']==='border-box';
+
+        if(!isBB) { fullHeight += h+bT+bB+pT+pB+mT+mB; }else { fullHeight += h; }
+      }
+     
+      var int;
+
+      if(overlayCompHeight>0) {
+          element.style.height = overlayCompHeight+'px';
+          int = setInterval(function(){
+            var overlayHeight = +element.style.height.replace('px','');
+            if(overlayHeight>0) { 
+              element.style.height = (overlayHeight-1)+'px';
+            }else {
+              clearInterval(int);
+              trigger.disabled = false;
+            }
+          },speed);
+
+      }else {
+          element.style.height = 0;
+          int = setInterval(function(){
+            var overlayHeight = +element.style.height.replace('px','');
+            if(overlayHeight<fullHeight) { 
+              element.style.height = (overlayHeight+1)+'px';
+            }else {
+              clearInterval(int);
+              trigger.disabled = false;
+            }
+          },speed);
+      }
+	} 
+}
+
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
 class e_EventObject {
