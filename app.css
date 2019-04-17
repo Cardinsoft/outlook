@@ -94,10 +94,6 @@ body {
 	word-break : break-word;
 }
 
-form {
-	min-height : 35px;
-}
-
 .row {
 	display     : flex;
 	align-items : center;
@@ -129,7 +125,6 @@ form {
 
 .collapsible {
 	overflow : hidden;
-	height   : 0px;
 }
 
 .centered {
