@@ -18,11 +18,29 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#settings').click(async function(){
+			
+			let o = new Overlay();
+			o.setColor('white');
+			o.setTone('dark');
+			o.show('#app-overlay');			
+			
 			await universalSettings(e);
+			
+			o.hide('#app-overlay');
+			
 		});
 		
 		$('#help').click(async function(){
+			
+			let o = new Overlay();
+			o.setColor('white');
+			o.setTone('dark');
+			o.show('#app-overlay');				
+			
 			await universalHelp(e);
+			
+			o.hide('#app-overlay');
+			
 		});
 		
 		$('#app-body').show();
@@ -99,9 +117,7 @@ class Overlay {
  * Creates an instance of Spinner;
  */
 class Spinner {
-	constructor(element){
-		this.parent    = parent;
-		this.element   = element;
+	constructor(){
 		this.className = 'spinner';
 		this.size;
 	}
@@ -109,13 +125,23 @@ class Spinner {
 		this.size = 'spinner-'+size;
 		return this;
 	}
-	build() {
-		let element = this.element;
+	show() {
+		let d = GLOBAL.document;
+		let p = doc.querySelector('.overlay');
+		let c = doc.createElement('div');
+		
+		p.append(c);
+		
 		let base    = this.className;
 		let size    = this.size;
 		
 		element.className = [base,size].join(' ');
 		return this;
+	}
+	hide() {
+		let d = GLOBAL.document;
+		let c = d.querySelector('.spinner');
+		c.remove();
 	}
 }
 
