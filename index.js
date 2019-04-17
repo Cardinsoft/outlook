@@ -53,7 +53,7 @@ class Overlay {
 		return this;
 	}
 	show(selector) {
-		const doc = GLOBAL.document;
+		let doc = GLOBAL.document;
 		
 		let p = doc.querySelector(selector);
 		let c = doc.createElement('div');
@@ -74,12 +74,12 @@ class Overlay {
 		return this;
 	}
 	hide(selector) {
-		const doc = GLOBAL.document;
+		let d = GLOBAL.document;
 		
-		let p = doc.querySelector(selector);
-		let c = p.children.item(0);
+		let par = d.querySelector(selector);
+		let chd = par.children.item(0);
 		
-		p.remove(c);
+		par.remove(chd);
 
 		return this;
 	}
