@@ -198,7 +198,7 @@ function actionCallback(action,element) {
 			//invoke callback and await response;
 			await GLOBAL[functionName](e,element);
 
-			console.log(o);
+			await console.log(o);
 			
 			/*
 			const s = new Spinner(o,spinner);
