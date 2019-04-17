@@ -285,13 +285,13 @@ function goSettings(e) {
  * @returns {ActionResponse}
  */
 async function actionConfirm(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 		  
-		  //set data state change and navigate to confirmation card;
-		  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
-		  builder.setStateChanged(false);
-		  return builder.build();
+	//set data state change and navigate to confirmation card;
+	await builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+	builder.setStateChanged(false);
+	return builder.build();
 }
 
 /**
@@ -300,13 +300,13 @@ async function actionConfirm(e) {
  * @returns {ActionResponse}
  */
 async function actionEdit(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
-		  
-		  //set data state change and navigate to edit connector card;
-		  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
-		  builder.setStateChanged(true);
-		  return builder.build();
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
+
+	//set data state change and navigate to edit connector card;
+	await builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
@@ -315,20 +315,20 @@ async function actionEdit(e) {
  * @returns {ActionResponse}
  */
 async function actionShow(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 			  
-		  var code = +e.parameters.code;
+	var code = +e.parameters.code;
 		  
-		  //handle failed responses;
-		  if(code<200||code>=300) {
-			e.parameters.content  = '[]';			
-		  }
+	//handle failed responses;
+	if(code<200||code>=300) {
+		e.parameters.content  = '[]';			
+	}
 		  
-		  //set data state change and navigate to display card;
-		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-		  builder.setStateChanged(true);
-		  return builder.build();
+	//set data state change and navigate to display card;
+	await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
@@ -388,7 +388,7 @@ async function actionManual(e) {
 		  }
 		  
 		  //set data state change and navigate to display card;
-		  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
 }
