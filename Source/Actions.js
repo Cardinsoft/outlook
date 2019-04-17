@@ -284,9 +284,7 @@ function goSettings(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function actionConfirm(e) {
-	return new Promise(
-		function (resolve) {
+async function actionConfirm(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -294,8 +292,6 @@ function actionConfirm(e) {
 		  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
 		  builder.setStateChanged(false);
 		  return builder.build();
-		}
-	);
 }
 
 /**
