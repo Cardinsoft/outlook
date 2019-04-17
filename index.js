@@ -20,7 +20,8 @@ Office.initialize = (reason) => {
 			o.hide('#app-overlay');
 			s.hide();
 			
-			$('.ms-ContextualHost').remove();
+			let host = $('.ms-ContextualHost');
+			if(host!==null) { host.remove(); }
 			
 		});
 		
