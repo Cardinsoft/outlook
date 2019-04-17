@@ -79,9 +79,6 @@ class Overlay {
 		let par = d.querySelector(selector);
 		let chd = par.children.item(0);
 		
-		console.log(par)
-		console.log(chd)
-		
 		par.remove(chd);
 
 		return this;

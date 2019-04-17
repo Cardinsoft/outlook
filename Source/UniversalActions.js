@@ -1,21 +1,21 @@
-function universalHome(e) {
-	return new Promise(
-		function(resolve) {
-			cardOpen(e);
-		}
-	);
+async function universalHome(e) {
+	/*return new Promise(
+		function(resolve) {*/
+			await cardOpen(e);
+		/*}
+	);*/
 };
-function universalSettings(e) {
-	return new Promise(
-		function(resolve) {
-			cardSettings(e);
-		}
-	);
+async function universalSettings(e) {
+	/*return new Promise(
+		function(resolve) {*/
+			await cardSettings(e);
+	/*	}
+	);*/
 };
-function universalHelp(e) {
-	return new Promise(
-		function(resolve) {
-			cardHelp(e);
-		}
-	);
+async function universalHelp(e) {
+	/*return new Promise(
+		function(resolve) {*/
+			await cardHelp(e);
+		/*}
+	);*/
 };
