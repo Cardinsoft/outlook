@@ -1,7 +1,6 @@
 //Emulate Class Notification for CardService service;
 class Notification {
 	constructor() {
-		super();
 		this.text;
 		this.type;
 	}
