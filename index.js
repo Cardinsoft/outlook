@@ -74,6 +74,8 @@ class Overlay {
 		return this;
 	}
 	hide(selector) {
+		const doc = GLOBAL.document;
+		
 		let p = doc.querySelector(selector);
 		let c = p.children.item(0);
 		
