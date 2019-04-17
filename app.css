@@ -94,6 +94,10 @@ body {
 	word-break : break-word;
 }
 
+form {
+	min-height : 35px;
+}
+
 .row {
 	display     : flex;
 	align-items : center;
