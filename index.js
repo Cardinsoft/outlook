@@ -187,7 +187,7 @@ function actionCallback(action,element) {
 		e.parameters = parameters;
 		
 		//if provided, set load indicator;
-		if(loadIndicator!=='NONE') {
+		if(loadIndicator&&loadIndicator!=='NONE') {
 			
 			const o = new Overlay();
 			o.setColor('black');
