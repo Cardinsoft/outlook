@@ -342,6 +342,7 @@ CardBuilder.prototype.build = function () {
 	
 	if(this.cardHeader) {
 		const headerWrap = document.createElement('div');
+		headerWrap.className = cardHeader.className;
 		$('#app-body').prepend(headerWrap);
 		
 		if(this.cardHeader.imageUrl) {
