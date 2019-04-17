@@ -3,9 +3,7 @@
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function applySort(e) {
-	return new Promise(
-		async function (resolve) {
+async function applySort(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -20,12 +18,10 @@ function applySort(e) {
 		  await setProperty('order',data.order,'user');
 		  await setProperty('reverse',isReverse,'user');
 		  
-		  //set data state change and navigate to settings card;
-		  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-		  builder.setStateChanged(true);
-		  return builder.build(); 
-		}
-	);
+	//set data state change and navigate to settings card;
+	await builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+	builder.setStateChanged(true);
+	return builder.build(); 
 }
 
 
@@ -34,11 +30,9 @@ function applySort(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function chooseAuth(e) {
-	return new Promise(
-		function (resolve) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+async function chooseAuth(e) {
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 		  
 		  var data       = e.formInput;
 		  var authType   = data.auth;
@@ -74,12 +68,10 @@ function chooseAuth(e) {
 			  e.parameters.scope    = data.scope; 
 			}
 		  }
-		  
-		  builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
-		  builder.setStateChanged(true);
-		  return builder.build();
-		}
-	);
+				
+	await builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
@@ -87,11 +79,9 @@ function chooseAuth(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function editSectionAdvanced(e) {
-	return new Promise(
-		function (resolve) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+async function editSectionAdvanced(e) {
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 
 		  //access content;
 		  var connector = e.parameters;
@@ -110,21 +100,17 @@ function editSectionAdvanced(e) {
 		  //stringify content to send to event object;
 		  e.parameters.content = JSON.stringify(content);
 		  
-		  //set data state change and navigate to display card;
-		  builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
-		  builder.setStateChanged(true);
-		  return builder.build();
-		}
-	);
+	//set data state change and navigate to display card;
+	await builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
  * Updates data with form input values, performs request and calls display with updated response;
  * @param {Object} e event object;
  */
-function updateSectionAdvanced(e) {
-	return new Promise(
-		async function (resolve) {
+async function updateSectionAdvanced(e) {
 		  var connector = e.parameters;
 		  var data      = connector.content;
 		  
@@ -186,20 +172,18 @@ function updateSectionAdvanced(e) {
 				widget.switchValue = false;
 			  }
 			  
-			});
-		  });
+		});
+	});
 		 
-		  var msg   = getToken(e);
-		  var cType = new this[connector.type]();
-		  var resp  = await cType.run(msg,connector,data);
+	var msg   = getToken(e);
+	var cType = new this[connector.type]();
+	var resp  = await cType.run(msg,connector,data);
 		  
-		  //override event object parameters with response data;
-		  e.parameters.code    = resp.code;
-		  e.parameters.content = resp.content;
+	//override event object parameters with response data;
+	e.parameters.code    = resp.code;
+	e.parameters.content = resp.content;
 		  
-		  return actionShow(e);
-		}
-	);
+	return actionShow(e);
 }
 
 /**
@@ -207,19 +191,15 @@ function updateSectionAdvanced(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function checkURL(e) {
-	return new Promise(
-		function (resolve) {
-		  var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
-		  var url = e.formInput.connectionURL;
-		  var test = regExp.test(url);
-		  if(!test) {
-			var action = CardService.newActionResponseBuilder();
-				action.setNotification(warning(globalInvalidURLnoMethod));
-			return action.build();
-		  }
-		}
-	);
+async function checkURL(e) {
+	var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
+	var url = e.formInput.connectionURL;
+	var test = regExp.test(url);
+	if(!test) {
+		var action = CardService.newActionResponseBuilder();
+			action.setNotification(warning(globalInvalidURLnoMethod));
+		return action.build();
+	}
 }
 
 /**
@@ -227,18 +207,14 @@ function checkURL(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function goBack(e) {
-	return new Promise(
-		function (resolve) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+async function goBack(e) {
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 		  
-		  //set data state change and pop card from stack;
-		  builder.setNavigation(CardService.newNavigation().popCard());
-		  builder.setStateChanged(true);
-		  return builder.build();  
-		}
-	);
+	//set data state change and pop card from stack;
+	await builder.setNavigation(CardService.newNavigation().popCard());
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
@@ -246,18 +222,14 @@ function goBack(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function goRoot(e) {
-	return new Promise(
-		function (resolve) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
+async function goRoot(e) {
+	//create action response builder;
+	var builder = CardService.newActionResponseBuilder();
 		  
-		  //set data state change and navigate to main card;
-		  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
-		  builder.setStateChanged(true);  
-		  return builder.build();  
-		}
-	);
+	//set data state change and navigate to main card;
+	await builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
+	builder.setStateChanged(true);  
+	return builder.build();
 }
 
 /**
@@ -265,9 +237,7 @@ function goRoot(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function goSettings(e) {
-	return new Promise(
-		function (resolve) {
+async function goSettings(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -275,8 +245,6 @@ function goSettings(e) {
 		  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
 		  builder.setStateChanged(true);  
 		  return builder.build(); 
-		}
-	);  
 }
 
 /**
@@ -434,7 +402,7 @@ async function performFullReset(e) {
 		  }
 		  
 		  //set data state change and navigate to main card;
-		  builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+		  await builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
 }
