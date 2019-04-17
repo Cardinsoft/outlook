@@ -96,7 +96,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		
 		wrapper.style.height = 0;
 	
-		toggler.addEventListener('click',expand(toggler,wrapper,4,5));
+		toggler.addEventListener('click',expand(toggler,wrapper,1,5));
 		
 	}
 			
