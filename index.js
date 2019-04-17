@@ -5,15 +5,15 @@ Office.initialize = (reason) => {
 		trigger();
 		
 		$('#home').click(function(){
-			universalHome(e);
+			await universalHome(e);
 		});
 		
 		$('#settings').click(function(){
-			universalSettings(e);
+			await universalSettings(e);
 		});
 		
 		$('#help').click(function(){
-			universalHelp(e);
+			await universalHelp(e);
 		});
 		
 		$('#app-body').show();
