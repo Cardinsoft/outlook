@@ -7,12 +7,11 @@ Office.initialize = (reason) => {
 		$('#home').click(async function(){
 			
 			let o = new Overlay();
-			o.setColor('blue');
+			o.setColor('white');
+			o.setTone('light');
 			o.show('#app-overlay');
 			
 			await universalHome(e);
-			
-			await setTimeout( () => {},5000);
 			
 			o.hide('#app-overlay');
 			
