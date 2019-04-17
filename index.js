@@ -193,7 +193,10 @@ function actionCallback(action,element) {
 			o.setColor('black');
 			o.show('#app-overlay');
 			
-	
+			//invoke callback and await response;
+			GLOBAL[functionName](e,element);	
+			
+			o.hide('#app-overlay');
 			
 			/*
 			const s = new Spinner(o,spinner);
@@ -203,11 +206,6 @@ function actionCallback(action,element) {
 	
 			
 		}
-			
-		//invoke callback and await response;
-		GLOBAL[functionName](e,element);
-		
-		console.log(o)
 	}
 }
 //=========================================END CALLBACKS========================================//
