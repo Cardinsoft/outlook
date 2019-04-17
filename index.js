@@ -150,7 +150,7 @@ class Spinner {
 		let base    = this.className;
 		let size    = this.size;
 		
-		element.className = [base,size].join(' ');
+		c.className = [base,size].join(' ');
 		return this;
 	}
 	hide() {
