@@ -79,6 +79,9 @@ class Overlay {
 		let par = d.querySelector(selector);
 		let chd = par.children.item(0);
 		
+		console.log(par)
+		console.log(chd)
+		
 		par.remove(chd);
 
 		return this;
@@ -205,6 +208,9 @@ function actionCallback(action,element) {
 		await GLOBAL[functionName](e,element);
 		
 		if(loadIndicator!=='NONE') {
+			
+			console.log(o);
+			
 			o.hide('#app-overlay');
 		}
 		
