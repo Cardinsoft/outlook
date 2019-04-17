@@ -98,6 +98,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 	
 		toggler.addEventListener('click',expand(toggler,wrapper,1,5));
 		
+		toggler.classList.toggle('toggler-up');
+		
 	}
 			
 	parent.append(section);
