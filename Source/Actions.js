@@ -304,8 +304,6 @@ function actionConfirm(e) {
  * @returns {ActionResponse}
  */
 async function actionEdit(e) {
-	/*return new Promise(
-		function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -313,8 +311,6 @@ async function actionEdit(e) {
 		  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
 		  builder.setStateChanged(true);
 		  return builder.build();
-		/*}
-	);*/
 }
 
 /**
@@ -323,8 +319,6 @@ async function actionEdit(e) {
  * @returns {ActionResponse}
  */
 async function actionShow(e) {
-	/*return new Promise(
-		async function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 			  
@@ -339,8 +333,6 @@ async function actionShow(e) {
 		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
-	/*	}
-	);*/
 }
 
 /**
@@ -348,9 +340,7 @@ async function actionShow(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function actionManual(e) {
-	return new Promise(
-		async function (resolve) {
+async function actionManual(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -405,8 +395,6 @@ function actionManual(e) {
 		  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
-		}
-	);
 }
 
 /**
@@ -414,9 +402,7 @@ function actionManual(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function performFullReset(e) {
-	return new Promise(
-		async function (resolve) {
+async function performFullReset(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -455,6 +441,4 @@ function performFullReset(e) {
 		  builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
-		}
-	);
 }
