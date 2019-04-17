@@ -17,8 +17,8 @@ Office.initialize = (reason) => {
 			
 			await universalHome(e);
 			
-			o.hide('#app-overlay');
-			s.hide();
+			//o.hide('#app-overlay');
+			//s.hide();
 			
 		});
 		
