@@ -203,8 +203,9 @@ function actionCallback(action,element) {
 			s.setSize('large');
 			s.build();
 			*/
-	
 			
+		}else {
+			await GLOBAL[functionName](e,element);
 		}
 	}
 }
