@@ -94,7 +94,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
 		section.append(toggler);
 		
-		toggler.addEventListener('click',expand(toggler,formElem,4,1));
+		toggler.addEventListener('click',expand(toggler,widgetsWrap,4,1));
 		
 	}
 			
