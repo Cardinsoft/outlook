@@ -264,9 +264,10 @@ function actionCallback(action,element) {
  * Expands or collapses element;
  * @param {HtmlElement} trigger element trggering event;
  * @param {Htmlelement} element element to toggle;
- * @param {Integer} speed animation speed;
+ * @param {Integer} delay delay between incremenets;
+ * @param {Integer} increment animation speed;
  */
-function expand(trigger,element,speed) {
+function expand(trigger,element,delay,increment) {
 	return function() {
       trigger.disabled = true;
       
@@ -301,24 +302,25 @@ function expand(trigger,element,speed) {
           int = setInterval(function(){
             var overlayHeight = +element.style.height.replace('px','');
             if(overlayHeight>0) { 
-              element.style.height = (overlayHeight-1)+'px';
+              element.style.height = (overlayHeight-increment)+'px';
             }else {
               clearInterval(int);
               trigger.disabled = false;
             }
-          },speed);
+          },delay);
 
       }else {
           element.style.height = 0;
           int = setInterval(function(){
             var overlayHeight = +element.style.height.replace('px','');
             if(overlayHeight<fullHeight) { 
-              element.style.height = (overlayHeight+1)+'px';
+              if(overlayHeight+increment>fullHeight) { increment = fullHeight-overlayHeight; }
+              element.style.height = (overlayHeight+increment)+'px';
             }else {
               clearInterval(int);
               trigger.disabled = false;
             }
-          },speed);
+          },delay);
       }
 	} 
 }
