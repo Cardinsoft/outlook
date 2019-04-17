@@ -125,24 +125,6 @@ function actionCallback(action,element) {
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
-		
-		let o;
-		
-		//if provided, set load indicator;
-		if(loadIndicator!=='NONE') {
-			
-			o = new Overlay();
-			o.setColor('black');
-			o.show('#app-overlay');
-
-			/*
-			const s = new Spinner(o,spinner);
-			s.setSize('large');
-			s.build();
-			*/
-	
-			
-		}
 
 		//clear formInput and formInputs;
 		e.formInput  = {};
@@ -204,15 +186,34 @@ function actionCallback(action,element) {
 		//set parameters to event object;
 		e.parameters = parameters;
 		
-		//invoke callback and await response;
-		await GLOBAL[functionName](e,element);
-		
+		//if provided, set load indicator;
 		if(loadIndicator!=='NONE') {
 			
-			console.log(o);
-			
+			const o = new Overlay();
+			o.setColor('black');
+			o.show('#app-overlay');
+
+			//invoke callback and await response;
+			await GLOBAL[functionName](e,element);	
+
 			o.hide('#app-overlay');
+			
+			/*
+			const s = new Spinner(o,spinner);
+			s.setSize('large');
+			s.build();
+			*/
+	
+			
+		}else {
+			
+			//invoke callback and await response;
+			await GLOBAL[functionName](e,element);			
+			
 		}
+		
+		
+
 		
 	}
 }
