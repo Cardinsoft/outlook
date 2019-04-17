@@ -17,8 +17,8 @@ Office.initialize = (reason) => {
 			
 			await universalHome(e);
 			
-			//o.hide('#app-overlay');
-			//s.hide();
+			o.hide('#app-overlay');
+			s.hide();
 			
 		});
 		
@@ -142,7 +142,7 @@ class Spinner {
 	}
 	show() {
 		let d = GLOBAL.document;
-		let p = d.querySelector('.overlay');
+		let p = d.querySelector('#app-overlay');
 		let c = d.createElement('div');
 		
 		p.append(c);
