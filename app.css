@@ -44,6 +44,10 @@ body {
 	width : 0 !important;
 }
 
+.CardHeader {
+	margin : 0 16px;
+}
+
 .CardSection {
 	padding : 12px 18px;
 }
