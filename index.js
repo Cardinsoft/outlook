@@ -4,15 +4,15 @@ Office.initialize = (reason) => {
 		
 		trigger();
 		
-		$('#home').click(function(){
+		$('#home').click(async function(){
 			await universalHome(e);
 		});
 		
-		$('#settings').click(function(){
+		$('#settings').click(async function(){
 			await universalSettings(e);
 		});
 		
-		$('#help').click(function(){
+		$('#help').click(async function(){
 			await universalHelp(e);
 		});
 		
