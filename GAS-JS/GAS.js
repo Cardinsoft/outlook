@@ -222,41 +222,6 @@ e_CardService.prototype.newUniversalActionResponseBuilder = function () {
 	return new UniversalActionResponseBuilder(); 
 }
 
-//Emulate class Navigation for CardService service;
-class Navigation extends e_CardService {
-	constructor() {
-		super();
-		this.className = 'Navigation';
-	}
-}
-//add new methods to the class;
-Navigation.prototype.popCard = function () {
-	cardStack.pop();
-	return this;
-}
-Navigation.prototype.popToNamedCard = function (cardName) {
-	
-}
-Navigation.prototype.popToRoot = function () {
-	var length = cardStack.length;
-	for(var i = 1; i<length; i++) {
-		cardStack.pop();
-	}
-	return this;
-}
-Navigation.prototype.printJson = function () {
-	return JSON.stringify(this);
-}
-Navigation.prototype.pushCard = function (card) {
-	cardStack.push(card);
-	return this;
-}
-Navigation.prototype.updateCard = function (card) {
-	cardStack[cardStack.length-1] = card;
-	return this;
-}
-
-
 //Emulate Class Card for CardService service;
 class Card extends e_CardService {
 	constructor() {
@@ -378,7 +343,7 @@ CardBuilder.prototype.build = function () {
 	if(this.cardHeader) {
 		const headerWrap = document.createElement('div');
 		headerWrap.id = 'main-Ui-header';
-		$('.ms-CommandBar-mainArea').prepend(headerWrap);
+		$('#app-body').prepend(headerWrap);
 		
 		if(this.cardHeader.imageUrl) {
 			const icon = document.createElement('img');
@@ -587,4 +552,4 @@ ActionResponseBuilder.prototype.build = function () {
 
 
 //initiate services to be able to access them;
-const CardService       = new e_CardService();
+const CardService = new e_CardService();
