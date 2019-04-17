@@ -5,7 +5,17 @@ Office.initialize = (reason) => {
 		trigger();
 		
 		$('#home').click(async function(){
+			
+			let o = new Overlay();
+			o.setColor('blue');
+			o.show('#app-overlay');
+			
 			await universalHome(e);
+			
+			await setTimeout( () => {},5000);
+			
+			o.hide('#app-overlay');
+			
 		});
 		
 		$('#settings').click(async function(){
