@@ -2,9 +2,7 @@
  * Creates new connector and saves it to properties;
  * @param {Object} e event object;
  */
-function createConnector(e) {
-	return new Promise(
-		async function (resolve) {
+async function createConnector(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -126,8 +124,6 @@ function createConnector(e) {
 		  builder.setStateChanged(true); 
 		  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
 		  return builder.build();
-		}
-	);
 }
 
 /**
@@ -135,8 +131,6 @@ function createConnector(e) {
  * @param {Object} e event object;
  */
 async function updateConnector(e) {
-	/*return new Promise(
-		async function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -260,17 +254,13 @@ async function updateConnector(e) {
 		  builder.setStateChanged(true);
 		  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
 		  return builder.build();
-	/*	}
-	);*/
 }
 
 /**
  * Removes connector and saves properties;
  * @param {Object} e event object;
  */
-function removeConnector(e) {
-	return new Promise(
-		async function (resolve) {
+async function removeConnector(e) {
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 
@@ -307,7 +297,5 @@ function removeConnector(e) {
 		  //change data state and build settings card;
 		  builder.setStateChanged(true);
 		  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-		  return builder.build();  
-		}
-	);
+		  return builder.build();
 }
