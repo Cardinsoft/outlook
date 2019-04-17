@@ -194,9 +194,7 @@ function actionCallback(action,element) {
 			o.show('#app-overlay');
 			
 			//invoke callback and await response;
-			await GLOBAL[functionName](e,element);	
-			
-			await setTimeout( () => { console.log('5sec'); },5000);
+			await GLOBAL[functionName](e,element);
 			
 			o.hide('#app-overlay');
 			
