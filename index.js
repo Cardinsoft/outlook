@@ -20,9 +20,6 @@ Office.initialize = (reason) => {
 			o.hide('#app-overlay');
 			s.hide();
 			
-			let host = $('.ms-ContextualHost');
-			if(host!==null) { host.remove(); }
-			
 		});
 		
 		$('#settings').click(async function(){
