@@ -195,17 +195,10 @@ function actionCallback(action,element) {
 			
 			o.hide('#app-overlay');
 			
-			try {
-			
 			//invoke callback and await response;
 			await GLOBAL[functionName](e,element);
-			
-			}
-			catch(e){
-				console.log(e);
-			}
 
-			
+			console.log(o);
 			
 			/*
 			const s = new Spinner(o,spinner);
