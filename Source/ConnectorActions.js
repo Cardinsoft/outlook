@@ -134,9 +134,9 @@ function createConnector(e) {
  * Updates connector and saves it to properties;
  * @param {Object} e event object;
  */
-function updateConnector(e) {
-	return new Promise(
-		async function (resolve) {
+async function updateConnector(e) {
+	/*return new Promise(
+		async function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -260,8 +260,8 @@ function updateConnector(e) {
 		  builder.setStateChanged(true);
 		  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
 		  return builder.build();
-		}
-	);
+		/*}
+	);*/
 }
 
 /**
