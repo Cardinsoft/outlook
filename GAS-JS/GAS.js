@@ -353,7 +353,7 @@ CardBuilder.prototype.build = function () {
 		}
 		
 		const header = document.createElement('p');
-		header.className = 'ms-Panel-headerText';
+		header.className = 'ms-font-m-plus';
 		header.textContent = this.cardHeader.title;
 		headerWrap.append(header);
 	}
