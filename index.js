@@ -7,8 +7,8 @@ Office.initialize = (reason) => {
 		$('#home').click(async function(){
 			
 			let o = new Overlay();
-			o.setColor('black');
-			o.setTone('light');
+			o.setColor('white');
+			o.setTone('dark');
 			o.show('#app-overlay');
 			
 			await universalHome(e);
