@@ -724,7 +724,9 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   
   //append widgets if there are any;
   if(widgets.length!==0) {
-    widgets.forEach(function(widget,index) {
+	
+	for(var index=0; index<widgets.length; index++) {
+	  var widget = widgets[index];
       
       if(index<=max) {
     
@@ -820,11 +822,11 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
-        section.addWidget(element);
+        await section.addWidget(element);
       
       }
       
-    });
+    }
     //append section and return it;
     await builder.addSection(section);
     return section;

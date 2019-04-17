@@ -240,12 +240,12 @@ async function cardDisplay(e) {
           if(typeof section==='string') { section = JSON.parse(section); }
 
           try {
-            createSectionAdvanced(builder,section,j,connector,layout[j]); 
+            await createSectionAdvanced(builder,section,j,connector,layout[j]); 
           }
           catch(er) {
 			console.error(er);
             //try to handle nested objects that do not conform to our schema;
-            createSectionSimple(builder,section,true,j);
+            await createSectionSimple(builder,section,true,j);
           }
         }
        
