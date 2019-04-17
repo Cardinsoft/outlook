@@ -194,9 +194,11 @@ function actionCallback(action,element) {
 			o.show('#app-overlay');
 			
 			//invoke callback and await response;
-			GLOBAL[functionName](e,element);	
+			const n = await GLOBAL[functionName](e,element);	
 			
-			o.hide('#app-overlay');
+			console.log(n);
+			
+			//o.hide('#app-overlay');
 			
 			/*
 			const s = new Spinner(o,spinner);
