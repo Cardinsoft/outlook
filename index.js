@@ -285,8 +285,8 @@ function expand(trigger,element,delay,increment) {
         var h  = +childComp.height.replace('px','');
         var bT = +childComp.borderWidth.replace('px','');
         var bB = +childComp.borderWidth.replace('px','');
-        var pT = 0//+childComp.paddingTop.replace('px','');
-        var pB = 0//+childComp.paddingBottom.replace('px','');
+        var pT = +childComp.paddingTop.replace('px','');
+        var pB = +childComp.paddingBottom.replace('px','');
         var mT = +childComp.marginTop.replace('px','');
         var mB = +childComp.marginBottom.replace('px','');        
         
