@@ -125,10 +125,7 @@ body {
 
 .collapsible {
 	overflow : hidden;
-}
-
-.closed {
-	height : 0px;
+	height   : 0px;
 }
 
 .centered {
