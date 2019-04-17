@@ -142,8 +142,8 @@ class Spinner {
 	}
 	show() {
 		let d = GLOBAL.document;
-		let p = doc.querySelector('.overlay');
-		let c = doc.createElement('div');
+		let p = d.querySelector('.overlay');
+		let c = d.createElement('div');
 		
 		p.append(c);
 		
