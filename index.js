@@ -193,18 +193,7 @@ function actionCallback(action,element) {
 			o.setColor('black');
 			o.show('#app-overlay');
 			
-			o.hide('#app-overlay');
-			
-			//invoke callback and await response;
-			const f = async function (o,e,element) {
-				await GLOBAL[functionName](e,element);
-				console.log(o);
-			}
-			
-			await f(o,e,element);
-			
-
-			
+	
 			
 			/*
 			const s = new Spinner(o,spinner);
@@ -213,15 +202,12 @@ function actionCallback(action,element) {
 			*/
 	
 			
-		}else {
-			
-			//invoke callback and await response;
-			await GLOBAL[functionName](e,element);			
-			
 		}
+			
+		//invoke callback and await response;
+		await GLOBAL[functionName](e,element);
 		
-		
-
+		console.log('!!!!')
 		
 	}
 }
