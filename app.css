@@ -45,8 +45,10 @@ body {
 }
 
 .CardHeader {
-	margin     : 0 16px;
-	min-height : 32px;
+	display     : flex;
+    align-items : center;
+	margin      : 0 16px;
+	min-height  : 32px;
 }
 
 .CardSection {
@@ -54,8 +56,6 @@ body {
 }
 
 .sectionHeader {
-	display     : flex;
-    align-items : center;
 	margin      : 4px 0 16px 0;
 	color       : #a6a6a6;
 }
