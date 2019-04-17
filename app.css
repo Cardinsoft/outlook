@@ -60,11 +60,6 @@ body {
 	margin : 3px 0 0 16px;
 }
 
-.ms-Panel-headerText {
-	margin  : 7px 0    !important;
-	padding : 4px 15px !important;
-}
-
 .ms-Dropdown-title {
 	border  : none;
 	padding : 6px 40px 0 0;
