@@ -303,9 +303,9 @@ function actionConfirm(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function actionEdit(e) {
-	return new Promise(
-		function (resolve) {
+async function actionEdit(e) {
+	/*return new Promise(
+		function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 		  
@@ -313,8 +313,8 @@ function actionEdit(e) {
 		  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
 		  builder.setStateChanged(true);
 		  return builder.build();
-		}
-	);
+		/*}
+	);*/
 }
 
 /**
