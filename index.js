@@ -205,10 +205,9 @@ function actionCallback(action,element) {
 		}
 			
 		//invoke callback and await response;
-		await GLOBAL[functionName](e,element);
+		GLOBAL[functionName](e,element);
 		
-		console.log('!!!!')
-		
+		console.log(o)
 	}
 }
 //=========================================END CALLBACKS========================================//
