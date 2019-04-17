@@ -848,15 +848,10 @@ function createSectionChooseType(builder,isCollapsed,header) {
   if(header) { section.setHeader(header); }
   
   //create class instance to get config data;
-  var quickbooks = new QB();
-  var sheets     = new Sheets();
   var flow       = new Flow();
-  var pipedrive  = new Pipedrive();
-  
-  //var infusion = new InfusionSoft(); //future release due to endpoint app approval issue;
   
   //create an array of used types;
-  var types = [quickbooks,sheets,flow,pipedrive];
+  var types = [flow];
   
   //add github conn if in testing mode;
   if(globalIncludeGitHub) {
