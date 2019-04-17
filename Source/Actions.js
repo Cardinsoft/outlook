@@ -322,9 +322,9 @@ async function actionEdit(e) {
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function actionShow(e) {
-	return new Promise(
-		async function (resolve) {
+async function actionShow(e) {
+	/*return new Promise(
+		async function (resolve) {*/
 		  //create action response builder;
 		  var builder = CardService.newActionResponseBuilder();
 			  
@@ -340,7 +340,7 @@ function actionShow(e) {
 		  builder.setStateChanged(true);
 		  return builder.build();
 		}
-	);
+	/*);*/
 }
 
 /**
