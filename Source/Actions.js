@@ -339,8 +339,8 @@ async function actionShow(e) {
 		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 		  builder.setStateChanged(true);
 		  return builder.build();
-		}
-	/*);*/
+	/*	}
+	);*/
 }
 
 /**
