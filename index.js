@@ -194,11 +194,11 @@ function actionCallback(action,element) {
 			o.show('#app-overlay');
 			
 			//invoke callback and await response;
-			const n = await GLOBAL[functionName](e,element);	
+			await GLOBAL[functionName](e,element);	
 			
-			console.log(n);
+			await setTimeout( () => { console.log('5sec'); },5000);
 			
-			//o.hide('#app-overlay');
+			o.hide('#app-overlay');
 			
 			/*
 			const s = new Spinner(o,spinner);
