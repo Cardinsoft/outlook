@@ -820,7 +820,7 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
-        await section.addWidget(element);
+        section.addWidget(element);
       
       }
       
