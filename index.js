@@ -240,19 +240,18 @@ function actionCallback(action,element) {
 		if(loadIndicator&&loadIndicator!=='NONE') {
 			
 			const o = new Overlay();
-			o.setColor('black');
+			o.setColor('white');
 			o.show('#app-overlay');
+			
+			let s = new Spinner();
+			s.setSize('large');
+			s.show();
 			
 			//invoke callback and await response;
 			await GLOBAL[functionName](e,element);
 			
 			o.hide('#app-overlay');
-			
-			/*
-			const s = new Spinner(o,spinner);
-			s.setSize('large');
-			s.build();
-			*/
+			s.hide();
 			
 		}else {
 			await GLOBAL[functionName](e,element);
