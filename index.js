@@ -172,15 +172,17 @@ class Spinner {
  * @param {HtmlElement} elem caller element binded to a function;
  */
 async function actionCallback(elem) {
-		const action = this;
+		//const action = this;
+		
+		console.log(elem);
 		
 		//access action parameters;
-		const functionName  = action.functionName;
-		const loadIndicator = action.loadIndicator;
-		const params        = action.parameters;
+		//const functionName  = action.functionName;
+		//const loadIndicator = action.loadIndicator;
+		//const params        = action.parameters;
 		
-		const e = new e_EventObject();
-
+		//const e = new e_EventObject();
+/*
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
 
@@ -233,7 +235,9 @@ async function actionCallback(elem) {
 			}
 			
 		}
-		
+*/		
+
+/*
 		//set parameters to event object;
 		
 		async function applyParams (e,params) {		
@@ -259,14 +263,14 @@ async function actionCallback(elem) {
 		}	
 		
 		await applyParams(e,params);
-		
-
+		*/
+/*
 		
 		//await GLOBAL[functionName](e);
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
-			/*
+			
 			const o = new Overlay();
 			o.setColor('white');
 			o.show('#app-overlay');
@@ -280,10 +284,10 @@ async function actionCallback(elem) {
 			
 			o.hide('#app-overlay');
 			s.hide();
-			*/
+			
 		}else {
 			//await GLOBAL[functionName](e);
-		}
+		}*/
 }
 //=========================================END CALLBACKS========================================//
 
