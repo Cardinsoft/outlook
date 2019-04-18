@@ -22,7 +22,7 @@ class KeyValue {
  * @returns {KeyValue}
  */
 KeyValue.prototype.setAuthorizationAction = function (action) {
-	this.authorizationAction = action;
+	this.authorizationAction = JSON.stringify(action);
 	return this;
 }
 /**
@@ -32,7 +32,7 @@ KeyValue.prototype.setAuthorizationAction = function (action) {
  * @returns {KeyValue}
  */
 KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	this.composedEmailType = composedEmailType;
 	return this;
 }
@@ -53,7 +53,7 @@ KeyValue.prototype.setOnClickAction = function (action) {
  * @returns {KeyValue}
  */
 KeyValue.prototype.setOnClickOpenLinkAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 /**
@@ -111,7 +111,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
-	let action  = this.action;
+	let action    = this.action;
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	
