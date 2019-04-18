@@ -130,6 +130,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 				
 				let self = this;
 				
+				console.log(self)
+				
 				await arg.addEventListener('dblclick',actionCallback(self));
 				await arg.dispatchEvent(new Event('dblclick'));
 				await arg.removeEventListener('dblclick',actionCallback);
