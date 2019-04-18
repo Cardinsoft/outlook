@@ -178,9 +178,9 @@ async function actionCallback(elem) {
 		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
-		const parameters    = action.parameters;
+		const params        = action.parameters;
 		
-		console.log(parameters.widgetIdx);
+		console.log(params.widgetIdx);
 		
 		const e = new e_EventObject();
 
@@ -237,12 +237,20 @@ async function actionCallback(elem) {
 			
 		}
 		
-		console.log(parameters.widgetIdx);
-		console.log(parameters);
+		console.log(params.widgetIdx);
+		console.log(params);
 		//set parameters to event object;
-		//e.parameters = parameters;
+		
+		function applyParams (e,params) {
+			console.log(e.parameters);
+			console.log(params);
+		}
+		
+		await applyParams();
 		
 		console.log(e.parameters);
+		
+		await GLOBAL[functionName](e);
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
