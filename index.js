@@ -175,6 +175,8 @@ class Spinner {
 function actionCallback(action) {
 	return async function() {
 		
+		console.log(action)
+		
 		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
