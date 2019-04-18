@@ -126,9 +126,9 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let id = getId();
 		
-
+		e_actions[id] = action;
 		
-		console.log(id);
+		console.log(e_actions);
 		
 		//widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
 		
