@@ -182,7 +182,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     
     //set label and create widget representing connector;
     button = textButtonWidget(label,false,false,actionName,connector);
-    widget = actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
+    widget = await actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
 	
     await section.addWidget(widget);
   }
