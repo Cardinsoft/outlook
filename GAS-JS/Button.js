@@ -86,6 +86,7 @@ TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
 };
 TextButton.prototype.appendToUi = function (parent) {
 	
+	//access button properties;
 	let action            = this.action;
 	const backgroundColor = this.backgroundColor;
 	const text            = this.text;
@@ -94,17 +95,17 @@ TextButton.prototype.appendToUi = function (parent) {
 	const openLink        = this.openLink;
 	const authAction      = this.authorizationAction; 
 	
-	
-	
+	//initiate button;
 	const button = document.createElement('button');
 	button.className = this.className;
 	button.disabled  = disabled;
 	button.innerHTML = text;
 	
+	//access button style and class list;
 	const st = button.style;
 	const cl = button.classList;
 	
-	if(backgroundColor) {  }
+	if(textButtonStyle==='FILLED') { st.backgroundColor = backgroundColor; }
 	if(disabled) { cl.add('btn-disabled'); }else { cl.remove('btn-disabled'); }
 	
 	parent.append(button);
