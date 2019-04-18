@@ -16,6 +16,7 @@ class KeyValue {
 		this.composedEmailType;
 	}
 }
+
 /**
  * Set authorization action to KeyValue;
  * @param {AuthorizationAction} action action to set;
@@ -25,6 +26,7 @@ KeyValue.prototype.setAuthorizationAction = function (action) {
 	this.authorizationAction = JSON.stringify(action);
 	return this;
 }
+
 /**
  * Set compose action to KeyValue;
  * @param {Action} action action to set;
@@ -36,6 +38,7 @@ KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
 	this.composedEmailType = composedEmailType;
 	return this;
 }
+
 /**
  * Set onclick action to KeyValue;
  * @param {Action} action action to set;
@@ -43,10 +46,9 @@ KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
  */
 KeyValue.prototype.setOnClickAction = function (action) {
 	this.action = JSON.stringify(action);
-	console.log('added action');
-	console.log(action);
 	return this;
 }
+
 /**
  * Set OpenLink action to KeyValue;
  * @param {Action} action action to set;
@@ -56,27 +58,40 @@ KeyValue.prototype.setOnClickOpenLinkAction = function (action) {
 	this.action = JSON.stringify(action);
 	return this;
 }
+
 /**
  * Set OpenLink to KeyValue;
  * @param {OpenLink} openLink openLink action to set;
  * @returns {KeyValue}
  */
 KeyValue.prototype.setOpenLink = function (openLink) {
-	this.openLink = openLink;
+	this.openLink = JSON.stringify(openLink);
 	return this;
 }
-//add new methods to the class;
+
+/**
+ * Sets Button to widget if provided;
+ * @returns {KeyValue}
+ */
 KeyValue.prototype.setButton = function (button) {
 	this.button = button;
 	return this;
 }
+
+/**
+ * Sets this widget's text content;
+ * @param {String} text content to set;
+ * @returns {KeyValue}
+ */
 KeyValue.prototype.setContent = function (text) {
 	this.content = text;
 	return this;
 }
+
 /**
  * Sets one of the predefined icons from CardService Enum;
  * @param {String} icon icon name from CardService Enum;
+ * @returns {KeyValue} 
  */
 KeyValue.prototype.setIcon = function (icon) {
 	
@@ -88,14 +103,26 @@ KeyValue.prototype.setIcon = function (icon) {
 	
 	return this;
 }
+
+/**
+ * Sets image URL to append to widget as icon;
+ * @param {String} url path to image;
+ * @returns {KeyValue}
+ */
 KeyValue.prototype.setIconUrl = function (url) {
 	this.url = url;
 	return this;
 }
+
+/**
+ * Sets alt text for image acting as widget icon;
+ * @returns {KeyValue}
+ */
 KeyValue.prototype.setIconAltText = function (altText) {
 	this.altText = altText;	
 	return this;
 }
+
 KeyValue.prototype.setMultiline = function (multiline) {
 	this.multiline = multiline;
 	return this;
@@ -122,19 +149,23 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	//add event listener chain ( click -> callback );
 	if(action) {
-		
+		//parse action if found;
 		action = JSON.parse(action);
 		
+		//change cursor to pointer on hover;
 		widget.classList.add('pointer');
 		
+		//get unique identifier;
 		let id = getId();
 		
+		//set stringifyed action to global storage;
 		e_actions[id] = JSON.stringify(action);
 		
+		//add action reference to widget;
 		widget.setAttribute('action',id);
 		
+		//set event listener to widget;
 		widget.addEventListener('click',async function(){ await actionCallback(this); });
-
 	}
 	
 	//handle image creation;
@@ -202,7 +233,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		}
 		
 		if(sw) {
-			//sw.appendToUi(wrapButton);
+			sw.appendToUi(wrapButton);
 		}
 		
 	}

@@ -15,7 +15,7 @@ Switch.prototype.setFieldName = function (fieldName) {
 	return this;
 };
 Switch.prototype.setOnChangeAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;	
 };
 Switch.prototype.setSelected = function (selected) {
@@ -55,7 +55,23 @@ Switch.prototype.appendToUi = function (parent) {
 
 	//set action if provided;
 	if(action) { 
-		wrapToggle.addEventListener('click',actionCallback(action,input)); 
+		//parse action if found;
+		action = JSON.parse(action);
+		
+		//change cursor to pointer on hover;
+		widget.classList.add('pointer');
+		
+		//get unique identifier;
+		let id = getId();
+		
+		//set stringifyed action to global storage;
+		e_actions[id] = JSON.stringify(action);
+		
+		//add action reference to widget;
+		widget.setAttribute('action',id);
+		
+		//set event listener to widget;
+		widget.addEventListener('click',async function(){ await actionCallback(this); });
 	}
 	
 	const label = document.createElement('label');
