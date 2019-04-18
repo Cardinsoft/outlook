@@ -241,13 +241,8 @@ async function actionCallback(elem) {
 			
 		}
 		
-		console.log(e);
-		console.log(GLOBAL);
-		
 		//set parameters to event object;
 		e.parameters = parameters;
-		
-		console.log(e);
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
@@ -267,7 +262,7 @@ async function actionCallback(elem) {
 			s.hide();
 			*/
 		}else {
-		await GLOBAL[functionName](e);
+			await GLOBAL[functionName](e);
 		}
 }
 //=========================================END CALLBACKS========================================//
