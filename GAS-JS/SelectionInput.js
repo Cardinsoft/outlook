@@ -45,7 +45,7 @@ SelectionInput.prototype.setFieldName = function (fieldName) {
 	return this;
 }
 SelectionInput.prototype.setOnChangeAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 SelectionInput.prototype.setTitle = function (title) {
