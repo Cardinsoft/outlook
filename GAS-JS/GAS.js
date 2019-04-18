@@ -365,7 +365,7 @@ CardBuilder.prototype.build = async function () {
 		
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
-			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
+			await cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
 		}
 		
 	}
