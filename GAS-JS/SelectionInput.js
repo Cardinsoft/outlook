@@ -106,7 +106,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				label.className = 'ms-CheckBox-field';
 				inputWrap.append(label);
 				if(checked) { label.classList.add('is-checked'); }
-					
+				/*	
 				//add event listener chain ( check/uncheck -> callback );
 				label.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
@@ -121,7 +121,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						}
 					}
 				}				
-				
+				*/
 				//create label text;
 				let labelTxt = document.createElement('span');
 					labelTxt.className = 'ms-Label';
@@ -186,7 +186,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				if(checked) { label.classList.add('is-checked'); }
 				
 				labels.push(label);
-			
+				/*
 				//add event listener chain ( check/uncheck -> callback );
 				label.addEventListener('click',curry(action,input,label,checked),false);
 				function curry(action,input,label,checked){
@@ -220,7 +220,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						}
 					}
 				}	
-			
+				*/
 				//create label text;
 				let labelTxt = document.createElement('span');
 					labelTxt.className = 'ms-Label';
@@ -273,7 +273,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					opt.selected    = selected;
 				input.append(opt);
 			});
-		
+			/*
 			//add event listener chain ( check/uncheck -> callback );
 			input.addEventListener('change',curry(action,input,options),false);
 			function curry(action,input,label,checked){
@@ -286,7 +286,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					}
 				}
 			}
-			
+			*/
 			new fabric['Dropdown'](inputWrap);
 			
 			//quick fix for dropdown Ui;
