@@ -85,35 +85,27 @@ TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
 	return this;
 };
 TextButton.prototype.appendToUi = function (parent) {
+	
+	let action            = this.action;
 	const backgroundColor = this.backgroundColor;
 	const text            = this.text;
 	const disabled        = this.disabled;
 	const textButtonStyle = this.textButtonStyle;
-	let action            = this.action;
 	const openLink        = this.openLink;
 	const authAction      = this.authorizationAction; 
 	
-	const btnRow = document.createElement('div');
-	btnRow.className = 'row '+this.className;
-	parent.append(btnRow);
 	
-	const wrapBtn = document.createElement('div');
-	wrapBtn.className = 'column';
-	btnRow.append(wrapBtn);
 	
 	const button = document.createElement('button');
 	button.disabled = disabled;
-	if(disabled) {
-		button.className = 'ms-Button ms-Button--small '+this.className;
-	}else {
-		button.className = 'ms-Button ms-Button--small ms-Button--primary '+this.className;
-	}
-	wrapBtn.append(button);
-		
-	const btnContent = document.createElement('span');
-	btnContent.className = 'ms-Button-label';
-	btnContent.innerHTML = text;
-	button.append(btnContent);
+	
+	if(backgroundColor) { button. }
+	if(disabled) { cl.add('btn-disabled'); }
+	
+	const st = button.style;
+	const cl = button.classList;
+	
+	parent.append(button);
 	
 	if(!openLink&&!authAction&&action) {
 
