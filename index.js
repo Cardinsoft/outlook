@@ -180,7 +180,7 @@ async function actionCallback(elem) {
 		
 		console.log(action);
 		
-		access action parameters;
+		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const params        = action.parameters;
