@@ -173,9 +173,10 @@ class Spinner {
  */
 async function actionCallback(elem) {
 		//const action = this;
-		
-
+	
 		const action = e_actions[elem.getAttribute('action')];
+		
+		console.log(JSON.parse(action));
 	
 		//access action parameters;
 		const functionName  = action.functionName;
@@ -183,8 +184,6 @@ async function actionCallback(elem) {
 		const params        = action.parameters;
 		
 		const e = new e_EventObject();
-		
-		console.log(e);
 
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
