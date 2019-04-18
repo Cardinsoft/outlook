@@ -105,7 +105,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	const st = button.style;
 	const cl = button.classList;
 	
-	if(textButtonStyle==='FILLED') { st.backgroundColor = backgroundColor; }
+	if(textButtonStyle==='FILLED') { st.backgroundColor = backgroundColor; }else { cl.add('btn-text'); }
 	if(disabled) { cl.add('btn-disabled'); }else { cl.remove('btn-disabled'); }
 	
 	parent.append(button);
