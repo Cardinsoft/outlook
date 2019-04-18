@@ -128,7 +128,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		console.log(action)
 		
-		widget.addEventListener('click',curry(action,widget),false);
 		function curry(action){
 			return async function(e) { 	
 				await widget.addEventListener('dblclick',actionCallback(action));
@@ -136,6 +135,11 @@ KeyValue.prototype.appendToUi = function (parent) {
 				await widget.removeEventListener('dblclick',actionCallback);
 			}
 		}
+		
+		let binded = curry.bind(action);
+		
+		widget.addEventListener('click',binded(widget),false);
+
 	}
 	
 	//handle image creation;
