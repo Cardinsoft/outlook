@@ -83,12 +83,20 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		}
 		
 		//append widgets to Ui;
-		widgets.forEach(function(widget){
+		
+		async function appendWidgetsAsync() {
 			
-			console.log(widget);
+			for(var i=0; i<widgets.length; i++) {
+				
+				console.log(widget);
+				
+				await widget.appendToUi(wrapper);			
+				
+			}			
 			
-			widget.appendToUi(wrapper);
-		});
+		}
+		
+
 		
 	}
 
