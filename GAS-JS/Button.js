@@ -119,11 +119,11 @@ TextButton.prototype.appendToUi = function (parent) {
 		new fabric['Button'](button, actionCallback(button) );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync( JSON.parse(openLink.url) );
+			Office.context.ui.displayDialogAsync( JSON.parse(openLink).url );
 		} );
 	}else {
 		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync( JSON.parse(authAction.url) );
+			Office.context.ui.displayDialogAsync( JSON.parse(authAction).url );
 		} );		
 	}
 }
