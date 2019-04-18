@@ -126,7 +126,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//set event listener to widget;
 				
-				function curry(input){
+				function curry(input,label){
 					return async function () {
 						
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
@@ -143,7 +143,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					await label.classList.toggle('is-checked');
 					
 					if(action) { await actionCallback(this); }
-				}*/;
+				})*/;
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
