@@ -134,9 +134,7 @@ function makeRequest(url,params) {
 			let statusText = request.statusText; 
 			resolve(statusText);
 		}
-		
-		console.log(request);
-		
+
 		if(params.payload) {
 			request.send(params.payload);
 		}else {

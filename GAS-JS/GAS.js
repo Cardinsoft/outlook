@@ -272,14 +272,10 @@ CardBuilder.prototype.build = async function () {
 		let serialize = true;
 		if(cardSections.length===1) { serialize = false; }
 		
-		async function appendSections() {
-			for(let s=0; s<cardSections.length; s++) {
+		for(let s=0; s<cardSections.length; s++) {
 				let cardSection = cardSections[s];
-				await cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
-			}	
+				cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
 		}
-		
-		await appendSections();
 		
 	}
 	
