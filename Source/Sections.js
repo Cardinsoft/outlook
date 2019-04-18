@@ -790,13 +790,13 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                   if(state!=='editable') {
                     element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
                   }else {
-                    element = actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
+                    element = await actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
                   }
                 }else {
                   if(state!=='editable') {
                     element = simpleKeyValueWidget(title,content,isMultiline,icon);
                   }else {
-                    element = actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
+                    element = await actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
                   }
                 }
               }
