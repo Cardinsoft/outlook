@@ -406,7 +406,17 @@ function toBoolean(input) {
  * @returns {String}
  */
 function getId() {
-	return GLOBAL.btoa(Math.random().toString());
+	let id = GLOBAL.btoa(Math.random().toString());
+	
+	const isUnique = function(a,i){ 
+		let result =true;
+		for(let p in a) {		
+			if(a[p].id===i) { result = false; }
+		}
+		return result;
+	}(e_actions,id);
+	
+	if(isUnique) { return id }else { return getId(); }
 }
 
 const cardStack = [];
