@@ -97,7 +97,7 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		}
 		
 		
-		appendWidgetsAsync(widgets);
+		await appendWidgetsAsync(widgets);
 
 		
 	}
