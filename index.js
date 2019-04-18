@@ -237,7 +237,7 @@ async function actionCallback(elem) {
 			
 		}
 		
-		console.log(parameters);
+		console.log(parameters.widgetIdx);
 		
 		//set parameters to event object;
 		e.parameters = parameters;
