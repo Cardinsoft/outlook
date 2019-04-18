@@ -125,15 +125,18 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		console.log(action)
 		
-		function curry(action){
-			return async function(e) { 	
-				await widget.addEventListener('dblclick',actionCallback(action));
+		function curry(arg){
+			return async function(e) {
+				
+				let self = this;
+				
+				await widget.addEventListener('dblclick',actionCallback(self));
 				await widget.dispatchEvent(new Event('dblclick'));
 				await widget.removeEventListener('dblclick',actionCallback);
 			}
 		}
 		
-		let binded = curry.bind(action);
+		let binded = curry.bind(action,widget);
 		
 		widget.addEventListener('click',binded(widget),false);
 
