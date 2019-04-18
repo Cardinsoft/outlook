@@ -66,7 +66,7 @@ class TextButton extends Button {
 		this.backgroundColor;
 		this.text;
 		this.disabled;
-		this.textButtonStyle;
+		this.textButtonStyle = 'TEXT';
 	}
 }
 //chain TextButton to Button base class;

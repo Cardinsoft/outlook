@@ -71,6 +71,7 @@ class e_CardService {
 										DROPDOWN     : 'DROPDOWN'
 									};
 		this.TextButtonStyle     = {
+										TEXT   : 'TEXT',
 										FILLED : 'FILLED'
 									};
 		this.UpdateDraftBodyType = {

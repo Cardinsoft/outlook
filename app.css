@@ -77,6 +77,10 @@ body {
 	font-weight    : bold;
 }
 
+.btn-text {
+	background : none;
+}
+
 .Switch {
 	margin : 0;
 	top    : 4px;
