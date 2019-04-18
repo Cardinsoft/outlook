@@ -125,6 +125,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let id = getId();
 		
+		console.log(action);
+		
 		e_actions[id] = action;
 		
 		console.log(e_actions);
