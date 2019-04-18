@@ -252,6 +252,8 @@ async function actionCallback(elem) {
 				t[p] = params[p];
 			}
 			
+			console.log(action)
+			
 			console.log(t)
 			
 			console.log('event object params after extension');
