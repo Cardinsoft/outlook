@@ -255,10 +255,12 @@ async function actionCallback(elem) {
 			Object.freeze(e);	
 		}
 		
+		console.log('event object params right before the extension');
+		console.log(e.parameters);		
+		
 		await applyParams(e,params);
 		
-		console.log('event object params after applying extension');
-		console.log(e.parameters);
+
 		
 		await GLOBAL[functionName](e);
 		
