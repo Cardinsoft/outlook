@@ -123,7 +123,14 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
-		widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
+		
+		let id = getId();
+		
+		const isUnique = e_actions.every( (a) => { return a.id!==id; } );
+		
+		console.log(isUnique);
+		
+		//widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
 		
 		//let binded = actionCallback.bind(widget);
 		
@@ -131,7 +138,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 			//await binded();
 		//}
 		
-		widget.addEventListener('click',function(){ actionCallback(this); });
+		//widget.addEventListener('click',function(){ actionCallback(this); });
 
 	}
 	
