@@ -172,8 +172,7 @@ class Spinner {
  * Initiates callback function and updates Ui;
  * @param {Action} action object with action config (function name, load indicator and parameters);
  */
-function actionCallback(action) {
-	return async function() {
+async function actionCallback(action) {
 		
 		console.log(this)
 		//console.log(action)
@@ -269,7 +268,6 @@ function actionCallback(action) {
 		}
 		
 		*/
-	}
 }
 //=========================================END CALLBACKS========================================//
 
