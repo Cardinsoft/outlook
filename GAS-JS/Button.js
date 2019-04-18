@@ -15,7 +15,7 @@ class Button extends e_CardService {
  * @returns {Button}
  */
 Button.prototype.setAuthorizationAction = function (action) {
-	this.authorizationAction = action;
+	this.authorizationAction = JSON.stringify(action);
 	return this;
 }
 /**
@@ -25,7 +25,7 @@ Button.prototype.setAuthorizationAction = function (action) {
  * @returns {Button}
  */
 Button.prototype.setComposeAction = function (action,composedEmailType) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	this.composedEmailType = composedEmailType;
 	return this;
 }
@@ -35,7 +35,7 @@ Button.prototype.setComposeAction = function (action,composedEmailType) {
  * @returns {Button}
  */
 Button.prototype.setOnClickAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 /**
@@ -44,7 +44,7 @@ Button.prototype.setOnClickAction = function (action) {
  * @returns {Button}
  */
 Button.prototype.setOnClickOpenLinkAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 /**
@@ -53,7 +53,7 @@ Button.prototype.setOnClickOpenLinkAction = function (action) {
  * @returns {Button}
  */
 Button.prototype.setOpenLink = function (openLink) {
-	this.openLink = openLink;
+	this.openLink = JSON.stringify(openLink);
 	return this;
 }
 
@@ -116,14 +116,14 @@ TextButton.prototype.appendToUi = function (parent) {
 	button.append(btnContent);
 	
 	if(!openLink&&!authAction) {
-		//new fabric['Button'](button, actionCallback(action,button) );	
+		new fabric['Button'](button, actionCallback(button) );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync(openLink.url);
+			Office.context.ui.displayDialogAsync( JSON.parse(openLink.url) );
 		} );
 	}else {
 		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync(authAction.url);
+			Office.context.ui.displayDialogAsync( JSON.parse(authAction.url) );
 		} );		
 	}
 }

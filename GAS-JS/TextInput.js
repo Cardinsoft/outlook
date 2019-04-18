@@ -27,7 +27,7 @@ TextInput.prototype.setMultiline = function (multiline) {
 	return this;
 }
 TextInput.prototype.setOnChangeAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 TextInput.prototype.setTitle = function (title) {
@@ -76,19 +76,28 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.className = 'ms-TextField-field TextInputInput';
 	input.value     = value;
 	input.name      = fieldName;
-	/*
+	
 	//set optional parameters to input;
 	if(action) {
-		input.addEventListener('focusout',curry(action,input),false);
-		function curry(action){
-			return async function(e) { 	
-				await input.addEventListener('dblclick',actionCallback(action));
-				await input.dispatchEvent(new Event('dblclick'));
-				await input.removeEventListener('dblclick',actionCallback);
-			}
-		}
+		//parse action if found;
+		action = JSON.parse(action);
+		
+		//change cursor to pointer on hover;
+		widget.classList.add('pointer');
+		
+		//get unique identifier;
+		let id = getId();
+		
+		//set stringifyed action to global storage;
+		e_actions[id] = JSON.stringify(action);
+		
+		//add action reference to widget;
+		widget.setAttribute('action',id);
+		
+		//set event listener to widget;
+		widget.addEventListener('focusout',async function(){ await actionCallback(this); });		
 	}
-	*/
+	
 	//append input to wrapper;
 	inputWrap.append(input);
 	

@@ -229,7 +229,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 			btnContent.textContent = text;
 			button.append(btnContent);
 				
-			//new fabric['Button'](button, actionCallback(action,button) );
+			new fabric['Button'](button, actionCallback(button) );
 		}
 		
 		if(sw) {
