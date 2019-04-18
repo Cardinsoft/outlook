@@ -116,7 +116,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	button.append(btnContent);
 	
 	if(!openLink&&!authAction) {
-		new fabric['Button'](button, actionCallback(action,button) );	
+		//new fabric['Button'](button, actionCallback(action,button) );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
 			Office.context.ui.displayDialogAsync(openLink.url);
