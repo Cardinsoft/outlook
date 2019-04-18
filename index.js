@@ -186,9 +186,10 @@ async function actionCallback(elem) {
 		console.log(loadIndicator)
 		console.log(parameters)
 		
-		/*
 		const e = new e_EventObject();
-
+		
+		console.log(e)
+/*
 		//clear formInput and formInputs;
 		//e.formInput  = {};
 		//e.formInputs = {};
