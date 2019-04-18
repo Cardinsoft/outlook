@@ -282,7 +282,8 @@ CardBuilder.prototype.build = async function () {
 	}
 	
 	cardStack.push(this);
-	
+	console.log('built a card')
+	console.log(this)
 	return this;
 };
 
