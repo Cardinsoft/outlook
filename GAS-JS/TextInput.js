@@ -88,13 +88,7 @@ TextInput.prototype.appendToUi = function (parent) {
 			}
 		}
 	}
-	
-	
-	
-	if(action) { 
-		input.addEventListener('focusout',actionCallback(action,input)); 
-	}
-	
+
 	//append input to wrapper;
 	inputWrap.append(input);
 	
