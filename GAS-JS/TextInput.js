@@ -76,7 +76,7 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.className = 'ms-TextField-field TextInputInput';
 	input.value     = value;
 	input.name      = fieldName;
-	
+	/*
 	//set optional parameters to input;
 	if(action) {
 		input.addEventListener('focusout',curry(action,input),false);
@@ -88,7 +88,7 @@ TextInput.prototype.appendToUi = function (parent) {
 			}
 		}
 	}
-
+	*/
 	//append input to wrapper;
 	inputWrap.append(input);
 	
