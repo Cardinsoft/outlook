@@ -791,6 +791,8 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
                 connector = propertiesToString(connector);
+				
+				console.log(connector)
               
                 if(buttonText) {
                   var button = textButtonWidget(buttonText,true,false);
