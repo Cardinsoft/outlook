@@ -10,6 +10,8 @@ class CardSection {
 }
 //add new methods to the class;
 CardSection.prototype.addWidget = function (widget) {
+	console.log('added widget')
+	console.log(widget)
 	this.widgets.push(widget);
 	return this;
 }
