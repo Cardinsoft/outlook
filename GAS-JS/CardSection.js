@@ -83,8 +83,8 @@ CardSection.prototype.appendToUi = function (parent,serialize) {
 		}
 		
 		//append widgets to Ui;
-		widgets.forEach(function(widget,index){
-			widget.appendToUi(wrapper,index);
+		widgets.forEach(function(widget){
+			widget.appendToUi(wrapper);
 		});
 		
 	}

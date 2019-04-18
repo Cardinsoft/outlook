@@ -222,9 +222,6 @@ async function cardDisplay(e) {
  
   //parse content;
   content = parseData(content);
-  
-  console.log('CONTENT');
-  console.log(content);
 
   //try to display content or show unparsed data if error;
   try {
