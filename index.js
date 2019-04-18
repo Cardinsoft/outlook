@@ -246,7 +246,7 @@ async function actionCallback(elem) {
 			console.log(params);
 		}
 		
-		await applyParams();
+		await applyParams(e,params);
 		
 		console.log(e.parameters);
 		
