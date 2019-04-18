@@ -175,6 +175,7 @@ class Spinner {
 function actionCallback(action) {
 	return async function() {
 		
+		console.log(this)
 		console.log(action)
 		
 		//access action parameters;
