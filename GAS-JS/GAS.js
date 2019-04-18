@@ -177,7 +177,9 @@ ButtonSet.prototype.appendToUi = function(parent) {
 		const action          = button.action;
 		const openLink        = button.openLink;
 		const authAction      = button.authorizationAction; 
-			
+		
+		button.appendToUi(wrapBtn);
+		/*
 		const btn = document.createElement('button');
 		if(disabled) {
 			btn.className = 'ms-Button ms-Button--small'+button.className;
@@ -203,7 +205,7 @@ ButtonSet.prototype.appendToUi = function(parent) {
 				Office.context.ui.displayDialogAsync(authAction.url);
 			} );		
 		}		
-		
+		*/
 	});
 
 }
