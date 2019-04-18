@@ -180,12 +180,14 @@ async function actionCallback(elem) {
 		
 		console.log(action);
 		
-		//access action parameters;
-		//const functionName  = action.functionName;
-		//const loadIndicator = action.loadIndicator;
-		//const params        = action.parameters;
+		access action parameters;
+		const functionName  = action.functionName;
+		const loadIndicator = action.loadIndicator;
+		const params        = action.parameters;
 		
-		//const e = new e_EventObject();
+		const e = new e_EventObject();
+		
+		console.log(e);
 /*
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
