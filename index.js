@@ -236,7 +236,7 @@ async function actionCallback(elem) {
 		
 		//set parameters to event object;
 		
-		function applyParams (e,params) {		
+		async function applyParams (e,params) {		
 			
 			let t = new e_EventObject();
 			
