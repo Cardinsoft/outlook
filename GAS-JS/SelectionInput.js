@@ -106,22 +106,31 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				label.className = 'ms-CheckBox-field';
 				inputWrap.append(label);
 				if(checked) { label.classList.add('is-checked'); }
-				/*	
-				//add event listener chain ( check/uncheck -> callback );
-				label.addEventListener('click',curry(action,input,label,checked),false);
-				function curry(action,input,label,checked){
-					return async function(e) { 
-						if(!input.checked) { input.checked = true; }else { input.checked = false; }
-						await label.classList.toggle('is-checked');
-						
-						if(action) {
-							await label.addEventListener('dblclick',actionCallback(action,input));
-							await label.dispatchEvent(new Event('dblclick'));
-							await label.removeEventListener('dblclick',actionCallback);
-						}
-					}
-				}				
-				*/
+				
+				//parse action if found;
+				action = JSON.parse(action);
+				
+				//change cursor to pointer on hover;
+				widget.classList.add('pointer');
+				
+				//get unique identifier;
+				let id = getId();
+				
+				//set stringifyed action to global storage;
+				e_actions[id] = JSON.stringify(action);
+				
+				//add action reference to widget;
+				widget.setAttribute('action',id);
+				
+				//set event listener to widget;
+				widget.addEventListener('click',async function(){ 
+					
+					if(!input.checked) { input.checked = true; }else { input.checked = false; }
+					await label.classList.toggle('is-checked');
+					
+					await actionCallback(this); 
+				});
+				
 				//create label text;
 				let labelTxt = document.createElement('span');
 					labelTxt.className = 'ms-Label';
