@@ -100,8 +100,6 @@ async function editSectionAdvanced(e) {
 		  //stringify content to send to event object;
 		  e.parameters.content = JSON.stringify(content);
 		  
-		  console.log(e);
-		  
 	//set data state change and navigate to display card;
 	await builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
 	builder.setStateChanged(true);
