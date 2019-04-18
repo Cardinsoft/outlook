@@ -140,7 +140,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let binded = curry.bind(action,widget);
 		
-		widget.addEventListener('click',binded(widget),false);
+		widget.addEventListener('click',binded,false);
 
 	}
 	
