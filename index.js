@@ -187,16 +187,10 @@ async function actionCallback(elem) {
 		console.log(parameters)
 		
 		const e = new e_EventObject();
-		
-		console.log(e)
-/*
-		//clear formInput and formInputs;
-		//e.formInput  = {};
-		//e.formInputs = {};
-		
+
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
-		
+
 		//if has forms -> set event objects formInput and formInputs params;
 		if(forms.length>0) {
 			
@@ -247,6 +241,10 @@ async function actionCallback(elem) {
 			
 		}
 		
+		console.log(e);
+		console.log(GLOBAL);
+		
+		/*
 		//set parameters to event object;
 		e.parameters = parameters;
 		
