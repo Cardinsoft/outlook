@@ -59,7 +59,7 @@ SelectionInput.prototype.setType = function (type) {
 SelectionInput.prototype.appendToUi = function (parent) {
 	const className = this.className;
 	const fieldName = this.fieldName;
-	const action    = this.action;
+	let action      = this.action;
 	const title     = this.title;
 	const type      = this.type;
 	const options   = this.options;
@@ -195,41 +195,50 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				if(checked) { label.classList.add('is-checked'); }
 				
 				labels.push(label);
-				/*
-				//add event listener chain ( check/uncheck -> callback );
-				label.addEventListener('click',curry(action,input,label,checked),false);
-				function curry(action,input,label,checked){
-					return async function(e) { 
-						
-						//check if every other radio button is switched off;
-						const isLastChecked = input.checked&&inputs.every(function(i){ 
-							if(input!==i) { 
-								return i.checked===false; 
+				
+				//parse action if found;
+				action = JSON.parse(action);
+				
+				//change cursor to pointer on hover;
+				widget.classList.add('pointer');
+				
+				//get unique identifier;
+				let id = getId();
+				
+				//set stringifyed action to global storage;
+				e_actions[id] = JSON.stringify(action);
+				
+				//add action reference to widget;
+				widget.setAttribute('action',id);
+				
+				//set event listener to widget;
+				widget.addEventListener('click',async function(){
+					
+					//check if every other radio button is switched off;
+					const isLastChecked = input.checked&&inputs.every(function(i){ 
+						if(input!==i) { 
+							return i.checked===false; 
+						}else {
+							return true;
+						}
+					});	
+
+					if(!isLastChecked) {
+						await inputs.forEach(function(i,index){
+							if(input===i&&!input.checked) { 
+								labels[index].classList.add('is-checked');
+								i.checked = true;
 							}else {
-								return true;
+								labels[index].classList.remove('is-checked');
+								i.checked = false;
 							}
 						});
-						
-						if(!isLastChecked) {
-							await inputs.forEach(function(i,index){
-								if(input===i&&!input.checked) { 
-									labels[index].classList.add('is-checked');
-									i.checked = true;
-								}else {
-									labels[index].classList.remove('is-checked');
-									i.checked = false;
-								}
-							});
-						}
-							
-						if(action) {
-							await label.addEventListener('dblclick',actionCallback(action,input));
-							await label.dispatchEvent(new Event('dblclick'));
-							await label.removeEventListener('dblclick',actionCallback);
-						}
 					}
-				}	
-				*/
+
+					await actionCallback(widget);
+					
+				});				
+				
 				//create label text;
 				let labelTxt = document.createElement('span');
 					labelTxt.className = 'ms-Label';
