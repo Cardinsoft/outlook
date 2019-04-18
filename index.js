@@ -180,9 +180,7 @@ async function actionCallback(elem) {
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
-		console.log(functionName)
-		console.log(loadIndicator)
-		console.log(parameters)
+		console.log(parameters.widgetIdx);
 		
 		const e = new e_EventObject();
 
