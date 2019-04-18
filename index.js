@@ -247,7 +247,7 @@ async function actionCallback(elem) {
 			
 			for(var p in params) {
 				console.log(p)
-				if(e.parameters[p]) { e.parameters[p] = params[p]; }
+				e.parameters[p] = params[p];
 			}
 			
 			console.log('event object params after extension');
