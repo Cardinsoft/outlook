@@ -241,7 +241,9 @@ function actionCallback(elem) {
 		//set parameters to event object;
 		e.parameters = params;
 		
-		GLOBAL[functionName](e);
+		console.log('initiated callback');
+		
+		return GLOBAL[functionName](e);
 		
 		/*
 		async function applyParams (e,params) {		
