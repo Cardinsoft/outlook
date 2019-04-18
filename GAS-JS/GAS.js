@@ -273,8 +273,8 @@ CardBuilder.prototype.build = async function () {
 		if(cardSections.length===1) { serialize = false; }
 		
 		for(let s=0; s<cardSections.length; s++) {
-				let cardSection = cardSections[s];
-				cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
+			let cardSection = cardSections[s];
+			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
 		}
 		
 	}
