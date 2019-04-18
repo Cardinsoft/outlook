@@ -96,14 +96,15 @@ TextButton.prototype.appendToUi = function (parent) {
 	
 	
 	
-	const button = document.createElement('button');
-	button.disabled = disabled;
-	
-	if(backgroundColor) { button. }
-	if(disabled) { cl.add('btn-disabled'); }
+	const button     = document.createElement('button');
+	button.disabled  = disabled;
+	button.innerHTML = text;
 	
 	const st = button.style;
 	const cl = button.classList;
+	
+	if(backgroundColor) {  }
+	if(disabled) { cl.add('btn-disabled'); }else { cl.remove('btn-disabled'); }
 	
 	parent.append(button);
 	
