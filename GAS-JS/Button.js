@@ -134,7 +134,6 @@ TextButton.prototype.appendToUi = function (parent) {
 		
 		button.addEventListener('click',async function(){ await actionCallback(this); });
 		
-		//new fabric['Button'](button, async function () { await actionCallback(button); } );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
 			Office.context.ui.displayDialogAsync( JSON.parse(openLink).url );
