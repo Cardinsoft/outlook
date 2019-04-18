@@ -327,7 +327,7 @@ CardBuilder.prototype.setName = function (name) {
 	this.name = name;
 	return this;
 };
-CardBuilder.prototype.build = function () {
+CardBuilder.prototype.build = async function () {
 	const cardHeader   = this.cardHeader;
 	const cardSections = this.sections;
 	const cardAction   = this.action;
@@ -363,9 +363,11 @@ CardBuilder.prototype.build = function () {
 		let serialize = true;
 		if(cardSections.length===1) { serialize = false; }
 		
-		cardSections.forEach(function(cardSection){
+		for(let s=0; s<cardSections.length; s++) {
+			let cardSection = cardSections[s];
 			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
-		});
+		}
+		
 	}
 	
 	cardStack.push(this);
