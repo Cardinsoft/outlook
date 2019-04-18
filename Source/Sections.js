@@ -819,6 +819,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
+
         section.addWidget(element);
       
       }
