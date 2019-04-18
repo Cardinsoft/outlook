@@ -291,20 +291,25 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					opt.selected    = selected;
 				input.append(opt);
 			});
-			/*
-			//add event listener chain ( check/uncheck -> callback );
-			input.addEventListener('change',curry(action,input,options),false);
-			function curry(action,input,label,checked){
-				return async function(e) { 
+			
+			//parse action if found;
+			action = JSON.parse(action);
 				
-					if(action) {
-						await inputWrap.addEventListener('dblclick',actionCallback(action,input));
-						await inputWrap.dispatchEvent(new Event('dblclick'));
-						await inputWrap.removeEventListener('dblclick',actionCallback);
-					}
-				}
-			}
-			*/
+			//change cursor to pointer on hover;
+			widget.classList.add('pointer');
+				
+			//get unique identifier;
+			let id = getId();
+				
+			//set stringifyed action to global storage;
+			e_actions[id] = JSON.stringify(action);
+				
+			//add action reference to widget;
+			widget.setAttribute('action',id);
+				
+			//set event listener to widget;
+			input.addEventListener('change',async function(){ await actionCallback(widget); });
+			
 			new fabric['Dropdown'](inputWrap);
 			
 			//quick fix for dropdown Ui;
