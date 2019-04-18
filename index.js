@@ -180,8 +180,6 @@ async function actionCallback(elem) {
 		const loadIndicator = action.loadIndicator;
 		const params        = action.parameters;
 		
-		console.log(params.widgetIdx);
-		
 		const e = new e_EventObject();
 
 		//get form and access formInputs;
@@ -241,13 +239,20 @@ async function actionCallback(elem) {
 		console.log(params);
 		//set parameters to event object;
 		
-		function applyParams (e,params) {
+		function applyParams (e,params) {			
+			for(var p in params) {
+				e.parameters[p] = params[p];
+			}
+			
+			console.log('event object params after extension');
 			console.log(e.parameters);
-			console.log(params);
+			
+			Object.freeze(e);	
 		}
 		
 		await applyParams(e,params);
 		
+		console.log('event object params after applying extension');
 		console.log(e.parameters);
 		
 		await GLOBAL[functionName](e);
