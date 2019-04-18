@@ -783,8 +783,6 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
 				
-				console.log(connector)
-				
                 connector = propertiesToString(connector);
               
                 if(buttonText) {

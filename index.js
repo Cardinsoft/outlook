@@ -242,6 +242,8 @@ async function actionCallback(elem) {
 		//set parameters to event object;
 		e.parameters = parameters;
 		
+		console.log(e.parameters);
+		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
 			/*
