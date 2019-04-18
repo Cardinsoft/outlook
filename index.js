@@ -240,6 +240,10 @@ async function actionCallback(elem) {
 		//set parameters to event object;
 		
 		function applyParams (e,params) {			
+			
+			console.log('params before extension');
+			console.log(params);
+			
 			for(var p in params) {
 				e.parameters[p] = params[p];
 			}
