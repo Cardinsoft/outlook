@@ -796,6 +796,8 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 connector = propertiesToString(connector);
 				
 				console.log(connector)
+				console.log(connector.isSealed())
+				console.log(connector.isFrozen())
               
                 if(buttonText) {
                   var button = textButtonWidget(buttonText,true,false);
