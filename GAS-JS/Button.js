@@ -89,7 +89,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	const text            = this.text;
 	const disabled        = this.disabled;
 	const textButtonStyle = this.textButtonStyle;
-	const action          = this.action;
+	let action            = this.action;
 	const openLink        = this.openLink;
 	const authAction      = this.authorizationAction; 
 	

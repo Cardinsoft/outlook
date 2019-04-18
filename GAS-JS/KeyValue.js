@@ -209,11 +209,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 		widget.append(wrapButton);	
 	
 		if(btn) {
+			/*
 			const backgroundColor = btn.backgroundColor;
 			const text 			  = btn.text;
 			const disabled 		  = btn.disabled;
 			const textButtonStyle = btn.textButtonStyle;
-			const action		  = btn.action;
+			let actionBtn		  = btn.action;
 			
 			const button = document.createElement('button');
 			button.disabled = disabled;
@@ -229,7 +230,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 			btnContent.textContent = text;
 			button.append(btnContent);
 				
-			//new fabric['Button'](button, actionCallback(button) );
+			//new fabric['Button'](button, actionCallback(button) );*/
+			
+			btn.appendToUi(wrapButton);
+			
 		}
 		
 		if(sw) {
