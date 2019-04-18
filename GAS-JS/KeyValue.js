@@ -144,7 +144,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 			await binded();
 		}
 		
-		
 		widget.addEventListener('click',callback);
 
 	}
