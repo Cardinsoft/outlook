@@ -727,9 +727,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
 	
 	for(var index=0; index<widgets.length; index++) {
 	  var widget = widgets[index];
-	  
-	  console.log(widget);
-      
+
       if(index<=max) {
     
         var state = widget.state;

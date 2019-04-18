@@ -164,9 +164,8 @@ class Spinner {
 /**
  * Initiates callback function and updates Ui;
  * @param {Action} action object with action config (function name, load indicator and parameters);
- * @param {HtmlElement} element document markup element calling action;
  */
-function actionCallback(action,element) {
+function actionCallback(action) {
 	return async function() {
 		
 		console.log(action);
@@ -248,13 +247,13 @@ function actionCallback(action,element) {
 			s.show();
 			
 			//invoke callback and await response;
-			await GLOBAL[functionName](e,element);
+			await GLOBAL[functionName](e);
 			
 			o.hide('#app-overlay');
 			s.hide();
 			
 		}else {
-			await GLOBAL[functionName](e,element);
+			await GLOBAL[functionName](e);
 		}
 	}
 }
