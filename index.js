@@ -249,10 +249,9 @@ async function actionCallback(elem) {
 		
 		console.log(e);
 		
-		/*
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
-			
+			/*
 			const o = new Overlay();
 			o.setColor('white');
 			o.show('#app-overlay');
@@ -266,12 +265,12 @@ async function actionCallback(elem) {
 			
 			o.hide('#app-overlay');
 			s.hide();
-			
+			*/
 		}else {
+			/*
 			await GLOBAL[functionName](e);
+			*/
 		}
-		
-		*/
 }
 //=========================================END CALLBACKS========================================//
 
