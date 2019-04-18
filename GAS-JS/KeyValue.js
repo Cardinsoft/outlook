@@ -109,7 +109,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
-	const action  = this.action;
+	let action  = this.action;
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	
@@ -125,19 +125,9 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let id = getId();
 		
-		console.log(action);
-		
 		e_actions[id] = action;
 		
-		console.log(e_actions);
-		
 		widget.setAttribute('action',id);
-		
-		//let binded = actionCallback.bind(widget);
-		
-		//async function callback() {
-			//await binded();
-		//}
 		
 		widget.addEventListener('click',function(){ actionCallback(this); });
 
