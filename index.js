@@ -176,8 +176,6 @@ async function actionCallback(elem) {
 	
 		const action = e_actions[elem.getAttribute('action')];
 		
-		console.log(JSON.parse(action));
-		
 		const e = new e_EventObject();
 
 		//get form and access formInputs;
@@ -232,11 +230,13 @@ async function actionCallback(elem) {
 			}
 			
 		}
+		
+		const a = JSON.parse(action);
 
 		//access action parameters;
-		const functionName  = action.functionName;
-		const loadIndicator = action.loadIndicator;
-		const params        = action.parameters;
+		const functionName  = a.functionName;
+		const loadIndicator = a.loadIndicator;
+		const params        = a.parameters;
 		
 		//set parameters to event object;
 		e.parameters = params;
