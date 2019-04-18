@@ -43,6 +43,8 @@ KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
  */
 KeyValue.prototype.setOnClickAction = function (action) {
 	this.action = JSON.stringify(action);
+	console.log('added action');
+	console.log(action);
 	return this;
 }
 /**
