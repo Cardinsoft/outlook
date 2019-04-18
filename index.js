@@ -254,7 +254,7 @@ async function actionCallback(elem) {
 			
 			console.log(t)
 			
-			GLOBAL[functionName](t);
+			await GLOBAL[functionName](t);
 						
 		}	
 		
