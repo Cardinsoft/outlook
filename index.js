@@ -246,7 +246,7 @@ async function actionCallback(elem) {
 			console.log(e.parameters);			
 			
 			for(var p in params) {
-				console.log(params[p])
+				console.log(p)
 				if(e.parameters[p]) { e.parameters[p] = params[p]; }
 			}
 			
