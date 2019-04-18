@@ -196,20 +196,22 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				labels.push(label);
 				
-				//parse action if found;
-				action = JSON.parse(action);
-				
-				//change cursor to pointer on hover;
-				widget.classList.add('pointer');
-				
-				//get unique identifier;
-				let id = getId();
-				
-				//set stringifyed action to global storage;
-				e_actions[id] = JSON.stringify(action);
-				
-				//add action reference to widget;
-				widget.setAttribute('action',id);
+				if(action) {
+					//parse action if found;
+					action = JSON.parse(action);
+					
+					//change cursor to pointer on hover;
+					widget.classList.add('pointer');
+					
+					//get unique identifier;
+					let id = getId();
+					
+					//set stringifyed action to global storage;
+					e_actions[id] = JSON.stringify(action);
+					
+					//add action reference to widget;
+					widget.setAttribute('action',id);
+				}
 				
 				//set event listener to widget;
 				widget.addEventListener('click',async function(){
@@ -235,7 +237,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						});
 					}
 
-					await actionCallback(widget);
+					if(action) { await actionCallback(widget); }
 					
 				});				
 				
