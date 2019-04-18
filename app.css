@@ -118,9 +118,16 @@ body {
 	width : 93.5%;
 }
 
+.separated, .separated-both {
+	border : solid #d0d0d0;
+}
+
 .separated {
-	border       : solid #d0d0d0;
 	border-width : 1px 0 0 0;
+}
+
+.separated-both {
+	border-width : 1px 0 1px 0;
 }
 
 .collapsible {
