@@ -123,14 +123,13 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
-		
 		let id = getId();
 		
 		e_actions[id] = action;
 		
 		console.log(e_actions);
 		
-		//widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
+		widget.setAttribute('action',id);
 		
 		//let binded = actionCallback.bind(widget);
 		
@@ -138,7 +137,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 			//await binded();
 		//}
 		
-		//widget.addEventListener('click',function(){ actionCallback(this); });
+		widget.addEventListener('click',function(){ actionCallback(this); });
 
 	}
 	
