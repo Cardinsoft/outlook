@@ -344,8 +344,6 @@ function actionKeyValueWidget(icon,top,content,clickFunc,params) {
     } 
   }
   
-  console.log(params);
-
   //set onclick action and set parameters if provided;
   var action = CardService.newAction();
       action.setFunctionName(clickFunc);
