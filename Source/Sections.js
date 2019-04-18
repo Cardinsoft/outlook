@@ -778,11 +778,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               if(switchValue) {
                 element = switchWidget(title,content,name,switchValue,switchValue);
               }else {
-				 
-				console.log(connector)
-				console.log(sectionIndex)
-				console.log(index)
-             
+
                 //set section and widget index and stringify;
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
