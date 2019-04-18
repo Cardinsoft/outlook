@@ -143,7 +143,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					await label.classList.toggle('is-checked');
 					
 					if(action) { await actionCallback(this); }
-				}*/);
+				}*/;
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
