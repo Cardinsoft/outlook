@@ -110,9 +110,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
 	const action  = this.action;
-	
-	console.log(action);
-	
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	
