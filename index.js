@@ -237,6 +237,8 @@ async function actionCallback(elem) {
 			
 		}
 		
+		console.log(parameters);
+		
 		//set parameters to event object;
 		e.parameters = parameters;
 		
