@@ -126,6 +126,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
+		console.log(action)
+		
 		widget.addEventListener('click',curry(action,widget),false);
 		function curry(action){
 			return async function(e) { 	
