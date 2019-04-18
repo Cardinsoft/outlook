@@ -183,6 +183,8 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
 	
     //stringify parameters to pass to action;
     connector = propertiesToString(connector);
+	
+	console.log(connector)
     
     //set label and create widget representing connector;
     button = textButtonWidget(label,false,false,actionName,connector);
