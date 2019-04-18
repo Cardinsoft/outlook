@@ -705,7 +705,7 @@ function createSectionSimple(builder,data,isCollapsed,index) {
  * @param {Integer} max maximum number of widgets to create;
  * @returns {CardSection}
  */
-async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
+function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   //create section;
   var section = CardService.newCardSection();
   
@@ -822,13 +822,13 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
-        await section.addWidget(element);
+        section.addWidget(element);
       
       }
       
     }
     //append section and return it;
-    await builder.addSection(section);
+    builder.addSection(section);
     return section;
   }
 }
