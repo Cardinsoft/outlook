@@ -244,10 +244,15 @@ async function actionCallback(elem) {
 			console.log('event object params before extension');
 			console.log(e.parameters);			
 			
+			let t = new e_EventObject();
+			
 			for(var p in params) {
 				console.log(p)
 				e.parameters[p] = params[p];
+				t[p] = params[p];
 			}
+			
+			console.log(t)
 			
 			console.log('event object params after extension');
 			console.log(e.parameters);	
