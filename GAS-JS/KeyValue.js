@@ -130,9 +130,9 @@ KeyValue.prototype.appendToUi = function (parent) {
 				
 				let self = this;
 				
-				await widget.addEventListener('dblclick',actionCallback(self));
-				await widget.dispatchEvent(new Event('dblclick'));
-				await widget.removeEventListener('dblclick',actionCallback);
+				await arg.addEventListener('dblclick',actionCallback(self));
+				await arg.dispatchEvent(new Event('dblclick'));
+				await arg.removeEventListener('dblclick',actionCallback);
 			}
 		}
 		
