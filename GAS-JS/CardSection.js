@@ -87,7 +87,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize) {
 		async function appendWidgetsAsync(warr,wrapper) {
 			for(let i=0; i<warr.length; i++) {
 				let widget = warr[i];
-				await widget.appendToUi(wrapper);
+				widget.appendToUi(wrapper);
 			}
 		}
 		
