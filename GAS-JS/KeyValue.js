@@ -126,15 +126,9 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let id = getId();
 		
-		const isUnique = function(a,i){ 
-			let result =true;
-			for(let p in a) {		
-				if(a[p].id===i) { result = false; }
-			}
-			return result;
-		}(e_actions,id);
+
 		
-		console.log(isUnique);
+		console.log(id);
 		
 		//widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
 		
