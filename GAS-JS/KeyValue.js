@@ -123,24 +123,28 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
-		console.log(action)
-		
-		function curry(arg){
-			return async function(e) {
+		//function curry(arg){
+			
+			//return async function(e) {
 				
-				let self = this;
+				//let self = this;
 				
-				console.log(self)
+				//console.log(self)
 				
 				//await arg.addEventListener('dblclick',actionCallback(self));
 				//await arg.dispatchEvent(new Event('dblclick'));
 				//await arg.removeEventListener('dblclick',actionCallback);
-			}
-		}
+			//}
+		//}
 		
 		let binded = curry.bind(action,widget);
 		
-		widget.addEventListener('click',binded);
+		function curry() {
+			binded();
+		}
+		
+		
+		widget.addEventListener('click',curry);
 
 	}
 	
