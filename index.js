@@ -403,7 +403,7 @@ function toBoolean(input) {
 
 /**
  * Gets base64-encoded random Id;
- * @returns {String}
+ * @returns {String|Function}
  */
 function getId() {
 	let id = GLOBAL.btoa(Math.random().toString());
