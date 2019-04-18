@@ -137,7 +137,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 			//}
 		//}
 		
-		let binded = curry.bind(action,widget);
+		let binded = actionCallback.bind(action,widget);
 		
 		function curry() {
 			binded();
