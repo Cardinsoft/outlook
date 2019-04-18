@@ -134,15 +134,11 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
       actionName = 'actionShow';
       
       if(code>=200&&code<300) {
-		  
-		console.log(response);
       
         //handle successful requests;
         content = parseData(content);
         var length = content.length;
 		
-		console.log(content);
-        
         if(hasMatch) {
           
           //access match properties;
