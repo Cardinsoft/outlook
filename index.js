@@ -177,11 +177,6 @@ async function actionCallback(elem) {
 		const action = e_actions[elem.getAttribute('action')];
 		
 		console.log(JSON.parse(action));
-	
-		//access action parameters;
-		const functionName  = action.functionName;
-		const loadIndicator = action.loadIndicator;
-		const params        = action.parameters;
 		
 		const e = new e_EventObject();
 
@@ -237,13 +232,18 @@ async function actionCallback(elem) {
 			}
 			
 		}
+
+		//access action parameters;
+		const functionName  = action.functionName;
+		const loadIndicator = action.loadIndicator;
+		const params        = action.parameters;
 		
 		//set parameters to event object;
 		e.parameters = params;
 		
 		console.log(e);
 		
-		await GLOBAL[functionName](e);
+		GLOBAL[functionName](e);
 		
 		/*
 		async function applyParams (e,params) {		
