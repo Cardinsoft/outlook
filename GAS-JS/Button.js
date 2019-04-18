@@ -132,7 +132,6 @@ TextButton.prototype.appendToUi = function (parent) {
 		//add action reference to widget;
 		button.setAttribute('action',id);		
 		
-		
 		new fabric['Button'](button, async function () { await actionCallback(button); } );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
