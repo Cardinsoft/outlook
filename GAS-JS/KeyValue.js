@@ -209,11 +209,11 @@ KeyValue.prototype.appendToUi = function (parent) {
 			btnContent.textContent = text;
 			button.append(btnContent);
 				
-			new fabric['Button'](button, actionCallback(action,button) );
+			//new fabric['Button'](button, actionCallback(action,button) );
 		}
 		
 		if(sw) {
-			sw.appendToUi(wrapButton);
+			//sw.appendToUi(wrapButton);
 		}
 		
 	}
