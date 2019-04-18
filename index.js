@@ -249,6 +249,8 @@ async function actionCallback(elem) {
 		
 		console.log(e);
 		
+		await GLOBAL[functionName](e);
+		
 		/*
 		async function applyParams (e,params) {		
 			
@@ -276,7 +278,7 @@ async function actionCallback(elem) {
 		*/
 /*
 		
-		//await GLOBAL[functionName](e);
+		
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
