@@ -137,7 +137,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					}
 				}
 				
-				widget.addEventListener('click',curry(input));/*async function(){ 
+				widget.addEventListener('click',curry(input,label));/*async function(){ 
 					
 					if(!input.checked) { input.checked = true; }else { input.checked = false; }
 					await label.classList.toggle('is-checked');
