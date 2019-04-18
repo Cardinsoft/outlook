@@ -176,7 +176,9 @@ function actionCallback(action) {
 	return async function() {
 		
 		console.log(this)
-		console.log(action)
+		//console.log(action)
+		
+		/*
 		
 		//access action parameters;
 		const functionName  = action.functionName;
@@ -266,6 +268,8 @@ function actionCallback(action) {
 			await GLOBAL[functionName](e);
 		}
 	}
+	
+	*/
 }
 //=========================================END CALLBACKS========================================//
 

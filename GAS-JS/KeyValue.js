@@ -139,10 +139,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let binded = actionCallback.bind(action,widget);
 		
-		function curry() {
+		async function curry() {
 			console.log('!')
 			console.log(binded)
-			//binded();
+			await binded();
 		}
 		
 		
