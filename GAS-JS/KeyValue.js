@@ -109,7 +109,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
-	let action  = JSON.parse(this.action);
+	let action  = this.action;
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	
@@ -120,6 +120,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	//add event listener chain ( click -> callback );
 	if(action) {
+		
+		action = JSON.parse(action);
 		
 		widget.classList.add('pointer');
 		
