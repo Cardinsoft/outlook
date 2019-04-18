@@ -174,8 +174,8 @@ class Spinner {
  */
 async function actionCallback(action) {
 		
-		console.log(this)
-		//console.log(action)
+		console.log(this);
+		console.log(action);
 		
 		/*
 		

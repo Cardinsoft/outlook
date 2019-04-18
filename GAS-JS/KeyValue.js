@@ -139,14 +139,13 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let binded = actionCallback.bind(action,widget);
 		
-		async function curry() {
-			console.log('!')
-			console.log(binded)
+		async function callback() {
+			console.log('!');
 			await binded();
 		}
 		
 		
-		widget.addEventListener('click',curry);
+		widget.addEventListener('click',callback);
 
 	}
 	
