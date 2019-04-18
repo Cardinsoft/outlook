@@ -176,6 +176,10 @@ async function actionCallback(elem) {
 		
 		console.log(elem);
 		
+		const action = JSON.parse ( GLOBAL.atob( elem.getAttribute('data') ) )
+		
+		console.log(action);
+		
 		//access action parameters;
 		//const functionName  = action.functionName;
 		//const loadIndicator = action.loadIndicator;
