@@ -126,7 +126,13 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		let id = getId();
 		
-		const isUnique = e_actions.every( (a) => { return a.id!==id; } );
+		const isUnique = function(a,i){ 
+			for(let p of a) {
+				
+				if(a[p].id===i) { return false; }
+				
+			}
+		}(e_actions,id);
 		
 		console.log(isUnique);
 		
