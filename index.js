@@ -1,8 +1,8 @@
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
-	$(document).ready(function () {
+	$(document).ready(async function () {
 		
-		trigger();
+		await trigger();
 		
 		$('#home').click(async function(){
 			
@@ -77,7 +77,7 @@ Office.initialize = (reason) => {
  * Triggers cardOpen with global event object preserved (panel change issue);
  * @returns {Function}
  */
-function trigger() {
+async function trigger() {
 	const e = new e_EventObject();
 	await cardOpen(e);
 }
