@@ -141,6 +141,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		function curry() {
 			console.log('!')
+			console.log(binded)
 			//binded();
 		}
 		
