@@ -15,6 +15,8 @@ Office.initialize = (reason) => {
 			s.setSize('large');
 			s.show();
 			
+			const e = new e_EventObject();
+			
 			await universalHome(e);
 			
 			o.hide('#app-overlay');
@@ -31,7 +33,9 @@ Office.initialize = (reason) => {
 			
 			let s = new Spinner();
 			s.setSize('large');
-			s.show();			
+			s.show();	
+
+			const e = new e_EventObject();
 			
 			await universalSettings(e);
 			
@@ -49,7 +53,9 @@ Office.initialize = (reason) => {
 
 			let s = new Spinner();
 			s.setSize('large');
-			s.show();			
+			s.show();		
+
+			const e = new e_EventObject();
 			
 			await universalHelp(e);
 			
@@ -73,6 +79,7 @@ Office.initialize = (reason) => {
  * @returns {Function}
  */
 function trigger(obj) {
+	const e = new e_EventObject();
 	return cardOpen(e);
 }
 
@@ -167,13 +174,15 @@ class Spinner {
  */
 function actionCallback(action) {
 	return async function() {
-		
+	
 		console.log(action);
 		
 		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
+		
+		e = new e_EventObject();
 
 		//clear formInput and formInputs;
 		e.formInput  = {};
@@ -358,6 +367,6 @@ function toBoolean(input) {
 	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
 }
 
-const e = new e_EventObject();
+//const e = new e_EventObject();
 const cardStack = [];
 const GLOBAL    = this;
