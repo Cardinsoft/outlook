@@ -248,17 +248,17 @@ function actionCallback(elem) {
 			
 			const o = new Overlay();
 			o.setColor('white');
-			o.show('#app-overlay');
+			//o.show('#app-overlay');
 			
 			let s = new Spinner();
 			s.setSize('large');
-			s.show();
+			//s.show();
 			
 			//invoke callback and await response;
 			return GLOBAL[functionName](e);
 			
 			o.hide('#app-overlay');
-			s.hide();
+			//s.hide();
 			
 		}else {
 			return GLOBAL[functionName](e);
