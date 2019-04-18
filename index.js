@@ -75,12 +75,11 @@ Office.initialize = (reason) => {
 
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
- * @param {Object} obj event object containing curr message data;
  * @returns {Function}
  */
-function trigger(obj) {
+function trigger() {
 	const e = new e_EventObject();
-	return cardOpen(e);
+	await cardOpen(e);
 }
 
 
