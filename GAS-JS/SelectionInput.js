@@ -125,13 +125,25 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				}
 				
 				//set event listener to widget;
-				widget.addEventListener('click',async function(){ 
+				
+				function curry(input){
+					return async function () {
+						
+						if(!input.checked) { input.checked = true; }else { input.checked = false; }
+						await label.classList.toggle('is-checked');
+						
+						if(action) { await actionCallback(this); }						
+						
+					}
+				}
+				
+				widget.addEventListener('click',curry(input));/*async function(){ 
 					
 					if(!input.checked) { input.checked = true; }else { input.checked = false; }
 					await label.classList.toggle('is-checked');
 					
 					if(action) { await actionCallback(this); }
-				});
+				}*/);
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
