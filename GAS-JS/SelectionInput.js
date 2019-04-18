@@ -296,23 +296,25 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				input.append(opt);
 			});
 			
-			//parse action if found;
-			action = JSON.parse(action);
-				
-			//change cursor to pointer on hover;
-			widget.classList.add('pointer');
-				
-			//get unique identifier;
-			let id = getId();
-				
-			//set stringifyed action to global storage;
-			e_actions[id] = JSON.stringify(action);
-				
-			//add action reference to widget;
-			widget.setAttribute('action',id);
-				
-			//set event listener to widget;
-			input.addEventListener('change',async function(){ await actionCallback(widget); });
+			if(action) {
+				//parse action if found;
+				action = JSON.parse(action);
+					
+				//change cursor to pointer on hover;
+				widget.classList.add('pointer');
+					
+				//get unique identifier;
+				let id = getId();
+					
+				//set stringifyed action to global storage;
+				e_actions[id] = JSON.stringify(action);
+					
+				//add action reference to widget;
+				widget.setAttribute('action',id);
+					
+				//set event listener to widget;
+				input.addEventListener('change',async function(){ await actionCallback(widget); });
+			}
 			
 			new fabric['Dropdown'](inputWrap);
 			
