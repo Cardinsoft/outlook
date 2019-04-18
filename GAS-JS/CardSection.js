@@ -25,7 +25,7 @@ CardSection.prototype.setNumUncollapsibleWidgets = function (numUncollapsibleWid
 	this.numUncollapsibleWidgets = numUncollapsibleWidgets;
 	return this;
 }
-CardSection.prototype.appendToUi = function (parent,serialize) {
+CardSection.prototype.appendToUi = async function (parent,serialize) {
 	const collapsible = this.collapsible;
 	
 	const section = document.createElement('div');
