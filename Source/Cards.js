@@ -187,6 +187,9 @@ async function cardDisplay(e) {
 
   //get required parameters;
   var connector  = e.parameters;
+  
+  console.log(connector);
+  
   var code       = +connector.code;
   var url        = connector.url;
   var content    = connector.content;
