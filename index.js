@@ -400,5 +400,15 @@ function toBoolean(input) {
 	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
 }
 
+
+/**
+ * Gets base64-encoded random Id;
+ * @returns {String}
+ */
+function getId() {
+	return GLOBAL.btoa(Math.random().toString());
+}
+
 const cardStack = [];
 const GLOBAL    = this;
+const e_actions = {};
