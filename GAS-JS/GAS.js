@@ -179,33 +179,6 @@ ButtonSet.prototype.appendToUi = function(parent) {
 		const authAction      = button.authorizationAction; 
 		
 		button.appendToUi(wrapBtn);
-		/*
-		const btn = document.createElement('button');
-		if(disabled) {
-			btn.className = 'ms-Button ms-Button--small'+button.className;
-		}else {
-			btn.className = 'ms-Button ms-Button--small ms-Button--primary '+button.className;
-		}
-		btn.disabled = disabled;
-		wrapBtn.append(btn);		
-		
-		const btnContent = document.createElement('span');
-		btnContent.className = 'ms-Button-label';
-		btnContent.textContent = text;
-		btn.append(btnContent);
-
-		if(!openLink&&!authAction) {
-			new fabric['Button'](btn, actionCallback(action,btn) );	
-		}else if(openLink) {
-			new fabric['Button'](btn, function(){
-				Office.context.ui.displayDialogAsync(openLink.url);
-			} );
-		}else {
-			new fabric['Button'](btn, function(){
-				Office.context.ui.displayDialogAsync(authAction.url);
-			} );		
-		}		
-		*/
 	});
 
 }
