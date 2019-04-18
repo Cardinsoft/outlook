@@ -267,9 +267,9 @@ function actionCallback(action) {
 		}else {
 			await GLOBAL[functionName](e);
 		}
+		
+		*/
 	}
-	
-	*/
 }
 //=========================================END CALLBACKS========================================//
 
