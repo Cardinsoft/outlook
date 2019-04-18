@@ -123,7 +123,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
-		widget.setAttribute('data',document.atob(action));
+		widget.setAttribute('data',GLOBAL.btoa(action));
 		
 		//function curry(arg){
 			
