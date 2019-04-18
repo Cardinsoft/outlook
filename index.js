@@ -236,13 +236,7 @@ async function actionCallback(elem) {
 		
 		//set parameters to event object;
 		
-		function applyParams (e,params) {			
-			
-			console.log('params before extension');
-			console.log(params);
-			
-			console.log('event object params before extension');
-			console.log(e.parameters);			
+		function applyParams (e,params) {		
 			
 			let t = new e_EventObject();
 			
@@ -256,15 +250,11 @@ async function actionCallback(elem) {
 			
 			console.log(t)
 			
-			console.log('event object params after extension');
-			console.log(e.parameters);	
+			t.parameters = action.parameters;
 			
-			console.log('params after extension');
-			console.log(params);				
-		}
-		
-		console.log('event object params right before the extension');
-		console.log(e.parameters);		
+			console.log(t)
+						
+		}	
 		
 		await applyParams(e,params);
 		
