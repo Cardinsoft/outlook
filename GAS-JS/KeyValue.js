@@ -123,13 +123,15 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.classList.add('pointer');
 		
+		widget.setAttribute('data',document.atob(action));
+		
 		//function curry(arg){
 			
 			//return async function(e) {
 				
 				//let self = this;
 				
-				//console.log(self)
+				//console.log(self);
 				
 				//await arg.addEventListener('dblclick',actionCallback(self));
 				//await arg.dispatchEvent(new Event('dblclick'));
@@ -137,13 +139,13 @@ KeyValue.prototype.appendToUi = function (parent) {
 			//}
 		//}
 		
-		let binded = actionCallback.bind(action,widget);
+		//let binded = actionCallback.bind(widget);
 		
-		async function callback() {
-			await binded();
-		}
+		//async function callback() {
+			//await binded();
+		//}
 		
-		widget.addEventListener('click',callback);
+		widget.addEventListener('click',function(){ actionCallback(this); });
 
 	}
 	
