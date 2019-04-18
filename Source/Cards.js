@@ -258,7 +258,7 @@ async function cardDisplay(e) {
           var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionAdvanced',connector);
           var updateSection = CardService.newCardSection();
               updateSection.addWidget(updateButton);
-          builder.addSection(updateSection);
+          await builder.addSection(updateSection);
           
         }
  
@@ -276,9 +276,9 @@ async function cardDisplay(e) {
           if(j===max) { break; }
           var result = content[j];
           if(content.length!==1) {
-            createSectionSimple(builder,result,true,j);
+            await createSectionSimple(builder,result,true,j);
           }else {
-            createSectionSimple(builder,result,false,j);
+            await createSectionSimple(builder,result,false,j);
           }
         }
         
