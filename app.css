@@ -72,9 +72,10 @@ body {
 }
 
 .TextButton {
-	text-transform : uppercase;
-	font-size      : smaller;
-	font-weight    : bold;
+    text-transform : uppercase;
+    font-weight    : bold;
+    border         : none;
+    padding        : 0;
 }
 
 .btn-text {
