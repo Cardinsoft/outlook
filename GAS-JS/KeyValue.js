@@ -127,11 +127,11 @@ KeyValue.prototype.appendToUi = function (parent) {
 		let id = getId();
 		
 		const isUnique = function(a,i){ 
-			for(let p in a) {
-				
-				if(a[p].id===i) { return false; }
-				
+			let result =true;
+			for(let p in a) {		
+				if(a[p].id===i) { result = false; }
 			}
+			return result;
 		}(e_actions,id);
 		
 		console.log(isUnique);
