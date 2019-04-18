@@ -185,8 +185,8 @@ function actionCallback(action) {
 		const e = new e_EventObject();
 
 		//clear formInput and formInputs;
-		e.formInput  = {};
-		e.formInputs = {};
+		//e.formInput  = {};
+		//e.formInputs = {};
 		
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');

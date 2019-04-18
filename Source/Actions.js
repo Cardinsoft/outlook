@@ -94,9 +94,6 @@ async function editSectionAdvanced(e) {
 		  var sectionIdx = +connector.sectionIdx;
 		  var widgetIdx  = +connector.widgetIdx;
 		  
-		  console.log(`Section index ${sectionIdx}`)
-		  console.log(`Widget index ${widgetIdx}`)
-		  
 		  //change widget being edited to input;
 		  content[sectionIdx].widgets[widgetIdx].type = 'TextInput';
 		  
