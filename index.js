@@ -173,7 +173,11 @@ class Spinner {
  * @param {HtmlElement} elem caller element binded to a function;
  */
 async function actionCallback(elem) {
-		let action = this;
+		const action = this;
+		
+		console.log(action);
+		
+		/*
 		
 		//access action parameters;
 		const functionName  = action.functionName;
@@ -262,6 +266,8 @@ async function actionCallback(elem) {
 		}else {
 			await GLOBAL[functionName](e);
 		}
+		
+		*/
 }
 //=========================================END CALLBACKS========================================//
 
