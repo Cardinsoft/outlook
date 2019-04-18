@@ -246,6 +246,7 @@ async function actionCallback(elem) {
 			console.log(e.parameters);			
 			
 			for(var p in params) {
+				console.log(params[p])
 				e.parameters[p] = params[p];
 			}
 			
@@ -282,7 +283,7 @@ async function actionCallback(elem) {
 			s.hide();
 			*/
 		}else {
-			await GLOBAL[functionName](e);
+			//await GLOBAL[functionName](e);
 		}
 }
 //=========================================END CALLBACKS========================================//
