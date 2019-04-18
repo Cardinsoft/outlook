@@ -169,39 +169,41 @@ class Spinner {
 
 /**
  * Initiates callback function and updates Ui;
- * @param {HtmlElement} elem caller element binded to a function;
+ * @param {HtmlElement} elem caller element;
+ * @returns {Function}
  */
 function actionCallback(elem) {
-		//const action = this;
 	
-		const action = e_actions[elem.getAttribute('action')];
-		
-		const e = new e_EventObject();
+	//access action by its identifier;
+	const action = e_actions[elem.getAttribute('action')];
+	
+	//construct event object;
+	const e = new e_EventObject();
 
-		//get form and access formInputs;
-		const forms = document.getElementsByTagName('form');
+	//get form and access formInputs;
+	const forms = document.getElementsByTagName('form');
 
-		//if has forms -> set event objects formInput and formInputs params;
-		if(forms.length>0) {
+	//if has forms -> set event objects formInput and formInputs params;
+	if(forms.length>0) {
 			
-			for(let f=0; f<forms.length; f++) {
-				let form = forms.item(f);
+		for(let f=0; f<forms.length; f++) {
+			let form = forms.item(f);
 				
-				//access form parameters;
-				const inputs = form.elements;
+			//access form parameters;
+			const inputs = form.elements;
 				
-				for(let i=0; i<inputs.length; i++) {
-					let input = inputs.item(i);
+			for(let i=0; i<inputs.length; i++) {
+				let input = inputs.item(i);
 
-					//access input parameter;
-					let name  = input.name;
-					let value = input.value;
+				//access input parameter;
+				let name  = input.name;
+				let value = input.value;
 					
-					//set formInput and formInputs properties;
-					if(name!=='') {
+				//set formInput and formInputs properties;
+				if(name!=='') {
 						
-						//temp solution to check for Switches & Checkboxes;
-						const cl = input.classList;
+					//temp solution to check for Switches & Checkboxes;
+					const cl = input.classList;
 						
 						const valueIndiff = cl.contains('ms-Toggle-input')||cl.contains('ms-CheckBox-input')||cl.contains('ms-RadioButton-input');
 						if(valueIndiff) { 
@@ -220,17 +222,17 @@ function actionCallback(elem) {
 									
 							}
 							
-						}else {
-							e.formInput[name]  = value;	
-							e.formInputs[name] = [value];
-						}
+					}else {
+						e.formInput[name]  = value;	
+						e.formInputs[name] = [value];
 					}
-				}			
-				
-			}
-			
-		}
+					
+				}
+			}		
+		}	
+	}
 		
+		//parse action object;
 		const a = JSON.parse(action);
 
 		//access action parameters;
@@ -240,39 +242,6 @@ function actionCallback(elem) {
 		
 		//set parameters to event object;
 		e.parameters = params;
-		
-		console.log('initiated callback');
-		
-		return GLOBAL[functionName](e);
-		
-		/*
-		async function applyParams (e,params) {		
-			
-			let t = new e_EventObject();
-			
-			for(var p in params) {
-				console.log(p)
-				e.parameters[p] = params[p];
-				t[p] = params[p];
-			}
-			
-			console.log(action)
-			
-			console.log(t)
-			
-			t.parameters = action.parameters;
-			
-			console.log(t)
-			
-			await GLOBAL[functionName](t);
-						
-		}	
-		
-		await applyParams(e,params);
-		*/
-/*
-		
-		
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
@@ -286,14 +255,14 @@ function actionCallback(elem) {
 			s.show();
 			
 			//invoke callback and await response;
-			await GLOBAL[functionName](e);
+			return GLOBAL[functionName](e);
 			
 			o.hide('#app-overlay');
 			s.hide();
 			
 		}else {
-			//await GLOBAL[functionName](e);
-		}*/
+			return GLOBAL[functionName](e);
+		}
 }
 //=========================================END CALLBACKS========================================//
 
