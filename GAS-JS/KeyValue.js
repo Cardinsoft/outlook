@@ -125,20 +125,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.setAttribute('data',GLOBAL.btoa(JSON.stringify(action)));
 		
-		//function curry(arg){
-			
-			//return async function(e) {
-				
-				//let self = this;
-				
-				//console.log(self);
-				
-				//await arg.addEventListener('dblclick',actionCallback(self));
-				//await arg.dispatchEvent(new Event('dblclick'));
-				//await arg.removeEventListener('dblclick',actionCallback);
-			//}
-		//}
-		
 		//let binded = actionCallback.bind(widget);
 		
 		//async function callback() {
