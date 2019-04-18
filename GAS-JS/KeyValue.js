@@ -116,7 +116,6 @@ KeyValue.prototype.appendToUi = function (parent,index) {
 	//create row element;
 	const widget = document.createElement('div');
 	widget.className = 'row '+this.className;
-	widget.tabindex = index;
 	parent.append(widget);
 	
 	//add event listener chain ( click -> callback );
