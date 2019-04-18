@@ -323,7 +323,7 @@ function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
  * @param {Object} params parameters to pass to function;
  * @returns {KeyValue} 
  */
-function actionKeyValueWidget(icon,top,content,clickFunc,params) {
+async function actionKeyValueWidget(icon,top,content,clickFunc,params) {
   //check if content is a Date and format to locale to avoid errors;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
   
@@ -348,7 +348,7 @@ function actionKeyValueWidget(icon,top,content,clickFunc,params) {
   var action = CardService.newAction();
       action.setFunctionName(clickFunc);
   if(params) {action.setParameters(params);}
-  widget.setOnClickAction(action);
+  await widget.setOnClickAction(action);
       
   return widget;
 }
