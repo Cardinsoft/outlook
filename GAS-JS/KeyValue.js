@@ -140,6 +140,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		let binded = actionCallback.bind(action,widget);
 		
 		function curry() {
+			console.log('!')
 			binded();
 		}
 		
