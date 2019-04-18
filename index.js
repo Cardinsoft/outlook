@@ -251,9 +251,7 @@ async function actionCallback(elem) {
 			}
 			
 			console.log('event object params after extension');
-			console.log(e.parameters);
-			
-			Object.freeze(e);	
+			console.log(e.parameters);	
 		}
 		
 		console.log('event object params right before the extension');
