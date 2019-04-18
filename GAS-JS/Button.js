@@ -115,8 +115,25 @@ TextButton.prototype.appendToUi = function (parent) {
 	btnContent.innerHTML = text;
 	button.append(btnContent);
 	
-	if(!openLink&&!authAction) {
-		new fabric['Button'](button, actionCallback(button) );	
+	if(!openLink&&!authAction&&action) {
+
+		//parse action if found;
+		action = JSON.parse(action);
+		
+		//change cursor to pointer on hover;
+		button.classList.add('pointer');
+		
+		//get unique identifier;
+		let id = getId();
+		
+		//set stringifyed action to global storage;
+		e_actions[id] = JSON.stringify(action);
+		
+		//add action reference to widget;
+		button.setAttribute('action',id);		
+		
+		
+		new fabric['Button'](button, async function () { await actionCallback(button); } );	
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
 			Office.context.ui.displayDialogAsync( JSON.parse(openLink).url );
