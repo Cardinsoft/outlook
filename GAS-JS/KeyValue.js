@@ -129,7 +129,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		widget.setAttribute('action',id);
 		
-		widget.addEventListener('click',function(){ actionCallback(this); });
+		widget.addEventListener('click',async function(){ await actionCallback(this); });
 
 	}
 	
