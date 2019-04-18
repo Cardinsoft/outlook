@@ -182,7 +182,7 @@ function actionCallback(action) {
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
-		e = new e_EventObject();
+		const e = new e_EventObject();
 
 		//clear formInput and formInputs;
 		e.formInput  = {};
@@ -367,6 +367,5 @@ function toBoolean(input) {
 	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
 }
 
-//const e = new e_EventObject();
 const cardStack = [];
 const GLOBAL    = this;
