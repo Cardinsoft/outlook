@@ -238,6 +238,7 @@ async function actionCallback(elem) {
 		const loadIndicator = a.loadIndicator;
 		const params        = a.parameters;
 		
+		console.log(e_actions);
 		console.log(a);
 		
 		
