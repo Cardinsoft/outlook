@@ -285,8 +285,6 @@ async function actionEdit(e) {
 async function actionShow(e) {
 	//create action response builder;
 	var builder = CardService.newActionResponseBuilder();
-			  
-	console.log(e);	  
 		
 	var code = +e.parameters.code;
 		  
