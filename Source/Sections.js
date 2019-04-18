@@ -791,7 +791,7 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
 				
-				await console.log(connector)
+				console.log(connector)
 				
                 connector = propertiesToString(connector);
 				
