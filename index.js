@@ -171,7 +171,7 @@ class Spinner {
  * Initiates callback function and updates Ui;
  * @param {HtmlElement} elem caller element binded to a function;
  */
-async function actionCallback(elem) {
+function actionCallback(elem) {
 		//const action = this;
 	
 		const action = e_actions[elem.getAttribute('action')];
