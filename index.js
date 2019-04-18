@@ -188,7 +188,7 @@ async function actionCallback(elem) {
 		const e = new e_EventObject();
 		
 		console.log(e);
-/*
+
 		//get form and access formInputs;
 		const forms = document.getElementsByTagName('form');
 
@@ -241,7 +241,8 @@ async function actionCallback(elem) {
 			}
 			
 		}
-*/		
+		
+		console.log(e);
 
 /*
 		//set parameters to event object;
