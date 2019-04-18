@@ -42,7 +42,7 @@ KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
  * @returns {KeyValue}
  */
 KeyValue.prototype.setOnClickAction = function (action) {
-	this.action = action;
+	this.action = JSON.stringify(action);
 	return this;
 }
 /**
@@ -109,7 +109,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
-	let action  = this.action;
+	let action  = JSON.parse(this.action);
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	
