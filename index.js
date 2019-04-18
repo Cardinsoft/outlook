@@ -177,13 +177,16 @@ async function actionCallback(elem) {
 		
 		console.log(action);
 		
-		/*
-		
 		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
 		const parameters    = action.parameters;
 		
+		console.log(functionName)
+		console.log(loadIndicator)
+		console.log(parameters)
+		
+		/*
 		const e = new e_EventObject();
 
 		//clear formInput and formInputs;
