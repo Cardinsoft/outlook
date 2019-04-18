@@ -106,7 +106,7 @@ KeyValue.prototype.setTopLabel = function (text) {
 	this.topLabel = text;
 	return this;
 }
-KeyValue.prototype.appendToUi = function (parent,index) {
+KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
 	const action  = this.action;
