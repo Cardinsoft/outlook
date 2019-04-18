@@ -235,14 +235,15 @@ async function actionCallback(elem) {
 			
 		}
 		
-		console.log(params.widgetIdx);
-		console.log(params);
 		//set parameters to event object;
 		
 		function applyParams (e,params) {			
 			
 			console.log('params before extension');
 			console.log(params);
+			
+			console.log('event object params before extension');
+			console.log(e.parameters);			
 			
 			for(var p in params) {
 				e.parameters[p] = params[p];
