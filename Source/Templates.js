@@ -343,6 +343,8 @@ async function actionKeyValueWidget(icon,top,content,clickFunc,params) {
       widget.setIconUrl(icon);
     } 
   }
+  
+  console.log(params);
 
   //set onclick action and set parameters if provided;
   var action = CardService.newAction();
