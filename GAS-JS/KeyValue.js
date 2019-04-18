@@ -140,7 +140,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 		let binded = actionCallback.bind(action,widget);
 		
 		async function callback() {
-			console.log('!');
 			await binded();
 		}
 		
