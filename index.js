@@ -179,7 +179,7 @@ async function actionCallback(elem) {
 		const action = e_actions[elem.getAttribute('action')];
 	
 		console.log(action);
-		/*
+		
 		//access action parameters;
 		const functionName  = action.functionName;
 		const loadIndicator = action.loadIndicator;
@@ -243,7 +243,7 @@ async function actionCallback(elem) {
 		}
 		
 		console.log(e);
-
+		/*
 		//set parameters to event object;
 		e.parameters = params;
 		
