@@ -241,12 +241,12 @@ async function cardDisplay(e) {
           if(typeof section==='string') { section = JSON.parse(section); }
 
           try {
-            await createSectionAdvanced(builder,section,j,connector,layout[j]); 
+            createSectionAdvanced(builder,section,j,connector,layout[j]); 
           }
           catch(er) {
 			console.error(er);
             //try to handle nested objects that do not conform to our schema;
-            await createSectionSimple(builder,section,true,j);
+            createSectionSimple(builder,section,true,j);
           }
         }
        
@@ -259,7 +259,7 @@ async function cardDisplay(e) {
           var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionAdvanced',connector);
           var updateSection = CardService.newCardSection();
               updateSection.addWidget(updateButton);
-          await builder.addSection(updateSection);
+		  builder.addSection(updateSection);
           
         }
  
@@ -277,9 +277,9 @@ async function cardDisplay(e) {
           if(j===max) { break; }
           var result = content[j];
           if(content.length!==1) {
-            await createSectionSimple(builder,result,true,j);
+            createSectionSimple(builder,result,true,j);
           }else {
-            await createSectionSimple(builder,result,false,j);
+            createSectionSimple(builder,result,false,j);
           }
         }
         

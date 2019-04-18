@@ -182,13 +182,13 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     
     //set label and create widget representing connector;
     button = textButtonWidget(label,false,false,actionName,connector);
-    widget = await actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
+    widget = actionKeyValueWidgetButton(icon,'',name,button,actionName,connector);
 	
-    await section.addWidget(widget);
+    section.addWidget(widget);
   }
       
   //append section and return it;   
-  await builder.addSection(section);   
+  builder.addSection(section);   
   return section;
 }
 
@@ -701,7 +701,7 @@ function createSectionSimple(builder,data,isCollapsed,index) {
  * @param {Integer} max maximum number of widgets to create;
  * @returns {CardSection}
  */
-async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
+function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   //create section;
   var section = CardService.newCardSection();
   
@@ -720,8 +720,6 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   
   //append widgets if there are any;
   if(widgets.length!==0) {
-	
-	async function test() {
 	
 	for(var index=0; index<widgets.length; index++) {
 	  var widget = widgets[index];
@@ -792,13 +790,13 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                   if(state!=='editable') {
                     element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
                   }else {
-                    element = await actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
+                    element = actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
                   }
                 }else {
                   if(state!=='editable') {
                     element = simpleKeyValueWidget(title,content,isMultiline,icon);
                   }else {
-                    element = await actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
+                    element = actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
                   }
                 }
               }
@@ -821,18 +819,14 @@ async function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
-        await section.addWidget(element);
+        section.addWidget(element);
       
       }
       
     }
 	
-	}
-	
-	await test();
-	
     //append section and return it;
-    await builder.addSection(section);
+    builder.addSection(section);
     return section;
   }
 }
