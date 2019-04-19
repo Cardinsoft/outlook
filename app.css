@@ -44,10 +44,6 @@ body {
 	width : 0 !important;
 }
 
-.Card {
-	border-top : 1px solid #d0d0d0;
-}
-
 .CardHeader {
 	display     : flex;
     align-items : center;
