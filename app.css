@@ -75,6 +75,11 @@ body {
 	margin-right : 16px;
 }
 
+button:focus {
+	background-color : #009BDE;
+	opacity          : 0.5;
+}
+
 .TextButton {
     text-transform : uppercase;
     font-weight    : bold;
