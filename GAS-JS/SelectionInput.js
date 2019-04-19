@@ -196,6 +196,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				function curry(widget,action,input,inputs,labels){
 					return async function (e) {
 
+						console.log(e);
+						
 						e.preventDefault();
 					
 						//check if every other radio button is switched off;
