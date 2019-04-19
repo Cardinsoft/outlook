@@ -75,8 +75,10 @@ body {
 	margin-right : 16px;
 }
 
-button:focus {
+button.btn-text:focus {
+	outline          : 10px solid #009BDE;
 	background-color : #009BDE;
+	color            : white;
 	opacity          : 0.5;
 }
 
