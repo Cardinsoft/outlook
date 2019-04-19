@@ -75,14 +75,6 @@ body {
 	margin-right : 16px;
 }
 
-button.btn-text:active {
-    position         : relative;
-	left             : 8px;
-	background-color : #009BDE;
-    border           : 8px solid;
-    border-radius    : 8px;
-}
-
 .TextButton {
     text-transform : uppercase;
     font-weight    : bold;
