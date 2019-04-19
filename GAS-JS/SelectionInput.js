@@ -221,7 +221,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 					
 					}
 				}
-				widget.addEventListener('click',curry(widget,action,input,inputs,labels));
+				inputWrap.addEventListener('click',curry(widget,action,input,inputs,labels));
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
