@@ -80,6 +80,7 @@ body {
     font-weight    : bold;
     border         : none;
     padding        : 0;
+	outline        : none;
 }
 
 .btn-text {
