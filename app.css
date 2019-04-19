@@ -71,7 +71,7 @@ body {
 	padding : 6px 40px 0 0;
 }
 
-.ButtonSet > .TextButton {
+.ButtonSet .TextButton {
 	margin-right : 16px;
 }
 
