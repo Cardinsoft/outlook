@@ -113,14 +113,14 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				}
 				
 				//set event listener to widget;
-				function curry(input,label){
+				function curry(widget,input,label){
 					return async function () {
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
 						await label.classList.toggle('is-checked');
-						if(action) { await actionCallback(this); }
+						if(action) { await actionCallback(widget); }
 					}
 				}
-				inputWrap.addEventListener('click',curry(input,label));
+				inputWrap.addEventListener('click',curry(widget,input,label));
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
@@ -195,10 +195,6 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				//set event listener to widget;
 				function curry(widget,action,input,inputs,labels){
 					return async function (e) {
-
-						console.log(e);
-						
-						e.preventDefault();
 					
 						//check if every other radio button is switched off;
 						const isLastChecked = input.checked&&inputs.every(function(i){ 
