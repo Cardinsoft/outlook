@@ -77,6 +77,8 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.value     = value;
 	input.name      = fieldName;
 	
+	input.addEventListener('keypress',function(e){ console.log(e); e.preventDefault(); });
+	
 	//set optional parameters to input;
 	if(action) {
 		//parse action if found;
@@ -95,7 +97,7 @@ TextInput.prototype.appendToUi = function (parent) {
 		widget.setAttribute('action',id);
 		
 		//set event listener to widget;
-		widget.addEventListener('focusout',async function(){ await actionCallback(this); });		
+		widget.addEventListener('focusout',async function(){ await actionCallback(this); });
 	}
 	
 	//append input to wrapper;
