@@ -228,7 +228,7 @@ CardBuilder.prototype.build = async function () {
 	
 	if(this.cardHeader) {
 		const headerWrap = document.createElement('div');
-		headerWrap.className = [cardHeader.className,'separated-bottom'].join(' ');
+		headerWrap.className = [cardHeader.className,'separated-both'].join(' ');
 		$('#app-body').prepend(headerWrap);
 		
 		if(this.cardHeader.imageUrl) {
