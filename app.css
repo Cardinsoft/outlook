@@ -75,11 +75,12 @@ body {
 	margin-right : 16px;
 }
 
-button.btn-text:focus-within {
-	outline          : 10px solid #009BDE;
+button.btn-text:active {
+    position         : relative;
+	left             : 8px;
 	background-color : #009BDE;
-	color            : white;
-	opacity          : 0.5;
+    border           : 8px solid;
+    border-radius    : 8px;
 }
 
 .TextButton {
