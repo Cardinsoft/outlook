@@ -223,8 +223,7 @@ CardBuilder.prototype.build = async function () {
 	$('#app-body').empty();
 	
 	const wrap = document.createElement('div');
-	wrap.id = 'main-Ui-wrap'
-	wrap.className = 'ms-Panel-contentInner';	
+	wrap.id = 'main-Ui-wrap';	
 	$('#app-body').append(wrap);
 	
 	if(this.cardHeader) {
@@ -252,7 +251,7 @@ CardBuilder.prototype.build = async function () {
 		
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
-			cardSection.appendToUi( $('#main-Ui-wrap'),serialize );
+			cardSection.appendToUi( wrap,serialize );
 		}
 		
 	}
