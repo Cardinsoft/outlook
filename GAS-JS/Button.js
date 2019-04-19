@@ -111,22 +111,11 @@ TextButton.prototype.appendToUi = function (parent) {
 	parent.append(button);
 	
 	if(!openLink&&!authAction&&action) {
-
-		//parse action if found;
-		action = JSON.parse(action);
+	
+		//set refrence;
+		setAction(button,action);
 		
-		//change cursor to pointer on hover;
-		button.classList.add('pointer');
-		
-		//get unique identifier;
-		let id = getId();
-		
-		//set stringifyed action to global storage;
-		e_actions[id] = JSON.stringify(action);
-		
-		//add action reference to widget;
-		button.setAttribute('action',id);
-		
+		//add event listener to button;
 		button.addEventListener('click',async function(){ await actionCallback(this); });
 		
 	}else if(openLink) {

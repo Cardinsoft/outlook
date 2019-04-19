@@ -384,6 +384,28 @@ function getId() {
 	if(isUnique) { return id }else { return getId(); }
 }
 
+/**
+ * Processes action and sets reference to widget;
+ * @param {HtmlElement} element element on which to set reference;
+ * @param {String} action stringifyed action object;
+ */
+function setAction(element,action) {
+	//parse action if found;
+	action = JSON.parse(action);
+		
+	//change cursor to pointer on hover;
+	element.classList.add('pointer');
+		
+	//get unique identifier;
+	let id = getId();
+		
+	//set stringifyed action to global storage;
+	e_actions[id] = JSON.stringify(action);
+		
+	//add action reference to widget;
+	element.setAttribute('action',id);	
+}
+
 const cardStack = [];
 const GLOBAL    = this;
 const e_actions = {};

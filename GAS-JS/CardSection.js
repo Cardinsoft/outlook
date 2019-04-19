@@ -10,8 +10,6 @@ class CardSection {
 }
 //add new methods to the class;
 CardSection.prototype.addWidget = function (widget) {
-	console.log('added widget')
-	console.log(widget)
 	this.widgets.push(widget);
 	return this;
 }
@@ -84,16 +82,13 @@ CardSection.prototype.appendToUi = async function (parent,serialize) {
 			wrapper = formElem;
 		}
 		
-		//append widgets to Ui;
-		
+		//append widgets to Ui;	
 		async function appendWidgetsAsync(warr,wrapper) {
 			for(let i=0; i<warr.length; i++) {
 				let widget = warr[i];
 				widget.appendToUi(wrapper);
 			}
 		}
-		
-		
 		await appendWidgetsAsync(widgets,wrapper);
 
 		
