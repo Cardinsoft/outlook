@@ -194,8 +194,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//set event listener to widget;
 				function curry(widget,action,input,inputs,labels){
-					return async function () {
+					return async function (e) {
 
+						e.preventDefault();
+					
 						//check if every other radio button is switched off;
 						const isLastChecked = input.checked&&inputs.every(function(i){ 
 							if(input!==i) { 
