@@ -149,20 +149,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	//add event listener chain ( click -> callback );
 	if(action) {
-		//parse action if found;
-		action = JSON.parse(action);
-		
-		//change cursor to pointer on hover;
-		widget.classList.add('pointer');
-		
-		//get unique identifier;
-		let id = getId();
-		
-		//set stringifyed action to global storage;
-		e_actions[id] = JSON.stringify(action);
-		
-		//add action reference to widget;
-		widget.setAttribute('action',id);
+		//set refrence;
+		setAction(widget,action);
 		
 		//set event listener to widget;
 		widget.addEventListener('click',async function(){ await actionCallback(this); });

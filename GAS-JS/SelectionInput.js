@@ -108,42 +108,19 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				if(checked) { label.classList.add('is-checked'); }
 				
 				if(action) {
-					//parse action if found;
-					action = JSON.parse(action);
-					
-					//change cursor to pointer on hover;
-					widget.classList.add('pointer');
-					
-					//get unique identifier;
-					let id = getId();
-					
-					//set stringifyed action to global storage;
-					e_actions[id] = JSON.stringify(action);
-					
-					//add action reference to widget;
-					widget.setAttribute('action',id);
+					//set refrence;
+					setAction(widget,action);
 				}
 				
 				//set event listener to widget;
-				
 				function curry(input,label){
 					return async function () {
-						
 						if(!input.checked) { input.checked = true; }else { input.checked = false; }
 						await label.classList.toggle('is-checked');
-						
-						if(action) { await actionCallback(this); }						
-						
+						if(action) { await actionCallback(this); }
 					}
 				}
-				
-				inputWrap.addEventListener('click',curry(input,label));/*async function(){ 
-					
-					if(!input.checked) { input.checked = true; }else { input.checked = false; }
-					await label.classList.toggle('is-checked');
-					
-					if(action) { await actionCallback(this); }
-				})*/;
+				inputWrap.addEventListener('click',curry(input,label));
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
@@ -211,49 +188,40 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				labels.push(label);
 				
 				if(action) {
-					//parse action if found;
-					action = JSON.parse(action);
-					
-					//change cursor to pointer on hover;
-					widget.classList.add('pointer');
-					
-					//get unique identifier;
-					let id = getId();
-					
-					//set stringifyed action to global storage;
-					e_actions[id] = JSON.stringify(action);
-					
-					//add action reference to widget;
-					widget.setAttribute('action',id);
+					//set refrence;
+					setAction(widget,action);
 				}
 				
 				//set event listener to widget;
-				widget.addEventListener('click',async function(){
-					
-					//check if every other radio button is switched off;
-					const isLastChecked = input.checked&&inputs.every(function(i){ 
-						if(input!==i) { 
-							return i.checked===false; 
-						}else {
-							return true;
-						}
-					});	
+				function curry(widget,action,input,inputs,labels){
+					return async function () {
 
-					if(!isLastChecked) {
-						await inputs.forEach(function(i,index){
-							if(input===i&&!input.checked) { 
-								labels[index].classList.add('is-checked');
-								i.checked = true;
+						//check if every other radio button is switched off;
+						const isLastChecked = input.checked&&inputs.every(function(i){ 
+							if(input!==i) { 
+								return i.checked===false; 
 							}else {
-								labels[index].classList.remove('is-checked');
-								i.checked = false;
+								return true;
 							}
-						});
-					}
+						});	
 
-					if(action) { await actionCallback(widget); }
+						if(!isLastChecked) {
+							await inputs.forEach(function(i,index){
+								if(input===i&&!input.checked) { 
+									labels[index].classList.add('is-checked');
+									i.checked = true;
+								}else {
+									labels[index].classList.remove('is-checked');
+									i.checked = false;
+								}
+							});
+						}
+
+						if(action) { await actionCallback(widget); }					
 					
-				});				
+					}
+				}
+				widget.addEventListener('click',curry(widget,action,input,inputs,labels));
 				
 				//create label text;
 				let labelTxt = document.createElement('span');
@@ -309,20 +277,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			});
 			
 			if(action) {
-				//parse action if found;
-				action = JSON.parse(action);
-					
-				//change cursor to pointer on hover;
-				widget.classList.add('pointer');
-					
-				//get unique identifier;
-				let id = getId();
-					
-				//set stringifyed action to global storage;
-				e_actions[id] = JSON.stringify(action);
-					
-				//add action reference to widget;
-				widget.setAttribute('action',id);
+				//set refrence;
+				setAction(widget,action);
 					
 				//set event listener to widget;
 				input.addEventListener('change',async function(){ await actionCallback(widget); });
