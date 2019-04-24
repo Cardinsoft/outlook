@@ -5,7 +5,6 @@
  */
 function notification(text) {
   var notification = CardService.newNotification();
-      notification.setType(CardService.NotificationType.INFO);
       notification.setText(text);  
   return notification;
 }
@@ -17,7 +16,6 @@ function notification(text) {
  */
 function warning(text) {
   var notification = CardService.newNotification();
-      notification.setType(CardService.NotificationType.WARNING);
       notification.setText(text);  
   return notification;  
 }
@@ -29,7 +27,6 @@ function warning(text) {
  */
 function error(text) {
   var error = CardService.newNotification();
-      error.setType(CardService.NotificationType.ERROR);
       error.setText(text);
   return error;
 }

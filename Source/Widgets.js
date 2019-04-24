@@ -183,7 +183,7 @@ function createWidgetCustomInput(section,fieldName,title,hint,content) {
   if(!content) { content = ''; }
   
   //create TextInput 
-  var widget = textInputWidget(title,fieldName,hint,content);
+  var widget = textInputWidget(title,fieldName,hint,content,false);
   
   //append widget to section and return;
   section.addWidget(widget);
@@ -367,7 +367,6 @@ function createWidgetSortBy(section) {
   
   //select current order type;
   var orderType = getProperty('order','user');
-  
   if(orderType!==null) {
     options.forEach(function(option){
       if(option.value===orderType) { option.selected = true; }else { option.selected = false; }
@@ -376,7 +375,6 @@ function createWidgetSortBy(section) {
 
   //access reverse setting and create SelectionInput;
   var isReverse = getProperty('reverse','user');
-  
   if(isReverse===null||isReverse==='false') { isReverse = false; }else if(isReverse==='true') { isReverse = true; }
   var reverse = selectionInputWidget('',globalOrderReverseFieldName,globalEnumCheckbox,[{text:'Reverse',value:'true',selected:isReverse}],'applySort',true);
   section.addWidget(reverse);

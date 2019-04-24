@@ -1,10 +1,35 @@
 /**
- * Creates Id for the Connector and push to Properties store;
- * @param {Object} connector connector object;
+ * Fills content for each widget provided with preserved values;
+ * @param {Object} connector object containing preserved values;
+ * @param {Array} widgets an array of widgets to loop through;
  */
-function createId(connector) {
-  var id = Math.ceil(Math.random())
-  console.log(id);
+function preserveValues(connector,widgets) {
+  //ensure input values are preserved;
+  if(widgets.length!==0) {
+    widgets.forEach(function(widget){
+      var name    = widget.name;
+      var content = widget.content; 
+        
+      for(var key in connector) {
+        //if field name is found;
+        if(key===name) {
+          //if content is array -> select options;
+          if(content instanceof Array) {
+            content.forEach(function(option){
+              if(connector[key].indexOf(option.value)!==-1) { 
+                option.selected = true; 
+              }else { 
+                option.selected = false; 
+              }
+            });
+          }else {
+            widget.content = connector[key];
+          } 
+        } 
+      }
+      
+    });
+  }  
 }
 
 /**
@@ -88,7 +113,7 @@ function endsOnOne(input) {
     var li  = arr.lastIndexOf('1');
     if(li===arr.length-1) { result = true; }
   }else if(isStr) {
-    return input.endsWith('1');
+    return input.lastIndexOf('1')===(input.length-1);
   }
   
   return result;
@@ -203,12 +228,13 @@ function getTimeframe(start,end) {
   return timeframe;
 }
 
+
 /**
  * Fetches authorization token for current email
  * @param {Object} e event object;
  * @returns {Message}
  */
-function getToken(e) {	
+function getToken(e) {
   var accessToken = e.messageMetadata.accessToken;
   var messageId = e.messageMetadata.messageId;
   GmailApp.setCurrentMessageAccessToken(accessToken);
@@ -543,6 +569,10 @@ function checkNested(data) {
  */
 function parseData(data) {
 
+  //check for empty and correct objects;
+  var isObj = typeof data==='object';
+  if(isObj&&Object.keys(data).length===0) { return []; }else if(isObj) { return data; }
+
   //if data is undefined return empty array;
   if(!data) { return []; }
   
@@ -553,10 +583,13 @@ function parseData(data) {
     }
     return data;
   }
-  catch(err) { data = data; }
+  catch(err) { 
+    console.error('Encountered an error while trying to parse input: %s',err);
+    Logger.log(data);
+    data = data; 
+  }
   
   
-  if( (typeof data==='object')&&Object.keys(data).length===0 ) { return []; } 
   
   try {
     if(data===''||data==='[]'||data==='""') {
@@ -573,7 +606,8 @@ function parseData(data) {
       data = [data];
     }
   }
-  catch(e) {
+  catch(error) {
+    console.error('Encountered an error while applying conditional parsing after everything else failed (unexpected, check parseData function): %s',error);
     return data;
   }
   

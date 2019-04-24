@@ -34,31 +34,8 @@ function cardCreate(e) {
     mergeObjects(widgets,c.widgets);
   });
   
-  //ensure input values are preserved;
-  if(widgets.length!==0) {
-    widgets.forEach(function(widget){
-      var name    = widget.name;
-      var content = widget.content; 
-      
-      for(var key in type) {
-        //if field name is found;
-        if(key===name) {
-          //if content is array -> select options;
-          if(content instanceof Array) {
-            content.forEach(function(option){
-              if(data[key].indexOf(option.value)!==-1) { 
-                option.selected = true; 
-              }else { 
-                option.selected = false; 
-              }
-            });
-          }else {
-            widget.content = type[key];
-          } 
-        } 
-      }          
-    });
-  }
+  //preserve values for config widgets;
+  preserveValues(type,widgets);
   
   //create config object and section;
   var config = {
@@ -67,9 +44,10 @@ function cardCreate(e) {
   };
   createSectionConfig(builder,config);
   
-  //create fields 1-3 for custom connectors;
-  if(type.name===globalBaseClassName) {
-    createSectionFields(builder,false,3,type);
+  //create API token config section;
+  var auth = JSON.parse(type.auth);
+  if(auth.type==='APItoken') {
+    createSectionConfig(builder,auth.config);
   }
   
   //create config for connector behaviour;
@@ -111,12 +89,13 @@ function cardUpdate(e) {
   //access connector type;
   var cType = new this[type]();
 
-  //create section with authorize / revoke;
+  //create section with authorize/revoke for OAuth-based authentication;
   var cAuth = cType.auth;
-  if(Object.keys(cAuth).length!==0||connector.auth==='OAuth2') {
-    if(cType.login) { connector.login = cType.login(connector); }
-    
-    createSectionAuth(builder,connector,cAuth);
+  if(Object.keys(cAuth).length!==0) {
+    if(connector.auth==='OAuth2') {
+      if(cType.login) { connector.login = cType.login(connector); }
+      createSectionAuth(builder,connector,cAuth);
+    }
   }
   
   //access type's basic and advanced config;
@@ -133,32 +112,9 @@ function cardUpdate(e) {
     createCustomIconsSection(builder,false,connector.icon);
   }
   
-  //ensure input values are preserved;
-  if(widgets.length!==0) {
-    widgets.forEach(function(widget){
-      var name    = widget.name;
-      var content = widget.content; 
-      
-      for(var key in connector) {
-        //if field name is found;
-        if(key===name) {
-          //if content is array -> select options;
-          if(content instanceof Array) {
-            content.forEach(function(option){
-              if(connector[key].indexOf(option.value)!==-1) { 
-                option.selected = true; 
-              }else { 
-                option.selected = false; 
-              }
-            });
-          }else {
-            widget.content = connector[key];
-          } 
-        } 
-      }          
-    });
-  }  
-  
+  //preserve values for config widgets;
+  preserveValues(connector,widgets);
+
   //create config object and section;
   var config = {
     header: globalConfigHeader,
@@ -166,9 +122,12 @@ function cardUpdate(e) {
   };
   createSectionConfig(builder,config);
   
-  //create section with custom fields;
-  if(connector.type===globalBaseClassName) {
-    createSectionFields(builder,false,3,connector);
+  //create API token config section;
+  var auth = cType.auth;
+  var authConfig = auth.config;
+  if(auth.config) { preserveValues(connector,authConfig.widgets); }
+  if(auth.type==='APItoken') {
+    createSectionConfig(builder,authConfig);
   }
   
   //create section with manual and default widgets + update button;
@@ -187,7 +146,6 @@ async function cardDisplay(e) {
 
   //get required parameters;
   var connector  = e.parameters;
-  
   var code       = +connector.code;
   var url        = connector.url;
   var content    = connector.content;
@@ -244,23 +202,18 @@ async function cardDisplay(e) {
             createSectionAdvanced(builder,section,j,connector,layout[j]); 
           }
           catch(er) {
-			console.error(er);
+            console.error(er);
             //try to handle nested objects that do not conform to our schema;
             createSectionSimple(builder,section,true,j);
           }
         }
        
+        //check for editable widgets and create update section if found;
         var hasEditable = checkEditable(content);
         if(hasEditable) {
-        
           //stringify connector properties;
-          connector = propertiesToString(connector); 
-          
-          var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionAdvanced',connector);
-          var updateSection = CardService.newCardSection();
-              updateSection.addWidget(updateButton);
-		  builder.addSection(updateSection);
-          
+          connector = propertiesToString(connector);
+          createSectionUpdate(builder,false,connector);
         }
  
       }else {
@@ -322,7 +275,6 @@ async function cardDisplay(e) {
   return builder.build();
 }
 
-
 /**
  * Triggers either a welcome or display of connections card generators;
  * @param {Object} e event object;
@@ -362,7 +314,7 @@ async function cardOpen(e) {
       var index = getIndex(config,def);
       
       //default to empty url if nothing is in source;
-      if(url===undefined) { 
+      if(!url) { 
         url = ''; 
         def.url===''; 
       }
@@ -371,34 +323,32 @@ async function cardOpen(e) {
       var cType = new this[type]();
       var cAuth = cType.auth;
       
-      //initialize and set common parameters;
-      var params = {
-        'type': type,
-        'icon': icon,
-        'name': name,
-        'url': url, 
-        'manual': manual.toString(),
-        'isDefault':isDefault.toString(),
-        'index': index.toString(),
-        'auth': authType
-      };
+      //set parameters to default connector;
+      var params = propertiesToString(def);
       
-      if(Object.keys(cAuth).length!==0) {
-        params.urlAuth  = cAuth.urlAuth; 
-        params.urlToken = cAuth.urlToken;
-        params.id       = cAuth.id;
-        params.secret   = cAuth.secret;
-        if(cAuth.hint)    { params.hint = cAuth.hint; }
-        if(cAuth.offline) { params.offline = cAuth.offline; }
-        if(cAuth.prompt)  { params.prompt = cAuth.prompt; }
+      //set authorization parameters;
+      if(Object.keys(cAuth).length>0) {
         
-        //default to type's scope if none provided;
-        if(def.scope===''||def.scope===undefined) { 
-          params.scope = cAuth.scope;
-          def.scope    = cAuth.scope;
-        }else { 
-          params.scope = def.scope; 
-        }  
+        if(cAuth.type==='OAuth2') {
+          params.urlAuth  = cAuth.urlAuth; 
+          params.urlToken = cAuth.urlToken;
+          params.id       = cAuth.id;
+          params.secret   = cAuth.secret;
+          if(cAuth.hint)    { params.hint = cAuth.hint; }
+          if(cAuth.offline) { params.offline = cAuth.offline; }
+          if(cAuth.prompt)  { params.prompt = cAuth.prompt; }
+          
+          //default to type's scope if none provided;
+          if(def.scope===''||!def.scope) { 
+            params.scope = cAuth.scope;
+            def.scope    = cAuth.scope;
+          }else { 
+            params.scope = def.scope; 
+          }
+        }else if(cAuth.type==='APItoken') {
+          params.usercode = def.usercode;
+          params.apitoken = def.apitoken;
+        }
         
       }else if(authType==='OAuth2') { 
         params.urlAuth  = def.urlAuth; 

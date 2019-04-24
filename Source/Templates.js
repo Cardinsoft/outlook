@@ -14,24 +14,26 @@ function textWidget(text) {
  * @param {String} title title of the input;
  * @param {String} name fieldname of the input;
  * @param {String} hint text that appears on the input;
- * @param {String} value value that is passed to widget by default;
+ * @param {String} content value that is passed to widget by default;
+ * @param {Boolean} multiline truthy value to determine whether to make input multiline;
  * @param {String} changeFunc name of the function fired on user change;
  * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
  * @param {Object} params parameters to pass to function;
  * @returns {TextInput} 
  */
-function textInputWidget(title,name,hint,value,changeFunc,hasSpinner,params) {
+function textInputWidget(title,name,hint,content,multiline,changeFunc,hasSpinner,params) {
   //check if value is an instanceof Date and format if so;
-  if(value instanceof Date) { value = value.toLocaleDateString(); }
+  if(content instanceof Date) { content = content.toLocaleDateString(); }
   
   //create widget and set required parameters;
   var widget = CardService.newTextInput();
       widget.setFieldName(name);
-      widget.setHint(hint);
-      widget.setValue(value);
   
   //set conditional parameters;
-  if(title) { widget.setTitle(title); }
+  if(title)     { widget.setTitle(title); }
+  if(content)   { widget.setValue(content); }else { widget.setValue(''); }
+  if(hint)      { widget.setHint(hint); }
+  if(multiline) { widget.setMultiline(multiline); }
   
   if(changeFunc) { 
     var action = CardService.newAction();
@@ -330,6 +332,7 @@ function actionKeyValueWidget(icon,top,content,clickFunc,params) {
   //create widget and set required parameters;
   var widget = CardService.newKeyValue();
       widget.setContent(content);
+      widget.setMultiline(true);
   
   //set top title if found;
   if(top&&top!=='') { widget.setTopLabel(top); }
@@ -343,7 +346,7 @@ function actionKeyValueWidget(icon,top,content,clickFunc,params) {
       widget.setIconUrl(icon);
     } 
   }
-  
+
   //set onclick action and set parameters if provided;
   var action = CardService.newAction();
       action.setFunctionName(clickFunc);
