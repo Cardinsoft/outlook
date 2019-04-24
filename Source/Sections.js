@@ -170,6 +170,9 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
         
       }else {
       
+		console.log('Errored');
+		console.log(content);
+	  
         //handle failed requests;
         label = globalError;
         connector.error = JSON.stringify(content);
