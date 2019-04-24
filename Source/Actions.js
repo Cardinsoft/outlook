@@ -186,7 +186,7 @@ async function editSectionAdvanced(e) {
  * Updates data with form input values, performs request and calls display with updated response;
  * @param {Object} e event object;
  */
-async updateSectionAdvanced(e) {
+async function updateSectionAdvanced(e) {
   var connector = e.parameters;
   var data      = connector.content;
   
