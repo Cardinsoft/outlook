@@ -237,6 +237,8 @@ function actionCallback(elem) {
 		//parse action object;
 		const a = JSON.parse(action);
 
+		console.log(a)
+		
 		//access action parameters;
 		const functionName  = a.functionName;
 		const loadIndicator = a.loadIndicator;
