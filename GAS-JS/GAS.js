@@ -201,8 +201,6 @@ CardBuilder.prototype.addCardAction = function (action) {
 	return this;
 };
 CardBuilder.prototype.addSection = function (section) {
-	console.log('added section')
-	console.log(section)
 	this.sections.push(section);
 	return this;
 };
@@ -257,8 +255,6 @@ CardBuilder.prototype.build = async function () {
 	}
 	
 	cardStack.push(this);
-	console.log('built a card')
-	console.log(this)
 	return this;
 };
 
