@@ -593,14 +593,14 @@ function parseData(data) {
   try {
     if(data===''||data==='[]'||data==='""') {
       data = []; 
-    }/*else if(data!==[]) { 
+    }else if(data!==[]) { 
       data = JSON.parse(data);
-    }*/
+    }
     if(!(data instanceof Array)&&!(typeof data==='string')) {
       data = [data]; 
-    }/*else if(typeof data==='string') {
+    }else if(typeof data==='string') {
       data = JSON.parse(data);
-    }*/
+    }
     if(!(data instanceof Array)&&(typeof data==='object')) {
       data = [data];
     }
