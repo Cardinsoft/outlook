@@ -59,7 +59,7 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
  * @param {GmailMessage} msg current meassge object;
  * @returns {CardSection}
  */
-async function createConnectorListSection(builder,isCollapsed,header,config,msg) {
+async createConnectorListSection(builder,isCollapsed,header,config,msg) {
 
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -74,7 +74,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   
   //add Connectors representation;
   for(var key in config) {
-	  var connector = config[key];
+    var connector = config[key];
 	  
 	//get required parameters;
     var type      = connector.type;
@@ -95,19 +95,24 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     var cAuth = cType.auth;
 
     if(Object.keys(cAuth).length!==0) {
-      //set authorization properties from type;
-      connector.urlAuth  = cAuth.urlAuth; 
-      connector.urlToken = cAuth.urlToken;
-      connector.id       = cAuth.id;
-      connector.secret   = cAuth.secret;
-      if(cAuth.hint)    { connector.hint = cAuth.hint; }
-      if(cAuth.offline) { connector.offline = cAuth.offline; }
-      if(cAuth.prompt)  { connector.prompt = cAuth.prompt; }
       
-      //default to type's scope if none provided;
-      if(connector.scope===''||!connector.scope) { 
-        connector.scope = cAuth.scope;
+      //add properties for OAuth 2.0-based Connector;
+      if(cAuth.type==='OAuth2') {
+        //set authorization properties from type;
+        connector.urlAuth  = cAuth.urlAuth; 
+        connector.urlToken = cAuth.urlToken;
+        connector.id       = cAuth.id;
+        connector.secret   = cAuth.secret;
+        if(cAuth.hint)    { connector.hint = cAuth.hint; }
+        if(cAuth.offline) { connector.offline = cAuth.offline; }
+        if(cAuth.prompt)  { connector.prompt = cAuth.prompt; }
+        
+        //default to type's scope if none provided;
+        if(connector.scope===''||!connector.scope) { 
+          connector.scope = cAuth.scope;
+        }
       }
+      
     }
     
     if(!manual) {
@@ -138,7 +143,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
         //handle successful requests;
         content = parseData(content);
         var length = content.length;
-		
+        
         if(hasMatch) {
           
           //access match properties;
@@ -235,7 +240,7 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
     builder.addSection(section);
     return section;
   }
-  catch(error) {
+  catch(error) {  
 	console.error(error);
     //catch configuration error and create erro info section instead;
     createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
@@ -433,7 +438,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
       section.setNumUncollapsibleWidgets(1);
   
   //initiate error title and content;
-  var header = 'Connector error', content = '';
+  var header = 'Connector error', content = '', errorDetails = '';
   
   //create user-friendly prompts for http errors;
   if(code!==0) {
@@ -448,10 +453,26 @@ function createErrorSection(builder,isCollapsed,code,error) {
         header   = 'Method Not Allowed';
         content  = 'The method the Connector is using is not allowed by endpoint resource.\r';
         content += 'By default, our Add-on makes POST requests to external APIs - please, let us know if you need to be able to choose methods for this Connector type';
+        break;
+      case 500:
+        header  = 'Internal Server Error';
+        content = 'Connector endpoint responded with a generic error response. Please, check the error details provided below for additional information';
+        break;
+      case 501:
+        header   = 'Not Implemented';
+        content  = 'The Connector\'s method is not supported. You are witnessing an error that should not be possible.'
+        content += 'Please, do <a href="mailto:support@cardinsoft.com">contact us</a>!';
+        break;
     }
     
+    errorDetails = error;
+    
+  }else {
+    var custom = parseData(error);
+    if(custom.descr) { content = custom.descr; }
+    if(custom.additional) { errorDetails = custom.additional; }
   }
-  
+
   //set section's header;
   section.setHeader(header);
   
@@ -460,8 +481,10 @@ function createErrorSection(builder,isCollapsed,code,error) {
   section.addWidget(description);
   
   //create error information widget;
-  var additional = simpleKeyValueWidget(globalErrorWidgetTitle,error,true);
-  section.addWidget(additional);
+  if(errorDetails) {
+    var additional = simpleKeyValueWidget(globalErrorWidgetTitle,errorDetails,true);
+    section.addWidget(additional);
+  }
 
   //add section and return;
   builder.addSection(section);
@@ -481,7 +504,7 @@ function createSectionAuth(builder,connector,auth) {
   var authText = textWidget(globalAuthTextWidgetContent);
   section.addWidget(authText);
   
-  if(auth!==undefined) {
+  if(auth) {
     if(Object.keys(auth).length===0) { 
       var auth = {
         'urlAuth': connector.urlAuth,
@@ -512,46 +535,6 @@ function createSectionAuth(builder,connector,auth) {
     createWidgetRevoke(buttonSet,globalRevokeAuthText,connector);
     
     section.addWidget(buttonSet);
-  }
-  
-  //add section and return;
-  builder.addSection(section);
-  return section;
-}
-
-/**
- * Creates section with a number of custom field inputs;
- * @param {CardBuilder} builder card builder to append section to;
- * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {Integer} numFileds number of custom field inputs to create;
- * @param {Object} connector connector config object;
- * @returns {CardSection} 
- */
-function createSectionFields(builder,isCollapsible,numFields,connector) {
-  
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-      section.setHeader('Custom fields');
-  
-  //set optional parameters;
-  if(isCollapsible) { section.setCollapsible(isCollapsible); }
-  
-  //create widget for custom fields prompt;
-  createWidgetFieldsText(section,globalOptionalFieldsContent);
-  
-  //if number of fields not provided, default to 3;
-  if(!numFields) { numFields = 3; }
-  
-  //create fields up to max number;
-  for(var i=1; i<=numFields; i++) {
-    var name = 'field'+i;
-    
-    var value;
-    if(connector) {
-     value = connector[name];
-    }
-    
-    createWidgetCustomInput(section,name,name,'Custom connector fields',value);
   }
   
   //add section and return;
@@ -638,8 +621,10 @@ function createSectionConfig(builder,config) {
           break;
         case 'TextInput':
           //access TextInput-specific params;
-          var hint = widget.hint;
-          element = textInputWidget(title,name,hint,content);
+          var hint      = widget.hint;
+          var multiline = widget.multiline;
+          
+          element = textInputWidget(title,name,hint,content,multiline);
           break;
         case globalEnumRadio:
           element = selectionInputWidget(title,name,type,content);
@@ -720,10 +705,8 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   
   //append widgets if there are any;
   if(widgets.length!==0) {
-	
-	for(var index=0; index<widgets.length; index++) {
-	  var widget = widgets[index];
-
+    widgets.forEach(function(widget,index) {
+      
       if(index<=max) {
     
         var state = widget.state;
@@ -738,6 +721,10 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
           switch(type) {
             case 'TextParagraph':
               element = textWidget(content);
+              break;
+            case 'Image':
+              var alt = widget.alt;
+              element = imageWidget(content,alt); //expand on future UPD;
               break;
             case 'TextButton':
               //access TextButton-specific params;
@@ -754,7 +741,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
             
               //build either a clickable or a linked button;
               if(action===globalTextButtonActionClick) {
-                element = textButtonWidget(title,disabled,filled,content);
+                element = textButtonWidget(title,disabled,filled,funcName,connector);
               }else if(action===globalTextButtonActionAction) {
                 element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload,true,funcName);
               }else {
@@ -778,11 +765,10 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               if(switchValue) {
                 element = switchWidget(title,content,name,switchValue,switchValue);
               }else {
-
+              
                 //set section and widget index and stringify;
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
-				
                 connector = propertiesToString(connector);
               
                 if(buttonText) {
@@ -804,9 +790,10 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
             case 'TextInput':
               //access TextInput-specific params;
-              var hint = widget.hint;
+              var hint      = widget.hint;
+              var multiline = widget.multiline;
               
-              element = textInputWidget(title,name,hint,content);
+              element = textInputWidget(title,name,hint,content,multiline);
               break;
             case globalEnumRadio:
               element = selectionInputWidget(title,name,type,content);
@@ -819,17 +806,38 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               break;
           }
         }
-
         section.addWidget(element);
       
       }
       
-    }
-	
+    });
     //append section and return it;
     builder.addSection(section);
     return section;
   }
+}
+
+/**
+ * Creates section with update TextButton to reload advanced section with user input form;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible; 
+ * @returns {CardSection}
+ */ 
+function createSectionUpdate(builder,isCollapsed,connector) {
+  
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+
+  //set optional parameters;
+  if(isCollapsed) { section.setCollapsible(isCollapsed); }
+  
+  //create update button;
+  var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionAdvanced',connector);
+  section.addWidget(updateButton);
+  
+  //append section and return it;
+  builder.addSection(section);
+  return section;
 }
 
 /**
@@ -850,9 +858,10 @@ function createSectionChooseType(builder,isCollapsed,header) {
   
   //create class instance to get config data;
   var flow       = new Flow();
+  var lacrm      = new LessAnnoyingCRM();
   
   //create an array of used types;
-  var types = [flow];
+  var types = [flow,lacrm];
   
   //add github conn if in testing mode;
   if(globalIncludeGitHub) {
@@ -950,7 +959,7 @@ function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,a
     }else if(auth==='OAuth2'||authType==='OAuth2') {
       createWidgetChooseAuth(section,true,authType);
       
-      if(connector.scope!==undefined) { 
+      if(connector.scope) { 
         createWidgetCustomInput(section,globalScopeFieldName,'Scope','Authorization scope',connector.scope);
       }else {
         createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth','Authorization URL','');

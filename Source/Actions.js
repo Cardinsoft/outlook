@@ -80,110 +80,195 @@ async function chooseAuth(e) {
  * @returns {ActionResponse}
  */
 async function editSectionAdvanced(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
 
-		  //access content;
-		  var connector = e.parameters;
-		  var content   = connector.content;
-		  
-		  //parse content;
-		  content = parseData(content);
-		  
-		  //access section and widget index;
-		  var sectionIdx = +connector.sectionIdx;
-		  var widgetIdx  = +connector.widgetIdx;
-		  
-		  //change widget being edited to input;
-		  content[sectionIdx].widgets[widgetIdx].type = 'TextInput';
-		  
-		  //stringify content to send to event object;
-		  e.parameters.content = JSON.stringify(content);
-		  
-	//set data state change and navigate to display card;
-	await builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
-	builder.setStateChanged(true);
-	return builder.build();
+  //access content;
+  var connector = e.parameters;
+  var content   = connector.content;
+  
+  //parse content;
+  content = parseData(content);
+  if(typeof content==='string') { content = JSON.parse(content) }
+
+  //access form data and set contents;
+  var formInput  = e.formInput;
+  var formInputs = e.formInputs;
+  content.forEach(function(section){
+    section.widgets.forEach(function(widget){
+      Object.keys(formInput).forEach(function(key){
+        if(key===widget.name) {
+          if(widget.type===globalEnumCheckbox||widget.type===globalEnumDropdown||widget.type===globalEnumRadio) {
+            widget.content.forEach(function(option){
+              if(formInputs[key].indexOf(option.value)!==-1) { 
+                option.selected = true; 
+              }else { 
+                option.selected = false; 
+              }
+            });
+          }else {
+            widget.content = formInput[key];
+          }
+        }
+      });
+    });
+  });
+  
+  //access section and widget index;
+  var sectionIdx = +connector.sectionIdx;
+  var widgetIdx  = +connector.widgetIdx;
+  
+  //check for editable widgets and process;
+  var section  = content[sectionIdx];
+  var widgets  = section.widgets;
+  var editable = widgets[widgetIdx];
+  var editMap  = editable.editMap;
+  
+  //make section uncollapsed;
+  section.isCollapsible = false;
+  
+  if(editMap) {
+    //filter out widget on which edit map is set;
+    widgets = widgets.filter(function(widget,index){
+      if(index!==widgetIdx) { return widget; }
+    });
+    
+    //insert edit map widgets;
+    editMap.forEach(function(ew,i){
+      if(!ew.type)      { ew.type = 'TextInput'; }
+      if(!ew.multiline) { ew.multiline = true; }
+      widgets.splice(widgetIdx+i,0,ew);
+    });
+    
+    //set widgets with updated schema;
+    content[sectionIdx].widgets = widgets;
+    
+    /*
+      //access property and index;
+      var fName     = editMap[0].name;
+      var split     = fName.split('&');
+      var fNameProp = split[0].split('-')[0];
+      var fNameIdx  = split[0].split('-')[1];
+    */
+    
+  }else {
+    editable.type = 'TextInput';
+    editable.multiline = true;
+    
+    //check for array-like properties;
+    var p = editable.name.split('&')[0];
+    var i = p.split('-');
+    if(i[1]) {
+      widgets.forEach(function(widget){
+        //check for editability and map;
+        if(widget.state==='editable'&&!widget.editMap) {
+          if(widget.name.split('&')) {
+            if(widget.name.split('&')[0].split('-')[0]===i[0]) {
+              widget.type      = 'TextInput';
+              widget.multiline = true;
+            } 
+          }          
+        }
+      });
+    }
+  }
+  
+  //stringify content to send to event object;
+  e.parameters.content = JSON.stringify(content);
+  
+  //set data state change and navigate to display card;
+  await builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+  builder.setStateChanged(true);
+  return builder.build();
 }
 
 /**
  * Updates data with form input values, performs request and calls display with updated response;
  * @param {Object} e event object;
  */
-async function updateSectionAdvanced(e) {
-		  var connector = e.parameters;
-		  var data      = connector.content;
-		  
-		  //parse content; 
-		  data = parseData(data);
-		  
-		  //access form inputs;
-		  var form  = e.formInput;
-		  var forms = e.formInputs;
-		  
-		  data.forEach(function(elem){
-			var widgets = elem.widgets;
-			widgets.forEach(function(widget){
-			  var type = widget.type;
-			  
-			  for(var key in form) {
-				if(key===widget.name) {
-				  if(type===globalEnumRadio||type===globalEnumCheckbox||type===globalEnumDropdown) {
-					var content = widget.content;
-					content.forEach(function(option){
-					  var isContained = false;
-					  try {
-						isContained = forms[key].some(function(val){
-						  if(val===option.value) { return val; }
-						});
-					  }
-					  catch(error) { console.error(error); }
-					  if(isContained) { option.selected = true; }else { option.selected = false; }
-					});
-				  }else if(type==='KeyValue') {
-					if(form[key]) { widget.switchValue = true; }
-				  }else {
-					widget.content = form[key];
-				  }
-				}
-			  }
-			  
-			  //perform additional check for all inputs switched off;
-			  if(!Object.keys(form).some(function(key){ return key===widget.name; })) {
-				if(type===globalEnumRadio||type===globalEnumCheckbox) {
-				  var content = widget.content;
-				  content.forEach(function(option){
-					option.selected = false;
-				  });            
-				}
-			  }			  
-			  
-			  if(type==='TextInput') {
-				widget.state = 'editable';
-				widget.type  = 'KeyValue';
-			  }
-			  
-			  //handle widgets with switches that are toggled off after load;
-			  try {
-				var noInput = !Object.keys(form).some(function(key){ return key===widget.name; });
-			  }
-			  catch (error) { noInput = false; }
-			  if(type==='KeyValue'&&widget.switchValue&&noInput) {
-				widget.switchValue = false;
-			  }
-			  
-		});
-	});
-		 
-	var msg   = getToken(e);
-	var cType = new this[connector.type]();
-	var resp  = await cType.run(msg,connector,data);
-		  
-	//override event object parameters with response data;
-	e.parameters.code    = resp.code;
-	e.parameters.content = resp.content;
-		  
-	return actionShow(e);
+async updateSectionAdvanced(e) {
+  var connector = e.parameters;
+  var data      = connector.content;
+  
+  //parse content; 
+  data = parseData(data);
+  
+  //access form inputs;
+  var form  = e.formInput;
+  var forms = e.formInputs;
+  
+  data.forEach(function(elem){
+    var widgets = elem.widgets;
+    widgets.forEach(function(widget){
+      var type = widget.type;
+      
+      for(var key in form) {
+        if(key===widget.name) {
+          if(type===globalEnumRadio||type===globalEnumCheckbox||type===globalEnumDropdown) {
+            var content = widget.content;
+            content.forEach(function(option){
+              var isContained = false;
+              try {
+                isContained = forms[key].some(function(val){
+                  if(val===option.value) { return val; }
+                });
+              }
+              catch(error) { console.error(error); }
+              if(isContained) { option.selected = true; }else { option.selected = false; }
+            });
+          }else if(type==='KeyValue') {
+            if(form[key]) { widget.switchValue = true; }
+          }else {
+            widget.content = form[key];
+          }
+        }
+      }
+
+      //perform additional check for all inputs switched off;
+      if(!Object.keys(form).some(function(key){ return key===widget.name; })) {
+        if(type===globalEnumRadio||type===globalEnumCheckbox) {
+          var content = widget.content;
+          content.forEach(function(option){
+            option.selected = false;
+          });            
+        }
+      }
+
+      if(type==='TextInput') {
+        widget.state = 'editable';
+        widget.type  = 'KeyValue';
+      }
+      
+      //handle widgets with switches that are toggled off after load;
+      try {
+        var noInput = !Object.keys(form).some(function(key){ return key===widget.name; });
+      }
+      catch (error) { noInput = false; }
+      if(type==='KeyValue'&&widget.switchValue&&noInput) {
+        widget.switchValue = false;
+      }
+      
+    });
+  });
+ 
+  var msg   = getToken(e);
+  var cType = new this[connector.type]();
+  
+  
+  
+  //check if type has edit() method or use run() if none provided;
+  var resp;
+  if(cType.edit) {
+    resp = await cType.edit(msg,connector,forms,data);
+  }else {
+    resp = await cType.run(msg,connector,data);
+  }
+  
+  //override event object parameters with response data;
+  e.parameters.code    = resp.code;
+  e.parameters.content = resp.content;
+  
+  return actionShow(e);
 }
 
 /**
