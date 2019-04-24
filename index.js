@@ -236,8 +236,10 @@ function actionCallback(elem) {
 		
 		console.log(action)
 		
+		const b = action;
+		
 		//parse action object;
-		const a = JSON.parse(action);
+		const a = JSON.parse(b);
 
 		console.log(a)
 		
