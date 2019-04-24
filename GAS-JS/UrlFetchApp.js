@@ -92,8 +92,10 @@ function makeRequest(url,params) {
 		
 		//if content type is provided -> set request Content-Type header;
 		if(params.contentType) { request.setRequestHeader('Content-Type','text/plain'); }
+		
 		console.log(params.headers)
 		console.log(GLOBAL.document.baseURI)
+		console.log(request)
 		
 		//add headers if provided;
 		if(params.headers) {
