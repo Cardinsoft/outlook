@@ -252,6 +252,10 @@ function actionCallback(elem) {
 		
 		console.log(d)
 		
+		const f = JSON.parse(d);
+		
+		console.log(f)
+		
 		//set parameters to event object;
 		e.parameters = params;
 		
