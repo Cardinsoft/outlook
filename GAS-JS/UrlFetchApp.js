@@ -108,7 +108,7 @@ function makeRequest(url,params) {
 			request.open(params.method.toUpperCase(),url);
 		
 		//if content type is provided -> set request Content-Type header;
-		if(params.contentType) { request.setRequestHeader('Content-Type','text/plain'); }
+		if(params.contentType) { request.setRequestHeader('Content-Type',params.contentType); }
 		
 		console.log(params.headers)
 		console.log(GLOBAL.document.baseURI)
