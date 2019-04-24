@@ -568,7 +568,7 @@ function checkNested(data) {
  * @returns {Array}
  */
 function parseData(data) {
-
+/*
   //check for empty and correct objects;
   var isObj = typeof data==='object';
   if(isObj&&Object.keys(data).length===0) { return []; }else if(isObj) { return data; }
@@ -609,7 +609,7 @@ function parseData(data) {
     console.error('Encountered an error while applying conditional parsing after everything else failed (unexpected, check parseData function): %s',error);
     return data;
   }
-  
+  */
   //if no other choice, return data;
   return data;
 }
