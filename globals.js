@@ -82,14 +82,15 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalCardinUrl                  = 'https://cardinsoft.com/';
-var globalCardinIconUrl              = 'https://cardinsoft.github.io/outlook/assets/cardin-logo.png';
-var globalCustomIconUrl              = 'https://cardinsoft.github.io/outlook/assets/custom.png';
-var globalFlowIconUrl                = 'https://cardinsoft.github.io/outlook/assets/flow.png';
-var globalGitHubIconUrl              = 'https://cardinsoft.github.io/outlook/assets/github.png';
-var globalInfusionIconUrl            = 'https://cardinsoft.github.io/outlook/assets/infusionsoft.png';
-var globalPipedriveIconUrl           = 'https://cardinsoft.github.io/outlook/assets/Pipedrive.png';
-var globalSheetsIconUrl              = 'https://cardinsoft.github.io/outlook/assets/sheets.png';
+var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
+var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
+var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
+var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
+var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
+var globalInfusionIconUrl            = 'https://cardinsoft.com/wp-content/uploads/2019/03/infusionsoft.png';
+var globalLACRMiconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/04/LACRM.png';
+var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
+var globalSheetsIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/sheets.png';
 var globalYouTubeUrl                 = 'https://youtube.com/';
 
 //notifications, warnings and error messages
@@ -154,6 +155,7 @@ var globalTokenUrlInputHint          = 'Token URL';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
 var globalFlowShort                  = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
 var globalInfusionShort              = 'Fetches sales and marketing information from Infusionsoft by Keap CRM & marketing automation platform';
+var globalLACRMshort                 = 'Fetches contact and pipeline information from LessAnnoying CRM';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
 var globalSheetsShort                = 'Fetches and displays data from a Google Sheet. Please, make sure that you have access rights to view it';
 var globalQBShortDesc                = 'Fetches customer or supplier invoice or bill detail from connected QB company. Please authenticate to QB';
