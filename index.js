@@ -248,6 +248,10 @@ function actionCallback(elem) {
 		const loadIndicator = a.loadIndicator;
 		const params        = a.parameters;
 		
+		const d = JSON.stringify(e);
+		
+		console.log(d)
+		
 		//set parameters to event object;
 		e.parameters = params;
 		
