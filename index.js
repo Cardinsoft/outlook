@@ -232,34 +232,18 @@ function actionCallback(elem) {
 		}	
 	}
 		
-		console.log(e)
-		
-		console.log(action)
-		
-		const b = action;
-		
 		//parse action object;
-		const a = JSON.parse(b);
+		const a = JSON.parse(action);
 
-		console.log(a)
-		
 		//access action parameters;
 		const functionName  = a.functionName;
 		const loadIndicator = a.loadIndicator;
 		const params        = a.parameters;
 		
-		const d = JSON.stringify(e);
-		
-		console.log(d)
-		
-		const f = JSON.parse(d);
-		
-		f.parameters = params;
-		
-		console.log(f)
-		
 		//set parameters to event object;
 		e.parameters = params;
+		
+		console.log(e)
 		
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
