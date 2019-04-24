@@ -585,7 +585,6 @@ function parseData(data) {
   }
   catch(err) { 
     console.error('Encountered an error while trying to parse input: %s',err);
-    Logger.log(data);
     data = data; 
   }
   
