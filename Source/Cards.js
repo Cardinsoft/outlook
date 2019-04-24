@@ -173,6 +173,7 @@ async function cardDisplay(e) {
   
   //handle failed response codes;
   if((code<200||code>=300)&&code!==401) {
+	console.log(code)
     createErrorSection(builder,true,code,error);
   }else if(code===401) {
     createNotAuthorizedSection(builder,false,connector,code);
