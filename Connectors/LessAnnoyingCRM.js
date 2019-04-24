@@ -133,8 +133,6 @@ function LessAnnoyingCRM() {
       }
 
     }
-    
-    Logger.log(updates);
    
     //send update if there is anything to update;
     if(updates.length>0) {
@@ -200,8 +198,7 @@ function LessAnnoyingCRM() {
       //access id list, if not set -> return error message;
       var pipelineIds = connector.pipelineIds;
       if(pipelineIds) { 
-        pipelineIds = pipelineIds.split('\n'); 
-        Logger.log(pipelineIds)
+        pipelineIds = pipelineIds.split('\n');
       }else {
         var pipeError = {descr : 'Pipeline Id list was not provided.\rPlease, set at least one Id or a comma-separated list of Ids. Pipelines info can be obtained from <a href="https://www.lessannoyingcrm.com/app/Settings/Api">CRM settings</a>'};
         return { code:0,headers:{},content:pipeError }
@@ -332,9 +329,7 @@ function LessAnnoyingCRM() {
         
         
       });
-      
-      Logger.log(sections);
-      
+
       //if no call succeeded -> return errors info and user notification;
       if(!success.some(function(elem){ return elem; })) {
         return { code:0,headers:{},content:{descr:'Every call to LessAnnoyingCRM resulted in error, please, see details below for more information',additional:errDetails} }
@@ -379,7 +374,6 @@ function LessAnnoyingCRM() {
             var birthday    = entry.Birthday;
             var title       = entry.Title;
             var custom      = entry.CustomFields;
-            Logger.log(entry)
             
             //create fullname widget;
             if(salutation&&salutation!==null) { fullName.push(salutation); }
@@ -892,7 +886,6 @@ function LessAnnoyingCRM() {
                 widgets       : []
               };
               var customWidgets = customSection.widgets;
-              Logger.log(custom)
               
               var customIdx = 0;
               for(var field in custom) {
