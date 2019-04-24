@@ -568,6 +568,10 @@ function checkNested(data) {
  * @returns {Array}
  */
 function parseData(data) {
+	
+	console.log(data)
+	
+	data = JSON.parse(data);
 /*
   //check for empty and correct objects;
   var isObj = typeof data==='object';
