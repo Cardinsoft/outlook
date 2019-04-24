@@ -598,9 +598,9 @@ function parseData(data) {
     }
     if(!(data instanceof Array)&&!(typeof data==='string')) {
       data = [data]; 
-    }else if(typeof data==='string') {
+    }/*else if(typeof data==='string') {
       data = JSON.parse(data);
-    }
+    }*/
     if(!(data instanceof Array)&&(typeof data==='object')) {
       data = [data];
     }
