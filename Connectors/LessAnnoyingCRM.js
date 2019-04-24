@@ -145,7 +145,7 @@ function LessAnnoyingCRM() {
     return this.run(msg,connector,data);
   }
   
-  this.run = async function (msg,connector,data) {
+  this.run = function (msg,connector,data) {
    
     //access API parameters and connector type;
     var usercode   = connector.usercode;
@@ -183,7 +183,7 @@ function LessAnnoyingCRM() {
       query = query.join('&');
       
       //perform data fetch and return result;
-      result  = await performFetch(endpoint+query,method,headers);
+      result  = performFetch(endpoint+query,method,headers);
       code    = result.code;
       var content = JSON.parse(result.content);
       success = content.Success;
@@ -217,7 +217,7 @@ function LessAnnoyingCRM() {
         var fullquery = query.join('&');
         
         //perform data fetch and process, then reset query;
-        var pipelineResponse = await performFetch(endpoint+fullquery,method,headers);
+        var pipelineResponse = performFetch(endpoint+fullquery,method,headers);
         var pipelineCode     = pipelineResponse.code;
         var pipelineHeaders  = pipelineResponse.headers;
         var pipelineContent  = JSON.parse(pipelineResponse.content);
@@ -593,7 +593,7 @@ function LessAnnoyingCRM() {
             if(companyId) {
               //perform company query by company Id;
               var getCompanyQuery = ['UserCode='+usercode,'APIToken='+apitoken,'Function=GetContact','Parameters='+encodeURI(JSON.stringify({ContactId:companyId}))].join('&');
-              var companyResponse = await performFetch(endpoint+getCompanyQuery,'get',{});
+              var companyResponse = performFetch(endpoint+getCompanyQuery,'get',{});
               
               //on successful fetch -> create company section;
               if(companyResponse.code>=200&&companyResponse.code<300) {
