@@ -254,8 +254,11 @@ CardBuilder.prototype.build = async function () {
 		
 	}
 	
-	const sections = document.querySelector('.CardSection');
-	console.log(sections);
+	const sections = document.querySelectorAll('.CardSection');
+	for(let j=0; j<sections.length; j++) {
+		let collapsible = sections.querySelector('.collapsible');
+		console.log(collapsible);
+	}
 	
 	cardStack.push(this);
 	return this;
