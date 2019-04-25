@@ -25,10 +25,11 @@ CardSection.prototype.setNumUncollapsibleWidgets = function (numUncollapsibleWid
 	this.numUncollapsibleWidgets = numUncollapsibleWidgets;
 	return this;
 }
-CardSection.prototype.appendToUi = async function (parent,serialize) {
+CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	const collapsible = this.collapsible;
 	
 	const section = document.createElement('div');
+		  section.id = 'section'+sI;
 	if(serialize) {
 		section.className = 'separated '+this.className;
 	}else {
@@ -101,7 +102,9 @@ CardSection.prototype.appendToUi = async function (parent,serialize) {
 		
 		//wrapper.style.height = 0;
 	
-		toggler.addEventListener('click',collapse(toggler,wrapper,'height',1,1));
+		var overlay = document.querySelector('section'+sI);
+	
+		toggler.addEventListener('click',collapse(toggler,overlay,'height',1,1));
 		toggler.addEventListener('click',function(){
 			this.classList.toggle('toggler-up');
 		});

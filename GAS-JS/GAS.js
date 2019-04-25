@@ -249,7 +249,7 @@ CardBuilder.prototype.build = async function () {
 		
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
-			cardSection.appendToUi(wrap,serialize);
+			cardSection.appendToUi(wrap,serialize,s);
 		}
 		
 	}
