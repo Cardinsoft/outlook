@@ -217,7 +217,7 @@ function LessAnnoyingCRM() {
       success        = [];
       var errDetails = '';
       
-      pipelineIds.forEach(function(pId,index){
+      pipelineIds.forEach(async function(pId,index){
         params = {PipelineId : pId};        
         query.push('Parameters='+encodeURI(JSON.stringify(params)));
         var fullquery = query.join('&');
@@ -348,7 +348,7 @@ function LessAnnoyingCRM() {
 
       //create result config;
       if(info.length>0) {
-        info.forEach(function(entry){
+        info.forEach(async function(entry){
           var isCompany = +entry.IsCompany;
           
           if(isCompany===0) {
