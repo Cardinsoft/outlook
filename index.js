@@ -269,68 +269,60 @@ function actionCallback(elem) {
 //=========================================END CALLBACKS========================================//
 
 /**
+ * Trims property value of pixel measurements;
+ * @param {String|*} input property value (expected type string);
+ * @returns {Integer|undefined}
+ */
+
+
+function trimPx(input) {
+	if(input&&typeof input==='string') { return +input.replace('px',''); }
+}
+
+/**
  * Expands or collapses element;
  * @param {HtmlElement} trigger element trggering event;
- * @param {Htmlelement} element element to toggle;
- * @param {Integer} delay delay between incremenets;
+ * @param {Htmlelement} overlay element to toggle;
+ * @param {String} property property to animate;
+ * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
- */
-function expand(trigger,element,delay,increment) {
-	return function() {
-      trigger.disabled = true;
-      
-      var overlayComp  = window.getComputedStyle(element);
-      var overlayStyle = element.style;
-      var overlayCompHeight = +overlayComp.height.replace('px','');
-      
-      //set full height;
-      var fullHeight = 0;
-      var children = element.children;
-      for(var i=0; i<children.length; i++) {
-      	var child     = children.item(i);
-        var childComp = window.getComputedStyle(child);
-        
-        var h  = +childComp.height.replace('px','');
-        var bT = +childComp.borderWidth.replace('px','');
-        var bB = +childComp.borderWidth.replace('px','');
-        var pT = +childComp.paddingTop.replace('px','');
-        var pB = +childComp.paddingBottom.replace('px','');
-        var mT = +childComp.marginTop.replace('px','');
-        var mB = +childComp.marginBottom.replace('px','');        
-        
-        var isBB = overlayComp['box-sizing']==='border-box';
-
-        if(!isBB) { fullHeight += h+bT+bB+pT+pB+mT+mB; }else { fullHeight += h; }
-      }
-     
-      var int;
-
-      if(overlayCompHeight>0) {
-          element.style.height = overlayCompHeight+'px';
-          int = setInterval(function(){
-            var overlayHeight = +element.style.height.replace('px','');
-            if(overlayHeight>0) { 
-              element.style.height = (overlayHeight-increment)+'px';
-            }else {
-              clearInterval(int);
-              trigger.disabled = false;
-            }
-          },delay);
-
-      }else {
-          element.style.height = 0;
-          int = setInterval(function(){
-            var overlayHeight = +element.style.height.replace('px','');
-            if(overlayHeight<fullHeight) { 
-              if(overlayHeight+increment>fullHeight) { increment = fullHeight-overlayHeight; }
-              element.style.height = (overlayHeight+increment)+'px';
-            }else {
-              clearInterval(int);
-              trigger.disabled = false;
-            }
-          },delay);
-      }
-	} 
+ * @returns {Function}
+ */			
+function collapse(trigger,overlay,property,interval,increment) {
+	return async function() {
+			
+		//compute child elems height;
+		let chProperty = 0, children = overlay.children, end = 0, change = increment;
+		for(var i=0; i<children.length; i++) {
+			chProperty += trimPx(window.getComputedStyle(children.item(i))[property]);
+		}
+					
+		//compute and set height to element;
+		const computed = trimPx(window.getComputedStyle(overlay)[property]);
+		overlay.style[property] = computed;
+						
+		//if element is collapsed -> inverse increment;
+		if(computed===0) { 
+			change = -increment;
+			end = chProperty; 
+		}
+					
+					console.log('children: '+chProperty);
+					console.log('computed: '+computed);
+					console.log('element: '+trimPx(overlay.style[property]));
+					console.log('end: '+end);
+					
+		//set recursive timeout to change height;
+		let t = setTimeout( function wait() {
+			trigger.disabled = true;
+			overlay.style[property] = trimPx(overlay.style[property])-change;
+			if(trimPx(overlay.style[property])===end||trimPx(overlay.style[property])===200) { 
+				trigger.disabled = false
+				return clearTimeout(t); 
+			}
+			t = setTimeout( wait, interval );
+		}, interval );
+	}
 }
 
 //=======================================START GLOBAL OBJECTS===================================//
