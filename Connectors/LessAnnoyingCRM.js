@@ -188,6 +188,8 @@ function LessAnnoyingCRM() {
 	  
 	  console.log('FETCH TO SEARCH')
 	  console.log(result)
+	  console.log(code)
+	  console.log(result.content)
 	  
       var content = JSON.parse(result.content);
       success = content.Success;
