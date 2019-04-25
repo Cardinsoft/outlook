@@ -136,7 +136,7 @@ function LessAnnoyingCRM() {
    
     //send update if there is anything to update;
     if(updates.length>0) {
-      updates.forEach(function(update){
+      updates.forEach(async function(update){
         var query    = ['UserCode='+usercode,'APIToken='+apitoken,'Function='+funcName,'Parameters='+encodeURIComponent(JSON.stringify(update))].join('&'); 
         var response = await performFetch(endpoint+query,'post',{});
       });
