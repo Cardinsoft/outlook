@@ -256,8 +256,12 @@ CardBuilder.prototype.build = async function () {
 	
 	const sections = document.querySelectorAll('.CardSection');
 	for(let j=0; j<sections.length; j++) {
-		let collapsible = sections.item(j);
-		console.log(collapsible);
+		let children = sections.item(j).children;
+		for(let k=0; k<children.length; k++) {
+			let child = children.item(k);
+			if(child.classList.contains('collapsible')) { chilren.item(children.length-1).addEventListener('click',function(){console.log('click')}); }
+		}
+		console.log(children);
 	}
 	
 	cardStack.push(this);
