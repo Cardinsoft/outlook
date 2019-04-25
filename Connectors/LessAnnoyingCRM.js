@@ -135,11 +135,12 @@ function LessAnnoyingCRM() {
     }
    
     //send update if there is anything to update;
-    if(updates.length>0) {
-      updates.forEach(async function(update){
+    if(updates.length>0) {	  
+	  for(var i=0; i<updates.length; i++) {
+		update = updates[i];
         var query    = ['UserCode='+usercode,'APIToken='+apitoken,'Function='+funcName,'Parameters='+encodeURIComponent(JSON.stringify(update))].join('&'); 
         var response = await performFetch(endpoint+query,'post',{});
-      });
+      };
     }
 
     return this.run(msg,connector,data);
@@ -216,8 +217,10 @@ function LessAnnoyingCRM() {
       result.headers = {};
       success        = [];
       var errDetails = '';
-      
-      pipelineIds.forEach(async function(pId,index){
+	
+	  for(var index=0; index<pipelineIds; index++) {
+		var pId = pipelineIds[index];
+	
         params = {PipelineId : pId};        
         query.push('Parameters='+encodeURI(JSON.stringify(params)));
         var fullquery = query.join('&');
@@ -334,7 +337,7 @@ function LessAnnoyingCRM() {
         }
         
         
-      });
+      };
 
       //if no call succeeded -> return errors info and user notification;
       if(!success.some(function(elem){ return elem; })) {
@@ -348,7 +351,9 @@ function LessAnnoyingCRM() {
 
       //create result config;
       if(info.length>0) {
-        info.forEach(async function(entry){
+	    for(var e=0; e<info.length; e++) {
+		  var entry = info[e];
+		
           var isCompany = +entry.IsCompany;
           
           if(isCompany===0) {
@@ -912,10 +917,8 @@ function LessAnnoyingCRM() {
             }
             
           }
-          
-          
-                  
-        });
+                   
+        };
       }
     
     }
