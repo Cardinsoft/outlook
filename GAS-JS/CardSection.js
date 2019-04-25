@@ -102,7 +102,8 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		
 		//wrapper.style.height = 0;
 	
-		var overlay = document.querySelector('#section'+sI);
+		const overlay = document.querySelector('#section'+sI);
+		console.log(overlay);
 	
 		toggler.addEventListener('click',collapse(toggler,overlay,'height',1,1));
 		toggler.addEventListener('click',function(){
