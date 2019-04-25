@@ -123,10 +123,6 @@ body {
 	flex-grow : 100;
 }
 
-.column-label {
-	text-align : right;
-}
-
 .ms-MessageBar {
 	width : 93.5%;
 }
