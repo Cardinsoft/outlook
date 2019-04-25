@@ -254,6 +254,9 @@ CardBuilder.prototype.build = async function () {
 		
 	}
 	
+	const sections = document.querySelector('.CardSection');
+	console.log(sections);
+	
 	cardStack.push(this);
 	return this;
 };
