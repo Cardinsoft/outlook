@@ -103,10 +103,6 @@ body {
 	padding : 0;
 }
 
-.ms-font-m-plus {
-	word-break : break-word;
-}
-
 .row {
 	display     : flex;
 	align-items : center;
@@ -125,6 +121,10 @@ body {
 
 .column-text {
 	flex-grow : 100;
+}
+
+.column-label {
+	text-align : right;
 }
 
 .ms-MessageBar {
