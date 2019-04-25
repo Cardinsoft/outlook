@@ -156,15 +156,17 @@ body {
 }
 
 .toggler {
-	margin : 8px 0;
-	width  : 100%;
+	margin                     : 8px 0;
+	width                      : 100%;
 	transition                 : transform 0.2s;
 	-webkit-transition         : transform 0.2s;
 	transition-timing-function : linear;	
+	color                      : #848484;
+}
 }
 
 .toggler-up {
-	transform: rotate(180deg);
+	transform : rotate(180deg);
 }
 
 .navbar {
