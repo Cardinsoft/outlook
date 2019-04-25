@@ -307,6 +307,8 @@ function collapse(trigger,overlay,property,interval,increment) {
 			end = chProperty; 
 		}
 					
+					console.log(overlay);
+					console.log(overlay.style[property]);
 					console.log('children: '+chProperty);
 					console.log('computed: '+computed);
 					console.log('element: '+trimPx(overlay.style[property]));
