@@ -29,7 +29,7 @@ body {
 .KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
 	display       : block;
 	margin-bottom : 5px;
-	color         : #c8c8c8;
+	color         : #a6a6a6;
 }
 
 .ms-TextField {
