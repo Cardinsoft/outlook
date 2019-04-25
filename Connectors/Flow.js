@@ -43,7 +43,7 @@ function Flow() {
     if(data) { payload.data = data; }
     
     //perform data fetch and return result;
-    var result = performFetch(connector.url,method,headers,payload);
+    var result = await performFetch(connector.url,method,headers,payload);
     return result;
   }
 }
