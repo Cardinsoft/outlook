@@ -256,7 +256,7 @@ CardBuilder.prototype.build = async function () {
 	
 	const sections = document.querySelectorAll('.CardSection');
 	for(let j=0; j<sections.length; j++) {
-		let collapsible = sections.item(j).children;
+		let collapsible = sections.item(j);
 		console.log(collapsible);
 	}
 	
