@@ -145,7 +145,7 @@ function LessAnnoyingCRM() {
     return this.run(msg,connector,data);
   }
   
-  this.run = function (msg,connector,data) {
+  this.run = async function (msg,connector,data) {
    
     //access API parameters and connector type;
     var usercode   = connector.usercode;
@@ -183,7 +183,7 @@ function LessAnnoyingCRM() {
       query = query.join('&');
       
       //perform data fetch and return result;
-      result  = performFetch(endpoint+query,method,headers);
+      result  = await performFetch(endpoint+query,method,headers);
       code    = result.code;
 	  
 	  console.log('FETCH TO SEARCH')
