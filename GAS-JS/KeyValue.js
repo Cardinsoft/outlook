@@ -193,40 +193,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	if(btn||sw) {
 		const wrapButton = document.createElement('div');
-		wrapButton.className = 'column';
+		wrapButton.className = 'column-label';
 		widget.append(wrapButton);	
 	
-		if(btn) {
-			/*
-			const backgroundColor = btn.backgroundColor;
-			const text 			  = btn.text;
-			const disabled 		  = btn.disabled;
-			const textButtonStyle = btn.textButtonStyle;
-			let actionBtn		  = btn.action;
-			
-			const button = document.createElement('button');
-			button.disabled = disabled;
-			if(disabled) {
-				button.className = 'ms-Button ms-Button--small '+btn.className;
-			}else {
-				button.className = 'ms-Button ms-Button--small ms-Button--primary '+btn.className;
-			}
-			wrapButton.append(button);
-				
-			const btnContent = document.createElement('span');
-			btnContent.className = 'ms-Button-label';
-			btnContent.textContent = text;
-			button.append(btnContent);
-				
-			//new fabric['Button'](button, actionCallback(button) );*/
-			
-			btn.appendToUi(wrapButton);
-			
-		}
+		if(btn) { btn.appendToUi(wrapButton); }
 		
-		if(sw) {
-			sw.appendToUi(wrapButton);
-		}
+		if(sw) { sw.appendToUi(wrapButton); }
 		
 	}
 }
