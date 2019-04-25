@@ -259,7 +259,9 @@ CardBuilder.prototype.build = async function () {
 		let children = sections.item(j).children;
 		for(let k=0; k<children.length; k++) {
 			let child = children.item(k);
-			if(child.classList.contains('collapsible')) { chilren.item(children.length-1).addEventListener('click',function(){console.log('click')}); }
+			if(child.classList.contains('collapsible')) { 
+				children.item(children.length-1).addEventListener('click',function(){console.log('click')}); 
+			}
 		}
 		console.log(children);
 	}
