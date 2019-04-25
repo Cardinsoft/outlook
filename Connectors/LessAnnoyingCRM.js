@@ -65,7 +65,7 @@ function LessAnnoyingCRM() {
       ]
     }
   };
-  this.edit = function(msg,connector,forms,data) {
+  this.edit = async function(msg,connector,forms,data) {
   
     //access API parameters and connector type;
     var usercode   = connector.usercode;
