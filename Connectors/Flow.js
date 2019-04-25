@@ -20,7 +20,7 @@ function Flow() {
     }  
   ];
   this.auth = {};
-  this.run = function (msg,connector,data) {
+  this.run = async function (msg,connector,data) {
     //set method for url fetch ('get' or 'post' for now);
     var method = 'post';
 
