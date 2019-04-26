@@ -315,20 +315,9 @@ async function uncollapsible(trigger,numuncol,overlay) {
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
- * @param {Integer} numuncol number of widgets to show;
+ * @param {Integer} initial initial value to start from;
  */			
-function collapse(trigger,overlay,property,interval,increment,numuncol) {
-	
-	console.log(numuncol);
-	
-	console.log(overlay);
-	
-	console.log(window.getComputedStyle(overlay)[property]);
-	
-	const initial = uncollapsible(trigger,numuncol,overlay);
-	
-	console.log(initial);
-	
+function collapse(trigger,overlay,property,interval,increment,initial) {	
 	return async function() {
 
 		//compute child elems height;
