@@ -292,24 +292,6 @@ CardHeader.prototype.setSubtitle = function (subtitle) {
 	return this;
 };
 
-//Emulates class AuthorizationAction extending Action for CardService service;
-class AuthorizationAction extends e_CardService {
-	constructor() {
-		super();
-		this.className = 'AuthorizationAction';
-		this.url;
-	}
-}
-/**
- * Sets authorization url to action to open;
- * @param {String} authorizationUrl url string to set;
- * @returns {Object}
- */
-AuthorizationAction.prototype.setAuthorizationUrl = function(authorizationUrl) {
-	this.url = authorizationUrl;
-	return this;
-}
-
 //Emulate Class ActionResponseBuilder extending _CardService service;
 class ActionResponseBuilder extends e_CardService {
 	constructor() {
