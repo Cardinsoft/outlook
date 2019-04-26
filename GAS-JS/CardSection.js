@@ -26,16 +26,19 @@ CardSection.prototype.setNumUncollapsibleWidgets = function (numUncollapsibleWid
 	return this;
 }
 CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
-	const collapsible = this.collapsible;
 	
+	//access parameters;
+	const collapsible = this.collapsible;
+	const uncollapse  = this.numUncollapsibleWidgets;
+	if(uncollapse&&typeof uncollapse!=='number') { uncollapse = +uncollapse; }
+	
+	//create section and set its Id number;
 	const section = document.createElement('div');
-		  section.id = 'section'+sI;
-	if(serialize) {
-		section.className = 'separated '+this.className;
-	}else {
-		section.className = this.className;
-	}
-	section.dir = 'ltr';
+		  section.id        = 'section'+sI;
+		  section.className = this.className;
+	
+	//if multiple sections -> add separators;
+	if(serialize) { section.classList.add('separated'); }
 	
 	//access header text and set section header if provided;
 	const headerText = this.header;
@@ -95,15 +98,26 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		
 	}
 
+	//handle collapsible sections;
 	if(collapsible) {
+		//create toggler element;
 		const toggler = document.createElement('div');
 		toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
 		section.append(toggler);
 		
-		//wrapper.style.height = 0;
+		//if uncollapsible widgets is provided, set initial height to it, else to 0;
+		let initial = 0;
+		if(uncollapse) {
+			uncollapsible(trigger,uncollapse,overlay);
+		}
 		
+		//collapse section height;
+		wrapper.style.height = initial+'px';
+		
+		//add event handler for toggling collapsed state;
 		toggler.addEventListener('click',collapse(toggler,wrapper,'height',1,2));
-
+		
+		//add event handler for toggling target element's state;
 		toggler.addEventListener('click',function(){
 			this.classList.toggle('toggler-up');
 		});
