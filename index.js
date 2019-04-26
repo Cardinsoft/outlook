@@ -301,11 +301,9 @@ function collapse(trigger,overlay,property,interval,increment) {
 				let chMargin;
 				
 				if(i>0) { chMargin = trimPx(chcomp.marginBottom); }else { chMargin = trimPx(chcomp.marginTop); }
-				
-				
+			
 				margins += chMargin;
-				chProperty += trimPx(chcomp.marginTop);
-				chProperty += trimPx(chcomp.marginBottom);
+				chProperty += chMargin;
 			}
 		}
 					
