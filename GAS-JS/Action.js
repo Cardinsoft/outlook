@@ -21,6 +21,24 @@ Action.prototype.setParameters = function (parameters) {
 	return this;
 }
 
+//Emulates class AuthorizationAction for CardService service;
+class AuthorizationAction {
+	constructor() {
+		super();
+		this.className = 'AuthorizationAction';
+		this.url;
+	}
+}
+/**
+ * Sets authorization url to action to open;
+ * @param {String} authorizationUrl url string to set;
+ * @returns {Object}
+ */
+AuthorizationAction.prototype.setAuthorizationUrl = function(authorizationUrl) {
+	this.url = authorizationUrl;
+	return this;
+}
+
 //Emulate Class OpenLink extending Class Action for CardService service;
 class OpenLink extends Action {
 	constructor() {
