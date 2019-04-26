@@ -292,11 +292,12 @@ function collapse(trigger,overlay,property,interval,increment) {
 	return async function() {
 			
 		//compute child elems height;
-		let chProperty = 0, children = overlay.children, end = 0, change = increment;
+		let chProperty = 0, margins = 0, children = overlay.children, end = 0, change = increment;
 		for(var i=0; i<children.length; i++) {
 			let chcomp = window.getComputedStyle(children.item(i));
 			chProperty += trimPx(chcomp[property]);
-			if(property==='height') { 
+			if(property==='height') {
+				margins += trimPx(chcomp.marginTop)+trimPx(chcomp.marginBottom);
 				chProperty += trimPx(chcomp.marginTop);
 				chProperty += trimPx(chcomp.marginBottom);
 			}
@@ -309,7 +310,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 		//if element is collapsed -> inverse increment;
 		if(computed===0) { 
 			change = -increment;
-			end = chProperty; 
+			end = chProperty-margins; 
 		}
 								
 		console.log(overlay.style[property]);
