@@ -105,6 +105,8 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
 		section.append(toggler);
 		
+		console.log(uncollapse);
+		
 		//if uncollapsible widgets is provided, set initial height to it, else to 0;
 		let initial = 0;
 		if(uncollapse) {
