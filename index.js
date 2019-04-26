@@ -282,6 +282,7 @@ function trimPx(input) {
  * @param {HtmlElement} trigger 
  * @param {Integer} numuncol number of widgets to show;
  * @param {HtmlElement} overlay wrapper element to uncollapse;
+ * @param {Integer}
  */
 function uncollapsible(trigger,numuncol,overlay) {
 	return async function () {
@@ -314,7 +315,7 @@ function uncollapsible(trigger,numuncol,overlay) {
 						console.log(fullHeight);
 		}
 					
-		overlay.style.height = fullHeight+'px';			
+		return fullHeight;	
 	}
 }
 

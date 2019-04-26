@@ -110,8 +110,10 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		//if uncollapsible widgets is provided, set initial height to it, else to 0;
 		let initial = 0;
 		if(uncollapse) {
-			uncollapsible(trigger,uncollapse,wrapper);
+			initial = uncollapsible(trigger,uncollapse,wrapper);
 		}
+		
+		console.log(initial);
 		
 		//collapse section height;
 		wrapper.style.height = initial+'px';
