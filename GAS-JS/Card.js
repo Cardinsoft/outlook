@@ -1,7 +1,6 @@
 //Emulate Class Card for CardService service;
-class Card extends e_CardService {
+class Card {
 	constructor() {
-		super();
 		this.className = 'Card';
 	}
 }
