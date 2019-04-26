@@ -104,9 +104,9 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		
 		toggler.addEventListener('click',collapse(toggler,wrapper,'height',1,2));
 
-		/*toggler.addEventListener('click',function(){
+		toggler.addEventListener('click',function(){
 			this.classList.toggle('toggler-up');
-		});*/
+		});
 		
 		
 	}
