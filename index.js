@@ -278,6 +278,47 @@ function trimPx(input) {
 }
 
 /**
+ * Set height to computed from number of uncollapsible widgets;
+ * @param {HtmlElement} trigger 
+ * @param {Integer} numuncol number of widgets to show;
+ * @param {HtmlElement} overlay wrapper element to uncollapse;
+ */
+function uncollapsible(trigger,numuncol,overlay) {
+	return async function () {
+					
+		console.log(trigger);
+		console.log(numuncol);
+		console.log(overlay);
+		console.log(overlay.style.height);
+					
+		//access children;
+		const children = overlay.children;
+		const chLength = children.length;
+		let fullHeight = 0;
+		for(let c=0; c<chLength; c++) {
+			let child     = children.item(c);
+			let computed  = window.getComputedStyle(child);
+			let computedT = trimPx(computed.marginTop);
+			let computedH = trimPx(computed.height);
+			let computedB = trimPx(computed.marginBottom);
+						
+						if((c+1)<=numuncol) {
+							if(c===0) { 
+								fullHeight += computedT + computedH; 
+							}else {
+								fullHeight += computedB + computedH;
+							}
+						}
+						
+						console.log(child);
+						console.log(fullHeight);
+		}
+					
+		overlay.style.height = fullHeight+'px';			
+	}
+}
+
+/**
  * Expands or collapses element;
  * @param {HtmlElement} trigger element trggering event;
  * @param {Htmlelement} overlay element to toggle;
