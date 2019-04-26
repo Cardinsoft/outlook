@@ -314,6 +314,8 @@ function collapse(trigger,overlay,property,interval,increment) {
 		}
 								
 		console.log(overlay.style[property]);
+		console.log('margins: '+margins);
+		console.log('numChd: '+children.length);
 		console.log('children: '+chProperty);
 		console.log('computed: '+computed);
 		console.log('element: '+trimPx(overlay.style[property]));
