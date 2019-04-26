@@ -315,9 +315,12 @@ function uncollapsible(trigger,numuncol,overlay) {
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
- * @param {Integer} initial initial height of wrapper element;
+ * @param {Integer} numuncol number of widgets to show;
  */			
 function collapse(trigger,overlay,property,interval,increment,initial) {
+	
+	//initial = uncollapsible(trigger,numuncol,overlay);
+	
 	return async function() {
 
 		//compute child elems height;
