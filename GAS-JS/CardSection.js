@@ -115,6 +115,8 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		
 		console.log(initial);
 		
+		initial = uncollapse * 35;
+		
 		//collapse section height;
 		//wrapper.style.height = initial+'px';
 		
