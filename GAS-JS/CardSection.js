@@ -106,7 +106,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		const chd = wrapper.children;
 		for(let i=0; i<chd.length; i++) {
 			let ch     = chd.item(i);
-			let cstyle = GLOBAL.getComputedStyle(ch)['height'];
+			let cstyle = window.getComputedStyle(ch)['height'];
 			console.log(cstyle);
 		}
 		
