@@ -299,9 +299,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 					
 		//compute and set height to element;
 		const computed = trimPx(window.getComputedStyle(overlay)[property]);
-		overlay.style[property] = computed.toString()+'px';
-		
-		//overlay.style[property] = '30px';
+		overlay.style[property] = computed+'px';
 						
 		//if element is collapsed -> inverse increment;
 		if(computed===0) { 
@@ -320,7 +318,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 		//set recursive timeout to change height;
 		let t = setTimeout( function wait() {
 			trigger.disabled = true;
-			overlay.style[property] = trimPx(overlay.style[property])-change;
+			overlay.style[property] = (trimPx(overlay.style[property])-change)+'px';
 			if(trimPx(overlay.style[property])===end||trimPx(overlay.style[property])===200) { 
 				trigger.disabled = false
 				return clearTimeout(t); 
