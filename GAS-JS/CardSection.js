@@ -108,7 +108,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		console.log('number of widgets to show: '+uncollapse);
 		
 		if(uncollapse) {
-			wrapper.style['height'] = uncollapsible(trigger,uncollapse,wrapper)+'px';
+			wrapper.style['height'] = await uncollapsible(trigger,uncollapse,wrapper)+'px';
 		}
 		
 		console.log('initial: '+wrapper.style.height);
