@@ -317,12 +317,11 @@ function uncollapsible(trigger,numuncol,overlay) {
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
+ * @param {Integer} initial initial height of wrapper element;
  */			
-function collapse(trigger,overlay,property,interval,increment) {
+function collapse(trigger,overlay,property,interval,increment,initial) {
 	return async function() {
-		
-		const initial = trimPx(overlay.style[property]);
-		
+
 		//compute child elems height;
 		let chProperty = 0, margins = 0, children = overlay.children, end = initial, change = increment;
 		for(var i=0; i<children.length; i++) {
