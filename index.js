@@ -286,12 +286,7 @@ function trimPx(input) {
  */
 function uncollapsible(trigger,numuncol,overlay) {
 	return async function () {
-					
-		console.log(trigger);
-		console.log(numuncol);
-		console.log(overlay);
-		console.log(overlay.style.height);
-					
+		
 		//access children;
 		const children = overlay.children;
 		const chLength = children.length;
@@ -303,19 +298,16 @@ function uncollapsible(trigger,numuncol,overlay) {
 			let computedH = trimPx(computed.height);
 			let computedB = trimPx(computed.marginBottom);
 						
-						if((c+1)<=numuncol) {
-							if(c===0) { 
-								fullHeight += computedT + computedH; 
-							}else {
-								fullHeight += computedB + computedH;
-							}
-						}
-						
-						console.log(child);
-						console.log(fullHeight);
-		}
-					
+			if((c+1)<=numuncol) {
+				if(c===0) { 
+					fullHeight += computedT + computedH; 
+				}else {
+					fullHeight += computedB + computedH;
+				}
+			}	
+		}			
 		return fullHeight;	
+		
 	}
 }
 
@@ -326,13 +318,14 @@ function uncollapsible(trigger,numuncol,overlay) {
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
+ * @param {Integer} initial property value on which to start; 
  * @returns {Function}
  */			
-function collapse(trigger,overlay,property,interval,increment) {
+function collapse(trigger,overlay,property,interval,increment,initial) {
 	return async function() {
 		
 		//compute child elems height;
-		let chProperty = 0, margins = 0, children = overlay.children, end = 0, change = increment;
+		let chProperty = 0, margins = 0, children = overlay.children, end = initial, change = increment;
 		for(var i=0; i<children.length; i++) {
 			let chcomp = window.getComputedStyle(children.item(i));
 			chProperty += trimPx(chcomp[property]);
@@ -353,7 +346,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 		overlay.style[property] = computed+'px';
 						
 		//if element is collapsed -> inverse increment;
-		if(computed===0) { 
+		if(computed===initial) { 
 			change = -increment;
 			end = chProperty; 
 		}
@@ -364,7 +357,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 			
 			let newProp = trimPx(overlay.style[property])-change;
 			
-			if(end!==0&&newProp>end) { newProp = end; }
+			if(end!==initial&&newProp>end) { newProp = end; }
 			
 			overlay.style[property] = newProp+'px';
 			
