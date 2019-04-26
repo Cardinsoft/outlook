@@ -322,7 +322,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 		let t = setTimeout( function wait() {
 			trigger.disabled = true;
 			overlay.style[property] = (trimPx(overlay.style[property])-change)+'px';
-			if(trimPx(overlay.style[property])===end||trimPx(overlay.style[property])===200) { 
+			if(trimPx(overlay.style[property])===end) { 
 				trigger.disabled = false
 				return clearTimeout(t); 
 			}
