@@ -321,6 +321,10 @@ function collapse(trigger,overlay,property,interval,increment,numuncol) {
 	
 	console.log(numuncol);
 	
+	console.log(overlay);
+	
+	console.log(window.getComputedStyle(overlay)[property]);
+	
 	const initial = uncollapsible(trigger,numuncol,overlay);
 	
 	console.log(initial);
