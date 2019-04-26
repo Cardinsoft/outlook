@@ -294,7 +294,12 @@ function collapse(trigger,overlay,property,interval,increment) {
 		//compute child elems height;
 		let chProperty = 0, children = overlay.children, end = 0, change = increment;
 		for(var i=0; i<children.length; i++) {
-			chProperty += trimPx(window.getComputedStyle(children.item(i))[property]);
+			let chcomp = window.getComputedStyle(children.item(i));
+			chProperty += trimPx(chcomp[property]);
+			if(property==='height') { 
+				chProperty += trimPx(chcomp.marginTop);
+				chProperty += trimPx(chcomp.marginBottom);
+			}
 		}
 					
 		//compute and set height to element;
@@ -307,13 +312,11 @@ function collapse(trigger,overlay,property,interval,increment) {
 			end = chProperty; 
 		}
 								
-					console.log(overlay);
-					console.log(overlay.style);
-					console.log(overlay.style[property]);
-					console.log('children: '+chProperty);
-					console.log('computed: '+computed);
-					console.log('element: '+trimPx(overlay.style[property]));
-					console.log('end: '+end);
+		console.log(overlay.style[property]);
+		console.log('children: '+chProperty);
+		console.log('computed: '+computed);
+		console.log('element: '+trimPx(overlay.style[property]));
+		console.log('end: '+end);
 					
 		//set recursive timeout to change height;
 		let t = setTimeout( function wait() {
