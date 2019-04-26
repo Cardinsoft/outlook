@@ -288,7 +288,9 @@ function trimPx(input) {
  */			
 function collapse(trigger,overlay,property,interval,increment) {
 	return async function() {
-			
+		
+		trigger.classList.toggle('toggler-up');
+		
 		//compute child elems height;
 		let chProperty = 0, margins = 0, children = overlay.children, end = 0, change = increment;
 		for(var i=0; i<children.length; i++) {
