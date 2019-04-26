@@ -1,7 +1,6 @@
 //Emulate Class ActionResponseBuilder for CardService service;
 class ActionResponseBuilder {
 	constructor() {
-		super();
 		this.navigation;
 		this.notification;
 		this.openLink;
