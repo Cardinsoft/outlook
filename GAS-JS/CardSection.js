@@ -102,7 +102,13 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		
 		//wrapper.style.height = 0;
 		
-		console.log(wrapper.children);
+		//access children and set fullheight;
+		const chd = wrapper.children;
+		for(let i=0; i<chd.length; i++) {
+			let ch     = chd.item(i);
+			let cstyle = GLOBAL.getComputedStyle(ch)['height'];
+			console.log(cstyle);
+		}
 		
 		toggler.addEventListener('click',collapse(toggler,wrapper,'height',1,1));
 
