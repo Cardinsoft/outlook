@@ -310,7 +310,7 @@ function collapse(trigger,overlay,property,interval,increment) {
 		//if element is collapsed -> inverse increment;
 		if(computed===0) { 
 			change = -increment;
-			end = chProperty-margins; 
+			end = chProperty; 
 		}
 								
 		console.log(overlay.style[property]);
