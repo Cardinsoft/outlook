@@ -24,7 +24,6 @@ Action.prototype.setParameters = function (parameters) {
 //Emulates class AuthorizationAction for CardService service;
 class AuthorizationAction {
 	constructor() {
-		super();
 		this.className = 'AuthorizationAction';
 		this.url;
 	}
