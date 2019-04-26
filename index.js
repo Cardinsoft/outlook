@@ -282,17 +282,15 @@ function trimPx(input) {
 /**
  * Expands or collapses element;
  * @param {HtmlElement} trigger element trggering event;
- * @param {Htmlelement} overlaySelector element selector;
+ * @param {Htmlelement} overlay element to toggle;
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
  * @returns {Function}
  */			
-function collapse(trigger,overlaySelector,property,interval,increment) {
+function collapse(trigger,overlay,property,interval,increment) {
 	return async function() {
-		
-		const overlay = document.querySelector(overlaySelector);
-		
+			
 		//compute child elems height;
 		let chProperty = 0, children = overlay.children, end = 0, change = increment;
 		for(var i=0; i<children.length; i++) {
@@ -308,9 +306,7 @@ function collapse(trigger,overlaySelector,property,interval,increment) {
 			change = -increment;
 			end = chProperty; 
 		}
-				
-		overlay.style.height = computed;
-				
+								
 					console.log(overlay);
 					console.log(overlay.style);
 					console.log(overlay.style[property]);
