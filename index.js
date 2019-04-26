@@ -297,7 +297,13 @@ function collapse(trigger,overlay,property,interval,increment) {
 			let chcomp = window.getComputedStyle(children.item(i));
 			chProperty += trimPx(chcomp[property]);
 			if(property==='height') {
-				margins += trimPx(chcomp.marginTop)+trimPx(chcomp.marginBottom);
+				
+				let chMargin;
+				
+				if(i>0) { chMargin = trimPx(chcomp.marginBottom); }else { chMargin = trimPx(chcomp.marginTop); }
+				
+				
+				margins += chMargin;
 				chProperty += trimPx(chcomp.marginTop);
 				chProperty += trimPx(chcomp.marginBottom);
 			}
