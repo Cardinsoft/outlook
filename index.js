@@ -317,9 +317,13 @@ function uncollapsible(trigger,numuncol,overlay) {
  * @param {Integer} increment animation speed;
  * @param {Integer} numuncol number of widgets to show;
  */			
-function collapse(trigger,overlay,property,interval,increment,initial) {
+function collapse(trigger,overlay,property,interval,increment,numuncol) {
 	
-	//initial = uncollapsible(trigger,numuncol,overlay);
+	console.log(numuncol);
+	
+	const initial = uncollapsible(trigger,numuncol,overlay);
+	
+	console.log(initial);
 	
 	return async function() {
 
