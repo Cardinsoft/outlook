@@ -282,7 +282,6 @@ function trimPx(input) {
  * @param {HtmlElement} trigger 
  * @param {Integer} numuncol number of widgets to show;
  * @param {HtmlElement} overlay wrapper element to uncollapse;
- * @param {Integer}
  */
 function uncollapsible(trigger,numuncol,overlay) {
 	return async function () {
@@ -306,8 +305,8 @@ function uncollapsible(trigger,numuncol,overlay) {
 				}
 			}	
 		}			
-		return fullHeight;	
-		
+	
+		overlay.style.height = fullHeight+'px';
 	}
 }
 
@@ -318,13 +317,11 @@ function uncollapsible(trigger,numuncol,overlay) {
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
- * @param {Integer} initial property value on which to start; 
- * @returns {Function}
  */			
-function collapse(trigger,overlay,property,interval,increment,initial) {
+function collapse(trigger,overlay,property,interval,increment) {
 	return async function() {
 		
-		console.log(overlay.style.height);
+		const initial = trimPx(overlay.style[property]);
 		
 		//compute child elems height;
 		let chProperty = 0, margins = 0, children = overlay.children, end = initial, change = increment;
