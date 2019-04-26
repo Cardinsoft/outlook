@@ -323,7 +323,7 @@ function collapse(trigger,overlay,property,interval,increment,numuncol) {
 	
 	console.log(overlay);
 	
-	console.log(overlay.children.item(0).style[property]);
+	console.log(window.getComputedStyle(overlay)[property]);
 	
 	const initial = uncollapsible(trigger,numuncol,overlay);
 	
