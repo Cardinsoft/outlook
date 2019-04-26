@@ -254,18 +254,6 @@ CardBuilder.prototype.build = async function () {
 		
 	}
 	
-	const sections = document.querySelectorAll('.CardSection');
-	for(let j=0; j<sections.length; j++) {
-		let children = sections.item(j).children;
-		for(let k=0; k<children.length; k++) {
-			let child = children.item(k);
-			if(child.classList.contains('collapsible')) { 
-				children.item(children.length-1).addEventListener('click',collapse(this,'.collapsible','height',1,1)); 
-			}
-		}
-		console.log(children);
-	}
-	
 	cardStack.push(this);
 	return this;
 };
