@@ -299,9 +299,9 @@ function collapse(trigger,overlay,property,interval,increment) {
 					
 		//compute and set height to element;
 		const computed = trimPx(window.getComputedStyle(overlay)[property]);
-		overlay.style[property] = computed;
+		overlay.style[property] = computed.toString()+'px';
 		
-		overlay.style[property] = '30px';
+		//overlay.style[property] = '30px';
 						
 		//if element is collapsed -> inverse increment;
 		if(computed===0) { 
