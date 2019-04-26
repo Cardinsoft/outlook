@@ -184,39 +184,5 @@ ButtonSet.prototype.appendToUi = function(parent) {
 
 }
 
-//Emulate Class CardHeader extending Class Card for CardService service;
-class CardHeader extends Card {
-	constructor() {
-		super();
-		this.className = 'CardHeader';
-		this.imageAltText;
-		this.imageStyle;
-		this.imageUrl;
-		this.title;
-		this.subtitle;
-	}
-}
-//add new methods to the class;
-CardHeader.prototype.setImageAltText = function (imageAltText) {
-	this.imageAltText = imageAltText;
-	return this;
-};
-CardHeader.prototype.setImageStyle = function (imageStyle) {
-	this.imageStyle = imageStyle;
-	return this;
-};
-CardHeader.prototype.setImageUrl = function (imageUrl) {
-	this.imageUrl = imageUrl;
-	return this;
-};
-CardHeader.prototype.setTitle = function (title) {
-	this.title = title;
-	return this;
-};
-CardHeader.prototype.setSubtitle = function (subtitle) {
-	this.subtitle = subtitle;
-	return this;
-};
-
 //initiate services to be able to access them;
 const CardService = new e_CardService();
