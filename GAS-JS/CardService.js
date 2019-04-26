@@ -132,44 +132,5 @@ e_CardService.prototype.newUniversalActionResponseBuilder = function () {
 	return new UniversalActionResponseBuilder(); 
 }
 
-//Emulate Class ButtonSet for CardService service;
-class ButtonSet extends e_CardService {
-	constructor() {
-		super();
-		this.className = 'ButtonSet';
-		this.buttons = [];
-	}
-}
-//add new methods to the class;
-ButtonSet.prototype.addButton = function(button) {
-	this.buttons.push(button);
-	return this;
-}
-ButtonSet.prototype.appendToUi = function(parent) {
-	const buttons = this.buttons;
-	const length = buttons.length;
-	
-	const btnRow = document.createElement('div');
-	btnRow.className = 'row '+this.className;
-	parent.append(btnRow);
-	
-	const wrapBtn = document.createElement('div');
-	wrapBtn.className = 'column';
-	btnRow.append(wrapBtn);
-	
-	buttons.forEach(function(button) {
-		const backgroundColor = button.backgroundColor;
-		const text            = button.text;
-		const disabled        = button.disabled;
-		const textButtonStyle = button.textButtonStyle;	
-		const action          = button.action;
-		const openLink        = button.openLink;
-		const authAction      = button.authorizationAction; 
-		
-		button.appendToUi(wrapBtn);
-	});
-
-}
-
 //initiate services to be able to access them;
 const CardService = new e_CardService();
