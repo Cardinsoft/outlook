@@ -324,6 +324,8 @@ function uncollapsible(trigger,numuncol,overlay) {
 function collapse(trigger,overlay,property,interval,increment,initial) {
 	return async function() {
 		
+		console.log(overlay.style.height);
+		
 		//compute child elems height;
 		let chProperty = 0, margins = 0, children = overlay.children, end = initial, change = increment;
 		for(var i=0; i<children.length; i++) {
