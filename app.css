@@ -205,10 +205,18 @@ span.menu:before {
 	position         : absolute;
     top              : 16px;
     left             : auto;
-    min-height       : 90px;
-    width            : 91%;
+    width            : 92%;
     background-color : white;
     box-shadow       : 0 0 5px 0 rgba(0,0,0,.4);
+}
+
+.menuitem {
+	width : 100%;
+	min-height : 35px;
+}
+
+.menuitem:hover {
+	background-color : #f4f4f4,
 }
 
 .side i {
