@@ -124,6 +124,7 @@ class Menu {
 	switchShow(trigger) {
 		let doc = GLOBAL.document;
 		const elem = doc.querySelector('.Menu');
+		elem.style.height = 0+'px';
 		collapse(trigger,elem,'height',1,1,0);
 	}
 }
