@@ -69,10 +69,12 @@ CardBuilder.prototype.build = async function () {
 				let overlay = collapsible.querySelector('form');
 				if(overlay===null) { overlay = collapsible; }
 				let toggler = section.querySelector('.toggler');
-		
-				toggler.addEventListener('click',function(){
-					this.classList.toggle('toggler-up');
-				});		
+				
+				if(toggler!==null) {
+					toggler.addEventListener('click',function(){
+						this.classList.toggle('toggler-up');
+					});
+				}
 				
 				console.log(overlay)
 				console.log(toggler)
