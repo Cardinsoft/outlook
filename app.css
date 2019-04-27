@@ -208,12 +208,11 @@ span.menu:before {
     width            : 92%;
     background-color : white;
     box-shadow       : 0 0 5px 0 rgba(0,0,0,.4);
-	transition       : width 1s, height 1s;
+	transition       : width 1s, min-height 1s;
 }
 
 .singulared {
 	width  : 0px;
-	height : 0px;
 }
 
 .menuitem {
