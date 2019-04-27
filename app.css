@@ -190,6 +190,10 @@ body {
     font-size        : x-large;
 }
 
+.navelem:hover {
+	color : #003056;
+}
+
 span.menu:before {
 	content: '\205D';
 }
