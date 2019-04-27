@@ -73,7 +73,9 @@ CardBuilder.prototype.build = async function () {
 				let initial = uncollapsible(cardSection.numUncollapsibleWidgets,overlay);
 				overlay.style.height = initial+'px';
 
-				toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial));
+				if(toggler!==null) { 
+					toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial)); 
+				}
 				
 			}
 			
