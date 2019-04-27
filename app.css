@@ -176,9 +176,16 @@ body {
 }
 
 .navbar {
-	height           : 45px;
-	background-color : #0078d4;
+	min-height       : 35px;
+	background-color : #0078d7;
 	color            : white;
+}
+
+.navelem {
+	width  : 35px;
+	height : 35px;
+	
+	background-color : white;
 }
 
 .navbar .main, .navbar .side {
