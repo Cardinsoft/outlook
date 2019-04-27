@@ -72,6 +72,7 @@ CardBuilder.prototype.build = async function () {
 				
 				overlay.style.height = uncollapsible(cardSection.numUncollapsibleWidgets,overlay);
 				
+				console.log(cardSection.numUncollapsibleWidgets)
 				console.log(overlay)
 				console.log(toggler)
 			}
