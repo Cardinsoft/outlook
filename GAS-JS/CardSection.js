@@ -99,15 +99,16 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	}
 
 	//handle collapsible sections;
-	if(collapsible&&widgets.length>=uncollapse) {
+
+		console.log('number of widgets to show: '+uncollapse);
+		console.log(collapsible);
+		console.log(widgets.length);	
+
+	if(collapsible&&widgets.length>uncollapse) {
 		//create toggler element;
 		const toggler = document.createElement('div');
 		toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
 		section.append(toggler);
-		
-		console.log('number of widgets to show: '+uncollapse);
-		console.log(collapsible);
-		console.log(widgets.length);
 		
 		//add event handler for toggling target element's state;
 		toggler.addEventListener('click',function(){
