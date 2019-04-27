@@ -191,7 +191,8 @@ body {
 }
 
 .navelem:hover {
-	color : #003056;
+    outline          : 8px solid #eaeaea;
+    background-color : #eaeaea;
 }
 
 span.menu:before {
