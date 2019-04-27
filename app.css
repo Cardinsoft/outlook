@@ -42,11 +42,12 @@ body {
 
 .TextInputInput {
 	min-height  : 28px;
-	padding     : 8px 0 4px 0 !important;
+	padding     : 8px 0 !important;
+	line-height : 125%;
 	font-family : Arial;
 	font-size   : 14px;
 	resize      : vertical;
-	overflow-y  : none;
+	overflow-y  : hidden;
 }
 
 .TextInputLabel {
