@@ -177,19 +177,19 @@ body {
 
 .navbar {
 	min-height       : 35px;
-	background-color : #0078d7;
+	background-color : #f4f4f4;
 	color            : white;
 }
 
 .navelem {
-	width  : 35px;
+	width  : 50px;
 	height : 35px;
 	float  : left;
 	background-color : white;
 }
 
 .navspacer {
-	width : calc(100%-35*2);
+	width : calc(100% - 100px);
 	float : left;
 }
 
