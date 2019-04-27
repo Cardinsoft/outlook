@@ -6,9 +6,9 @@ Office.initialize = (reason) => {
 		
 		
 		const items = [
-			{id : 'home',     icon : ''},
-			{id : 'settings', icon : ''},
-			{id : 'help',     icon : ''}
+			{id : 'home',     icon : '', text : 'Home'},
+			{id : 'settings', icon : '', text : 'Settings'},
+			{id : 'help',     icon : '', text : 'Help'}
 		];
 		const menu = new Menu();
 		menu.create(items);
@@ -115,9 +115,20 @@ class Menu {
 		navbar.append(menu);
 		
 		for(let i=0; i<items.length; i++) {
-			let menuitem = document.createElement('div');
-			menuitem.classList.add('menuitem');
-			menu.append(menuitem);
+			let item = items[i];
+			
+			let menuItem = document.createElement('div');
+			menuItem.classList.add('menuitem');
+			menu.append(menuItem);
+			
+			let menuIcon = document.createElement('div');
+			menuIcon.classList.add('menuicon');
+			menuItem.append(menuIcon);
+			
+			let menuText = document.createElement('div');
+			menuText.classList.add('menutext');
+			menuText.textContent = item.text;
+			menuItem.append(menuText);
 		}
 		
 	}
