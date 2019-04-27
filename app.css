@@ -183,8 +183,10 @@ body {
 .navelem {
 	margin-left      : auto;
     margin-right     : 0;
-	height           : 25px;
+	height           : 35px;
     width            : 28px;
+	text-align       : center;
+    font-size        : x-large;
 }
 
 span.menu:before {
