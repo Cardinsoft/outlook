@@ -64,7 +64,7 @@ CardBuilder.prototype.build = async function () {
 			let cardSection = cardSections[s];
 			let section = await cardSection.appendToUi(wrap,serialize,s);
 			
-			let sElems = section.children.querySelector('.collapsible');
+			let sElems = section.querySelector('.collapsible');
 			console.log(sElems)
 			
 		}
