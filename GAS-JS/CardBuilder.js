@@ -60,16 +60,14 @@ CardBuilder.prototype.build = async function () {
 		let serialize = true;
 		if(cardSections.length===1) { serialize = false; }
 		
-		const sections = [];
-		
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
 			let section = await cardSection.appendToUi(wrap,serialize,s);
-			sections.push(section);
+			
+			console.log(section)
+			
 		}
-		
-		console.log(sections);
-		
+
 	}
 	
 	cardStack.push(this);
