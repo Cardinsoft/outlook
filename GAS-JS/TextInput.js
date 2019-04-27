@@ -84,7 +84,10 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.name      = fieldName;
 	
 	input.addEventListener('keypress',function(e){ 	
-		if(e.charCode===13) { e.preventDefault(); }
+		if(e.charCode===13) { 
+			e.preventDefault(); 
+			this.value += this.value+'\r';
+		}
 	});
 	
 	//set optional parameters to input;
