@@ -114,9 +114,11 @@ class Menu {
 		menu.classList.add(this.className,'hidden');
 		navbar.append(menu);
 		
-		items.forEach(function(item){
-			
-		});
+		for(let i=0; i<items.length; i++) {
+			let menuitem = document.createElement('div');
+			menuitem.classList.add('menuitem');
+			menu.append(menuitem);
+		}
 		
 	}
 	switchShow() {
