@@ -227,7 +227,9 @@ span.menu:before {
 }
 
 .menuicon {
-	
+	width  : 35px;
+	height : 35px;
+	float  : left;
 }
 
 .menutext {
