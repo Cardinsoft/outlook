@@ -353,10 +353,6 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 			
 			let newProp = trimPx(overlay.style[property])-change;
 			
-			console.log(end); 
-			console.log(initial); 
-			console.log(newProp);
-			
 			if(newProp<initial)    { newProp = initial; }
 			if(newProp>chProperty) { newProp = chProperty; }
 			
