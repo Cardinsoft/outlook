@@ -111,7 +111,7 @@ class Menu {
 		const navbar = doc.querySelector('.navbar');
 		
 		const menu = doc.createElement('div');
-		menu.classList.add(this.className,'singulared');
+		menu.classList.add(this.className,'singulared','hidden');
 		navbar.append(menu);
 		
 		for(let i=0; i<items.length; i++) {
@@ -135,6 +135,7 @@ class Menu {
 	switchShow() {
 		let doc = GLOBAL.document;
 		const elem = doc.querySelector('.Menu');
+		elem.classList.toggle('hidden');
 		elem.classList.toggle('singulared');
 	}
 }
