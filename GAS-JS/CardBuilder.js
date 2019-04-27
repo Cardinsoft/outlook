@@ -62,15 +62,18 @@ CardBuilder.prototype.build = async function () {
 		
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
+			let numuncoll   = cardSection.numUncollapsibleWidgets;
+			
 			let section = await cardSection.appendToUi(wrap,serialize,s);
 			
 			let collapsible = section.querySelector('.collapsible');
-			if(collapsible!==null) {
+			
+			if(collapsible!==null&&numuncoll<cardSection.widgets.length) {
 				let overlay = collapsible.querySelector('form');
 				if(overlay===null) { overlay = collapsible; }
 				let toggler = section.querySelector('.toggler');
 				
-				let initial = uncollapsible(cardSection.numUncollapsibleWidgets,overlay);
+				let initial = uncollapsible(numuncoll,overlay);
 				overlay.style.height = initial+'px';
 
 				if(toggler!==null) { 
