@@ -10,14 +10,12 @@ Office.initialize = (reason) => {
 			{id : 'settings', icon : ''},
 			{id : 'help',     icon : ''}
 		];
-		const menu  = new Menu();
+		const menu = new Menu();
 		menu.create(items);
 		
 		
 		$('.navbar').click(function(){
-			
-			
-			
+			menu.switchShow();
 		});
 		
 		
@@ -120,6 +118,9 @@ class Menu {
 			
 		});
 		
+	}
+	switchShow() {
+		menu.classList.toggle('hidden');
 	}
 }
 
