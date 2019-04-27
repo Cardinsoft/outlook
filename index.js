@@ -284,6 +284,8 @@ function trimPx(input) {
  */
 function uncollapsible(numuncol,overlay) {		
 		
+	if(!numuncol) { return 0; }	
+	
 	//access children;
 	const children = overlay.children;
 	const chLength = children.length;
