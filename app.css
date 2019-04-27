@@ -41,7 +41,9 @@ body {
 }
 
 .TextInputInput {
-	resize : vertical;
+	font-family : Arial sans-serif; 
+	font-size   : 14px;
+	resize      : vertical;
 }
 
 .TextInputLabel {
