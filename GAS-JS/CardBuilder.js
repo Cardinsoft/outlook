@@ -70,11 +70,11 @@ CardBuilder.prototype.build = async function () {
 				if(overlay===null) { overlay = collapsible; }
 				let toggler = section.querySelector('.toggler');
 				
-				overlay.style.height = uncollapsible(cardSection.numUncollapsibleWidgets,overlay)+'px';
+				let initial = uncollapsible(cardSection.numUncollapsibleWidgets,overlay);
+				overlay.style.height = initial+'px';
+
+				toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial));
 				
-				console.log(cardSection.numUncollapsibleWidgets)
-				console.log(overlay)
-				console.log(toggler)
 			}
 			
 		}
