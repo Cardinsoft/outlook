@@ -279,11 +279,10 @@ function trimPx(input) {
 
 /**
  * Set height to computed from number of uncollapsible widgets;
- * @param {HtmlElement} trigger 
  * @param {Integer} numuncol number of widgets to show;
  * @param {HtmlElement} overlay wrapper element to uncollapse;
  */
-function uncollapsible(trigger,numuncol,overlay) {		
+function uncollapsible(numuncol,overlay) {		
 		
 	//access children;
 	const children = overlay.children;
