@@ -4,6 +4,23 @@ Office.initialize = (reason) => {
 		
 		await trigger();
 		
+		
+		const items = [
+			{id : 'home',     icon : ''},
+			{id : 'settings', icon : ''},
+			{id : 'help',     icon : ''}
+		];
+		const menu  = new Menu();
+		menu.create(items);
+		
+		
+		$('.navbar').click(function(){
+			
+			
+			
+		});
+		
+		
 		$('#home').click(async function(){
 			
 			let o = new Overlay();
@@ -81,6 +98,31 @@ async function trigger() {
 	const e = new e_EventObject();
 	await cardOpen(e);
 }
+
+
+/**
+ * Creates an instance of Menu;
+ */
+class Menu {
+	constructor() {
+		this.className = 'Menu';
+	}
+	create(items) {
+		let doc = GLOBAL.document;
+		
+		const navbar = doc.querySelector('.navbar');
+		
+		const menu = doc.createElement('div');
+		menu.classList = [this.className,'hidden'];
+		navbar.append(menu);
+		
+		items.forEach(function(item){
+			
+		});
+		
+	}
+}
+
 
 
 /**
