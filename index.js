@@ -111,7 +111,7 @@ class Menu {
 		const navbar = doc.querySelector('.navbar');
 		
 		const menu = doc.createElement('div');
-		menu.classList.add(this.className,'singulared');
+		menu.classList.add(this.className);
 		navbar.append(menu);
 		
 		for(let i=0; i<items.length; i++) {
