@@ -357,6 +357,9 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 			console.log(initial); 
 			console.log(newProp);
 			
+			if(newProp<initial)    { newProp = initial; }
+			if(newProp>chProperty) { newProp = chProperty; }
+			
 			if(end>initial&&newProp>end) {  newProp = end; }
 			
 			overlay.style[property] = newProp+'px';
