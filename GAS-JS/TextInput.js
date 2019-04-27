@@ -70,9 +70,15 @@ TextInput.prototype.appendToUi = function (parent) {
 	label.className = 'ms-Label TextInputLabel';
 	inputWrap.append(label);
 
-	//create input element and set required parameters;
-	const input     = document.createElement('input');
-	input.type      = 'text';
+	//create input element (via input or textarea);
+	let input;
+	if(multiline) {
+		input = document.createElement('textarea');
+	}else {
+		input = document.createElement('input');
+		input.type = 'text';
+	}
+	
 	input.className = 'ms-TextField-field TextInputInput';
 	input.value     = value;
 	input.name      = fieldName;
