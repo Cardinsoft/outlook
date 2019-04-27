@@ -113,7 +113,7 @@ class Menu {
 		const navbar = doc.querySelector('.navbar');
 		
 		const menu = doc.createElement('div');
-		menu.classList = [this.className,'hidden'];
+		menu.classList.add(this.className,'hidden');
 		navbar.append(menu);
 		
 		items.forEach(function(item){
