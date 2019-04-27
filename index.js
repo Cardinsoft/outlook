@@ -124,7 +124,7 @@ class Menu {
 	switchShow() {
 		let doc = GLOBAL.document;
 		const elem = doc.querySelector('.Menu');
-		elem.classList.toggle('hidden');
+		elem.classList.toggle('singulared');
 	}
 }
 
