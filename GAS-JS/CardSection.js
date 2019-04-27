@@ -99,7 +99,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	}
 
 	//handle collapsible sections;
-	if(collapsible&&widgets.length>uncollapse) {
+	if(collapsible&&widgets.length>=uncollapse) {
 		//create toggler element;
 		const toggler = document.createElement('div');
 		toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
