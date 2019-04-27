@@ -68,7 +68,7 @@ CardBuilder.prototype.build = async function () {
 			
 			let collapsible = section.querySelector('.collapsible');
 			
-			if(collapsible!==null&&numuncoll<cardSection.widgets.length) {
+			if(collapsible!==null/*&&numuncoll<cardSection.widgets.length*/) {
 				let overlay = collapsible.querySelector('form');
 				if(overlay===null) { overlay = collapsible; }
 				let toggler = section.querySelector('.toggler');
