@@ -15,7 +15,7 @@ Office.initialize = (reason) => {
 		
 		
 		$('.navbar').click(function(){
-			menu.switchShow();
+			menu.switchShow(this);
 		});
 		
 		
@@ -121,10 +121,10 @@ class Menu {
 		}
 		
 	}
-	switchShow() {
+	switchShow(trigger) {
 		let doc = GLOBAL.document;
 		const elem = doc.querySelector('.Menu');
-		elem.classList.toggle('singulared');
+		collapse(trigger,elem,'height',1,1,0);
 	}
 }
 
