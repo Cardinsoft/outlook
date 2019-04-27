@@ -40,6 +40,10 @@ body {
 	padding : 0 !important;
 }
 
+.TextInputInput {
+	resize : vertical;
+}
+
 .TextInputLabel {
 	width : 0 !important;
 }
