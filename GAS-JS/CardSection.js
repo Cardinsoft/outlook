@@ -109,12 +109,12 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		console.log('initial: '+wrapper.style.height);
 		
 		//add event handler for toggling collapsed state;
-		toggler.addEventListener('click',collapse(toggler,wrapper,'height',1,4,0));
+		
 		
 		//add event handler for toggling target element's state;
-		/*toggler.addEventListener('click',function(){
+		toggler.addEventListener('click',function(){
 			this.classList.toggle('toggler-up');
-		});*/
+		});
 		
 		
 	}
