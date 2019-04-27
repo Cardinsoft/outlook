@@ -188,18 +188,8 @@ body {
 	background-color : white;
 }
 
-.navbar .main, .navbar .side {
-	height : 100%;
-	float  : left;
-}
-
-.navbar .main {
-	width : 82%;
-}
-
-.navbar .side {
-	text-align : center;
-	width      : 18%;
+.navspacer {
+	width : calc(100%-35*2);
 }
 
 .side i {
