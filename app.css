@@ -43,7 +43,7 @@ body {
 .TextInputInput {
 	min-height  : 28px;
 	padding     : 8px 0 !important;
-	line-height : 125%;
+	line-height : 150%;
 	font-family : Arial;
 	font-size   : 14px;
 	resize      : vertical;
