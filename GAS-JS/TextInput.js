@@ -86,7 +86,7 @@ TextInput.prototype.appendToUi = function (parent) {
 	input.addEventListener('keypress',function(e){ 	
 		if(e.charCode===13) { 
 			e.preventDefault(); 
-			this.value += this.value+'\r';
+			this.value += '\r';
 		}
 	});
 	
