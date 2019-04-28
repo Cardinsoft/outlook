@@ -34,9 +34,7 @@ class Menu {
 	}
 	create(items) {
 		let self = this;
-		
-		
-		let doc = GLOBAL.document;
+		let doc  = GLOBAL.document;
 		
 		const navbar = doc.querySelector('.navbar');
 		
@@ -80,8 +78,48 @@ class Menu {
 		}
 		
 	}
+	addItem(item,toTop) {
+		let self = this;
+		let doc  = GLOBAL.document;
+		let menu = doc.querySelector('.Menu');		
+		
+		//create menu item;
+		let menuItem = document.createElement('div');
+			menuItem.classList.add('menuItem');
+		if(toTop) { 
+			menu.prepend(menuItem); 
+		}else { 
+			menu.append(menuItem); 
+		}
+		
+		//set item's icon and text;
+		let menuText = document.createElement('p');
+			menuText.classList.add('menuText',item.icon);
+			menuText.textContent = item.text;
+		menuItem.append(menuText);
+			
+		menuItem.addEventListener('click',async function(){	
+			self.switchShow();
+				
+			let o = new Overlay();
+				o.setColor('white');
+				o.setTone('dark');
+				o.show('#app-overlay');		
+
+			let s = new Spinner();
+				s.setSize('large');
+				s.show();		
+
+			const e = new e_EventObject();
+				
+			await GLOBAL[item.funcName](e);
+				
+			o.hide('#app-overlay');
+			s.hide();			
+		});
+	}
 	switchShow() {
-		let doc = GLOBAL.document;
+		let doc    = GLOBAL.document;
 		const elem = doc.querySelector('.Menu');
 		elem.classList.toggle('singulared');
 	}
