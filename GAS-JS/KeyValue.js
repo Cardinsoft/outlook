@@ -153,7 +153,21 @@ KeyValue.prototype.appendToUi = function (parent) {
 		setAction(widget,action);
 		
 		//set event listener to widget;
-		widget.addEventListener('click',async function(){ await actionCallback(this); });
+		widget.addEventListener('click',async function(){ 
+			
+			const o = new Overlay();
+			o.setColor('white');
+			o.show('#app-overlay');			
+			
+			let s = new Spinner();
+			s.setSize('large');
+			s.show();			
+			
+			await actionCallback(this);
+			
+			o.hide('#app-overlay');
+			
+		});
 	}
 	
 	//handle image creation;
