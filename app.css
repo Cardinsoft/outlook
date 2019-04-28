@@ -226,6 +226,10 @@ span.menu:before {
 	background-color : #f4f4f4;
 }
 
+.menuItem:active {
+	background-color : #929292;
+}
+
 .menuText {
 	margin      : 0;
 	padding-top : 8px;
