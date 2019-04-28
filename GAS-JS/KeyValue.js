@@ -154,7 +154,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		//set event listener to widget;
 		widget.addEventListener('click',async function(){ 
-			
 			const o = new Overlay();
 			o.setColor('white');
 			o.show('#app-overlay');			
@@ -163,10 +162,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 			s.setSize('large');
 			s.show();			
 			
-			await actionCallback(this);
-			
-			o.hide('#app-overlay');
-			
+			let a = await actionCallback(this);
+			console.log(a)
 		});
 	}
 	
