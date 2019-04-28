@@ -568,7 +568,7 @@ function checkNested(data) {
  * @returns {Array}
  */
 function parseData(data) {
-	
+
   //check for empty and correct objects;
   var isObj = typeof data==='object';
   if(isObj&&Object.keys(data).length===0) { return []; }else if(isObj) { return data; }

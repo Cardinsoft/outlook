@@ -1,4 +1,39 @@
 /**
+ * Creates CardAction to set on a CardHeader;
+ * @param {Text} text text to set on header;
+ * @param {String} action type;
+ * @param {Action} action action to set;
+ * @param {String=} composeType type of email to set; 
+ * @returns {CardAction}
+ */
+function cardAction(text,type,action,composeType){
+  
+  //create action and set required parameters;
+  var cardAction = CardService.newCardAction();
+      cardAction.setText(text);
+      
+  //set action type corresponding to type;
+  switch(type) {
+    case globalActionAuth:
+      cardAction.setAuthorizationAction(action);
+      break;
+    case globalActionCompose:
+      var composeEnum = 'REPLY_AS_DRAFT';
+      if(composeType) { composeEnum = CardService.ComposedEmailType[composeType]; }
+      cardAction.setComposeAction(action,composeEnum);
+      break;
+    case globalActionClick:
+      cardAction.setOnClickAction(action);
+      break;
+    case globalActionLink:
+      cardAction.setOnClickOpenLinkAction(action);
+      break;
+  }
+  
+  return cardAction;
+}
+
+/**
  * Creates a TextParagraph widget
  * @param {String} text specifies a text to populate widget with
  * @returns {TextParagraph} 

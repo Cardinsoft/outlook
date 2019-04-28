@@ -73,7 +73,7 @@ async function createConnector(e) {
     var auth  = data.auth;
     if(data.auth===undefined) { auth = 'none'; }
     connector.auth = auth;
-    if(auth==='OAuth2') { 
+    if(auth===globalOAuth2AuthType) { 
       var scope     = data.scope;
       var urlAuth   = data.urlAuth;
       var urlToken  = data.urlToken;
@@ -95,7 +95,7 @@ async function createConnector(e) {
     //build auth properties according to type;
     var authType = cAuth.type;
     connector.auth = authType;
-    if(authType==='APItoken') {
+    if(authType===globalApiTokenAuthType) {
       //access user input for auth;
       var usercode = data.usercode;
       var apitoken = data.apitoken;
@@ -214,7 +214,7 @@ async function updateConnector(e) {
     var auth  = data.auth;
     if(data.auth===undefined) { auth = 'none'; }
     connector.auth = auth;
-    if(auth==='OAuth2') { 
+    if(auth===globalOAuth2AuthType) { 
       var scope     = data.scope;
       var urlAuth   = data.urlAuth;
       var urlToken  = data.urlToken;
@@ -236,7 +236,7 @@ async function updateConnector(e) {
     //build auth properties according to type;
     var authType = cAuth.type;
     connector.auth = authType;
-    if(authType==='APItoken') {
+    if(authType===globalApiTokenAuthType) {
       //access user input for auth;
       var usercode = data.usercode;
       var apitoken = data.apitoken;
