@@ -217,7 +217,7 @@ span.menu:before {
 	height : 0px;
 }
 
-.menuitem {
+.menuItem {
 	width      : 100%;
 	min-height : 35px;
 }
@@ -226,7 +226,7 @@ span.menu:before {
 	background-color : #f4f4f4;
 }
 
-.menuicon {
+.menuIcon {
     width       : 48px;
     height      : 35px;
     float       : left;
@@ -234,11 +234,7 @@ span.menu:before {
     padding-top : 8px;
 }
 
-.menuiconIcon {
-	vertical-align : middle;
-}
-
-.menutext {
+.menuText {
 	height      : 35px;
     padding-top : 10px;
 }
