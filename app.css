@@ -228,13 +228,15 @@ span.menu:before {
 }
 
 .menuIcon {
-    width          : 48px;
-    text-align     : center;
-	vertical-align : middle;
+    position   : absolute;
+	left       : -45px;
+	width      : 48px;
+    text-align : center;
 }
 
 .menuText {
-	vertical-align : middle;
+	position : relative;
+	left     : 45px;
 }
 
 .side i {
