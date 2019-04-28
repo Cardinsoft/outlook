@@ -18,67 +18,6 @@ Office.initialize = (reason) => {
 			menu.switchShow();
 		});
 		
-		
-		$('#home').click(async function(){
-			
-			let o = new Overlay();
-			o.setColor('white');
-			o.setTone('dark');
-			o.show('#app-overlay');
-			
-			let s = new Spinner();
-			s.setSize('large');
-			s.show();
-			
-			const e = new e_EventObject();
-			
-			await universalHome(e);
-			
-			o.hide('#app-overlay');
-			s.hide();
-			
-		});
-		
-		$('#settings').click(async function(){
-			
-			let o = new Overlay();
-			o.setColor('white');
-			o.setTone('dark');
-			o.show('#app-overlay');			
-			
-			let s = new Spinner();
-			s.setSize('large');
-			s.show();	
-
-			const e = new e_EventObject();
-			
-			await universalSettings(e);
-			
-			o.hide('#app-overlay');
-			s.hide();
-			
-		});
-		
-		$('#help').click(async function(){
-			
-			let o = new Overlay();
-			o.setColor('white');
-			o.setTone('dark');
-			o.show('#app-overlay');		
-
-			let s = new Spinner();
-			s.setSize('large');
-			s.show();		
-
-			const e = new e_EventObject();
-			
-			await universalHelp(e);
-			
-			o.hide('#app-overlay');
-			s.hide();
-			
-		});
-		
 		$('#app-body').show();
 	
 		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,trigger);
