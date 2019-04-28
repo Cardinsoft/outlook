@@ -6,9 +6,9 @@ Office.initialize = (reason) => {
 		
 		
 		const items = [
-			{id : 'home',     icon : 'ms-Icon--Home',     text : 'Home'},
-			{id : 'settings', icon : 'ms-Icon--Settings', text : 'Settings'},
-			{id : 'help',     icon : 'ms-Icon--Help',     text : 'Help'}
+			{id : 'home',     icon : 'ms-Icon--Home',     text : 'Home', funcName : 'universalHome'},
+			{id : 'settings', icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
+			{id : 'help',     icon : 'ms-Icon--Help',     text : 'Help', funcName : 'universalHelp'}
 		];
 		const menu = new Menu();
 		menu.create(items);
@@ -125,6 +125,24 @@ class Menu {
 			menuText.classList.add('menuText',item.icon);
 			menuText.textContent = item.text;
 			menuItem.append(menuText);
+			
+			menuItem.addEventListener('click',async function(){
+				let o = new Overlay();
+				o.setColor('white');
+				o.setTone('dark');
+				o.show('#app-overlay');		
+
+				let s = new Spinner();
+				s.setSize('large');
+				s.show();		
+
+				const e = new e_EventObject();
+				
+				await GLOBAL[this.funcName](e);
+				
+				o.hide('#app-overlay');
+				s.hide();				
+			});
 			
 		}
 		
