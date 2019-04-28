@@ -14,7 +14,7 @@ Office.initialize = (reason) => {
 		menu.create(items);
 		
 		
-		$('.navbar').click(function(){
+		$('.menu').click(function(){
 			menu.switchShow();
 		});
 		
