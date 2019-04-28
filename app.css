@@ -227,19 +227,8 @@ span.menu:before {
 	background-color : #f4f4f4;
 }
 
-.menuIcon {
-    position   : absolute;
-	left       : -40px;
-	width      : 48px;
-    text-align : center;
-}
-
 .menuText {
-	position    : relative;
-	left        : 40px;
-	margin      : 0;
-	padding     : 8px;
-    line-height : 150%;
+	margin : 0;
 }
 
 .side i {
