@@ -85,6 +85,7 @@ class Menu {
 				s.show();		
 
 			const e = new e_EventObject();
+			e.parameters = item.parameters;
 				
 			await GLOBAL[item.funcName](e);
 				
