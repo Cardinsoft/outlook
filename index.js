@@ -43,38 +43,8 @@ class Menu {
 		navbar.append(menu);
 		
 		for(let i=0; i<items.length; i++) {
-			let item = items[i];
-			
-			let menuItem = document.createElement('div');
-			menuItem.classList.add('menuItem');
-			menu.append(menuItem);
-			
-			let menuText = document.createElement('p');
-			menuText.classList.add('menuText',item.icon);
-			menuText.textContent = item.text;
-			menuItem.append(menuText);
-			
-			menuItem.addEventListener('click',async function(){
-				
-				self.switchShow();
-				
-				let o = new Overlay();
-				o.setColor('white');
-				o.setTone('dark');
-				o.show('#app-overlay');		
-
-				let s = new Spinner();
-				s.setSize('large');
-				s.show();		
-
-				const e = new e_EventObject();
-				
-				await GLOBAL[item.funcName](e);
-				
-				o.hide('#app-overlay');
-				s.hide();			
-			});
-			
+			let item = items[i];	
+			self.addItem(item);
 		}
 		
 	}
