@@ -1,6 +1,7 @@
 //card and section headers;
 var globalAdvancedHeader             = 'Advanced settings';
 var globalChooseTypeHeader           = 'Available Connector types';
+var globalConfigAuthHeader           = 'Authorization config';
 var globalConfigErrorHeader          = 'Configuration error';
 var globalConfigHeader               = 'Connector configuration';
 var globalConfigListHeader           = 'Configured Connectors';
@@ -15,6 +16,7 @@ var globalUnparsedHeader             = 'Unparsed content';
 var globalWelcomeHeader              = 'Welcome to Cardin for Gmail!';
 
 //titles;
+var globalAuthTypeApiTokenTitle      = 'API token auth';
 var globalAuthTypeErrorTitle         = 'Auth type mismatch';
 var globalConfigErrorWidgetTitle     = '';
 var globalConfirmWidgetTitle         = '';
@@ -107,14 +109,13 @@ var globalUpdateFailure              = 'Connector update failed';
 var globalUpdateSuccess              = 'Connector successfully updated!';
 
 //field names;
+var globalApiTokenTokenFieldName     = 'apitoken';
+var globalApiTokenUserFieldName      = 'usercode';
 var globalBaseClassName              = 'Connector';
 var globalClientIdFieldName          = 'id';
 var globalCustomNameName             = 'custom';
 var globalCustomUrlUrl               = '';
 var globalDefaultFieldName           = 'isDefault';
-var globalEnumCheckbox               = 'CHECK_BOX';
-var globalEnumDropdown               = 'DROPDOWN';
-var globalEnumRadio                  = 'RADIO_BUTTON';
 var globalIconFieldName              = 'icon';
 var globalManualFieldName            = 'manual';
 var globalNameFieldName              = 'name';
@@ -126,6 +127,19 @@ var globalSecretFieldName            = 'secret';
 var globalUrlAuthFieldName           = 'urlAuth';
 var globalURLfieldName               = 'url';
 var globalUrlTokenFieldName          = 'urlToken';
+
+//Enum references;
+var globalEnumCheckbox               = 'CHECK_BOX';
+var globalEnumReplyDraft             = 'REPLY_AS_DRAFT';
+var globalEnumDropdown               = 'DROPDOWN';
+var globalEnumRadio                  = 'RADIO_BUTTON';
+var globalEnumStandalone             = 'STANDALONE_DRAFT';
+
+//Action types;
+var globalActionAuth                 = 'auth';
+var globalActionClick                = 'click';
+var globalActionCompose              = 'compose';
+var globalActionLink                 = 'link';
 
 //parameters;
 var globalIncludeGitHub              = false;
@@ -150,6 +164,10 @@ var globalRevokeAccess               = 'Revoke access';
 var globalScopeInputHint             = 'Obtained from API';
 var globalSecretInputHint            = 'Obtained from API';
 var globalTokenUrlInputHint          = 'Token URL';
+
+//Auth types;
+var globalApiTokenAuthType           = 'APItoken';
+var globalOAuth2AuthType             = 'OAuth2';
 
 //connector types specific globals;
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';

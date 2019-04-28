@@ -46,7 +46,7 @@ function cardCreate(e) {
   
   //create API token config section;
   var auth = JSON.parse(type.auth);
-  if(auth.type==='APItoken') {
+  if(auth.type===globalApiTokenAuthType) {
     createSectionConfig(builder,auth.config);
   }
   
@@ -72,7 +72,7 @@ function cardUpdate(e) {
   var manual    = connector.manual;
   var isDefault = connector.isDefault;
   var authType  = connector.authType;
-  if(authType==='OAuth2') { var isReloaded = true; }else { isReloaded = false; }
+  if(authType===globalOAuth2AuthType) { var isReloaded = true; }else { isReloaded = false; }
   
   //convert strings to boolean as e.parameters accepts only strings;
   if(manual==='true')     { manual = true;    }else { manual = false;    } 
@@ -92,7 +92,7 @@ function cardUpdate(e) {
   //create section with authorize/revoke for OAuth-based authentication;
   var cAuth = cType.auth;
   if(Object.keys(cAuth).length!==0) {
-    if(connector.auth==='OAuth2') {
+    if(connector.auth===globalOAuth2AuthType) {
       if(cType.login) { connector.login = cType.login(connector); }
       createSectionAuth(builder,connector,cAuth);
     }
@@ -126,7 +126,7 @@ function cardUpdate(e) {
   var auth = cType.auth;
   var authConfig = auth.config;
   if(auth.config) { preserveValues(connector,authConfig.widgets); }
-  if(auth.type==='APItoken') {
+  if(auth.type===globalApiTokenAuthType) {
     createSectionConfig(builder,authConfig);
   }
   
@@ -173,7 +173,6 @@ async function cardDisplay(e) {
   
   //handle failed response codes;
   if((code<200||code>=300)&&code!==401) {
-	console.log(code)
     createErrorSection(builder,true,code,error);
   }else if(code===401) {
     createNotAuthorizedSection(builder,false,connector,code);
@@ -214,7 +213,14 @@ async function cardDisplay(e) {
         if(hasEditable) {
           //stringify connector properties;
           connector = propertiesToString(connector);
-          createSectionUpdate(builder,false,connector);
+          
+          var action = CardService.newAction();
+              action.setFunctionName('updateSectionAdvanced');
+              action.setParameters(connector);
+              action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+          
+          var ca = cardAction(globalUpdateConnectorText,globalActionClick,action);
+          builder.addCardAction(ca);
         }
  
       }else {
@@ -330,7 +336,7 @@ async function cardOpen(e) {
       //set authorization parameters;
       if(Object.keys(cAuth).length>0) {
         
-        if(cAuth.type==='OAuth2') {
+        if(cAuth.type===globalOAuth2AuthType) {
           params.urlAuth  = cAuth.urlAuth; 
           params.urlToken = cAuth.urlToken;
           params.id       = cAuth.id;
@@ -346,12 +352,12 @@ async function cardOpen(e) {
           }else { 
             params.scope = def.scope; 
           }
-        }else if(cAuth.type==='APItoken') {
+        }else if(cAuth.type===globalApiTokenAuthType) {
           params.usercode = def.usercode;
           params.apitoken = def.apitoken;
         }
         
-      }else if(authType==='OAuth2') { 
+      }else if(authType===globalOAuth2AuthType) { 
         params.urlAuth  = def.urlAuth; 
         params.urlToken = def.urlToken;
         params.id       = def.id;

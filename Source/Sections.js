@@ -27,7 +27,7 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
     }else {
       var auth   = {};
       var custom = {};
-      if(authType==='OAuth2') {
+      if(authType===globalOAuth2AuthType) {
         custom.name     = connector.name;
         custom.scope    = connector.scope;
         custom.urlAuth  = connector.urlAuth;
@@ -97,7 +97,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
     if(Object.keys(cAuth).length!==0) {
       
       //add properties for OAuth 2.0-based Connector;
-      if(cAuth.type==='OAuth2') {
+      if(cAuth.type===globalOAuth2AuthType) {
         //set authorization properties from type;
         connector.urlAuth  = cAuth.urlAuth; 
         connector.urlToken = cAuth.urlToken;
@@ -170,9 +170,6 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
         
       }else {
       
-		console.log('Errored');
-		console.log(content);
-	  
         //handle failed requests;
         label = globalError;
         connector.error = JSON.stringify(content);
@@ -244,7 +241,7 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
     return section;
   }
   catch(error) {  
-	console.error(error);
+    console.error(error);
     //catch configuration error and create erro info section instead;
     createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent,globalResetWidgetSubmitText);
   }
@@ -441,7 +438,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
       section.setNumUncollapsibleWidgets(1);
   
   //initiate error title and content;
-  var header = 'Connector error', content = '', errorDetails = '';
+  var header = 'Connector error', content, errorDetails = '';
   
   //create user-friendly prompts for http errors;
   if(code!==0) {
@@ -480,8 +477,10 @@ function createErrorSection(builder,isCollapsed,code,error) {
   section.setHeader(header);
   
   //create error description widget;
-  var description = simpleKeyValueWidget('',content,true);
-  section.addWidget(description);
+  if(content) {
+    var description = simpleKeyValueWidget('',content,true);
+    section.addWidget(description);
+  }
   
   //create error information widget;
   if(errorDetails) {
@@ -862,9 +861,10 @@ function createSectionChooseType(builder,isCollapsed,header) {
   //create class instance to get config data;
   var flow       = new Flow();
   var lacrm      = new LessAnnoyingCRM();
+  var pipedrive  = new Pipedrive();
   
   //create an array of used types;
-  var types = [flow,lacrm];
+  var types = [flow,lacrm,pipedrive];
   
   //add github conn if in testing mode;
   if(globalIncludeGitHub) {
@@ -905,7 +905,7 @@ function createSectionAddConnector(builder,isCollapsed,header,type) {
   
   //create auth type choice if no auth data is provided by type;
   if(Object.keys(JSON.parse(type.auth)).length===0&&type.type===globalBaseClassName) { 
-    if(type.authType==='OAuth2') {
+    if(type.authType===globalOAuth2AuthType) {
       createWidgetChooseAuth(section,false,type.authType);
       createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth',globalAuthUrlInputHint,'');
       createWidgetCustomInput(section,globalUrlTokenFieldName,'Token',globalTokenUrlInputHint,'');
@@ -950,26 +950,26 @@ function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,a
   
   //create auth type choice if no auth data is provided by type;
   if(Object.keys(cAuth).length===0&&auth!=='none'&&auth!==undefined) {
-    if(auth==='OAuth2'&&!isReloaded) {
+    if(auth===globalOAuth2AuthType&&!isReloaded) {
       createWidgetChooseAuth(section,true,auth);
-      createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth','Authorization URL',connector.urlAuth);
-      createWidgetCustomInput(section,globalUrlTokenFieldName,'Token','Token URL',connector.urlToken);
-      createWidgetCustomInput(section,globalClientIdFieldName,'Client Id','Obtained from API',connector.id);
-      createWidgetCustomInput(section,globalSecretFieldName,'Client Secret','Obtained from API',connector.secret);
-      createWidgetCustomInput(section,globalScopeFieldName,'Scope','Obtained from API',connector.scope);
+      createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth',globalAuthUrlInputHint,connector.urlAuth);
+      createWidgetCustomInput(section,globalUrlTokenFieldName,'Token',globalTokenUrlInputHint,connector.urlToken);
+      createWidgetCustomInput(section,globalClientIdFieldName,'Client Id',globalClientIdInputHint,connector.id);
+      createWidgetCustomInput(section,globalSecretFieldName,'Client Secret',globalSecretInputHint,connector.secret);
+      createWidgetCustomInput(section,globalScopeFieldName,'Scope',globalScopeInputHint,connector.scope);
     }else if(!isReloaded) {
       createWidgetChooseAuth(section,true);
-    }else if(auth==='OAuth2'||authType==='OAuth2') {
+    }else if(auth===globalOAuth2AuthType||authType===globalOAuth2AuthType) {
       createWidgetChooseAuth(section,true,authType);
       
       if(connector.scope) { 
         createWidgetCustomInput(section,globalScopeFieldName,'Scope','Authorization scope',connector.scope);
       }else {
-        createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth','Authorization URL','');
-        createWidgetCustomInput(section,globalUrlTokenFieldName,'Token','Token URL','');
-        createWidgetCustomInput(section,globalClientIdFieldName,'Client Id','Obtained from API','');
-        createWidgetCustomInput(section,globalSecretFieldName,'Client Secret','Obtained from API','');
-        createWidgetCustomInput(section,globalScopeFieldName,'Scope','Obtained from API','');
+        createWidgetCustomInput(section,globalUrlAuthFieldName,'Auth',globalAuthUrlInputHint,'');
+        createWidgetCustomInput(section,globalUrlTokenFieldName,'Token',globalTokenUrlInputHint,'');
+        createWidgetCustomInput(section,globalClientIdFieldName,'Client Id',globalClientIdInputHint,'');
+        createWidgetCustomInput(section,globalSecretFieldName,'Client Secret',globalSecretInputHint,'');
+        createWidgetCustomInput(section,globalScopeFieldName,'Scope',globalScopeInputHint,'');
       }
     }else {
       createWidgetChooseAuth(section,true);  
