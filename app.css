@@ -209,7 +209,7 @@ span.menu:before {
     width            : 90%;
     background-color : white;
     box-shadow       : 0 0 5px 0 rgba(0,0,0,.4);
-	transition       : width 0.5s;
+	transition       : width 0.2s;
 }
 
 .singulared {
@@ -274,7 +274,7 @@ span.menu:before {
 
 .spinner {
 	position                  : absolute;
-    top                       : 56px;
+    top                       : calc(100%/3);
 	box-sizing                : border-box;
     animation-name            : spin;
     animation-duration        : 1.3s;
