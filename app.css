@@ -230,6 +230,10 @@ span.menu:before {
 	margin : 0;
 }
 
+.menuText:before {
+	padding : 16px;	
+}
+
 .side i {
 	padding : 27%;
 }
