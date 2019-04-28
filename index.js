@@ -118,21 +118,9 @@ class Menu {
 			let item = items[i];
 			
 			let menuItem = document.createElement('div');
-			menuItem.classList.add('menuitem');
+			menuItem.classList.add('menuitem','ms-Icon',item.icon);
+			menuItem.textContent = item.text;
 			menu.append(menuItem);
-			
-			let menuIcon = document.createElement('div');
-			menuIcon.classList.add('menuicon');
-			menuItem.append(menuIcon);
-			
-			let icon = document.createElement('span');
-			icon.classList.add('menuiconIcon','ms-Icon',item.icon);
-			menuIcon.append(icon);
-			
-			let menuText = document.createElement('div');
-			menuText.classList.add('menutext');
-			menuText.textContent = item.text;
-			menuItem.append(menuText);
 			
 		}
 		
