@@ -88,18 +88,23 @@ CardBuilder.prototype.build = async function () {
 		if(cardAction) {
 			const menu = new Menu();
 			
-			let fName;
+			let fName, params, cAction;
 			if(cardAction.action) {
-				fName = JSON.parse(cardAction.action).functionName;
+				cAction = JSON.parse(cardAction.action);
+				fName   = cAction.functionName;
+				params  = cAction.parameters;
 			}else if(cardAction.authorizationAction) {
-				fName = JSON.parse(cardAction.authorizationAction).functionName;
+				cAction = JSON.parse(cardAction.authorizationAction);
 			}else if(cardAction.openLink) {
-				fName = JSON.parse(cardAction.openLink).functionName;
+				cAction = JSON.parse(cardAction.openLink);
+				fName   = cAction.functionName;
+				params  = cAction.parameters;
 			}
 			
 			let item = {
-				text     : cardAction.text,
-				funcName : fName
+				text       : cardAction.text,
+				funcName   : fName,
+				parameters : params
 			};
 			
 			menu.addItem(item,true);
