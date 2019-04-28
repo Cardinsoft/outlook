@@ -229,14 +229,11 @@ span.menu:before {
 .menuIcon {
     width       : 48px;
     height      : 35px;
-    float       : left;
     text-align  : center;
-    padding-top : 8px;
 }
 
 .menuText {
 	height      : 35px;
-    padding-top : 10px;
 }
 
 .side i {

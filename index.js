@@ -118,7 +118,7 @@ class Menu {
 			let item = items[i];
 			
 			let menuItem = document.createElement('div');
-			menuItem.classList.add('menuItem','ms-Icon',item.icon);
+			menuItem.classList.add('menuItem');
 			menu.append(menuItem);
 			
 			let menuIcon = document.createElement('span');
