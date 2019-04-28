@@ -77,8 +77,7 @@ CardBuilder.prototype.build = async function () {
 				overlay.style.height = initial+'px';
 
 				if(toggler!==null) { 
-					toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial)); 
-					toggler.addEventListener('mouseover',function(){this.classList.toggle('toggler-up');});
+					toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial));
 				}
 				
 			}
