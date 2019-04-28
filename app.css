@@ -220,6 +220,7 @@ span.menu:before {
 .menuItem {
 	width       : 100%;
 	height      : 35px;
+	padding-top : 8px;
 }
 
 .menuItem:hover {
@@ -231,7 +232,8 @@ span.menu:before {
 }
 
 .menuText:before {
-	padding : 16px;	
+	padding     : 0 16px;
+	font-family : FabricMDL2Icons;
 }
 
 .side i {
