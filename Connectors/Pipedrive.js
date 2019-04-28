@@ -1,26 +1,44 @@
 function Pipedrive() {
   Connector.call(this);
-  this.icon = globalPipedriveIconUrl;
-  this.name = 'Pipedrive';
-  this.url  = 'https://api-proxy.pipedrive.com/';
+  this.icon  = globalPipedriveIconUrl;
+  this.name  = 'Pipedrive';
+  this.url   = 'pipedrive.com/v1';
   this.short = globalPipedriveShort;
   this.config = [
     
   ];
   this.auth = {
-    name: 'Pipedrive',
-    urlAuth: 'https://oauth.pipedrive.com/oauth/authorize',
-    urlToken: 'https://oauth.pipedrive.com/oauth/token',
-    id: 'af088eef2609bb63',
-    secret: 'fee255f22bf1b15f1eced5cd3a0ddbc021522b6c',
-    scope: 'contacts:read'
-  };
-  this.login = function(connector) {
+    type   : globalApiTokenAuthType,
+    config : {
+      header           : globalConfigAuthHeader,
+      isCollapsible    : true,
+      numUncollapsible : 1,
+      widgets : [
+        {
+          type    : 'KeyValue',
+          title   : globalAuthTypeApiTokenTitle,
+          content : 'This Connector uses API token-based authorization (your API token can be obtained from <a href="https://app.pipedrive.com/settings/personal/api">Pipedrive settings</a>)'
+        },
+        {
+          name    : globalApiTokenTokenFieldName,
+          type    : 'TextInput',
+          title   : 'API token',
+          content : '',
+          hint    : 'e.g. 744707f029a966b5599780'
+        }
+      ]      
+    }
+  },
+  this.login = function(params) {
     var base = 'https://www.pipedrive.com/en/login';
     var url = base;
     return url;
-  }
-  this.run = function(msg,connector,data) {
+  };
+  this.buildUrl = function(params) {
+    var url = 'https://'+params.domain+'.'+this.url+params.endpoint+'?api_token='+params.apitoken;
+    return url;
+  };
+  this.run = async function(msg,connector,data) {
     //set method for url fetch ('get' or 'post' for now);
     var method = 'get';
 
@@ -32,22 +50,58 @@ function Pipedrive() {
     
     //access authoorization parameters and set service name;
     var parameters      = this.auth;
-        parameters.name = connector.name;
-        
-    //create service and set authorization header;
-    var service = authService(parameters);
-    var bearer  = 'Bearer '+service.getAccessToken();
-    headers.Authorization = bearer;
     
     //initiate access endpoints;
     var personsEP = '/persons';
     var activsEP  = '/activities';
-    var dealsEP   = '/deals';
+    var dealsEP   = '/deals';    
     
-    //initate requests;
-    var responsePersons = performFetch(this.url+personsEP,method,headers);
-    var responseActivs  = performFetch(this.url+activsEP,method,headers);
-    var responseDeals   = performFetch(this.url+dealsEP,method,headers);
+    //Auth2.0 currently disabled, checking for API token;
+    if(parameters.type===globalOAuth2AuthType) {
+      parameters.name = connector.name;
+        
+      //create service and set authorization header;
+      var service = authService(parameters);
+      var bearer  = 'Bearer '+service.getAccessToken();
+      headers.Authorization = bearer;
+      
+      //initate requests;
+      var responsePersons = await performFetch(this.url+personsEP,method,headers);
+      var responseActivs  = await performFetch(this.url+activsEP,method,headers);
+      var responseDeals   = await performFetch(this.url+dealsEP,method,headers);      
+      
+    }else {
+      
+      //fetch company domain;
+      var cdUrl      = 'https://api.pipedrive.com/v1/users/me?api_token='+connector.apitoken;
+      var responseCD = await performFetch(cdUrl,'get',{});
+      var codeCD     = responseCD.code;
+      var contentCD  = responseCD.content;
+      
+      //on success -> authorize, on fail return error;
+      if(codeCD===200) {
+        contentCD = JSON.parse(contentCD);
+        var dataCD = contentCD.data;
+        var domain = dataCD.company_domain;
+        
+        //initate requests;
+        responsePersons = await performFetch(this.buildUrl({domain:domain,endpoint:personsEP,apitoken:connector.apitoken}),method,headers);
+        responseActivs  = await performFetch(this.buildUrl({domain:domain,endpoint:activsEP, apitoken:connector.apitoken}),method,headers);
+        responseDeals   = await performFetch(this.buildUrl({domain:domain,endpoint:dealsEP,  apitoken:connector.apitoken}),method,headers);        
+   
+      }else if(codeCD===401) {
+        var authError = {
+           descr : 'Seems like you are not authorized to Pipedrive. Please, go to Connector settings and check if the API token you provided matches the one <a href="https://app.pipedrive.com/settings/personal/api">currently used</a>.'
+        };
+        return {code : 0, content : authError};
+      }else {
+        var cdError = {
+          descr : 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
+        };
+        return {code : 0, content : cdError};
+      }
+      
+    }
     
     //access response codes;
     var codePersons = responsePersons.code;
@@ -272,6 +326,9 @@ function Pipedrive() {
               };
               dealsWidgets.push(closed);
               
+              //access deals array;
+              var deals = contentDeals.data;
+              
             }//end deals section;
             
             //create activities section and widgets if are or were any;
@@ -370,37 +427,7 @@ function Pipedrive() {
               
               }//end actives success;
               
-              /*
-			rec_master_activity_id = null,
-			reference_id = null,
-			active_flag = true,
-			source_timezone = null,
-			assigned_to_user_id = 8658926,
-			participants = [{
-				primary_flag = true,
-				person_id = 1
-			}],
-			rec_rule_extension = null,
-			reference_type = null,
-			rec_rule = null,
-			marked_as_done_time = ,
-			series = null,
-              */
-               
-              
             }
-        
-            /*[{
-              email_messages_count = 0,
-              last_outgoing_mail_time = null,
-              last_activity_id = null,
-              last_incoming_mail_time = null,
-              undone_activities_count = 0,
-              last_activity_date = null,
-              next_activity_id = null,
-              notes_count = 0,
-              done_activities_count = 0
-            }]*/
             
             //create organization section and widgets;
             if(company!==null) {
@@ -417,7 +444,7 @@ function Pipedrive() {
               
               //create organization name widget;
               var companyName = {
-                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_business_black_18dp.png',
+                icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
                 title   : 'Name',
                 type    : 'KeyValue',
                 content : company.name
