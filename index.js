@@ -138,7 +138,7 @@ class Menu {
 
 				const e = new e_EventObject();
 				
-				await GLOBAL[this.funcName](e);
+				await GLOBAL[item.funcName](e);
 				
 				o.hide('#app-overlay');
 				s.hide();				
