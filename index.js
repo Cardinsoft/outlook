@@ -122,13 +122,9 @@ class Menu {
 			menu.append(menuItem);
 			
 			let menuText = document.createElement('p');
-			menuText.classList.add('menuText');
+			menuText.classList.add('menuText',item.icon);
 			menuText.textContent = item.text;
 			menuItem.append(menuText);
-			
-			let menuIcon = document.createElement('span');
-			menuIcon.classList.add('menuIcon','ms-Icon',item.icon);
-			menuText.append(menuIcon);
 			
 		}
 		
