@@ -14,7 +14,7 @@ Office.initialize = (reason) => {
 		menu.create(items);
 		
 		
-		$('.menu').click(function(){
+		$('.navelem').click(function(){
 			menu.switchShow();
 		});
 		
@@ -54,6 +54,9 @@ class Menu {
 			menuItem.append(menuText);
 			
 			menuItem.addEventListener('click',async function(){
+				
+				this.switchShow();
+				
 				let o = new Overlay();
 				o.setColor('white');
 				o.setTone('dark');
@@ -68,7 +71,7 @@ class Menu {
 				await GLOBAL[item.funcName](e);
 				
 				o.hide('#app-overlay');
-				s.hide();				
+				s.hide();			
 			});
 			
 		}
