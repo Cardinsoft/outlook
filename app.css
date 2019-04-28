@@ -227,20 +227,21 @@ span.menu:before {
 }
 
 .menuicon {
-	width      : 35px;
-	height     : 35px;
-	float      : left;
-	text-align : center;
+    width       : 35px;
+    height      : 35px;
+    float       : left;
+    text-align  : center;
+    padding-top : 8px;
 }
 
 .menuiconIcon {
 	vertical-align : middle;
-    padding        : 10px;
-    font-size      : 16px;	
+    padding        : 10px;	
 }
 
 .menutext {
-	
+	height      : 35px;
+    padding-top : 10px;
 }
 
 .side i {
