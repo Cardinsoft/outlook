@@ -236,6 +236,7 @@ span.menu:before {
 .menuText {
 	position    : relative;
 	left        : 40px;
+	margin      : 0;
 	padding     : 8px;
     line-height : 150%;
 }
