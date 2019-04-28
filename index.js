@@ -6,9 +6,9 @@ Office.initialize = (reason) => {
 		
 		
 		const items = [
-			{id : 'home',     icon : 'ms-Icon--Home',     text : 'Home',     funcName : 'universalHome'},
-			{id : 'settings', icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
-			{id : 'help',     icon : 'ms-Icon--Help',     text : 'Help',     funcName : 'universalHelp'}
+			{icon : 'ms-Icon--Home',     text : 'Home',     funcName : 'universalHome'},
+			{icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
+			{icon : 'ms-Icon--Help',     text : 'Help',     funcName : 'universalHelp'}
 		];
 		const menu = new Menu();
 		menu.create(items);
@@ -64,8 +64,12 @@ class Menu {
 		
 		//set item's icon and text;
 		let menuText = document.createElement('p');
-			menuText.classList.add('menuText',item.icon);
 			menuText.textContent = item.text;
+		
+		let cl = menuText.classList;
+			cl.add('menuText');
+		if(item.icon) { cl.ass(item.icon); }
+		
 		menuItem.append(menuText);
 			
 		menuItem.addEventListener('click',async function(){	
