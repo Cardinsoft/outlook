@@ -68,7 +68,7 @@ class Menu {
 		
 		let cl = menuText.classList;
 			cl.add('menuText');
-		if(item.icon) { cl.ass(item.icon); }
+		if(item.icon) { cl.add(item.icon); }
 		
 		menuItem.append(menuText);
 			
