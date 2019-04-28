@@ -206,7 +206,7 @@ span.menu:before {
 	position         : absolute;
     top              : 16px;
     left             : auto;
-    width            : 89%;
+    width            : 90%;
     background-color : white;
     box-shadow       : 0 0 5px 0 rgba(0,0,0,.4);
 	transition       : width 0.5s;
