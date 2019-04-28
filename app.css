@@ -170,7 +170,6 @@ body {
 	transition-timing-function : linear;	
 	color                      : #848484;
 }
-}
 
 .toggler-up {
 	transform : rotate(180deg);
