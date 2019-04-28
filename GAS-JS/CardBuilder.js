@@ -107,7 +107,7 @@ CardBuilder.prototype.build = async function () {
 				parameters : params
 			};
 			
-			menu.addItem(item,true);
+			//menu.addItem(item,true);
 		}
 		
 
