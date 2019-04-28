@@ -25,18 +25,6 @@ Office.initialize = (reason) => {
 	});
 };
 
-//===============================================CALLBACKS===============================================//
-
-/**
- * Triggers cardOpen with global event object preserved (panel change issue);
- * @returns {Function}
- */
-async function trigger() {
-	const e = new e_EventObject();
-	await cardOpen(e);
-}
-
-
 /**
  * Creates an instance of Menu;
  */
@@ -179,6 +167,18 @@ class Spinner {
 }
 
 
+//===============================================CALLBACKS===============================================//
+
+/**
+ * Triggers cardOpen with global event object preserved (panel change issue);
+ * @returns {Function}
+ */
+async function trigger() {
+	const e = new e_EventObject();
+	await cardOpen(e);
+}
+
+
 /**
  * Initiates callback function and updates Ui;
  * @param {HtmlElement} elem caller element;
@@ -269,9 +269,11 @@ function actionCallback(elem) {
 			//s.show();
 			
 			//invoke callback and await response;
-			return GLOBAL[functionName](e);
+			await GLOBAL[functionName](e);
 			
 			o.hide('#app-overlay');
+			
+			return;
 			//s.hide();
 			
 		}else {
