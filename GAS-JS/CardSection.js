@@ -111,9 +111,9 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 		section.append(toggler);
 		
 		//add event handler for toggling target element's state;
-		//toggler.addEventListener('click',function(){
-		//	this.classList.toggle('toggler-up');
-		//});
+		toggler.addEventListener('click',function(){
+			this.classList.toggle('toggler-up');
+		});
 		
 		
 	}
