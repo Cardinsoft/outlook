@@ -47,6 +47,11 @@ class Menu {
 			self.addItem(item);
 		}
 		
+		menu.addEventListener('mouseleave',function(){
+			let rect = this.getBoundingClientRect();
+			console.log(rect);
+		});
+		
 	}
 	addItem(item,toTop) {
 		let self = this;
