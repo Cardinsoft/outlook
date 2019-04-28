@@ -188,10 +188,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 	
 	
 	
-	const content = document.createElement('span');
-	content.className = 'ms-font-m-plus KeyValueText';
-	content.innerHTML = content;
-	wrapText.append(content);
+	const contentText = document.createElement('span');
+	contentText.className = 'ms-font-m-plus KeyValueText';
+	contentText.innerHTML = content;
+	wrapText.append(contentText);
 	
 	//handle button or switch creation;
 	const btn = this.button;
