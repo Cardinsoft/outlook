@@ -141,6 +141,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 	let action    = this.action;
 	const iconUrl = this.url;
 	const icon    = this.icon;
+	const content = this.content;
 	
 	//create row element;
 	const widget = document.createElement('div');
@@ -184,9 +185,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 		label.textContent = this.topLabel;
 		wrapText.append(label);
 	}
+	
+	
+	
 	const content = document.createElement('span');
 	content.className = 'ms-font-m-plus KeyValueText';
-	content.innerHTML = this.content;
+	content.innerHTML = content;
 	wrapText.append(content);
 	
 	//handle button or switch creation;

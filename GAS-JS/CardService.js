@@ -92,6 +92,9 @@ e_CardService.prototype.newActionResponseBuilder = function () {
 e_CardService.prototype.newButtonSet = function () {
 	return new ButtonSet();
 }
+e_CardService.prototype.newCardAction = function () {
+	return new CardAction();
+}
 e_CardService.prototype.newCardBuilder = function () {
 	return new CardBuilder();
 }
