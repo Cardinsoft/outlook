@@ -90,11 +90,11 @@ CardBuilder.prototype.build = async function () {
 			
 			let fName;
 			if(cardAction.action) {
-				fName = cardAction.action.functionName;
+				fName = JSON.parse(cardAction.action).functionName;
 			}else if(cardAction.authorizationAction) {
-				fName = cardAction.authorizationAction.functionName;
+				fName = JSON.parse(cardAction.authorizationAction).functionName;
 			}else if(cardAction.openLink) {
-				fName = cardAction.openLink.functionName;
+				fName = JSON.parse(cardAction.openLink).functionName;
 			}
 			
 			let item = {
