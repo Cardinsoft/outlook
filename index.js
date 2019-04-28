@@ -6,9 +6,9 @@ Office.initialize = (reason) => {
 		
 		
 		const items = [
-			{id : 'home',     icon : 'ms-Icon--Home',     text : 'Home', funcName : 'universalHome'},
+			{id : 'home',     icon : 'ms-Icon--Home',     text : 'Home',     funcName : 'universalHome'},
 			{id : 'settings', icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
-			{id : 'help',     icon : 'ms-Icon--Help',     text : 'Help', funcName : 'universalHelp'}
+			{id : 'help',     icon : 'ms-Icon--Help',     text : 'Help',     funcName : 'universalHelp'}
 		];
 		const menu = new Menu();
 		menu.create(items);
