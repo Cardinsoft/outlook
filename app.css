@@ -164,6 +164,7 @@ body {
 .toggler {
 	margin-top                 : 16px;
 	width                      : 100%;
+	transform : rotate(0deg);
 	transition                 : transform 0.2s;
 	-webkit-transition         : transform 0.2s;
 	transition-timing-function : linear;	
