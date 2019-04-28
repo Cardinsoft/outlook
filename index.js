@@ -269,11 +269,10 @@ function actionCallback(elem) {
 			//s.show();
 			
 			//invoke callback and await response;
-			await GLOBAL[functionName](e);
+			return GLOBAL[functionName](e);
 			
 			o.hide('#app-overlay');
 			
-			return;
 			//s.hide();
 			
 		}else {
