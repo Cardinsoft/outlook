@@ -382,7 +382,7 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 					
 		//set recursive timeout to change height;
 		let t = setTimeout( function wait() {
-			trigger.disabled = true;
+			//trigger.disabled = true;
 			
 			let newProp = trimPx(overlay.style[property])-change;
 			
@@ -396,7 +396,7 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 			let currProp = trimPx(overlay.style[property]);
 			
 			if(currProp===end) { 
-				trigger.disabled = false
+				//trigger.disabled = false
 				return clearTimeout(t); 
 			}
 			t = setTimeout( wait, interval );
