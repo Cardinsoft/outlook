@@ -33,6 +33,9 @@ class Menu {
 		this.className = 'Menu';
 	}
 	create(items) {
+		let self = this;
+		
+		
 		let doc = GLOBAL.document;
 		
 		const navbar = doc.querySelector('.navbar');
@@ -55,7 +58,7 @@ class Menu {
 			
 			menuItem.addEventListener('click',async function(){
 				
-				this.switchShow();
+				self.switchShow();
 				
 				let o = new Overlay();
 				o.setColor('white');
