@@ -1,7 +1,6 @@
 //Emulate base Class Button for CardService service;
-class Button extends e_CardService {
+class Button {
 	constructor() {
-		super();
 		this.className = 'Button';
 		this.action;
 		this.authorizationAction;

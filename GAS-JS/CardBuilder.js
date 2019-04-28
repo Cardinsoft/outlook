@@ -68,7 +68,7 @@ CardBuilder.prototype.build = async function () {
 			
 			let collapsible = section.querySelector('.collapsible');
 			
-			if(collapsible!==null/*&&numuncoll<cardSection.widgets.length*/) {
+			if(collapsible!==null) {
 				let overlay = collapsible.querySelector('form');
 				if(overlay===null) { overlay = collapsible; }
 				let toggler = section.querySelector('.toggler');
@@ -83,6 +83,13 @@ CardBuilder.prototype.build = async function () {
 			}
 			
 		}
+		
+		//if card action provided -> set it on menu top and add event handler;
+		if(cardAction) {
+			const menu = new Menu();
+			menu.addItem({id:'',icon:'',text:'',funcName:cardAction.text},true);
+		}
+		
 
 	}
 	
