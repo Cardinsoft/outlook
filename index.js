@@ -47,14 +47,12 @@ class Menu {
 			self.addItem(item);
 		}
 		
-		menu.addEventListener('mouseleave',function(e){
+		menu.addEventListener('pointerleave',function(e){
+			this.setPointerCapture(e.pointerId);
 			
-			let id = e.pointerId;
-			console.log(id)
+			console.log(e)
 			
-			//this.setPointerCapture(e.pointerId);
-			
-
+			this.release​Pointer​Capture(e.pointerId);
 		});
 		
 	}
