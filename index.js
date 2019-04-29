@@ -48,13 +48,14 @@ class Menu {
 		}
 		
 		menu.addEventListener('pointerleave',function(e){
+			
+			this.addEventListener('click',function(){ 
+				console.log('t!'); 
+				this.releasePointerCapture(e.pointerId);
+			});
+			
 			this.setPointerCapture(e.pointerId);
 			
-			console.log(e);
-			
-			this.addEventListener('click',function(){ console.log('t!'); });
-			
-			this.releasePointerCapture(e.pointerId);
 		});
 		
 	}
