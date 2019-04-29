@@ -48,7 +48,7 @@ class Menu {
 			self.addItem(item);
 		}
 		
-		function closeMenu(m){
+		function closeMenu(m,mobj){
 			return function(e) {
 				if(!menu.classList.contains('singulared')) {
 					let rect = m.getBoundingClientRect();
@@ -67,7 +67,8 @@ class Menu {
 						console.log(rxl)
 						console.log(rxr)
 						console.log(ryt)
-						console.log(ryb)					
+						console.log(ryb)
+						mobj.switchShow();
 					}
 				}
 			}
