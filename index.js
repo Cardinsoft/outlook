@@ -73,7 +73,7 @@ class Menu {
 				}
 			}
 		}
-		doc.addEventListener('click',closeMenu(menu));
+		doc.addEventListener('click',closeMenu(menu,self));
 		
 	}
 	addItem(item,toTop) {
