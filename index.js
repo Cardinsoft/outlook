@@ -16,31 +16,6 @@ Office.initialize = (reason) => {
 		
 		$('.navelem').click(function(){
 			menu.switchShow();
-			
-			function closeMenu(m){
-				return function(e) {
-					let rect = m.getBoundingClientRect();
-					
-					//access boundaries rect;
-					let rxl = rect.left;
-					let rxr = rect.right;
-					let ryt = rect.top;
-					let ryb = rect.bottom;
-					
-					//access mouse position;
-					let x = e.clientX;
-					let y = e.clientY;
-					
-					if((x<rxl&&(y>=ryt||y<=ryb))||(x>rxr&&(y>=ryt||y<=ryb))||y<ryt||y>ryb) {
-						console.log(rxl)
-						console.log(rxr)
-						console.log(ryt)
-						console.log(ryb)					
-					}
-				}
-			}
-			GLOBAL.document.addEventListener('click',closeMenu(menu));
-			
 		});
 		
 		$('#app-body').show();
@@ -72,6 +47,32 @@ class Menu {
 			let item = items[i];	
 			self.addItem(item);
 		}
+		
+		function closeMenu(m){
+			return function(e) {
+				if(!menu.classList.contains('singulared')) {
+					let rect = m.getBoundingClientRect();
+					
+					//access boundaries rect;
+					let rxl = rect.left;
+					let rxr = rect.right;
+					let ryt = rect.top;
+					let ryb = rect.bottom;
+					
+					//access mouse position;
+					let x = e.clientX;
+					let y = e.clientY;
+					
+					if((x<rxl&&(y>=ryt||y<=ryb))||(x>rxr&&(y>=ryt||y<=ryb))||y<ryt||y>ryb) {
+						console.log(rxl)
+						console.log(rxr)
+						console.log(ryt)
+						console.log(ryb)					
+					}
+				}
+			}
+		}
+		doc.addEventListener('click',closeMenu(menu));
 		
 	}
 	addItem(item,toTop) {
