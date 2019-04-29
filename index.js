@@ -62,7 +62,7 @@ class Menu {
 				let x = e.clientX;
 				let y = e.clientY;
 				
-				if((x<rxl&&(y<ryt||y>ryb))||(x>rxr&&(y<ryt||y>ryb))||y<ryt||y>ryb) {
+				if((x<rxl&&(y>=ryt||y<=ryb))||(x>rxr&&(y>=ryt||y<=ryb))||y<ryt||y>ryb) {
 					console.log(rxl)
 					console.log(rxr)
 					console.log(ryt)
