@@ -47,18 +47,12 @@ class Menu {
 			self.addItem(item);
 		}
 		
-		function hideMenu() {
-			return function () {
-				self.switchShow();
-			}
-		}		
-		
 		menu.addEventListener('pointerleave',function(e){
 			this.setPointerCapture(e.pointerId);
 			
 			console.log(e);
 			
-			this.addEventListener('click',hideMenu());
+			this.addEventListener('click',function(){ console.log('t!'); });
 			
 			this.releasePointerCapture(e.pointerId);
 		});
