@@ -52,7 +52,7 @@ class Menu {
 			
 			console.log(e)
 			
-			this.release​Pointer​Capture(e.pointerId);
+			this.releasePointerCapture(e.pointerId);
 		});
 		
 	}
