@@ -62,10 +62,12 @@ class Menu {
 				let x = e.clientX;
 				let y = e.clientY;
 				
-				console.log(rxl)
-				console.log(rxr)
-				console.log(ryt)
-				console.log(ryb)
+				if(x>=rxl&&x<=rxr&&y>=ryt&&y<ryb) {
+					console.log(rxl)
+					console.log(rxr)
+					console.log(ryt)
+					console.log(ryb)					
+				}
 				
 			}
 		}
