@@ -39,7 +39,7 @@ Office.initialize = (reason) => {
 					}
 				}
 			}
-			doc.addEventListener('click',closeMenu(menu));
+			GLOBAL.document.addEventListener('click',closeMenu(menu));
 			
 		});
 		
