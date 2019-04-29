@@ -47,9 +47,14 @@ class Menu {
 			self.addItem(item);
 		}
 		
-		menu.addEventListener('mouseleave',function(){
-			let rect = this.getBoundingClientRect();
-			console.log(rect);
+		menu.addEventListener('mouseleave',function(e){
+			
+			let id = e.pointerId;
+			console.log(id)
+			
+			//this.setPointerCapture(e.pointerId);
+			
+
 		});
 		
 	}
