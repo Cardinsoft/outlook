@@ -37,6 +37,7 @@ class Menu {
 		let doc  = GLOBAL.document;
 		
 		const navbar = doc.querySelector('.navbar');
+		const body   = doc.querySelector('#app-body');
 		
 		const menu = doc.createElement('div');
 		menu.classList.add(this.className,'singulared');
@@ -47,16 +48,29 @@ class Menu {
 			self.addItem(item);
 		}
 		
-		menu.addEventListener('pointerleave',function(e){
-			
-			this.addEventListener('click',function(){ 
-				console.log('t!'); 
-				this.releasePointerCapture(e.pointerId);
-			});
-			
-			this.setPointerCapture(e.pointerId);
-			
-		});
+		function closeMenu(m){
+			return function(e) {
+				let rect = m.getBoundingClientRect();
+				
+				//access boundaries rect;
+				let rxl = rect.left;
+				let rxr = rect.right;
+				let ryt = rect.top;
+				let ryb = rect.bottom;
+				
+				//access mouse position;
+				let x = e.clientX;
+				let y = e.clientY;
+				
+				console.log(rxl)
+				console.log(rxr)
+				console.log(ryt)
+				console.log(ryb)
+				
+			}
+		}
+		
+		body.addEventListener('click',closeMenu(self));
 		
 	}
 	addItem(item,toTop) {
