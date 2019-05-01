@@ -12,7 +12,7 @@ Office.initialize = (reason) => {
 		];
 		const menu = new Menu();
 		menu.create(items);
-		
+		console.log(menu);
 		
 		$('.navelem').click(function(){
 			menu.switchShow();
@@ -31,6 +31,7 @@ Office.initialize = (reason) => {
 class Menu {
 	constructor() {
 		this.className = 'Menu';
+		this.menu;
 	}
 	create(items) {
 		let self = this;
@@ -47,6 +48,10 @@ class Menu {
 			let item = items[i];	
 			self.addItem(item);
 		}
+		
+		//set element reference
+		
+		this.menu = menu;
 		
 	}
 	addItem(item,toTop) {
