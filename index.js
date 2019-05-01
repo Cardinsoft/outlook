@@ -34,12 +34,10 @@ class Menu {
 		this.menu;
 	}
 	create(items) {
-		let doc = GLOBAL.document;
+		const navbar = document.querySelector('.navbar');
+		const body   = document.querySelector('#app-body');
 		
-		const navbar = doc.querySelector('.navbar');
-		const body   = doc.querySelector('#app-body');
-		
-		const menu = doc.createElement('div');
+		const menu = document.createElement('div');
 		menu.classList.add(this.className,'singulared');
 		navbar.append(menu);
 		
@@ -50,6 +48,8 @@ class Menu {
 			let item = items[i];	
 			this.addItem(item);
 		}
+		
+		menus.push(menu);
 	}
 	addItem(item,toTop) {
 		let self = this;
@@ -481,5 +481,6 @@ function setAction(element,action) {
 }
 
 const cardStack = [];
+const menus     = [];
 const GLOBAL    = this;
 const e_actions = {};

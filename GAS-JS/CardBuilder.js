@@ -86,7 +86,7 @@ CardBuilder.prototype.build = async function () {
 		
 		//if card action provided -> set it on menu top and add event handler;
 		if(cardAction) {
-			const menu = new Menu();
+			const menu = document.querySelector('.Menu');
 			
 			let fName, params, cAction;
 			if(cardAction.action) {
