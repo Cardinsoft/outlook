@@ -88,6 +88,8 @@ CardBuilder.prototype.build = async function () {
 		if(cardAction) {
 			const menu = menus[0].menu;
 			
+			console.log(menu)
+			
 			let fName, params, cAction;
 			if(cardAction.action) {
 				cAction = JSON.parse(cardAction.action);
