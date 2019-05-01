@@ -94,16 +94,9 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 			}
 		}
 		await appendWidgetsAsync(widgets,wrapper);
-
-		
 	}
 
 	//handle collapsible sections;
-
-	console.log('number of widgets to show: '+uncollapse);
-	console.log(collapsible);
-	console.log(widgets.length);	
-
 	if(collapsible&&widgets.length>uncollapse||(collapsible&&!uncollapse)) {
 		//create toggler element;
 		const toggler = document.createElement('div');
