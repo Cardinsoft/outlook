@@ -44,13 +44,13 @@ class Menu {
 		menu.classList.add(this.className,'singulared');
 		navbar.append(menu);
 		
+		//set element reference
+		this.menu = menu;		
+		
 		for(let i=0; i<items.length; i++) {
 			let item = items[i];	
 			self.addItem(item);
 		}
-		
-		//set element reference
-		this.menu = menu;
 	}
 	addItem(item,toTop) {
 		let self = this;
