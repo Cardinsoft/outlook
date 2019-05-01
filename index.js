@@ -50,14 +50,14 @@ class Menu {
 		}
 		
 		//set element reference
-		
 		this.menu = menu;
-		
 	}
 	addItem(item,toTop) {
 		let self = this;
 		let doc  = GLOBAL.document;
-		let menu = doc.querySelector('.Menu');		
+		//let menu = doc.querySelector('.Menu');
+		
+		let menu = this.menu;
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
