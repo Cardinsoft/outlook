@@ -49,7 +49,7 @@ class Menu {
 			this.addItem(item);
 		}
 		
-		menus.push(menu);
+		menus.push(this);
 	}
 	addItem(item,toTop) {
 		let self = this;
