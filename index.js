@@ -34,8 +34,7 @@ class Menu {
 		this.menu;
 	}
 	create(items) {
-		let self = this;
-		let doc  = GLOBAL.document;
+		let doc = GLOBAL.document;
 		
 		const navbar = doc.querySelector('.navbar');
 		const body   = doc.querySelector('#app-body');
@@ -49,14 +48,11 @@ class Menu {
 		
 		for(let i=0; i<items.length; i++) {
 			let item = items[i];	
-			self.addItem(item);
+			this.addItem(item);
 		}
 	}
 	addItem(item,toTop) {
 		let self = this;
-		let doc  = GLOBAL.document;
-		//let menu = doc.querySelector('.Menu');
-		
 		let menu = this.menu;
 		
 		//create menu item;
@@ -100,8 +96,7 @@ class Menu {
 		});
 	}
 	switchShow() {
-		let doc    = GLOBAL.document;
-		const elem = doc.querySelector('.Menu');
+		const elem = document.querySelector('.Menu');
 		elem.classList.toggle('singulared');
 	}
 }
