@@ -130,6 +130,7 @@ class Overlay {
 		this.className;
 		this.color;
 		this.tone;
+		this.overlay;
 	}
 	setColor(color) {
 		this.color = color;
@@ -140,10 +141,8 @@ class Overlay {
 		return this;
 	}
 	show(selector) {
-		let doc = GLOBAL.document;
-		
-		let p = doc.querySelector(selector);
-		let c = doc.createElement('div');
+		let p = document.querySelector(selector);
+		let c = document.createElement('div');
 		
 		p.append(c);
 		
@@ -158,16 +157,11 @@ class Overlay {
 			c.style.backgroundColor = this.color;
 		}
 		
+		this.overlay = c;
 		return this;
 	}
-	hide(selector) {
-		let d = GLOBAL.document;
-		
-		let par = d.querySelector(selector);
-		let chd = par.children.item(0);
-		
-		chd.remove();
-
+	hide(selector) {		
+		this.overlay.remove();
 		return this;
 	}
 }
