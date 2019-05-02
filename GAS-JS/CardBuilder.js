@@ -101,7 +101,7 @@ CardBuilder.prototype.build = async function () {
 				icon       : 'ms-Icon--Forward',
 				text       : cardAction.text,
 				classList  : ['CardAction'],
-				action     : 
+				action     : cAction
 			};
 			
 			menu.addItem(item,true);
