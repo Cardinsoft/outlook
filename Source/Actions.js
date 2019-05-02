@@ -19,7 +19,7 @@ async function applySort(e) {
 		  await setProperty('reverse',isReverse,'user');
 		  
 	//set data state change and navigate to settings card;
-	builder.setNavigation(CardService.newNavigation().updateCard(await cardSettings(e)));
+	builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
 	builder.setStateChanged(true);
 	return builder.build(); 
 }
