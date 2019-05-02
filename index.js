@@ -3,9 +3,9 @@ Office.initialize = (reason) => {
 	$(document).ready(async function () {
 		
 		const items = [
-			{icon : 'ms-Icon--Home',     text : 'Home',     funcName : 'universalHome'},
-			{icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
-			{icon : 'ms-Icon--Help',     text : 'Help',     funcName : 'universalHelp'}
+			{icon : 'ms-Icon--Home',     text : 'Home',     action : new Action().setFunctionName('universalHome').setLoadIndicator(CardService.LoadIndicator.SPINNER)},
+			{icon : 'ms-Icon--Settings', text : 'Settings', action : new Action().setFunctionName('universalSettings').setLoadIndicator(CardService.LoadIndicator.SPINNER)},
+			{icon : 'ms-Icon--Help',     text : 'Help',     action : new Action().setFunctionName('universalHelp').setLoadIndicator(CardService.LoadIndicator.SPINNER)}
 		];
 		const menu = new Menu();
 		menu.create(items);
