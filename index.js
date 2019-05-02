@@ -15,9 +15,9 @@ Office.initialize = (reason) => {
 			helpAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);	
 
 		const items = [
-			{icon : 'ms-Icon--Home',     text : 'Home',     action : homeAction},
-			{icon : 'ms-Icon--Settings', text : 'Settings', action : settingsAction},
-			{icon : 'ms-Icon--Help',     text : 'Help',     action : helpAction}
+			{icon : 'ms-Icon--Home',     text : 'Home',     action : JSON.stringify(homeAction)},
+			{icon : 'ms-Icon--Settings', text : 'Settings', action : JSON.stringify(settingsAction)},
+			{icon : 'ms-Icon--Help',     text : 'Help',     action : JSON.stringify(helpAction)}
 		];
 		const menu = new Menu();
 		menu.create(items);
