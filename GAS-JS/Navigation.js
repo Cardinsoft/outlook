@@ -22,11 +22,12 @@ Navigation.prototype.popToRoot = function () {
 Navigation.prototype.printJson = function () {
 	return JSON.stringify(this);
 }
-Navigation.prototype.pushCard = function (card) {
-	cardStack.push(card);
+Navigation.prototype.pushCard = async function (card) {
+	let builtCard = await card;
+	cardStack.push(builtCard);
 	return this;
 }
-Navigation.prototype.updateCard = function (card) {
-	cardStack[cardStack.length-1] = card;
+Navigation.prototype.updateCard = async function (card) {
+	cardStack[cardStack.length-1] = await card;
 	return this;
 }
