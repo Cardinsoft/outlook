@@ -57,12 +57,12 @@ class Menu {
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
-			menuItem.classList.add('menuItem');
-			if(item.classList) {
-				item.classList.forEach(function(cl){
-					menuItem.classList.add(cl);
-				});
-			}
+		if(item.classList) {
+			item.classList.forEach(function(cl){
+				menuItem.classList.add(cl);
+			});
+		}
+		menuItem.classList.add('menuItem');
 			
 		if(toTop) { 
 			menu.prepend(menuItem); 
