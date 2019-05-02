@@ -90,23 +90,18 @@ CardBuilder.prototype.build = async function () {
 		if(cardAction) {
 			let fName, params, cAction;
 			if(cardAction.action) {
-				cAction = JSON.parse(cardAction.action);
-				fName   = cAction.functionName;
-				params  = cAction.parameters;
+				cAction = cardAction.action;
 			}else if(cardAction.authorizationAction) {
-				cAction = JSON.parse(cardAction.authorizationAction);
+				cAction = cardAction.authorizationAction;
 			}else if(cardAction.openLink) {
-				cAction = JSON.parse(cardAction.openLink);
-				fName   = cAction.functionName;
-				params  = cAction.parameters;
+				cAction = cardAction;
 			}
 			
 			let item = {
 				icon       : 'ms-Icon--Forward',
 				text       : cardAction.text,
 				classList  : ['CardAction'],
-				funcName   : fName,
-				parameters : params
+				action     : cAction
 			};
 			
 			menu.addItem(item,true);
