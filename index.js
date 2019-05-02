@@ -2,9 +2,6 @@
 Office.initialize = (reason) => {
 	$(document).ready(async function () {
 		
-		await trigger();
-		
-		
 		const items = [
 			{icon : 'ms-Icon--Home',     text : 'Home',     funcName : 'universalHome'},
 			{icon : 'ms-Icon--Settings', text : 'Settings', funcName : 'universalSettings'},
@@ -17,6 +14,8 @@ Office.initialize = (reason) => {
 		$('.navelem').click(function(){
 			menu.switchShow();
 		});
+		
+		await trigger();
 		
 		$('#app-body').show();
 	
