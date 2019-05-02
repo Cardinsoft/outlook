@@ -217,7 +217,7 @@ async function trigger() {
  * @param {HtmlElement} elem caller element;
  * @returns {Function}
  */
-function actionCallback(elem) {
+async function actionCallback(elem) {
 	
 	//access action by its identifier;
 	const action = e_actions[elem.getAttribute('action')];
