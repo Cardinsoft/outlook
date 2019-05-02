@@ -91,7 +91,9 @@ class Menu {
 			
 		menuItem.addEventListener('click',async function(){	
 			self.switchShow();
-				
+			
+			await actionCallback(this);
+			/*	
 			let o = new Overlay();
 				o.setColor('white');
 				o.setTone('dark');
@@ -107,7 +109,7 @@ class Menu {
 			await GLOBAL[item.funcName](e);
 				
 			o.hide('#app-overlay');
-			s.hide();			
+			s.hide();*/			
 		});
 	}
 	removeItem(index) {
