@@ -109,9 +109,7 @@ CardBuilder.prototype.build = async function () {
 				parameters : params
 			};
 			
-			console.log(menu)
-			
-			//if(menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
+			if(menu.menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
 			menu.addItem(item,true);
 		}
 		
