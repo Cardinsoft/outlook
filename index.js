@@ -160,7 +160,7 @@ class Overlay {
 		this.overlay = c;
 		return this;
 	}
-	hide(selector) {		
+	hide() {		
 		this.overlay.remove();
 		return this;
 	}
@@ -295,18 +295,17 @@ async function actionCallback(elem) {
 			
 			const o = new Overlay();
 			o.setColor('white');
-			//o.show('#app-overlay');
+			o.show('#app-overlay');
 			
 			let s = new Spinner();
 			s.setSize('large');
-			//s.show();
+			s.show();
 			
 			//invoke callback and await response;
 			await GLOBAL[functionName](e);
 			
-			o.hide('#app-overlay');
-			
-			//s.hide();
+			o.hide();
+			s.hide();
 			
 		}else {
 			return GLOBAL[functionName](e);
