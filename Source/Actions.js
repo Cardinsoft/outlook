@@ -69,7 +69,7 @@ async function chooseAuth(e) {
 			}
 		  }
 				
-	await builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
+	builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
 	builder.setStateChanged(true);
 	return builder.build();
 }
@@ -342,7 +342,7 @@ async function actionConfirm(e) {
 	var builder = CardService.newActionResponseBuilder();
 		  
 	//set data state change and navigate to confirmation card;
-	await builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+	builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
 	builder.setStateChanged(false);
 	return builder.build();
 }
@@ -357,7 +357,7 @@ async function actionEdit(e) {
 	var builder = CardService.newActionResponseBuilder();
 
 	//set data state change and navigate to edit connector card;
-	await builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
+	builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
 	builder.setStateChanged(true);
 	return builder.build();
 }
@@ -440,10 +440,10 @@ async function actionManual(e) {
 			
 		  }
 		  
-		  //set data state change and navigate to display card;
-		  await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-		  builder.setStateChanged(true);
-		  return builder.build();
+	//set data state change and navigate to display card;
+	builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+	builder.setStateChanged(true);
+	return builder.build();
 }
 
 /**
@@ -487,7 +487,7 @@ async function performFullReset(e) {
 		  }
 		  
 		  //set data state change and navigate to main card;
-		  await builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
-		  builder.setStateChanged(true);
-		  return builder.build();
+	builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+	builder.setStateChanged(true);
+	return builder.build();
 }
