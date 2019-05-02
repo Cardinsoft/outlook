@@ -85,9 +85,8 @@ CardBuilder.prototype.build = async function () {
 		}
 		
 		//if card action provided -> set it on menu top and add event handler;
+		const menu = menus[0];
 		if(cardAction) {
-			const menu = menus[0];
-			
 			let fName, params, cAction;
 			if(cardAction.action) {
 				cAction = JSON.parse(cardAction.action);
@@ -111,6 +110,8 @@ CardBuilder.prototype.build = async function () {
 			
 			if(menu.menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
 			menu.addItem(item,true);
+		}else {
+			if(menu.menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
 		}
 		
 
