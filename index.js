@@ -1,11 +1,23 @@
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(async function () {
-		
+
+		const homeAction = CardService.newAction();
+			homeAction.setFunctionName('universalHome');
+			homeAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+				
+		const settingsAction = CardService.newAction();
+			setingsAction.setFunctionName('universalSettings');
+			setingsAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+				
+		const helpAction = CardService.newAction();
+			helpAction.setFunctionName('universalHelp');
+			helpAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);	
+
 		const items = [
-			{icon : 'ms-Icon--Home',     text : 'Home',     action : new Action().setFunctionName('universalHome').setLoadIndicator(CardService.LoadIndicator.SPINNER)},
-			{icon : 'ms-Icon--Settings', text : 'Settings', action : new Action().setFunctionName('universalSettings').setLoadIndicator(CardService.LoadIndicator.SPINNER)},
-			{icon : 'ms-Icon--Help',     text : 'Help',     action : new Action().setFunctionName('universalHelp').setLoadIndicator(CardService.LoadIndicator.SPINNER)}
+			{icon : 'ms-Icon--Home',     text : 'Home',     action : homeAction},
+			{icon : 'ms-Icon--Settings', text : 'Settings', action : settingsAction},
+			{icon : 'ms-Icon--Help',     text : 'Help',     action : helpAction}
 		];
 		const menu = new Menu();
 		menu.create(items);
