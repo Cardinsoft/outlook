@@ -7,8 +7,8 @@ Office.initialize = (reason) => {
 			homeAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
 				
 		const settingsAction = CardService.newAction();
-			setingsAction.setFunctionName('universalSettings');
-			setingsAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+			settingsAction.setFunctionName('universalSettings');
+			settingsAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
 				
 		const helpAction = CardService.newAction();
 			helpAction.setFunctionName('universalHelp');
