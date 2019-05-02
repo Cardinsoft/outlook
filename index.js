@@ -25,8 +25,9 @@ Office.initialize = (reason) => {
 		
 		await trigger();
 		
-		s.hide('#app-overlay');
-		o.hide();
+		o.hide('#app-overlay');
+		s.hide();
+		
 	
 		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,trigger);
 	
