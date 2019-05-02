@@ -59,7 +59,7 @@ class Menu {
 		let menuItem = document.createElement('div');
 			menuItem.classList.add('menuItem');
 			if(item.classList) {
-				classList.forEach(function(cl){
+				item.classList.forEach(function(cl){
 					menuItem.classList.add(cl);
 				});
 			}
