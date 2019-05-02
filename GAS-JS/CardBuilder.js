@@ -94,14 +94,14 @@ CardBuilder.prototype.build = async function () {
 			}else if(cardAction.authorizationAction) {
 				cAction = cardAction.authorizationAction;
 			}else if(cardAction.openLink) {
-				cAction = cardAction;
+				cAction = cardAction.openLink;
 			}
 			
 			let item = {
 				icon       : 'ms-Icon--Forward',
 				text       : cardAction.text,
 				classList  : ['CardAction'],
-				action     : cAction
+				action     : 
 			};
 			
 			menu.addItem(item,true);
