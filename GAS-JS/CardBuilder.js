@@ -88,8 +88,6 @@ CardBuilder.prototype.build = async function () {
 		if(cardAction) {
 			const menu = menus[0];
 			
-			console.log(menu);
-			
 			let fName, params, cAction;
 			if(cardAction.action) {
 				cAction = JSON.parse(cardAction.action);
@@ -111,6 +109,7 @@ CardBuilder.prototype.build = async function () {
 				parameters : params
 			};
 			
+			if(menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
 			menu.addItem(item,true);
 		}
 		

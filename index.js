@@ -101,9 +101,13 @@ class Menu {
 			s.hide();			
 		});
 	}
+	removeItem(index) {
+		let menu = menus[0].menu;
+		menu.remove(menu.children.item(index));
+	}
 	switchShow() {
-		const elem = document.querySelector('.Menu');
-		elem.classList.toggle('singulared');
+		let menu = menus[0].menu;
+		menu.classList.toggle('singulared');
 	}
 }
 
