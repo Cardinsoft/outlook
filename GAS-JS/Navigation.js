@@ -28,6 +28,7 @@ Navigation.prototype.pushCard = async function (card) {
 	return this;
 }
 Navigation.prototype.updateCard = async function (card) {
-	cardStack[cardStack.length-1] = await card;
+	let builtCard = await card;
+	cardStack[cardStack.length-1] = builtCard;
 	return this;
 }
