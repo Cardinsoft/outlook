@@ -107,8 +107,8 @@ e_CardService.prototype.newCardSection = function () {
 e_CardService.prototype.newKeyValue = function () {
 	return new KeyValue();
 }
-e_CardService.prototype.newNavigation = async function () {
-	let navigation = await new Navigation();
+e_CardService.prototype.newNavigation = function () {
+	let navigation = new Navigation();
 	return navigation;
 }
 e_CardService.prototype.newNotification = function () {
