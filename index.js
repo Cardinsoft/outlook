@@ -103,7 +103,7 @@ class Menu {
 	}
 	removeItem(index) {
 		let menu = menus[0].menu;
-		menu.remove(menu.children.item(index));
+		menu.children.item(index).remove();
 	}
 	switchShow() {
 		let menu = menus[0].menu;
