@@ -106,6 +106,7 @@ CardBuilder.prototype.build = async function () {
 			let item = {
 				icon       : 'ms-Icon--Forward',
 				text       : cardAction.text,
+				classList  : ['CardAction'],
 				funcName   : fName,
 				parameters : params
 			};
