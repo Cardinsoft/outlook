@@ -19,7 +19,7 @@ async function applySort(e) {
 		  await setProperty('reverse',isReverse,'user');
 		  
 	//set data state change and navigate to settings card;
-	await builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+	builder.setNavigation(CardService.newNavigation().updateCard(await cardSettings(e)));
 	builder.setStateChanged(true);
 	return builder.build(); 
 }
@@ -379,7 +379,7 @@ async function actionShow(e) {
 	}
 		  
 	//set data state change and navigate to display card;
-	await builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+	builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
 	builder.setStateChanged(true);
 	return builder.build();
 }
