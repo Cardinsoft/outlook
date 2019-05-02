@@ -62,7 +62,7 @@ body {
 }
 
 .CardAction {
-	height       : 45px;
+	height       : 45px !important;
     padding-top  : 8px;
     border-width : 0 0 1px 0;
     border-style : solid;
