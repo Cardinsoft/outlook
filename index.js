@@ -9,15 +9,24 @@ Office.initialize = (reason) => {
 		];
 		const menu = new Menu();
 		menu.create(items);
-		console.log(menu);
-		
 		$('.navelem').click(function(){
 			menu.switchShow();
 		});
 		
+		$('#app-body').show();
+		
+		const o = new Overlay();
+		o.setColor('white');
+		o.show('#app-overlay');
+			
+		const s = new Spinner();
+		s.setSize('large');
+		s.show();
+		
 		await trigger();
 		
-		$('#app-body').show();
+		s.hide('#app-overlay');
+		o.hide();
 	
 		Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged,trigger);
 	
