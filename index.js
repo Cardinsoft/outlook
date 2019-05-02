@@ -61,8 +61,9 @@ class Menu {
 		menus.push(this);
 	}
 	addItem(item,toTop) {
-		let self = this;
-		let menu = this.menu;
+		let self   = this;
+		let menu   = this.menu;
+		let action = item.action;
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
@@ -88,6 +89,9 @@ class Menu {
 		if(item.icon) { cl.add(item.icon); }
 		
 		menuItem.append(menuText);
+		
+		//set reference;
+		setAction(menuItem,action);
 			
 		menuItem.addEventListener('click',async function(){	
 			self.switchShow();
