@@ -8,7 +8,7 @@ function LessAnnoyingCRM() {
     {
       widgets : [
         {
-          type    : 'KeyValue',
+          type    : globalKeyValue,
           title   : 'Action',
           content : 'You can choose between different actions for the Connector to perform (actions can be switched anytime in settings):'          
         },
@@ -21,13 +21,13 @@ function LessAnnoyingCRM() {
           ]
         },
         {
-          type    : 'KeyValue',
+          type    : globalKeyValue,
           title   : 'Pipeline list',
           content : 'If you chose pipeline reporting, please, set at least one PipelineId (multiple ids should be separated by line breaks) obtained from <a href="https://www.lessannoyingcrm.com/app/Settings/Api">CRM settings</a>'
         },
         {
           name      : 'pipelineIds',
-          type      : 'TextInput',
+          type      : globalTextInput,
           title     : 'Pipeline Id',
           content   : '',
           hint      : 'e.g. 3587196306',
@@ -37,27 +37,27 @@ function LessAnnoyingCRM() {
     }
   ];
   this.auth = {
-    type : 'APItoken',
+    type : globalApiTokenAuthType,
     config : {
-      header : 'Authorization config',
+      header : globalConfigAuthHeader,
       isCollapsible : true,
       numUncollapsible : 1,
       widgets : [
         {
-          type    : 'KeyValue',
-          title   : 'API token auth',
+          type    : globalKeyValue,
+          title   : globalAuthTypeApiTokenTitle,
           content : 'This Connector uses API token-based authorization - please, fill the form below with your UserCode and API token obtained from <a href="https://www.lessannoyingcrm.com/app/Settings/Api">CRM settings</a>'
         },
         {
-          name    : 'usercode',
-          type    : 'TextInput',
+          name    : globalApiTokenUserFieldName,
+          type    : globalTextInput,
           title   : 'User code',
           content : '',
           hint    : 'e.g. ABCDE'
         },
         {
-          name    : 'apitoken',
-          type    : 'TextInput',
+          name    : globalApiTokenTokenFieldName,
+          type    : globalTextInput,
           title   : 'API token',
           content : '',
           hint    : 'e.g. CWX3HYV1GT6YQFY9YRMQ3G0VD6Q'
@@ -65,20 +65,114 @@ function LessAnnoyingCRM() {
       ]
     }
   };
-  this.edit = async function(msg,connector,forms,data) {
+  this.addConfig = function(connector,msg) {
+  
+    var trimmed = trimMessage(msg,true,true);
+  
+    var config = [
+      {
+        header        : 'Main info',
+        isCollapsible : true,
+        widgets       : [
+          {type : globalTextInput, title : 'Salutation', content : '', hint : 'e.g. Mr., Mrs.', name : 'Salutation&'+0},
+          {type : globalTextInput, title : 'First', content : trimmed.first, hint : 'First name', name : 'FirstName&'+0},
+          {type : globalTextInput, title : 'Middle', content : '', hint : 'Middle name', name : 'MiddleName&'+0},
+          {type : globalTextInput, title : 'Last', content : trimmed.last, hint : 'Last name', name : 'LastName&'+0},
+          {type : globalTextInput, title : 'Suffix', content : '', hint : 'e.g. Jn.,Sn.', name : 'Suffix&'+0},
+          {type : globalTextInput, title : 'Title', content : '', hint : 'Job title', name : 'Title&'+0},      
+          {type : globalTextInput, title : 'Assigned To', content : '', hint : 'User Id', name:'AssignedTo&'+0},
+          {type : globalKeyValue,  title : 'How to get user Id', content : 'A list of user Ids for your account can be found in <a href="https://www.lessannoyingcrm.com/app/Settings/Api">CRM settings</a>'},
+        ]
+      },
+      {
+        header : 'Email',
+        isCollapsible : true,
+        widgets : [
+          {type : globalTextInput, title : 'Text', content : trimmed.email, name : 'Email-'+0+'&Text&'+0},
+          {
+            type : globalEnumDropdown, 
+            title : 'Type', 
+            content : [
+              {text : 'Work',     value : 'Work',     selected : false},
+              {text : 'Personal', value : 'Personal', selected : false},
+              {text : 'Other',    value : 'Other',    selected : false}
+            ], 
+            name : 'Email-'+0+'&Type&'+0
+          }
+        ]  
+      },
+      {
+        header : 'Phone',
+        isCollapsible : true,
+        widgets : [
+          {type : globalTextInput, title : 'Text', content : '', name : 'Phone-'+0+'&Text&'+0},
+          {
+            type : globalEnumDropdown,
+            title : 'Type', 
+            content : [
+              {text : 'Work',   value : 'Work',   selected : false},
+              {text : 'Mobile', value : 'Mobile', selected : false},
+              {text : 'Home',   value : 'Home',   selected : false},
+              {text : 'Fax',    value : 'Fax',    selected : false},
+              {text : 'Other',  value : 'Other',  selected : false}
+            ],
+            name : 'Phone-'+0+'&Type&'+0
+          }
+        ]        
+      },
+      {
+        header : 'Address',
+        isCollapsible : true,
+        widgets : [
+          {type : globalTextInput, title : 'Street',  content : '', name : 'Address-'+0+'&Street&'+0},
+          {type : globalTextInput, title : 'City',    content : '', name : 'Address-'+0+'&City&'+0},
+          {type : globalTextInput, title : 'State',   content : '', name : 'Address-'+0+'&State&'+0},
+          {type : globalTextInput, title : 'Country', content : '', name : 'Address-'+0+'&Country&'+0},
+          {type : globalTextInput, title : 'Zip',     content : '', name : 'Address-'+0+'&Zip&'+0},
+          {
+            type : globalEnumDropdown,
+            title : 'Type', 
+            content : [
+              {text : 'Work',     value : 'Work',     selected : false},
+              {text : 'Billing',  value : 'Billing',  selected : false},
+              {text : 'Shipping', value : 'Shipping', selected : false},
+              {text : 'Home',     value : 'Home',     selected : false},
+              {text : 'Other',    value : 'Other',    selected : false}
+            ], 
+            name : 'Address-'+0+'&Type&'+0,        
+          }
+        ]
+      },
+      {
+        header : 'Background',
+        isCollapsible : true,
+        widgets : [
+          {type : globalTextInput, title : 'Birthday', content : '', hint : '1970-01-01 or 01/01/1970', name :'Birthday&'+0},
+          {type : globalTextInput, title : 'Background', content : '', hint : 'Biorgraphy', name :'BackgroundInfo&'+0}
+        ]        
+      }
+    ];
+    return mergeObjects({config:JSON.stringify(config),name:'LessAnnoyingCRM',icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
+  };
+  this.update = async function(msg,connector,forms,data,method) {
   
     //access API parameters and connector type;
     var usercode   = connector.usercode;
     var apitoken   = connector.apitoken;
     var endpoint   = connector.url+'?';
     var actionType = connector.action;
-    var funcName   = 'EditContact';
+    
+    //set add or edit action;
+    var funcName;
+    if(method==='add') { 
+      funcName = 'CreateContact'; 
+    }else if(method==='edit') { 
+      funcName = 'EditContact'; 
+    }
 
     var updates = [];
    
     for(var key in forms) {
-      
-      var value, property;
       
       //access property params;
       var params = key.split('&');
@@ -86,63 +180,75 @@ function LessAnnoyingCRM() {
       var idx  = params[0].split('-')[1]; //Index;
       var sub  = params.filter(function(p,i,a){ if(i>0&&i<a.length-1) {return p;} })[0]; //Text;
       var id   = params[params.length-1]; //contact id;
-
-      //distribute properties to an array of contacts/companies to update;
-      var addToUpd = updates.every(function(upd){ return upd.ContactId!==id; });
-      if(addToUpd) { updates.push({ContactId:id}); }
       
-      //set value to array or element;
-      var vals = forms[key];
-      if(vals.length===1) { vals = vals[0]; }      
+      var update = {ContactId:id}, value = forms[key];
+      if(value.length===1) { value = value[0]; }  
       
-      if(idx&&prop!=='CustomFields') {
+      if(!idx) { //process simple value;
         
-        if(!property) { property = {}; }
+        if(!update[prop]) {
+         
+          if(!sub) { //process simple value with no subproperties;
+            update[prop] = value;
+          }else { //process simple value with subprops;
+            //curently not needed for API, reference value;
+          }
+          
+        }
         
-        if(!value) { value = []; }
+      }else { //process value with multiple properties;
     
-        //if prop by index does not exist -> add;
-        if(!value[idx]) { value[idx] = {}; }
-        
-        //set properties;
-        value[idx][sub] = vals;
-        property[prop]  = value;
-
-        //set property to updates;
-        updates.forEach(function(update){
-          if(update.ContactId===id) {
-            for(var p in property) {
-              update[p] = property[p];
-            }
-          }
-        });
-        
-      }else {
-        
-        updates.forEach(function(update){
-          if(update.ContactId===id) {
-              if(!sub) {
-                update[prop] = vals;
-              }else {
-                if(!update[prop]) { update[prop] = {}; }
-                update[prop][sub] = vals;
+        if(!sub) { //process indexed values without subprops;
+          //curently not needed for API, reference value;
+        }else { //process indexed values with subprops;
+            
+          for(var k in forms) { //check every value;
+            //access other parameters;
+            var otherParams = k.split('&');
+            var otherProp   = otherParams[0].split('-')[0]; //Phone;
+            var otherIdx    = otherParams[0].split('-')[1]; //Index;
+            var otherSub    = otherParams.filter(function(p,i,a){ if(i>0&&i<a.length-1) {return p;} })[0]; //Text;
+            var otherId     = otherParams[otherParams.length-1]; //contact id;
+                
+            //access other value;
+            var otherValue = forms[k];
+            if(otherValue.length===1) { otherValue = otherValue[0]; } 
+                
+            if(id===otherId&&prop===otherProp) { //find equal by property and id;
+                  
+              if(!update[prop]) { update[prop] = []; }
+                  
+              if(!sub&&!otherSub) { //process indexed properties without subproperties;
+                update[prop][otherIdx] = value;
+              }else { //process indexed properties with subproperties;
+                if(!update[prop][otherIdx]) { update[prop][otherIdx] = {}; }
+                update[prop][otherIdx][otherSub] = otherValue;
               }
-          }
-        });
-        
-      }
-
+              
+            } //end equality check;
+          } //end forms loop;
+        } //end indexed values with subs;
+      } //end multi-prop values;
+     
+      //check if updates have update;
+      var updIdx;
+      var isNew = updates.every(function(upd,i){
+        if(upd.ContactId!==id) { return upd; }else { updIdx = i; }
+      });
+      if(!isNew) { mergeObjects(updates[updIdx],update); }else { updates.push(update); }
+      
     }
-   
+    
     //send update if there is anything to update;
-    if(updates.length>0) {	  
-	  for(var i=0; i<updates.length; i++) {
-		update = updates[i];
+    if(updates.length>0) {
+      for(var i=0; i<updates.length; i++) {
+        var update = updates[i];
+        if(method==='add') { delete update.ContactId; }
         var query    = ['UserCode='+usercode,'APIToken='+apitoken,'Function='+funcName,'Parameters='+encodeURIComponent(JSON.stringify(update))].join('&'); 
         var response = await performFetch(endpoint+query,'post',{});
       };
     }
-
+    
     return this.run(msg,connector,data);
   }
   
@@ -186,12 +292,6 @@ function LessAnnoyingCRM() {
       //perform data fetch and return result;
       result  = await performFetch(endpoint+query,method,headers);
       code    = result.code;
-	  
-	  console.log('FETCH TO SEARCH')
-	  console.log(result)
-	  console.log(code)
-	  console.log(result.content)
-	  
       var content = JSON.parse(result.content);
       success = content.Success;
       
@@ -217,10 +317,9 @@ function LessAnnoyingCRM() {
       result.headers = {};
       success        = [];
       var errDetails = '';
-	
-	  for(var index=0; index<pipelineIds; index++) {
-		var pId = pipelineIds[index];
-	
+      
+      for(var index=0; index<pipelineIds.length; index++) {
+        var pId = pipelineIds[index];
         params = {PipelineId : pId};        
         query.push('Parameters='+encodeURI(JSON.stringify(params)));
         var fullquery = query.join('&');
@@ -247,7 +346,8 @@ function LessAnnoyingCRM() {
           };
           var pipelineWidgets = pipelineSection.widgets;
           
-          pipeline.forEach(function(contact){
+          for(var c=0; c<pipeline.length; c++) {
+            var contact = pipeline[c];
             
             //access contact properties;
             var fullName   = [];
@@ -274,7 +374,7 @@ function LessAnnoyingCRM() {
             //create contact name + status widget;
             var nameWidget = {
               icon       : 'PERSON',
-              type       : 'KeyValue',
+              type       : globalKeyValue,
               title      : 'Contact',
               content    : fullName,
               buttonText : status
@@ -287,8 +387,8 @@ function LessAnnoyingCRM() {
               if(!title) { compContent = company; }else { compContent = title+' at '+company; }
               var companyWidget = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
-                type    : 'KeyValue',
-                title   : 'Employment',
+                type    : globalKeyValue,
+                title   : 'Title',
                 content : compContent
               };
               pipelineWidgets.push(companyWidget);
@@ -298,7 +398,7 @@ function LessAnnoyingCRM() {
             emails.forEach(function(email,index){
               var contactEmail = {
                 icon    : 'EMAIL',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 title   : email.Type+' email',
                 content : '<a href="mailto:'+email.Text+'">'+email.Text+'</a>'
               };            
@@ -309,7 +409,7 @@ function LessAnnoyingCRM() {
             phones.forEach(function(phone,index){
               var contactPhone = {
                 icon    : 'PHONE',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 title   : phone.Type+' phone',
                 content : '<a href="tel:'+phone.Text+'">'+phone.Text+'</a>'
               };
@@ -319,25 +419,21 @@ function LessAnnoyingCRM() {
             if(lastNote) {
               var contactNote = {
                 icon    : 'DESCRIPTION',
-                type    : 'KeyValue',
-                //title   : 'Last note',
+                type    : globalKeyValue,
                 content : lastNote
               };
               pipelineWidgets.push(contactNote);
             }
 
             //create separator widget;
-            var separator = {type: 'KeyValue',content: '\r'};
+            var separator = {type: globalKeyValue,content: '\r'};
             pipelineWidgets.push(separator);
-          });
-          
-    
-          
+          }
+                  
           sections.push(pipelineSection);
         }
-        
-        
-      };
+   
+      }
 
       //if no call succeeded -> return errors info and user notification;
       if(!success.some(function(elem){ return elem; })) {
@@ -351,9 +447,7 @@ function LessAnnoyingCRM() {
 
       //create result config;
       if(info.length>0) {
-	    for(var e=0; e<info.length; e++) {
-		  var entry = info[e];
-		
+        info.forEach(function(entry){
           var isCompany = +entry.IsCompany;
           
           if(isCompany===0) {
@@ -397,7 +491,7 @@ function LessAnnoyingCRM() {
             //create contact name widget;
             var contactName = {
               icon    : 'PERSON',
-              type    : 'KeyValue',
+              type    : globalKeyValue,
               title   : 'Full Name',
               state   : 'editable',
               editMap : [
@@ -418,12 +512,12 @@ function LessAnnoyingCRM() {
               if(!title) { compContent = companyName; }else { compContent = title+' at '+companyName; }
               var contactTitle = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/WORK_BLACK.png',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 state   : 'editable',
                 editMap : [
-                  {title : 'Employment', content : title, name : 'Title&'+contactId}
+                  {title : 'Title', content : title, name : 'Title&'+contactId}
                 ],
-                title   : 'Employment',
+                title   : 'Title',
                 content : compContent
               };
               contWidgets.push(contactTitle);
@@ -434,14 +528,15 @@ function LessAnnoyingCRM() {
             emails.forEach(function(email,index){
               var contactEmail = {
                 icon    : 'EMAIL',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 state   : 'editable',
                 editMap : [
                   {
                     title: 'Text', 
                     content: email.Text, 
                     name: 'Email-'+index+'&Text&'+contactId
-                  },{
+                  },
+                  {
                     title: 'Type', 
                     content: [
                       {text:'Work',     value:'Work',     selected:false},
@@ -465,7 +560,7 @@ function LessAnnoyingCRM() {
             phones.forEach(function(phone,index){
               var contactPhone = {
                 icon    : 'PHONE',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 state   : 'editable',
                 editMap : [
                   {
@@ -499,7 +594,7 @@ function LessAnnoyingCRM() {
             websites.forEach(function(website,index){
               var contactWebsite = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 state   : 'editable',
                 name    : 'Website-'+index+'&Text&'+contactId,
                 title   : 'Website '+(index+1),
@@ -525,7 +620,7 @@ function LessAnnoyingCRM() {
             
               var contactAddress = {
                 icon    : 'MAP_PIN',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 state   : 'editable',
                 editMap : [
                   {title: 'Street',  content: street,  name: 'Address-'+index+'&Street&'+contactId},
@@ -556,7 +651,7 @@ function LessAnnoyingCRM() {
             });
 
             //create separator, creation and edit widgets;
-            var separator = {type: 'KeyValue',content: '\r'};
+            var separator = {type: globalKeyValue,content: '\r'};
             contWidgets.push(separator);
             
             //create widget for creation date;
@@ -569,7 +664,7 @@ function LessAnnoyingCRM() {
                       
             var contactCreated = {
               icon    : 'CLOCK',
-              type    : 'KeyValue',
+              type    : globalKeyValue,
               title   : 'Created',
               content : createdDate.toLocaleDateString()+'\r'+createdDate.toLocaleTimeString()
             };
@@ -586,7 +681,7 @@ function LessAnnoyingCRM() {
                     
               var contactEdited = {
                 icon    : 'CLOCK',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 title   : 'Edited',
                 content : editedDate.toLocaleDateString()+'\r'+editedDate.toLocaleTimeString()
               };
@@ -609,7 +704,7 @@ function LessAnnoyingCRM() {
               //on successful fetch -> create company section;
               if(companyResponse.code>=200&&companyResponse.code<300) {
                 var companyContent = JSON.parse(companyResponse.content);
-
+              
                 if(companyContent.Success) {
                   //access company property;
                   var company    = companyContent.Contact;
@@ -634,7 +729,7 @@ function LessAnnoyingCRM() {
                   //create company name widget;
                   var companyName = {
                     icon       : 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
-                    type       : 'KeyValue',
+                    type       : globalKeyValue,
                     state      : 'editable',
                     name       : 'CompanyName&'+companyId,
                     title      : 'Name',
@@ -646,7 +741,7 @@ function LessAnnoyingCRM() {
                     //create company industry widget;
                     var companyInd = {
                       icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/CITY.png',
-                      type    : 'KeyValue',
+                      type    : globalKeyValue,
                       state   : 'editable',
                       name    : 'Industry&'+companyId,
                       title   : 'Industry',
@@ -654,13 +749,13 @@ function LessAnnoyingCRM() {
                     };
                     cWidgets.push(companyInd);
                   }
-
+                  
                   //create email widgets;
                   if(cEmails) {
                     cEmails.forEach(function(email,index){
                       var companyEmail = {
                         icon    : 'EMAIL',
-                        type    : 'KeyValue',
+                        type    : globalKeyValue,
                         state   : 'editable',
                         editMap : [
                           {
@@ -687,13 +782,13 @@ function LessAnnoyingCRM() {
                       cWidgets.push(companyEmail);
                     });
                   }
-            
+                  
                   //create phone widgets;
                   if(cPhones) {
                     cPhones.forEach(function(phone,index){
                       var companyPhone = {
                         icon    : 'PHONE',
-                        type    : 'KeyValue',
+                        type    : globalKeyValue,
                         state   : 'editable',
                         editMap : [
                           {
@@ -723,15 +818,15 @@ function LessAnnoyingCRM() {
                       cWidgets.push(companyPhone);
                     });
                   }
-
+                  
                   //create websites widgets;
-                  if(cWebsites) {
+                  if(cWebsites&&cWebsites.length>0) {
                     cWebsites.forEach(function(website,index){
                       var companyWebsite = {
                         icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png',
-                        type    : 'KeyValue',
+                        type    : globalKeyValue,
                         state   : 'editable',
-                        name    : 'Website-'+index+'&'+companyId,
+                        name    : 'Website-'+index+'&Text&'+companyId,
                         title   : 'Website '+(index+1),
                         content : website.Text
                       };
@@ -757,7 +852,7 @@ function LessAnnoyingCRM() {
                     
                       var companyAddress = {
                         icon    : 'MAP_PIN',
-                        type    : 'KeyValue',
+                        type    : globalKeyValue,
                         state   : 'editable',
                         editMap : [
                           {title: 'Street',  content: street,  name: 'Address-'+index+'&Street&'+companyId},
@@ -794,7 +889,7 @@ function LessAnnoyingCRM() {
                     if(endsOnOne(cEmpl)) {cEmplContent += ' employee';}else {cEmplContent += ' employees';}
                     var numEmployees = {
                       icon    : 'EVENT_PERFORMER',
-                      type    : 'KeyValue',
+                      type    : globalKeyValue,
                       state   : 'editable',
                       editMap : [
                         {title : 'Number of employees', content : cEmpl, name : 'NumEmployees&'+companyId}
@@ -805,7 +900,7 @@ function LessAnnoyingCRM() {
                   }
                   
                   //create separator, creation and edit widgets;
-                  var separator = {type: 'KeyValue',content: '\r'};
+                  var separator = {type: globalKeyValue,content: '\r'};
                   cWidgets.push(separator);
                   
                   //create widget for creation date;
@@ -818,7 +913,7 @@ function LessAnnoyingCRM() {
                       
                   var companyCreated = {
                     icon    : 'CLOCK',
-                    type    : 'KeyValue',
+                    type    : globalKeyValue,
                     title   : 'Created',
                     content : createdDate.toLocaleDateString()+'\r'+createdDate.toLocaleTimeString()
                   };
@@ -835,7 +930,7 @@ function LessAnnoyingCRM() {
                     
                     var companyEdited = {
                       icon    : 'CLOCK',
-                      type    : 'KeyValue',
+                      type    : globalKeyValue,
                       title   : 'Edited',
                       content : editedDate.toLocaleDateString()+'\r'+editedDate.toLocaleTimeString()
                     };
@@ -849,9 +944,10 @@ function LessAnnoyingCRM() {
                   cSection.numUncollapsible = num;
                   
                   sections.push(cSection);
-                }
-              }
-            }
+                  
+                } //end company fetch success;
+              } //end code 200;
+            } //end company id check;
             
             //if contact has background -> add;
             if(background) {
@@ -866,7 +962,7 @@ function LessAnnoyingCRM() {
               if(birthday) {
                 var contactBirthday = {
                   icon      : 'https://cardinsoft.com/wp-content/uploads/2019/04/CAKE.png',
-                  type      : 'KeyValue',
+                  type      : globalKeyValue,
                   state     : 'editable',
                   name      : 'Birthday&'+contactId,
                   title     : 'Birthday',
@@ -879,7 +975,7 @@ function LessAnnoyingCRM() {
               //create background widgets;
               var contactBackground = {
                 icon      : 'DESCRIPTION',
-                type      : 'KeyValue',
+                type      : globalKeyValue,
                 state     : 'editable',
                 name      : 'BackgroundInfo&'+contactId,
                 content   : background,
@@ -902,7 +998,7 @@ function LessAnnoyingCRM() {
               for(var field in custom) {
                 if(custom[field]) {
                   var customWidget = {
-                    type    : 'KeyValue',
+                    type    : globalKeyValue,
                     state   : 'editable',
                     name    : ['CustomFields-'+customIdx,field,contactId].join('&'),
                     title   : field,
@@ -917,12 +1013,14 @@ function LessAnnoyingCRM() {
             }
             
           }
-                   
-        };
+          
+          
+                  
+        });
       }
     
     }
-    
+     
     //build return object;
     var returned = {
       code     : code,
@@ -930,11 +1028,10 @@ function LessAnnoyingCRM() {
       content  : JSON.stringify(sections),
       hasMatch : {
         value  : true,
-        text   : 'found',
-        colour : '#008000'
+        text   : 'found'
       }
     };
-     
+
     return returned;
   }
 }
