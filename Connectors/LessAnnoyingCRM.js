@@ -447,7 +447,8 @@ function LessAnnoyingCRM() {
 
       //create result config;
       if(info.length>0) {
-        info.forEach(function(entry){
+		for(var e=0; e<info.length; e++) {
+		  var entry = info[e];
           var isCompany = +entry.IsCompany;
           
           if(isCompany===0) {
@@ -1013,10 +1014,8 @@ function LessAnnoyingCRM() {
             }
             
           }
-          
-          
-                  
-        });
+                   
+        } //end entry loop;
       }
     
     }
