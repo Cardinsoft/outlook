@@ -1068,7 +1068,7 @@ function createCustomIconsSection(builder,isCollapsed,content) {
  * @param {String} header section header text;
  * @returns {CardSection}
  */
-function createAdvanced(builder,isCollapsed,header) {
+async function createAdvanced(builder,isCollapsed,header) {
   
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -1078,7 +1078,7 @@ function createAdvanced(builder,isCollapsed,header) {
   if(header) { section.setHeader(header); }
 
   //create sorting widgets;
-  createWidgetSortBy(section);
+  await createWidgetSortBy(section);
 
   //create reset prompt;
   createWidgetResetText(section);

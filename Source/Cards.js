@@ -459,8 +459,8 @@ async function cardSettings(e) {
     createConfiguredConnectorsSection(builder,false,config);
   }
   
-  createSectionChooseType(builder,false,globalChooseTypeHeader);
-  createAdvanced(builder,false,globalAdvancedHeader);
+  await createSectionChooseType(builder,false,globalChooseTypeHeader);
+  await createAdvanced(builder,false,globalAdvancedHeader);
   
   return builder.build();
 }
