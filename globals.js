@@ -13,7 +13,7 @@ var globalHelpHeader                 = 'Help';
 var globalSettingsHeader             = 'Settings';
 var globalShowHeader                 = 'Record';
 var globalUnparsedHeader             = 'Unparsed content';
-var globalWelcomeHeader              = 'Welcome to Cardin for Gmail!';
+var globalWelcomeHeader              = 'Welcome to Cardin!';
 
 //titles;
 var globalAuthTypeApiTokenTitle      = 'API token auth';
@@ -135,7 +135,15 @@ var globalEnumDropdown               = 'DROPDOWN';
 var globalEnumRadio                  = 'RADIO_BUTTON';
 var globalEnumStandalone             = 'STANDALONE_DRAFT';
 
+//Widget types (except SelectionInput which accepts Enum type);
+var globalImage                      = 'Image';
+var globalKeyValue                   = 'KeyValue';
+var globalTextButton                 = 'TextButton';
+var globalTextInput                  = 'TextInput';
+var globalTextParagraph              = 'TextParagraph';
+
 //Action types;
+var globalActionAction               = 'action';
 var globalActionAuth                 = 'auth';
 var globalActionClick                = 'click';
 var globalActionCompose              = 'compose';
@@ -147,9 +155,6 @@ var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
-var globalTextButtonActionAction     = 'action';
-var globalTextButtonActionClick      = 'click';
-var globalTextButtonActionLink       = 'link';
 var globalWidgetsCap                 = 50;
 
 //OAuth2 flow;
