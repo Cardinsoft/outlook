@@ -177,7 +177,7 @@ async function editSectionAdvanced(e) {
   e.parameters.content = JSON.stringify(content);
   
   //set data state change and navigate to display card;
-  await builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+  builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
   builder.setStateChanged(true);
   return builder.build();
 }
