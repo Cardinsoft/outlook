@@ -152,7 +152,7 @@ function LessAnnoyingCRM() {
         ]        
       }
     ];
-    return mergeObjects({config:JSON.stringify(config),name:'LessAnnoyingCRM',icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
+    return mergeObjects({config:JSON.stringify(config),icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
   };
   this.update = async function(msg,connector,forms,data,method) {
   
