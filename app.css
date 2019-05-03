@@ -99,6 +99,7 @@ body {
     border         : none;
     padding        : 0;
 	outline        : none;
+	cursor         : pointer;
 }
 
 .btn-text {
