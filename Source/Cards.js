@@ -147,7 +147,6 @@ async function cardDisplay(e) {
   //get required parameters;
   var connector  = e.parameters;
   var code       = +connector.code;
-  var url        = connector.url;
   var content    = connector.content;
   var manual     = connector.manual;
   var isDefault  = connector.isDefault;
@@ -199,7 +198,7 @@ async function cardDisplay(e) {
           if(typeof section==='string') { section = JSON.parse(section); }
 
           try {
-            createSectionAdvanced(builder,section,j,connector,layout[j]); 
+            await createSectionAdvanced(builder,section,j,connector,layout[j]); 
           }
           catch(er) {
             console.error(er);
@@ -219,7 +218,10 @@ async function cardDisplay(e) {
               action.setParameters(connector);
               action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
           
-          var ca = cardAction(globalUpdateConnectorText,globalActionClick,action);
+          var caText = connector.caText;
+          if(!caText) { caText = globalUpdateConnectorText; }
+          
+          var ca = cardAction(caText,globalActionClick,action);
           builder.addCardAction(ca);
         }
  
@@ -258,7 +260,7 @@ async function cardDisplay(e) {
         
       }
     }else if(!error) {
-      createNoFieldsSection(builder,false,msg);
+      createNoFieldsSection(builder,false,connector,msg);
     }
   }
   catch(err) {
@@ -281,6 +283,7 @@ async function cardDisplay(e) {
   
   return builder.build();
 }
+
 
 /**
  * Triggers either a welcome or display of connections card generators;

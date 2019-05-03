@@ -1,27 +1,47 @@
 /**
+ * Configures contact add display;
+ * @param {Object} e event object;
+ * @returns {ActionResponse}
+ */
+async function configureContactAdd(e) {
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+
+  var params = e.parameters;
+  
+  params.code    = 200;
+  params.content = params.config;
+  
+  //set data state change and show form;
+  builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+  builder.setStateChanged(true);
+  return builder.build();
+}
+
+/**
  * Saves ordering preferences to user properties;
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
 async function applySort(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
-		  
-		  //access settings form;
-		  var data = e.formInput;
-		  
-		  //access reverse input;
-		  var isReverse = data.reverse;
-		  if(!isReverse) { isReverse = false; }
-		  
-		  //save ordering preference;
-		  await setProperty('order',data.order,'user');
-		  await setProperty('reverse',isReverse,'user');
-		  
-	//set data state change and navigate to settings card;
-	builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
-	builder.setStateChanged(true);
-	return builder.build(); 
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //access settings form;
+  var data = e.formInput;
+  
+  //access reverse input;
+  var isReverse = data.reverse;
+  if(!isReverse) { isReverse = false; }
+
+  //save ordering preference;
+  await setProperty('order',data.order,'user');
+  await setProperty('reverse',isReverse,'user');
+  
+  //set data state change and navigate to settings card;
+  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+  builder.setStateChanged(true);
+  return builder.build();  
 }
 
 
@@ -31,47 +51,47 @@ async function applySort(e) {
  * @returns {ActionResponse}
  */
 async function chooseAuth(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-		  
-		  var data       = e.formInput;
-		  var authType   = data.auth;
-		  var parameters = e.parameters;
-		  var isEdit     = parameters.isEdit;
-		  
-		  var custom = new Connector();
-		  
-		  e.parameters.icon = data[globalIconFieldName];
-		  e.parameters.name = data[globalNameFieldName];
-		  e.parameters.url  = data[globalURLfieldName];
-		  
-		  for(var input in data) {
-			var val = data[input];
-			e.parameters[input] = val;
-		  }
-		  if(data.manual===undefined)    { e.parameters.manual = false;    }
-		  if(data.isDefault===undefined) { e.parameters.isDefault = false; }
-		  
-		  e.parameters.authType = authType;
-		  
-		  e.parameters.auth     = JSON.stringify({});
-		  e.parameters.basic    = JSON.stringify(custom.basic);
-		  e.parameters.config   = JSON.stringify(custom.config);
-		  e.parameters.type     = custom.name;
-		  
-		  if(isEdit==='true') {  
-			if(data.scope) {
-			  e.parameters.urlAuth  = data.urlAuth; 
-			  e.parameters.urlToken = data.urlToken;
-			  e.parameters.id       = data.id;
-			  e.parameters.secret   = data.secret;
-			  e.parameters.scope    = data.scope; 
-			}
-		  }
-				
-	builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
-	builder.setStateChanged(true);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  var data       = e.formInput;
+  var authType   = data.auth;
+  var parameters = e.parameters;
+  var isEdit     = parameters.isEdit;
+  
+  var custom = new Connector();
+  
+  e.parameters.icon = data[globalIconFieldName];
+  e.parameters.name = data[globalNameFieldName];
+  e.parameters.url  = data[globalURLfieldName];
+  
+  for(var input in data) {
+    var val = data[input];
+    e.parameters[input] = val;
+  }
+  if(data.manual===undefined)    { e.parameters.manual = false;    }
+  if(data.isDefault===undefined) { e.parameters.isDefault = false; }
+  
+  e.parameters.authType = authType;
+  
+  e.parameters.auth     = JSON.stringify({});
+  e.parameters.basic    = JSON.stringify(custom.basic);
+  e.parameters.config   = JSON.stringify(custom.config);
+  e.parameters.type     = custom.name;
+  
+  if(isEdit==='true') {  
+    if(data.scope) {
+      e.parameters.urlAuth  = data.urlAuth; 
+      e.parameters.urlToken = data.urlToken;
+      e.parameters.id       = data.id;
+      e.parameters.secret   = data.secret;
+      e.parameters.scope    = data.scope; 
+    }
+  }
+  
+  builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
+  builder.setStateChanged(true);
+  return builder.build();
 }
 
 /**
@@ -142,15 +162,38 @@ async function editSectionAdvanced(e) {
     
     //set widgets with updated schema;
     content[sectionIdx].widgets = widgets;
+
+    //access property and index;
+    var fName = editMap[0].name;
+    var split = fName.split('&');
+    var prop  = split[0].split('-')[0];
+    var idx   = split[0].split('-')[1];
     
-    /*
-      //access property and index;
-      var fName     = editMap[0].name;
-      var split     = fName.split('&');
-      var fNameProp = split[0].split('-')[0];
-      var fNameIdx  = split[0].split('-')[1];
-    */
-    
+    //if index -> change all other widgets;
+    if(idx) {
+      widgets.forEach(function(widget,i){
+        var otherEM    = widget.editMap;
+        if(otherEM) {
+          var otherName  = otherEM[0].name;
+          var otherSplit = otherName.split('&');
+          var otherProp  = otherSplit[0].split('-')[0];
+          
+          if(prop===otherProp) {
+            widgets = widgets.filter(function(widget,j){
+              if(i!==j) { return widget; }
+            });
+            otherEM.forEach(function(ew,j){
+              if(!ew.type)      { ew.type = 'TextInput'; }
+              if(!ew.multiline) { ew.multiline = true; }
+              widgets.splice(i+j,0,ew);
+            });            
+          }
+          
+          content[sectionIdx].widgets = widgets;
+        }
+      });
+    }
+     
   }else {
     editable.type = 'TextInput';
     editable.multiline = true;
@@ -254,12 +297,17 @@ async function updateSectionAdvanced(e) {
   var msg   = getToken(e);
   var cType = new this[connector.type]();
   
-  
-  
   //check if type has edit() method or use run() if none provided;
   var resp;
-  if(cType.edit) {
-    resp = await cType.edit(msg,connector,forms,data);
+  if(cType.update) {
+    var method;
+    if(!connector.method) { 
+      method = 'edit' 
+    }else { 
+      method = 'add'; 
+      delete connector.caText;
+    }
+    resp = await cType.update(msg,connector,forms,data,method);
   }else {
     resp = await cType.run(msg,connector,data);
   }
@@ -277,14 +325,14 @@ async function updateSectionAdvanced(e) {
  * @returns {ActionResponse}
  */
 async function checkURL(e) {
-	var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
-	var url = e.formInput.connectionURL;
-	var test = regExp.test(url);
-	if(!test) {
-		var action = CardService.newActionResponseBuilder();
-			action.setNotification(warning(globalInvalidURLnoMethod));
-		return action.build();
-	}
+  var regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
+  var url = e.formInput.connectionURL;
+  var test = regExp.test(url);
+  if(!test) {
+    var action = CardService.newActionResponseBuilder();
+        action.setNotification(warning(globalInvalidURLnoMethod));
+    return action.build();
+  }
 }
 
 /**
@@ -293,13 +341,13 @@ async function checkURL(e) {
  * @returns {ActionResponse}
  */
 async function goBack(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-		  
-	//set data state change and pop card from stack;
-	await builder.setNavigation(CardService.newNavigation().popCard());
-	builder.setStateChanged(true);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //set data state change and pop card from stack;
+  builder.setNavigation(CardService.newNavigation().popCard());
+  builder.setStateChanged(true);
+  return builder.build();  
 }
 
 /**
@@ -308,13 +356,13 @@ async function goBack(e) {
  * @returns {ActionResponse}
  */
 async function goRoot(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-		  
-	//set data state change and navigate to main card;
-	await builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
-	builder.setStateChanged(true);  
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //set data state change and navigate to main card;
+  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
+  builder.setStateChanged(true);  
+  return builder.build();  
 }
 
 /**
@@ -323,13 +371,13 @@ async function goRoot(e) {
  * @returns {ActionResponse}
  */
 async function goSettings(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
-		  
-		  //set data state change and navigate to settings card;
-		  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
-		  builder.setStateChanged(true);  
-		  return builder.build(); 
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //set data state change and navigate to settings card;
+  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
+  builder.setStateChanged(true);  
+  return builder.build();    
 }
 
 /**
@@ -338,13 +386,13 @@ async function goSettings(e) {
  * @returns {ActionResponse}
  */
 async function actionConfirm(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-		  
-	//set data state change and navigate to confirmation card;
-	builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
-	builder.setStateChanged(false);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //set data state change and navigate to confirmation card;
+  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+  builder.setStateChanged(false);
+  return builder.build();
 }
 
 /**
@@ -353,13 +401,13 @@ async function actionConfirm(e) {
  * @returns {ActionResponse}
  */
 async function actionEdit(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-
-	//set data state change and navigate to edit connector card;
-	builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
-	builder.setStateChanged(true);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //set data state change and navigate to edit connector card;
+  builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));    
+  builder.setStateChanged(true);
+  return builder.build();
 }
 
 /**
@@ -368,20 +416,20 @@ async function actionEdit(e) {
  * @returns {ActionResponse}
  */
 async function actionShow(e) {
-	//create action response builder;
-	var builder = CardService.newActionResponseBuilder();
-		
-	var code = +e.parameters.code;
-		  
-	//handle failed responses;
-	if(code<200||code>=300) {
-		e.parameters.content  = '[]';			
-	}
-		  
-	//set data state change and navigate to display card;
-	builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-	builder.setStateChanged(true);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+      
+  var code = +e.parameters.code;
+  
+  //handle failed responses;
+  if(code<200||code>=300) {
+    e.parameters.content  = '[]';
+  }
+  
+  //set data state change and navigate to display card;
+  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+  builder.setStateChanged(true);
+  return builder.build();
 }
 
 /**
@@ -390,60 +438,60 @@ async function actionShow(e) {
  * @returns {ActionResponse}
  */
 async function actionManual(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
-		  
-		  var msg       = getToken(e); 
-		  var connector = e.parameters;
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  var msg       = getToken(e); 
+  var connector = e.parameters;
 
-		  var cType = new this[connector.type]();
-		  var cAuth = cType.auth;
-			
-		  //try to perform request;
-		  var response;
-		  
-		  try { 
-			response = await cType.run(msg,connector); 
-		  }
-		  catch(error) { 
-			//set empty response headers and content to error message;
-			response = {headers:'',content:error.message}; 
-			
-			//check if error is caused by code or fetch fail;
-			var isAuthError = checkAgainstErrorTypes(error);
-			if(isAuthError) {
-			  response.code = 401;
-			}else {
-			  response.code = 0;
-			}
-		  }
-		  
-		  //access response code and content;
-		  var code    = response.code;
-		  var content = response.content;
-		  
-		  e.parameters.code = code;
-		  
-		  //handle responses;
-		  if(code>=200&&code<300) {
-			
-			//if content has data in it -> check for length;
-			if(content&&content!==null) { var len = content.length; }
-			
-			//if content has one or more data items -> pass to params;
-			if(len>0) { e.parameters.content = content; }
-			
-		  }else {
-		  
-			e.parameters.content  = '[]';
-			e.parameters.error    = content;
-			
-		  }
-		  
-	//set data state change and navigate to display card;
-	builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
-	builder.setStateChanged(true);
-	return builder.build();
+  var cType = new this[connector.type]();
+  var cAuth = cType.auth;
+    
+  //try to perform request;
+  var response;
+  
+  try { 
+    response = await cType.run(msg,connector); 
+  }
+  catch(error) { 
+    //set empty response headers and content to error message;
+    response = {headers:'',content:error.message}; 
+    
+    //check if error is caused by code or fetch fail;
+    var isAuthError = checkAgainstErrorTypes(error);
+    if(isAuthError) {
+      response.code = 401;
+    }else {
+      response.code = 0;
+    }
+  }
+  
+  //access response code and content;
+  var code    = response.code;
+  var content = response.content;
+  
+  e.parameters.code = code;
+  
+  //handle responses;
+  if(code>=200&&code<300) {
+    
+    //if content has data in it -> check for length;
+    if(content&&content!==null) { var len = content.length; }
+    
+    //if content has one or more data items -> pass to params;
+    if(len>0) { e.parameters.content = content; }
+    
+  }else {
+  
+    e.parameters.content  = '[]';
+    e.parameters.error    = content;
+    
+  }
+  
+  //set data state change and navigate to display card;
+  builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
+  builder.setStateChanged(true);
+  return builder.build();
 }
 
 /**
@@ -452,42 +500,42 @@ async function actionManual(e) {
  * @returns {ActionResponse}
  */
 async function performFullReset(e) {
-		  //create action response builder;
-		  var builder = CardService.newActionResponseBuilder();
-		  
-		  //custom text ot pass to notifications;
-		  var onSuccessText = e.parameters.success;
-		  var onFailureText = e.parameters.failure;
-		  
-		  //try to delete all OAuth2.0 specific properties;
-		  try {
-			var config = await getProperty('config','user');
-			if(config.length!==0) {
-			  config.forEach(function(connector){
-				var auth = new this[connector.type]().auth;
-				if(Object.keys(auth).length!==0) {
-				  var service = authService(auth);
-				  service.reset();
-				}
-			  });
-			}
-		  }
-		  catch(err) {
-			//log error to stackdriver;
-			console.log(err);
-		  }  
-		 
-		  //try to delete all user properties and notify;
-		  try {
-			await deleteAllProperties('user');
-			builder.setNotification(notification(onSuccessText));
-		  }
-		  catch(err) {
-			builder.setNotification(error(onFailureText));
-		  }
-		  
-		  //set data state change and navigate to main card;
-	builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
-	builder.setStateChanged(true);
-	return builder.build();
+  //create action response builder;
+  var builder = CardService.newActionResponseBuilder();
+  
+  //custom text ot pass to notifications;
+  var onSuccessText = e.parameters.success;
+  var onFailureText = e.parameters.failure;
+  
+  //try to delete all OAuth2.0 specific properties;
+  try {
+    var config = await getProperty('config','user');
+    if(config.length!==0) {
+      config.forEach(function(connector){
+        var auth = new this[connector.type]().auth;
+        if(Object.keys(auth).length!==0) {
+          var service = authService(auth);
+          service.reset();
+        }
+      });
+    }
+  }
+  catch(err) {
+    //log error to stackdriver;
+    console.log(err);
+  }  
+ 
+  //try to delete all user properties and notify;
+  try {
+    await deleteAllProperties('user');
+    builder.setNotification(notification(onSuccessText));
+  }
+  catch(err) {
+    builder.setNotification(error(onFailureText));
+  }
+  
+  //set data state change and navigate to main card;
+  builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+  builder.setStateChanged(true);
+  return builder.build();
 }

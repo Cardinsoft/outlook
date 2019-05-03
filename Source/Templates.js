@@ -142,14 +142,15 @@ function buttonSet(buttons) {
 function textButtonWidget(text,disabled,isFilled,clickFunc,params) {
   var widget = CardService.newTextButton();
       widget.setText(text);
-      widget.setDisabled(disabled);
-      
+  
+  //set optional parameters and default behaviour;
+  if(disabled) { widget.setDisabled(disabled); }else { widget.setDisabled(false); }
   if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
   
-  var action = CardService.newAction();
-      action.setFunctionName(clickFunc);
-  if(params) {action.setParameters(params);}
-  widget.setOnClickAction(action);
+    var action = CardService.newAction();
+        action.setFunctionName(clickFunc);
+    if(params) {action.setParameters(params);}
+    widget.setOnClickAction(action);
   
   return widget;
 }
@@ -192,11 +193,11 @@ function textButtonWidgetAuth(text,disabled,isFilled,url) {
 function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload,useAction,clickFunc,params) {
   var widget = CardService.newTextButton();
       widget.setText(text);
-      widget.setDisabled(disabled);
       
-  //set button style (filled or default to text);
+  //set optional parameters and defaults;
   if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
-      
+  if(disabled) { widget.setDisabled(disabled); }else { widget.setDisabled(false); }
+  
   if(useAction) {
     //create action and set required parameters;
     var action = CardService.newAction();
@@ -205,7 +206,9 @@ function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload
     //set parameters if provided;
     if(params) { 
       action.setParameters(params); 
-    }else { 
+    }else {
+      if(!fullsized)   { fullsized = false; }
+      if(!needsReload) { needsReload = false; }
       action.setParameters({url:url,fullsized:fullsized.toString(),reload:needsReload.toString()}); 
     }
         

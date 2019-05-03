@@ -334,10 +334,11 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,data,connector
  * Creates section prompting use that there is no data to show;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Object} connector connector configuration object;
  * @param {GmailMessage} msg current meassge object;
  * @returns {CardSection} 
  */
-function createNoFieldsSection(builder,isCollapsed,msg) {
+function createNoFieldsSection(builder,isCollapsed,connector,msg) {
   
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -347,9 +348,15 @@ function createNoFieldsSection(builder,isCollapsed,msg) {
   //create KeyValue widget prompting user that no data is available;
   var trimmed = trimMessage(msg,true,true);
   var prompt  = globalNoDataWidgetContent+' '+trimmed.first+' '+trimmed.last+'\r<b>'+trimmed.email+'</b>';
-  
   var noData = simpleKeyValueWidget('',prompt,true);
   section.addWidget(noData);
+  
+  //create TextButton for adding contact if config provides one;
+  var addConfig = new this[connector.name]().addConfig;
+  if(addConfig) {
+    var add = textButtonWidget('Add contact',false,false,'configureContactAdd',addConfig(propertiesToString(connector),msg));
+    section.addWidget(add);
+  }
   
   //append section and return it;
   builder.addSection(section);
@@ -494,7 +501,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
 }
 
 /**
- * Creates section with authorization and revoke buttons;
+ * Creates section with authorization and revoke buttons (for OAuth2.0-based Connectors);
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Object} connector connector configuration object;
  * @param {Object} auth section auth config object;
@@ -577,7 +584,7 @@ function createSectionConfig(builder,config) {
         case 'TextParagraph':
           element = textWidget(content);
           break;
-        case 'TextButton':
+        case globalTextButton:
           //access TextButton-specific params;
           var disabled   = widget.disabled;
           var filled     = widget.filled;
@@ -590,7 +597,7 @@ function createSectionConfig(builder,config) {
           if(colour) { title = '<font colour="'+colour+'">'+title+'</font>'; }
           
           //build either a clickable or a linked button;
-          if(action===globalTextButtonActionClick) {
+          if(action===globalActionClick) {
             element = textButtonWidget(title,disabled,filled,content);
           }else {
             element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
@@ -603,6 +610,8 @@ function createSectionConfig(builder,config) {
           var isMultiline = widget.isMultiline;
           var switchValue = widget.switchValue;
           var buttonText  = widget.buttonText;
+          var disabled    = widget.disabled;
+          var filled      = widget.filled;
           
           //default to multiline if nothing is set;
           if(!isMultiline) { isMultiline = true; }
@@ -614,7 +623,9 @@ function createSectionConfig(builder,config) {
           if(switchValue) {
             element = switchWidget(title,content,name,switchValue,switchValue);
           }else if(buttonText) {
-              var button = textButtonWidget(buttonText,true,false);
+              if(disabled===undefined) { disabled = true; }
+              if(!filled) { filled = false; }
+              var button = textButtonWidget(buttonText,disabled,filled);
               element = simpleKeyValueWidget(title,content,isMultiline,iconUrl,button);
           }else {
               element = simpleKeyValueWidget(title,content,isMultiline,iconUrl);
@@ -728,34 +739,40 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               var alt = widget.alt;
               element = imageWidget(content,alt); //expand on future UPD;
               break;
-            case 'TextButton':
+            case globalTextButton:
               //access TextButton-specific params;
-              var disabled  = widget.disabled;
-              var filled    = widget.filled;
-              var fullsized = widget.fullsized;
-              var reload    = widget.reload;
-              var action    = widget.action;
-              var funcName  = widget.funcName;
-              var colour    = widget.colour;
+              var disabled   = widget.disabled;
+              var filled     = widget.filled;
+              var fullsized  = widget.fullsized;
+              var reload     = widget.reload;
+              var action     = widget.action;
+              var funcName   = widget.funcName;
+              var parameters = widget.parameters; 
+              var colour     = widget.colour;
               
               //set button text colour if provided;
               if(colour) { title = '<font color="'+colour+'">'+title+'</font>'; }
+              
+              //set parameters if provided and default to connector;
+              if(!parameters) { parameters = connector; }
             
               //build either a clickable or a linked button;
-              if(action===globalTextButtonActionClick) {
-                element = textButtonWidget(title,disabled,filled,funcName,connector);
-              }else if(action===globalTextButtonActionAction) {
-                element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload,true,funcName);
+              if(action===globalActionClick) {
+                element = textButtonWidget(title,disabled,filled,funcName,parameters);
+              }else if(action===globalActionAction) {
+                element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload,true,funcName,parameters);
               }else {
                 element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
               }
           
               break;
-            case 'KeyValue':
+            case globalKeyValue:
               //access KeyValue-specific params;
               var isMultiline = widget.isMultiline;
               var switchValue = widget.switchValue;
               var buttonText  = widget.buttonText;
+              var disabled    = widget.disabled;
+              var filled      = widget.filled;
               
               //default to multiline;
               if(!isMultiline) { isMultiline = true; }
@@ -774,7 +791,9 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 connector = propertiesToString(connector);
               
                 if(buttonText) {
-                  var button = textButtonWidget(buttonText,true,false);
+                  if(disabled===undefined) { disabled = true; }
+                  if(!filled) { filled = false; }
+                  var button = textButtonWidget(buttonText,disabled,filled);
                   if(state!=='editable') {
                     element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
                   }else {
@@ -842,11 +861,12 @@ function createSectionUpdate(builder,isCollapsed,connector) {
   return section;
 }
 
+
 /**
  * Creates section containing widgets representing connector types;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {String} header section header text;
+ * @param {String=} header section header text;
  * @returns {CardSection}
  */
 function createSectionChooseType(builder,isCollapsed,header) {
@@ -862,7 +882,7 @@ function createSectionChooseType(builder,isCollapsed,header) {
   var flow       = new Flow();
   var lacrm      = new LessAnnoyingCRM();
   var pipedrive  = new Pipedrive();
-  
+    
   //create an array of used types;
   var types = [flow,lacrm,pipedrive];
   
