@@ -107,25 +107,7 @@ class Menu {
 			
 		menuItem.addEventListener('click',async function(){	
 			self.switchShow();
-			
-			await actionCallback(this);
-			/*	
-			let o = new Overlay();
-				o.setColor('white');
-				o.setTone('dark');
-				o.show('#app-overlay');		
-
-			let s = new Spinner();
-				s.setSize('large');
-				s.show();		
-
-			const e = new e_EventObject();
-			e.parameters = item.parameters;
-				
-			await GLOBAL[item.funcName](e);
-				
-			o.hide('#app-overlay');
-			s.hide();*/			
+			await actionCallback(this);		
 		});
 	}
 	removeItem(index) {
