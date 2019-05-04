@@ -27,6 +27,7 @@ Office.initialize = (reason) => {
 		
 		$('#app-body').show();
 		$('body').click(function(ev){
+			ev.stopPropagation();
 			let menu = menus[0];
 			if(menu.isOpen) { menu.switchShow(); }
 		});
