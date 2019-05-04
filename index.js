@@ -19,6 +19,8 @@ Office.initialize = (reason) => {
 			{icon : 'ms-Icon--Settings', text : 'Settings', action : JSON.stringify(settingsAction)},
 			{icon : 'ms-Icon--Help',     text : 'Help',     action : JSON.stringify(helpAction)}
 		];
+		
+		//initiate menu with universal actions;
 		const menu = new Menu();
 		menu.create(items);
 		$('.navelem').click(function(){
@@ -27,21 +29,25 @@ Office.initialize = (reason) => {
 		
 		$('#app-body').show();
 		
-		$('body').click(function(){
-			
+		//close menu on out-of-boundaries click;
+		$('body').click(function(event){
 			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
 			let x = cr.x;
 			let y = cr.y;
+			let mx = event.clientX;
+			let my = event.clientY;
 			console.log(cr);
 			
 		});
 		
+		//show app body overlay;
 		const o = new Overlay();
 		o.setColor('white');
 		o.show('#app-overlay');
 			
+		//show spinner on overlay;
 		const s = new Spinner();
 		s.setSize('large');
 		s.show();
