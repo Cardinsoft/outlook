@@ -26,10 +26,16 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#app-body').show();
-		$('body').click(function(ev){
-			ev.stopPropagation();
-			let menu = menus[0];
-			if(menu.isOpen) { menu.switchShow(); }
+		
+		$('body').click(function(){
+			
+			let cr = menu.menu.get​Bounding​Client​Rect();
+			let t = cr.top;
+			let l = cr.left;
+			let x = cr.x;
+			let y = cr.y;
+			console.log(cr);
+			
 		});
 		
 		const o = new Overlay();
