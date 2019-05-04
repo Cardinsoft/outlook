@@ -29,7 +29,7 @@ Office.initialize = (reason) => {
 		
 		$('body').click(function(){
 			
-			let cr = menu.menu.get​Bounding​Client​Rect();
+			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
 			let x = cr.x;
