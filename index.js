@@ -38,12 +38,17 @@ Office.initialize = (reason) => {
 			let b = cr.bottom;
 			let mx = event.clientX;
 			let my = event.clientY;
-		
-			if( ((mx<l||mx>r)&&my>=t&&my<=b) || my<t || my>b ) {
-				console.log(cr);
-				console.log(mx)
-				console.log(my);
-			}	
+			
+			if(menu.isOpen) {
+			
+				if( ((mx<l||mx>r)&&my>=t&&my<=b) || my<t || my>b ) {
+					console.log(cr);
+					console.log(mx)
+					console.log(my);
+				}
+
+			}
+			
 		});
 		
 		//show app body overlay;
