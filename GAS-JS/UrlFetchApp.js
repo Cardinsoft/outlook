@@ -149,7 +149,14 @@ function makeRequest(url,params) {
 		
 		//handle timeout event;
 		request.ontimeout = function () {
-			let statusText = request.statusText; 
+			let statusText = request.statusText;
+			
+			let timeout = {
+				code : request.status,
+				content : statusText,
+				headers : {}
+			};
+			
 			resolve(statusText);
 		}
 
