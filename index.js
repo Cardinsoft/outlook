@@ -30,7 +30,7 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 		
 		//close menu on out-of-boundaries click;
-		$('body').click(function(event){
+		$('.Menu').click(function(event){
 			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
