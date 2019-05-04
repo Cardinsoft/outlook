@@ -41,6 +41,8 @@ Office.initialize = (reason) => {
 		
 			if( ((mx<l||mx>r)&&my>=t&&my<=b) || my<t || my>b ) {
 				console.log(cr);
+				console.log(mx)
+				console.log(my);
 			}	
 		});
 		

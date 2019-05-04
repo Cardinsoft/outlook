@@ -157,7 +157,7 @@ function makeRequest(url,params) {
 				headers : {}
 			};
 			
-			resolve(statusText);
+			resolve(timeout);
 		}
 
 		if(params.payload) {
