@@ -26,7 +26,7 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#app-body').show();
-		$('#app-body').click(function(ev){
+		$('body').click(function(ev){
 			let menu = menus[0];
 			if(menu.isOpen) { menu.switchShow(); }
 		});
