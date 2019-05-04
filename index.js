@@ -34,12 +34,14 @@ Office.initialize = (reason) => {
 			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
-			let x = cr.x;
-			let y = cr.y;
+			let r = cr.right;
+			let b = cr.bottom;
 			let mx = event.clientX;
 			let my = event.clientY;
-			console.log(cr);
-			
+		
+			if( (mx<l||mx>r)&&my>=t&&my<=b || my<t || my>b ) {
+				console.log(cr);
+			}	
 		});
 		
 		//show app body overlay;
