@@ -26,6 +26,10 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#app-body').show();
+		$('#app-body').click(function(ev){
+			let menu = menus[0];
+			if(menu.isOpen) { menu.switchShow(); }
+		});
 		
 		const o = new Overlay();
 		o.setColor('white');
@@ -53,6 +57,7 @@ class Menu {
 	constructor() {
 		this.className = 'Menu';
 		this.menu;
+		this.isOpen = false;
 	}
 	create(items) {
 		const navbar = document.querySelector('.navbar');
@@ -70,6 +75,7 @@ class Menu {
 			this.addItem(item);
 		}
 		
+		this.isOpen = true;
 		menus.push(this);
 	}
 	addItem(item,toTop) {
@@ -116,6 +122,8 @@ class Menu {
 	}
 	switchShow() {
 		let menu = menus[0].menu;
+		let cl = menu.classList;
+		if(cl.contains('singulared')) { menus[0].isOpen = true; }else { menus[0].isOpen = false; }
 		menu.classList.toggle('singulared');
 	}
 }
@@ -287,9 +295,7 @@ async function actionCallback(elem) {
 		
 		//set parameters to event object;
 		e.parameters = params;
-		
-		console.log(e)
-		
+				
 		//if provided, set load indicator;
 		if(loadIndicator&&loadIndicator!=='NONE') {
 			
@@ -308,7 +314,7 @@ async function actionCallback(elem) {
 			s.hide();
 			
 		}else {
-			return GLOBAL[functionName](e);
+			await GLOBAL[functionName](e);
 		}
 }
 //=========================================END CALLBACKS========================================//
