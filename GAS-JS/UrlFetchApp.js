@@ -33,6 +33,7 @@ HTTPResponse.prototype.getAs = function (contentType) {
 	//future release;
 }
 HTTPResponse.prototype.getContentText = function () {
+	if(!this.content) { return ''; }
 	return this.content.toString();
 }
 HTTPResponse.prototype.getResponseCode = function () {
