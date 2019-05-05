@@ -52,7 +52,7 @@ var globalNotAuthorizedContent       = 'Seems like the Connector you built has t
 var globalOptionalFieldsContent      = 'These fields are optional and can be left blank';
 var globalOrderingWidgetContent      = 'Choose how to sort your configured Connectors (order of creation by default)';
 var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
-var globalRevokeWidgetContent        = 'If you wish to uninstall Cardin for Gmail from your account, tick the checkbox below';
+var globalRevokeWidgetContent        = 'If you wish to uninstall Cardin from your account, tick the checkbox below';
 var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
 
 //hints;
@@ -84,7 +84,7 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
+var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
 var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
