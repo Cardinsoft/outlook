@@ -45,12 +45,9 @@ Office.initialize = (reason) => {
 			console.log(my);
 			
 			if(menu.isOpen) {
-			
 				if(((mx<l||mx>r)&&my>=t&&my<=b)||my<t||my>b) {
 					//menu.switchShow();
-
 				}
-
 			}
 			
 		});
