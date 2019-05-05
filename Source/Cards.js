@@ -170,10 +170,20 @@ async function cardDisplay(e) {
       header.setTitle(connector.name);
       builder.setHeader(header);
   
+  //access Connector config and get its index;
+  var config = await getProperty('config','user');
+  var index  = getIndex(config,connector);
+    
+  //filter out current Connector;
+  config = config.filter(function(c,i){ if(i!==+index) { return c; } });  
+  
   //handle failed response codes;
   if((code<200||code>=300)&&code!==401) {
     createErrorSection(builder,true,code,error);
   }else if(code===401) {
+	if(config.length>0) {
+	  await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
+	}	
     createNotAuthorizedSection(builder,false,connector,code);
     return builder.build();
   }
@@ -268,16 +278,9 @@ async function cardDisplay(e) {
     console.error(err);
     createUnparsedSection(builder,true,err.message,JSON.stringify(content));
   }
-  
-  //access Connector config and get its index;
-  var config = await getProperty('config','user');
-  var index  = getIndex(config,connector);
-    
-  //filter out current Connector;
-  config = config.filter(function(c,i){ if(i!==+index) { return c; } });
     
   //create Connectors representation for those that are left;
-  if(config.length!==0) {
+  if(config.length>0) {
     await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
   }
   
