@@ -22,8 +22,8 @@ SelectionInput.prototype = Object.create(Widget.prototype);
  */
 SelectionInput.prototype.addItem = function (text, value, selected) {
 	//check if inputs are of string type;
-	var isStringText  = typeof text === 'string';
-	var isStringValue = typeof value === 'string';
+	const isStringText  = typeof text === 'string';
+	const isStringValue = typeof value === 'string';
 	
 	//convert non-string inputs to strings;
 	if(!isStringText)  { text  = JSON.stringify(text);  }
@@ -81,7 +81,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			widget.append(row);			
 		
 			//create inputs;
-			options.forEach(function(option){
+			options.forEach((option) => {
 				//access option params;
 				let text     = option.text;
 				let value    = option.value;
@@ -156,7 +156,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			group.append(list);
 			
 			//create inputs;
-			options.forEach(function(option){
+			options.forEach((option) => {
 				
 				//access option params;
 				let text     = option.text;
@@ -194,10 +194,10 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				
 				//set event listener to widget;
 				function curry(widget,action,input,inputs,labels){
-					return async function (e) {
+					return async function () {
 					
 						//check if every other radio button is switched off;
-						const isLastChecked = input.checked&&inputs.every(function(i){ 
+						const isLastChecked = input.checked&&inputs.every((i) => { 
 							if(input!==i) { 
 								return i.checked===false; 
 							}else {
@@ -206,7 +206,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 						});	
 
 						if(!isLastChecked) {
-							await inputs.forEach(function(i,index){
+							await inputs.forEach((i,index) => {
 								if(input===i&&!input.checked) { 
 									labels[index].classList.add('is-checked');
 									i.checked = true;
@@ -262,7 +262,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			inputWrap.append(input);
 			
 			//append options;
-			options.forEach(function(option){
+			options.forEach((option) => {
 				//access option params;
 				let text     = option.text;
 				let value    = option.value;
@@ -281,7 +281,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 				setAction(widget,action);
 					
 				//set event listener to widget;
-				input.addEventListener('change',async function(){ await actionCallback(widget); });
+				input.addEventListener('change',async () => { await actionCallback(widget); });
 			}
 			
 			new fabric['Dropdown'](inputWrap);

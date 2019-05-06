@@ -88,7 +88,7 @@ CardBuilder.prototype.build = async function () {
 		const menu = menus[0];
 		if(menu.menu.children.length>3) { menu.removeItem(0); } //make adjustable in future updates;
 		if(cardAction) {
-			let fName, params, cAction;
+			let params, cAction;
 			if(cardAction.action) {
 				cAction = cardAction.action;
 			}else if(cardAction.authorizationAction) {

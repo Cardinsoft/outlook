@@ -29,7 +29,7 @@ Switch.prototype.setValue = function (value) {
 Switch.prototype.appendToUi = function (parent) {	
 	//access Switch parameters;
 	const fieldName = this.fieldName;
-	const action    = this.action;
+	let action      = this.action;
 	const selected  = this.selected;
 	const value     = this.value;
 	
@@ -84,7 +84,7 @@ Switch.prototype.appendToUi = function (parent) {
 	}
 	
 	//set state listener;
-	wrapToggle.addEventListener('click',function(e){
+	wrapToggle.addEventListener('click',() => {
 		input.classList.toggle('is-selected');
 	});	
 	

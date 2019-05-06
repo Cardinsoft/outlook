@@ -40,7 +40,7 @@ TextInput.prototype.setValue = function (value) {
 };
 TextInput.prototype.appendToUi = function (parent) {
 	const fieldName = this.fieldName;
-	const action    = this.action;
+	let action      = this.action;
 	const value     = this.value;
 	const multiline = this.multiline;
 	const title     = this.title;

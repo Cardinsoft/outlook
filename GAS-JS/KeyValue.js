@@ -209,8 +209,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 		wrapText.append(label);
 	}
 	
-	
-	
+	//create content text element;
 	const contentText = document.createElement('span');
 	contentText.className = 'ms-font-m-plus KeyValueText';
 	contentText.innerHTML = content;
