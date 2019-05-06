@@ -63,7 +63,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 				response = error;
 			}else {
 				response = {
-					code    : 400,
+					code    : 401,
 					headers : {},
 					content : error.message
 				};
