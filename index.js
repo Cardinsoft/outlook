@@ -473,8 +473,8 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 	return async function() {
 
 		//compute child elems height;
-		let chProperty = 0, margins = 0, children = overlay.children, end = initial, change = increment;
-		for(var i=0; i<children.length; i++) {
+		let chProperty = 0, children = overlay.children, end = initial, change = increment;
+		for(let i=0; i<children.length; i++) {
 			let chcomp = window.getComputedStyle(children.item(i));
 			chProperty += trimPx(chcomp[property]);
 			if(property==='height') {
@@ -484,7 +484,6 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 				}else { 
 					chMargin = trimPx(chcomp.marginTop); 
 				}
-				margins += chMargin;
 				chProperty += chMargin;
 			}
 		}
