@@ -357,7 +357,7 @@ function checkTarget(input) {
 			let matched = result[r];
 			if(!matched.includes('target="_blank"')) {
 				let tmp = matched.split(' ');
-				tmp.splice(tmp.length-1,0,'target="_blank"');
+              		tmp.splice(1,0,'target="_blank"');
 				input = input.replace(matched,tmp.join(' '));
             }
 		}
