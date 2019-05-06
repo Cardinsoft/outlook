@@ -1,6 +1,6 @@
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
-	$(document).ready(async function () {
+	$(document).ready(async () => {
 
 		const homeAction = CardService.newAction();
 			homeAction.setFunctionName('universalHome');
@@ -23,14 +23,14 @@ Office.initialize = (reason) => {
 		//initiate menu with universal actions;
 		const menu = new Menu();
 		menu.create(items);
-		$('.navelem').click(function(){
+		$('.navelem').click(() => {
 			menu.switchShow();
 		});
 		
 		$('#app-body').show();
 		
 		//close menu on out-of-boundaries click;
-		$('.Menu').click(function(event){
+		$('.Menu').click((event) => {
 			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
@@ -73,6 +73,8 @@ Office.initialize = (reason) => {
 	});
 };
 
+//=======================================START Ui Classes======================================//
+
 /**
  * Creates an instance of Menu;
  */
@@ -84,7 +86,6 @@ class Menu {
 	}
 	create(items) {
 		const navbar = document.querySelector('.navbar');
-		const body   = document.querySelector('#app-body');
 		
 		const menu = document.createElement('div');
 		menu.classList.add(this.className,'singulared');
@@ -109,7 +110,7 @@ class Menu {
 		//create menu item;
 		let menuItem = document.createElement('div');
 		if(item.classList) {
-			item.classList.forEach(function(cl){
+			item.classList.forEach((cl) => {
 				menuItem.classList.add(cl);
 			});
 		}
@@ -150,8 +151,6 @@ class Menu {
 		menu.classList.toggle('singulared');
 	}
 }
-
-
 
 /**
  * Creates an instance of Overlay;
@@ -230,8 +229,9 @@ class Spinner {
 	}
 }
 
+//=======================================START Ui Classes======================================//
 
-//===============================================CALLBACKS===============================================//
+//========================================START CALLBACKS======================================//
 
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
@@ -340,7 +340,84 @@ async function actionCallback(elem) {
 			await GLOBAL[functionName](e);
 		}
 }
-//=========================================END CALLBACKS========================================//
+//==========================================END CALLBACKS=======================================//
+
+//=========================================START UTILITIES======================================//
+
+/**
+ * Matches input for missing target="_blank" attribute and adds it;
+ * @param {String} input <a> html tag string to check;
+ * @returns {String}
+ */
+function checkTarget(input) {
+	const regexp = /(<a\s*?href=".+?"\s*?>.*?<\/a>)/g;
+	const result = input.match(regexp);
+	if(result&&result.length>0) {
+		for(let r=0; r<result.length; r++) {
+			let matched = result[r];
+			if(!matched.includes('target="_blank"')) {
+				let tmp = matched.split(' ');
+				tmp.splice(tmp.length-1,0,'target="_blank"');
+				input = input.replace(matched,tmp.join(' '));
+            }
+		}
+	}
+	return input;
+}
+
+/**
+ * Parses input into Boolean;
+ * @param {*=} input input to parse;
+ * @returns {Boolean}
+ */
+function toBoolean(input) {
+	
+	if(typeof input==='boolean') { return input; }
+	
+	const isString = typeof input==='string';
+	
+	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
+}
+
+/**
+ * Gets base64-encoded "random" Id;
+ * @returns {String|Function}
+ */
+function getId() {
+	let id = GLOBAL.btoa(Math.random().toString());
+	
+	const isUnique = function(a,i){ 
+		let result =true;
+		for(let p in a) {		
+			if(a[p].id===i) { result = false; }
+		}
+		return result;
+	}(e_actions,id);
+	
+	if(isUnique) { return id }else { return getId(); }
+}
+
+/**
+ * Processes action and sets reference to widget;
+ * @param {HtmlElement} element element on which to set reference;
+ * @param {String} action stringifyed action object;
+ */
+function setAction(element,action) {
+	//parse action if found;
+	action = JSON.parse(action);
+		
+	//change cursor to pointer on hover;
+	element.classList.add('pointer');
+		
+	//get unique identifier;
+	let id = getId();
+		
+	//set stringifyed action to global storage;
+	e_actions[id] = JSON.stringify(action);
+		
+	//add action reference to widget;
+	element.setAttribute('action',id);	
+}
 
 /**
  * Trims property value of pixel measurements;
@@ -446,6 +523,8 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 	}
 }
 
+//===========================================END UTILITIES======================================//
+
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
 class e_EventObject {
@@ -464,61 +543,6 @@ class e_EventObject {
 			id : ''
 		}
 	}
-}
-
-/**
- * Parses input into Boolean;
- * @param {*=} input input to parse;
- * @returns {Boolean}
- */
-function toBoolean(input) {
-	
-	if(typeof input==='boolean') { return input; }
-	
-	const isString = typeof input==='string';
-	
-	if(!isString) { return Boolean(input); }else if(input==='false') { return false; }else { return true; }
-}
-
-
-/**
- * Gets base64-encoded random Id;
- * @returns {String|Function}
- */
-function getId() {
-	let id = GLOBAL.btoa(Math.random().toString());
-	
-	const isUnique = function(a,i){ 
-		let result =true;
-		for(let p in a) {		
-			if(a[p].id===i) { result = false; }
-		}
-		return result;
-	}(e_actions,id);
-	
-	if(isUnique) { return id }else { return getId(); }
-}
-
-/**
- * Processes action and sets reference to widget;
- * @param {HtmlElement} element element on which to set reference;
- * @param {String} action stringifyed action object;
- */
-function setAction(element,action) {
-	//parse action if found;
-	action = JSON.parse(action);
-		
-	//change cursor to pointer on hover;
-	element.classList.add('pointer');
-		
-	//get unique identifier;
-	let id = getId();
-		
-	//set stringifyed action to global storage;
-	e_actions[id] = JSON.stringify(action);
-		
-	//add action reference to widget;
-	element.setAttribute('action',id);	
 }
 
 const cardStack = [];

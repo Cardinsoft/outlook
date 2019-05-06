@@ -7,7 +7,7 @@ class KeyValue {
 		this.icon;
 		this.altText;
 		this.url;
-		this.multiline;
+		this.multiline = true;
 		this.switchToSet;
 		this.topLabel;
 		this.action;
@@ -20,7 +20,7 @@ class KeyValue {
 /**
  * Set authorization action to KeyValue;
  * @param {AuthorizationAction} action action to set;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setAuthorizationAction = function (action) {
 	this.authorizationAction = JSON.stringify(action);
@@ -31,7 +31,7 @@ KeyValue.prototype.setAuthorizationAction = function (action) {
  * Set compose action to KeyValue;
  * @param {Action} action action to set;
  * @param {composedEmailType} composedEmailType email type to compose;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
 	this.action = JSON.stringify(action);
@@ -42,7 +42,7 @@ KeyValue.prototype.setComposeAction = function (action,composedEmailType) {
 /**
  * Set onclick action to KeyValue;
  * @param {Action} action action to set;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setOnClickAction = function (action) {
 	this.action = JSON.stringify(action);
@@ -52,7 +52,7 @@ KeyValue.prototype.setOnClickAction = function (action) {
 /**
  * Set OpenLink action to KeyValue;
  * @param {Action} action action to set;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setOnClickOpenLinkAction = function (action) {
 	this.action = JSON.stringify(action);
@@ -62,7 +62,7 @@ KeyValue.prototype.setOnClickOpenLinkAction = function (action) {
 /**
  * Set OpenLink to KeyValue;
  * @param {OpenLink} openLink openLink action to set;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setOpenLink = function (openLink) {
 	this.openLink = JSON.stringify(openLink);
@@ -70,8 +70,9 @@ KeyValue.prototype.setOpenLink = function (openLink) {
 }
 
 /**
- * Sets Button to widget if provided;
- * @returns {KeyValue}
+ * Sets Button to this widget if provided;
+ * @param {TextButton} button TextButton widget to set;
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setButton = function (button) {
 	this.button = button;
@@ -81,7 +82,7 @@ KeyValue.prototype.setButton = function (button) {
 /**
  * Sets this widget's text content;
  * @param {String} text content to set;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setContent = function (text) {
 	this.content = text;
@@ -91,23 +92,21 @@ KeyValue.prototype.setContent = function (text) {
 /**
  * Sets one of the predefined icons from CardService Enum;
  * @param {String} icon icon name from CardService Enum;
- * @returns {KeyValue} 
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setIcon = function (icon) {
-	
 	//acces Icons Enum and check for match;
 	const icons = new e_CardService().Icon;
 	for(let key in icons) {
 		if(icons[key]===icon) { this.icon = icons[key]; }
 	}
-	
 	return this;
 }
 
 /**
  * Sets image URL to append to widget as icon;
  * @param {String} url path to image;
- * @returns {KeyValue}
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setIconUrl = function (url) {
 	this.url = url;
@@ -116,32 +115,56 @@ KeyValue.prototype.setIconUrl = function (url) {
 
 /**
  * Sets alt text for image acting as widget icon;
- * @returns {KeyValue}
+ * @param {String} altText text to display on source fail;
+ * @returns {KeyValue} this widget;
  */
 KeyValue.prototype.setIconAltText = function (altText) {
 	this.altText = altText;	
 	return this;
 }
 
+/**
+ * Determines whether to display widget text as multiline or truncated single-line;
+ * @param {Boolean} multiline truthy value to set multiline property to;
+ * @returns {KeyValue} this widget;
+ */
 KeyValue.prototype.setMultiline = function (multiline) {
 	this.multiline = multiline;
 	return this;
 }
+
+/**
+ * Sets a Switch widget on this widget;
+ * @param {Switch} switchToSet Switch widget to set;
+ * @returns {KeyValue} this widget;
+ */
 KeyValue.prototype.setSwitch = function (switchToSet) {
 	this.switchToSet = switchToSet;
 	return this;
 }
+
+/**
+ * Sets this widget's title text on top;
+ * @param {String} text title text to set;
+ * @returns {KeyValue} this widget;
+ */
 KeyValue.prototype.setTopLabel = function (text) {
 	this.topLabel = text;
 	return this;
 }
+
+/**
+ * Utility function appending KeyValue widget to Ui;
+ * @param {HtmlElement} parent parent element to append to;
+ */
 KeyValue.prototype.appendToUi = function (parent) {
 	
 	//access parameters;
 	let action    = this.action;
 	const iconUrl = this.url;
 	const icon    = this.icon;
-	const content = this.content;
+	let content   = this.content;
+	if(content) { content = checkTarget(content); }
 	
 	//create row element;
 	const widget = document.createElement('div');
