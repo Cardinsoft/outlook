@@ -34,6 +34,7 @@ Office.initialize = (reason) => {
 			
 			let width = menu.menu;
 			console.log(width);
+			console.log(window.getComputedStyle(width));
 			
 		});
 		
