@@ -30,7 +30,7 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 		
 		//close menu on out-of-boundaries click;
-		$('.Menu').pointermove((event) => {
+		$('.Menu').addEventListener('pointermove',(event) => {
 			event.setPointerCapture(event.pointerId);
 			
 			let mx = event.clientX;
