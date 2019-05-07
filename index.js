@@ -46,38 +46,9 @@ Office.initialize = (reason) => {
 
 				if(((mx<l||mx>r)&&my>=t&&my<=b)||my<t||my>b) {
 					menu.switchShow();
-				}
-				
-				console.log(menu);
-				console.log(cr);
-				console.log(mx);
-				console.log(my);				
-				
+				}	
 			}
 		});
-		
-		
-		/*click((event) => {
-			let cr = menu.menu.getBoundingClientRect();
-			let t = cr.top;
-			let l = cr.left;
-			let r = cr.right;
-			let b = cr.bottom;
-			let mx = event.clientX;
-			let my = event.clientY;
-
-			console.log(menu);
-			console.log(cr);
-			console.log(mx);
-			console.log(my);
-			
-			if(menu.isOpen) {
-				if(((mx<l||mx>r)&&my>=t&&my<=b)||my<t||my>b) {
-					//menu.switchShow();
-				}
-			}
-			
-		});*/
 		
 		//show app body overlay;
 		const o = new Overlay();
