@@ -33,6 +33,7 @@ Office.initialize = (reason) => {
 		$('body').click( (event) => {
 			
 			let width = trimPx(window.getComputedStyle(menu.menu));
+			console.log(width)
 			if(width>0) {
 				
 				let cr = menu.menu.getBoundingClientRect();
