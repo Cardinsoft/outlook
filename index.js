@@ -44,6 +44,10 @@ Office.initialize = (reason) => {
 				let mx = event.clientX;
 				let my = event.clientY;
 
+				if(((mx<l||mx>r)&&my>=t&&my<=b)||my<t||my>b) {
+					menu.switchShow();
+				}
+				
 				console.log(menu);
 				console.log(cr);
 				console.log(mx);
