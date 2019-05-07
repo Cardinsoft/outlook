@@ -32,7 +32,7 @@ Office.initialize = (reason) => {
 		//close menu on out-of-boundaries click;
 		$('body').click( (event) => {
 			
-			let width = trimPx(menu.menu.style.width);
+			let width = menu.menu;
 			console.log(width);
 			
 		});
