@@ -42,7 +42,7 @@ Office.initialize = (reason) => {
 		});
 		
 		
-		click((event) => {
+		/*click((event) => {
 			let cr = menu.menu.getBoundingClientRect();
 			let t = cr.top;
 			let l = cr.left;
@@ -62,7 +62,7 @@ Office.initialize = (reason) => {
 				}
 			}
 			
-		});
+		});*/
 		
 		//show app body overlay;
 		const o = new Overlay();
