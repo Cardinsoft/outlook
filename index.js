@@ -33,8 +33,8 @@ Office.initialize = (reason) => {
 		menu.menu.addEventListener('pointermove',(event) => {
 			console.log(event.pointerId)
 			console.log(this)
-			//this.addEventListener('pointerdown', () => { console.log('!'); });
-			//this.setPointerCapture(event.pointerId);
+			menu.menu.addEventListener('pointerdown', () => { console.log('!'); });
+			menu.menu.setPointerCapture(event.pointerId);
 		});
 		
 		
