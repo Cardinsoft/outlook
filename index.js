@@ -32,6 +32,7 @@ Office.initialize = (reason) => {
 		//close menu on out-of-boundaries click;
 		menu.menu.addEventListener('pointermove',(event) => {
 			console.log(event.pointerId)
+			console.log(this)
 			//this.addEventListener('pointerdown', () => { console.log('!'); });
 			//this.setPointerCapture(event.pointerId);
 		});
