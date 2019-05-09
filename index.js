@@ -34,7 +34,9 @@ Office.initialize = (reason) => {
 			
 			event.stopPropagation();
 			
-			let width = trimPx(window.getComputedStyle(menu.menu).width);
+			let computed = window.getComputedStyle(menu.menu);
+			let width    = trimPx(computed.width);
+			let height   = trimPx(computed.height);
 
 			if(width>0) {
 				
@@ -42,11 +44,11 @@ Office.initialize = (reason) => {
 				let t = cr.top;
 				let l = cr.left;
 				let r = cr.right;
-				let b = cr.bottom;
+				//let b = cr.bottom;
 				let mx = event.clientX;
 				let my = event.clientY;
 
-				if(((mx<l||mx>r)&&my>=t&&my<=b)||my<t||my>b) {
+				if(((mx<l||mx>width)&&my>=t&&my<=height)||my<t||my>height) {
 					console.log('switching')
 					console.log(cr)
 					console.log(mx)
