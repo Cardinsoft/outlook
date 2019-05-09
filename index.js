@@ -32,6 +32,8 @@ Office.initialize = (reason) => {
 		//close menu on out-of-boundaries click;
 		$('body').click( (event) => {
 			
+			event.stopPropagation();
+			
 			let width = trimPx(window.getComputedStyle(menu.menu).width);
 
 			if(width>0) {
