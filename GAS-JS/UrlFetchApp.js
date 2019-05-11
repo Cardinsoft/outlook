@@ -57,9 +57,6 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 			console.log(response);
 		}
 		catch(error) {
-			console.log(error);
-			console.log(typeof error);
-			console.log(error instanceof Error);
 			
 			response = {
 				code    : error.code,
@@ -96,7 +93,17 @@ function makeRequest(url,params) {
 	return new Promise(function (resolve,reject) {
 		
 		//prefent defaulting to location.href and throw an error message;
-		if(url==='') { throw new Error('Attribute provided with no value: url'); }
+		if(url==='') { 
+			
+			//construct empty URL error;
+			let emptyUrlErr = {
+				code    : 0,
+				content : 'Attribute provided with no value: url',
+				headers : {}				
+			};
+			
+			reject(emptyUrlErr);
+		}
 		
 		//default to GET method if no params provided;
 		if(!params) { params = {method : 'get'}; }
@@ -123,22 +130,27 @@ function makeRequest(url,params) {
 		
 		//handle load event (set headers and resolve objects);
 		request.onload = function () {
-			let status     = request.status;
-			let response   = request.response;
-			let headers    = request.getAllResponseHeaders().trim().split(/[\r\n]+/);
+			let status   = request.status;
+			let response = request.response;
+			let headers  = request.getAllResponseHeaders().trim().split(/[\r\n]+/);
 			let map = {};
+			
+			//map response headers;
 			headers.forEach(function (header) {
-			  let data = header.split(': ');
-			  let name = data.shift();
+			  let data  = header.split(': ');
+			  let name  = data.shift();
 			  let value = data.join(': ');
 			  map[name] = value;
 			});
+			
+			//construct response object;
 			let obj = {
-				code: status,
-				content: response,
-				headers: map
+				code    : status,
+				content : response,
+				headers : map
 			};
 			
+			//resolve or reject according to code;
 			if(status>=200&&status<300) {	
 				resolve(obj);
 			}else {
@@ -150,8 +162,9 @@ function makeRequest(url,params) {
 		request.ontimeout = function () {
 			let statusText = request.statusText;
 			
+			//construct timeout response object;
 			let timeout = {
-				code : request.status,
+				code    : request.status,
 				content : statusText,
 				headers : {}
 			};
@@ -159,7 +172,8 @@ function makeRequest(url,params) {
 			resolve(timeout);
 		}
 
-		if(params.payload) {
+		//send request with or without payload according to method;
+		if(params.payload&&params.method!=='get') {
 			request.send(params.payload);
 		}else {
 			request.send();
