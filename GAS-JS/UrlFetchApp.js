@@ -58,6 +58,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 		}
 		catch(error) {
 			console.log(error);
+			console.log(response);
 			console.log(typeof error);
 			console.log(error instanceof Error);
 			
