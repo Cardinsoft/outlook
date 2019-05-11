@@ -186,97 +186,99 @@ async function cardDisplay(e) {
 	}	
     createNotAuthorizedSection(builder,false,connector,code);
     return builder.build();
-  }
+  }else {
  
-  //parse content;
-  content = parseData(content);
+	  //parse content;
+	  content = parseData(content);
 
-  //try to display content or show unparsed data if error;
-  try {
-    if(content.length!==0) {
-      
-      //check if there are any nested objects or not;
-      var hasNested = checkNested(content);
-      if(hasNested) {
-      
-        //get maximum number of widgets for each section;
-        var layout = getLayout(content);
-        
-        for(var j=0; j<content.length; j++) {
-      
-          var section = content[j];
-          if(typeof section==='string') { section = JSON.parse(section); }
+	  //try to display content or show unparsed data if error;
+	  try {
+		if(content.length!==0) {
+		  
+		  //check if there are any nested objects or not;
+		  var hasNested = checkNested(content);
+		  if(hasNested) {
+		  
+			//get maximum number of widgets for each section;
+			var layout = getLayout(content);
+			
+			for(var j=0; j<content.length; j++) {
+		  
+			  var section = content[j];
+			  if(typeof section==='string') { section = JSON.parse(section); }
 
-          try {
-            await createSectionAdvanced(builder,section,j,connector,layout[j]); 
-          }
-          catch(er) {
-            console.error(er);
-            //try to handle nested objects that do not conform to our schema;
-            createSectionSimple(builder,section,true,j);
-          }
-        }
-       
-        //check for editable widgets and create update section if found;
-        var hasEditable = checkEditable(content);
-        if(hasEditable) {
-          //stringify connector properties;
-          connector = propertiesToString(connector);
-          
-          var action = CardService.newAction();
-              action.setFunctionName('updateSectionAdvanced');
-              action.setParameters(connector);
-              action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
-          
-          var caText = connector.caText;
-          if(!caText) { caText = globalUpdateConnectorText; }
-          
-          var ca = cardAction(caText,globalActionClick,action);
-          builder.addCardAction(ca);
-        }
- 
-      }else {
-        
-        //get parameters for extra data;
-        var bm    = getBeginMax(content,start);
-        var full  = bm.full;
-        var begin = bm.begin;
-        var max   = bm.max;
-        var cap   = bm.cap;
-        
-        //create simple sections;
-        for(var j=begin; j<content.length; j++) {        
-          if(j===max) { break; }
-          var result = content[j];
-          if(content.length!==1) {
-            createSectionSimple(builder,result,true,j);
-          }else {
-            createSectionSimple(builder,result,false,j);
-          }
-        }
-        
-        var length = content.length;
-        var diff = max-begin;
-        
-        //if length is greater than cap, append extra data section;
-        if(full>cap) {
-          var end = length-1;
-          if(length>max||length+diff-1===max) {
-            var prev = (begin-diff);
-            createExtraDataSection(builder,false,end,prev,max,content,connector);
-          }
-        }
-        
-        
-      }
-    }else if(!error) {
-      createNoFieldsSection(builder,false,connector,msg);
-    }
-  }
-  catch(err) {
-    //handle data that failed to comply to JSON schema;
-    console.error(err);
-    createUnparsedSection(builder,true,err.message,JSON.stringify(content));
+			  try {
+				await createSectionAdvanced(builder,section,j,connector,layout[j]); 
+			  }
+			  catch(er) {
+				console.error(er);
+				//try to handle nested objects that do not conform to our schema;
+				createSectionSimple(builder,section,true,j);
+			  }
+			}
+		   
+			//check for editable widgets and create update section if found;
+			var hasEditable = checkEditable(content);
+			if(hasEditable) {
+			  //stringify connector properties;
+			  connector = propertiesToString(connector);
+			  
+			  var action = CardService.newAction();
+				  action.setFunctionName('updateSectionAdvanced');
+				  action.setParameters(connector);
+				  action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+			  
+			  var caText = connector.caText;
+			  if(!caText) { caText = globalUpdateConnectorText; }
+			  
+			  var ca = cardAction(caText,globalActionClick,action);
+			  builder.addCardAction(ca);
+			}
+	 
+		  }else {
+			
+			//get parameters for extra data;
+			var bm    = getBeginMax(content,start);
+			var full  = bm.full;
+			var begin = bm.begin;
+			var max   = bm.max;
+			var cap   = bm.cap;
+			
+			//create simple sections;
+			for(var j=begin; j<content.length; j++) {        
+			  if(j===max) { break; }
+			  var result = content[j];
+			  if(content.length!==1) {
+				createSectionSimple(builder,result,true,j);
+			  }else {
+				createSectionSimple(builder,result,false,j);
+			  }
+			}
+			
+			var length = content.length;
+			var diff = max-begin;
+			
+			//if length is greater than cap, append extra data section;
+			if(full>cap) {
+			  var end = length-1;
+			  if(length>max||length+diff-1===max) {
+				var prev = (begin-diff);
+				createExtraDataSection(builder,false,end,prev,max,content,connector);
+			  }
+			}
+			
+			
+		  }
+		}else if(!error) {
+		  createNoFieldsSection(builder,false,connector,msg);
+		}
+	  }
+	  catch(err) {
+		//handle data that failed to comply to JSON schema;
+		console.error(err);
+		createUnparsedSection(builder,true,err.message,JSON.stringify(content));
+	  }
+  
   }
     
   //create Connectors representation for those that are left;
