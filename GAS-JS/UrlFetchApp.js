@@ -62,15 +62,11 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 			console.log(typeof error);
 			console.log(error instanceof Error);
 			
-			if(!error instanceof Error) {
-				response = error;
-			}else {
-				response = {
-					code    : 401,
-					headers : {},
-					content : error.message
-				};
-			}
+			response = {
+				code    : response.code,
+				headers : reponse.headers,
+				content : error.message
+			};
 			
 		}
 	}else {
