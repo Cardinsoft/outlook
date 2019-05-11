@@ -179,7 +179,7 @@ async function cardDisplay(e) {
   
   //handle failed response codes;
   if((code<200||code>=300)&&code!==401) {
-    createErrorSection(builder,true,code,error);
+    createErrorSection(builder,false,code,error);
   }else if(code===401) {
 	if(config.length>0) {
 	  await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
