@@ -87,10 +87,10 @@ const UrlFetchApp = new e_UrlFetchApp();
  * Makes a HTTP request with parameters (optional);
  * @param {String} url url to request;
  * @param {Object=} params parameters object;
- * @returns {Promise}
+ * @returns {Object} response object {code,content,headers} 
  */
 function makeRequest(url,params) {
-	return new Promise(function (resolve,reject) {
+	return new Promise( (resolve,reject) => {
 		
 		//prefent defaulting to location.href and throw an error message;
 		if(url==='') { 
@@ -122,7 +122,7 @@ function makeRequest(url,params) {
 			const hs = params.headers;
 			
 			//set request header for each param header;
-			for(var key in hs) {
+			for(let key in hs) {
 				let value = hs[key];
 				if(value) { request.setRequestHeader(key,value); }
 			}
@@ -136,7 +136,7 @@ function makeRequest(url,params) {
 			let map = {};
 			
 			//map response headers;
-			headers.forEach(function (header) {
+			headers.forEach( (header) => {
 			  let data  = header.split(': ');
 			  let name  = data.shift();
 			  let value = data.join(': ');
