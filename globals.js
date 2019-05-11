@@ -20,6 +20,7 @@ var globalAuthTypeApiTokenTitle      = 'API token auth';
 var globalAuthTypeErrorTitle         = 'Auth type mismatch';
 var globalConfigErrorWidgetTitle     = '';
 var globalConfirmWidgetTitle         = '';
+var globalContactSupportTitle        = 'Contact support';
 var globalCustomWidgetFieldTitle     = 'Field';
 var globalCustomWidgetIconTitle      = 'Connector icon';
 var globalCustomWidgetNameTitle      = 'Connector name';
@@ -37,6 +38,7 @@ var globalWelcomeWidgetTitle         = '';
 var globalAuthTypeErrorContent       = 'The Connector seems to require OAuth 2.0 authorization to work, but you set auth type to "none". Please configure OAuth properties in Settings';
 var globalConfigErrorWidgetContent   = 'Seems like you have a configuration issue! Please, reset the Add-on if this is the only section you see. Otherwise, try removing any malformed Connectors before resetting';
 var globalConnectorListErrorContent  = 'An error occured during Connector list generation';
+var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered an error. Please, see details provided below for troubleshooting';
 
 //content;
 var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
@@ -84,7 +86,7 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
+var globalCardinUrl                  = 'https://cardinsoft.com/cardin-gmail/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
 var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';

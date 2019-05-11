@@ -443,7 +443,6 @@ function createUnparsedSection(builder,isCollapsed,error,content) {
 function createErrorSection(builder,isCollapsed,code,error) {
   var section = CardService.newCardSection();
       section.setCollapsible(isCollapsed);
-      section.setNumUncollapsibleWidgets(1);
   
   //initiate error title and content;
   var header = 'Connector error', content, errorDetails = '';
@@ -464,12 +463,16 @@ function createErrorSection(builder,isCollapsed,code,error) {
         break;
       case 500:
         header  = 'Internal Server Error';
-        content = 'Connector endpoint responded with a generic error response. Please, check the error details provided below for additional information';
+        content = 'Connector endpoint resource responded with a generic error. Please, check the error details provided below for additional information';
         break;
       case 501:
         header   = 'Not Implemented';
-        content  = 'The Connector\'s method is not supported. You are witnessing an error that should not be possible.'
+        content  = 'The Connector\'s method is not supported. You are witnessing an error that should not be possible.';
         content += 'Please, do <a href="mailto:support@cardinsoft.com">contact us</a>!';
+        break;
+      case 503:
+        header  = 'Service Unavailable';
+        content = 'The endpoint resource is currently unavailable or is down for maintenance. Please, wait until it becomes available or contact service support';
         break;
     }
     
@@ -477,6 +480,9 @@ function createErrorSection(builder,isCollapsed,code,error) {
     
   }else {
     var custom = parseData(error);
+    if(typeof error==='string') { 
+      custom = {descr : globalGeneralErrorContent, additional : error}; 
+    }
     if(custom.descr) { content = custom.descr; }
     if(custom.additional) { errorDetails = custom.additional; }
   }
@@ -495,6 +501,12 @@ function createErrorSection(builder,isCollapsed,code,error) {
     var additional = simpleKeyValueWidget(globalErrorWidgetTitle,errorDetails,true);
     section.addWidget(additional);
   }
+  
+  //create contact us widget;
+  var contactText  = simpleKeyValueWidget(globalContactSupportTitle,'Be sure to contact us if you need any assistance',true);
+  var contactEmail = simpleKeyValueWidget('','<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',true,'EMAIL');
+  section.addWidget(contactText);
+  section.addWidget(contactEmail);
 
   //add section and return;
   builder.addSection(section);
