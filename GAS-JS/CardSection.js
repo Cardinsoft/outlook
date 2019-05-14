@@ -29,7 +29,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	
 	//access parameters;
 	const collapsible = this.collapsible;
-	const uncollapse  = this.numUncollapsibleWidgets;
+	let uncollapse    = this.numUncollapsibleWidgets;
 	if(uncollapse&&typeof uncollapse!=='number') { uncollapse = +uncollapse; }
 	
 	//create section and set its Id number;
@@ -63,7 +63,7 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	if(widgets.length!==0) {
 
 		//check if at least one widget is a form input;
-		const hasInput = widgets.some(function(widget){ 
+		const hasInput = widgets.some((widget) => { 
 			
 			//access widget's parameters;
 			let name      = widget.className;

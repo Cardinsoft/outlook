@@ -465,6 +465,8 @@ function uncollapsible(numuncol,overlay) {
 		}	
 	}			
 	
+	console.log(fullHeight);
+	
 	return fullHeight;
 }
 
