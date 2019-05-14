@@ -328,7 +328,7 @@ async function actionCallback(elem) {
 		e.parameters = params;
 				
 		//if provided, set load indicator;
-		if(loadIndicator&&loadIndicator!=='NONE') {
+		if(!loadIndicator||loadIndicator!=='NONE') {
 			
 			const o = new Overlay();
 			o.setColor('white');
