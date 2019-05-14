@@ -322,8 +322,6 @@ async function actionCallback(elem) {
 		const loadIndicator = a.loadIndicator;
 		const params        = a.parameters;
 		
-		console.log(loadIndicator)
-		
 		//set parameters to event object;
 		e.parameters = params;
 				
