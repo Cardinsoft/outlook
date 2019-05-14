@@ -453,6 +453,7 @@ function uncollapsible(numuncol,overlay) {
 		let child     = children.item(c);
 		let computed  = window.getComputedStyle(child);
 		
+		console.log(child);
 		console.log(computed.height);
 		console.log(computed.marginTop);
 		console.log(computed.marginBottom);
