@@ -247,6 +247,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			if(title) {	
 				let label = document.createElement('label');
 					label.className = 'ms-Label';
+					label.textContent = title;
 					inputWrap.append(label);
 			}
 			
