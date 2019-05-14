@@ -288,7 +288,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 			new fabric['Dropdown'](inputWrap);
 			
 			//quick fix for dropdown Ui;
-			//inputWrap.querySelector('.ms-Dropdown-truncator').classList.add('hidden');
+			inputWrap.querySelector('.ms-Dropdown-truncator').classList.add('hidden');
 			
 			break;
 	}
