@@ -345,6 +345,8 @@ async function actionCallback(elem) {
 		}else {
 			await GLOBAL[functionName](e);
 		}
+		
+	return;
 }
 //==========================================END CALLBACKS=======================================//
 
