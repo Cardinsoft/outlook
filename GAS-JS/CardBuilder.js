@@ -57,37 +57,18 @@ CardBuilder.prototype.build = async function () {
 	
 	const sections = [];
 		
-	if(cardSections.length!==0) {
+	if(cardSections.length>0) {
 		
 		let serialize = true;
 		if(cardSections.length===1) { serialize = false; }
 		
 		for(let s=0; s<cardSections.length; s++) {
-			
 			let cardSection = cardSections[s];
-			
 			let numuncoll   = cardSection.numUncollapsibleWidgets;
 			
 			let section = await cardSection.appendToUi(wrap,serialize,s);
 			
 			sections.push({s:section,u:numuncoll});
-			
-			//let collapsible = section.querySelector('.collapsible');
-			/*
-			if(collapsible!==null) {
-				let overlay = collapsible.querySelector('form');
-				if(overlay===null) { overlay = collapsible; }
-				let toggler = section.querySelector('.toggler');
-				
-				let initial = uncollapsible(numuncoll,overlay);
-				overlay.style.height = initial+'px';
-
-				if(toggler!==null) { 
-					toggler.addEventListener('click',collapse(toggler,overlay,'height',1,4,initial));
-				}
-				
-			}
-			*/
 		}
 		
 		sections.forEach( (obj) => {
