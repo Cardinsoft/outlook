@@ -452,13 +452,7 @@ function uncollapsible(numuncol,overlay) {
 	for(let c=0; c<chLength; c++) {
 		let child     = children.item(c);
 		let computed  = window.getComputedStyle(child);
-		
-		console.log(child);
-		console.log(child.style.height);
-		console.log(computed.height);
-		console.log(computed.marginTop);
-		console.log(computed.marginBottom);
-		
+
 		let computedT = trimPx(computed.marginTop);
 		let computedH = trimPx(computed.height);
 		let computedB = trimPx(computed.marginBottom);
@@ -470,9 +464,7 @@ function uncollapsible(numuncol,overlay) {
 				fullHeight += computedB + computedH;
 			}
 		}	
-	}			
-	
-	console.log(fullHeight);
+	}
 	
 	return fullHeight;
 }
