@@ -66,6 +66,8 @@ CardBuilder.prototype.build = async function () {
 			
 			let cardSection = cardSections[s];
 			
+			let numuncoll   = cardSection.numUncollapsibleWidgets;
+			
 			let section = await cardSection.appendToUi(wrap,serialize,s);
 			
 			sections.push({s:section,u:numuncoll});
