@@ -897,13 +897,7 @@ function createSectionChooseType(builder,isCollapsed,header) {
   var pipedrive  = new Pipedrive();
     
   //create an array of used types;
-  var types = [flow,lacrm,pipedrive];
-  
-  //add github conn if in testing mode;
-  if(globalIncludeGitHub) {
-    var github = new GitHub();
-    types.push(github);
-  }
+  var types = getTypes();
   
   //create widgets for each type;
   types.forEach(function(type){ 

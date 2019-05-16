@@ -108,10 +108,10 @@ async function createConnector(e) {
   
   try {
     //get configuration or create a new one if none found;
-    var config = await getProperty('config','user');
+    var config = await getConfig();
     if(config===null) { await createSettings(); }
     
-    config = await getProperty('config','user');
+    config = await getConfig();
     
     //reset default connectors if new one is default;
     if(connector.isDefault) {
@@ -248,12 +248,12 @@ async function updateConnector(e) {
   }
 
   //connector index (for ease of flow);
-  var config = await getProperty('config','user');
+  var config = await getConfig();
   var index  = getIndex(config,e.parameters);
 
   try {
     //get configuration;
-    var config = await getProperty('config','user');
+    var config = await getConfig();
 
     //reset default connectors if updated one is default;
     if(connector.isDefault) {
@@ -287,7 +287,7 @@ async function removeConnector(e) {
 		  var builder = CardService.newActionResponseBuilder();
 
 		  //connector index (for ease of flow);
-		  var config = await getProperty('config','user');
+		  var config = await getConfig();
 		  var index  = getIndex(config,e.parameters);
 		 
 		  //access parameters and formInput;
@@ -301,7 +301,7 @@ async function removeConnector(e) {
 		 
 		  try {
 			//get configuration;
-			var src = await getProperty('config','user');
+			var src = await getConfig();
 			
 			//remove connector and notify the user of success;
 			src = src.filter(function(connect,idx){
