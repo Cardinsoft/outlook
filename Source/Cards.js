@@ -171,7 +171,7 @@ async function cardDisplay(e) {
       builder.setHeader(header);
   
   //access Connector config and get its index;
-  var config = await getProperty('config','user');
+  var config = await getConfig();
   var index  = getIndex(config,connector);
     
   //filter out current Connector;
@@ -298,13 +298,7 @@ async function cardDisplay(e) {
 async function cardOpen(e) {  
   var builder = CardService.newCardBuilder();
   
-  var src = await getProperty('config','user');
-  var config;
-  if(src!==null) {
-    config = src;
-  }else {
-    config = [];
-  }
+  var config = await getConfig();
   
   //get message object;
   var msg = getToken(e);  
@@ -451,14 +445,8 @@ async function cardOpen(e) {
  */
 async function cardSettings(e) {
   var builder = CardService.newCardBuilder();
-      
-  var src = await getProperty('config','user');
-  var config;
-  if(src!==null) {
-    config = src;
-  }else {
-    config = [];
-  }
+
+  var config = await getConfig();
   
   if(config.length!==0) {
     createConfiguredConnectorsSection(builder,false,config);

@@ -509,7 +509,7 @@ async function performFullReset(e) {
   
   //try to delete all OAuth2.0 specific properties;
   try {
-    var config = await getProperty('config','user');
+    var config = await getConfig();
     if(config.length!==0) {
       config.forEach(function(connector){
         var auth = new this[connector.type]().auth;
