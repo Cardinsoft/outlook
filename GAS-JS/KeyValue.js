@@ -177,7 +177,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 		setAction(widget,action);
 		
 		//set event listener to widget;
-		widget.addEventListener('click',async function(){
+		widget.addEventListener('click',async function(event){
+			event.stopPropagation();
 			return actionCallback(this);
 		});
 	}
