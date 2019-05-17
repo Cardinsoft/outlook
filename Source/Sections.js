@@ -24,21 +24,8 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
     if(Object.keys(cAuth).length!==0) {
       cAuth.name = connector.name;
       createWidgetOpenAuth(section,globalOpenAuthText,cAuth);
-    }else {
-      var auth   = {};
-      var custom = {};
-      if(authType===globalOAuth2AuthType) {
-        custom.name     = connector.name;
-        custom.scope    = connector.scope;
-        custom.urlAuth  = connector.urlAuth;
-        custom.urlToken = connector.urlToken;
-        custom.id       = connector.id;
-        custom.secret   = connector.secret;
-        if(connector.hint)    { custom.hint = connector.hint; }
-        if(connector.offline) { custom.offline = connector.offline; }
-        if(connector.prompt)  { custom.prompt = connector.prompt; }
-        createWidgetOpenAuth(section,globalOpenAuthText,auth,custom);
-      }
+    }else if(authType===globalOAuth2AuthType) {
+      createWidgetOpenAuth(section,globalOpenAuthText,connector);
     }
   }else {
     //explain that there was a connector type mismatch;
