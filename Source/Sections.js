@@ -621,7 +621,7 @@ function createSectionConfig(builder,config) {
           
           //set Switch or TextButton to widget if provided;
           if(switchValue) {
-            element = switchWidget(title,content,name,switchValue,switchValue);
+            element = switchWidget(iconUrl,title,content,name,switchValue,switchValue);
           }else if(buttonText) {
               if(disabled===undefined) { disabled = true; }
               if(!filled) { filled = false; }
@@ -782,7 +782,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               
               //set Switch or TextButton to widget if provided;
               if(switchValue) {
-                element = switchWidget(title,content,name,switchValue,switchValue);
+                element = switchWidget(icon,title,content,name,switchValue,switchValue);
               }else {
               
                 //set section and widget index and stringify;

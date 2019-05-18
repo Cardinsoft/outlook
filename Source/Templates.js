@@ -276,6 +276,7 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
 
 /**
  * Creates a Switch widget (KeyValue is used as base constructor);
+ * @param {String} icon url or enum of icon to use;
  * @param {String} top label text;
  * @param {String} content content text;
  * @param {String} name unique fieldname (non-unique if multi-switch widget);
@@ -286,10 +287,20 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
  * @param {Object} params parameters to pass to function;
  * @returns {KeyValue} 
  */
-function switchWidget(top,content,name,selected,value,changeFunc,hasSpinner,params) {  
+function switchWidget(icon,top,content,name,selected,value,changeFunc,hasSpinner,params) {  
   //create base KeyValue widget and set required parameters;
   var keyValue = CardService.newKeyValue();
       keyValue.setContent(content);
+
+  //set icon if found or set icon url if not;
+  if(icon&&icon!=='') { 
+    var iconEnum = CardService.Icon[icon];
+    if(iconEnum) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(icon);
+    } 
+  }
 
   //set top title if found;
   if(top&&top!=='') { keyValue.setTopLabel(top); }
