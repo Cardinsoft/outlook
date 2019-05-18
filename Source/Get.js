@@ -9,6 +9,11 @@ function getTypes(filter) {
   var flow       = new Flow();
   var lacrm      = new LessAnnoyingCRM();
   var pipedrive  = new Pipedrive();  
+
+  //set type names to function name;
+  flow.name       = Flow.name;
+  lacrm.name      = LessAnnoyingCRM.name;
+  pipedrive.name  = Pipedrive.name;
   
   //create an array of used types;
   var types = [flow,lacrm,pipedrive];
