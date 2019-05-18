@@ -296,9 +296,9 @@ function switchWidget(icon,top,content,name,selected,value,changeFunc,hasSpinner
   if(icon&&icon!=='') { 
     var iconEnum = CardService.Icon[icon];
     if(iconEnum) {
-      widget.setIcon(iconEnum);
+      keyValue.setIcon(iconEnum);
     }else {
-      widget.setIconUrl(icon);
+      keyValue.setIconUrl(icon);
     } 
   }
 
