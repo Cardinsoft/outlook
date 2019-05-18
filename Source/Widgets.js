@@ -445,7 +445,7 @@ function createWidgetSwitchManual(section,isManual) {
   if(isManual===undefined||isManual==='true') { isManual = true; }else if(isManual==='false') { isManual = false; }
   
   //create Switch for manual / auto behaviour choice;
-  var widget = switchWidget('',globalCustomWidgetSwitchText,globalManualFieldName,isManual,true);
+  var widget = switchWidget('','',globalCustomWidgetSwitchText,globalManualFieldName,isManual,true);
   
   //append to section and return;
   section.addWidget(widget);
@@ -464,7 +464,7 @@ function createWidgetSwitchDefault(section,isDefault) {
   if(isDefault===undefined||isDefault==='false') { isDefault = false; }else if(isDefault==='true') { isDefault = true; }
   
   //create Switch for default / listed behaviour choice;
-  var widget = switchWidget('',globalIsDefaultWidgetSwitchText,globalDefaultFieldName,isDefault,true);
+  var widget = switchWidget('','',globalIsDefaultWidgetSwitchText,globalDefaultFieldName,isDefault,true);
   
   //append to section and return;
   section.addWidget(widget);
