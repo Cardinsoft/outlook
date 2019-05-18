@@ -21,6 +21,7 @@ function getTypes(filter) {
   //add github conn if in testing mode;
   if(globalIncludeGitHub) {
     var github = new GitHub();
+	github.name = GitHub.name;
     types.push(github);
   }  
   
