@@ -1,9 +1,9 @@
 function Pipedrive() {
   Connector.call(this);
-  this.icon  = globalPipedriveIconUrl;
-  this.name  = 'Pipedrive';
-  this.url   = 'pipedrive.com/v1';
-  this.short = globalPipedriveShort;
+  this.icon     = globalPipedriveIconUrl;
+  this.typeName = 'Pipedrive';
+  this.url      = 'pipedrive.com/v1';
+  this.short    = globalPipedriveShort;
   this.config = [
     
   ];

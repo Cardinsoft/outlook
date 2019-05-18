@@ -4,7 +4,7 @@ function Connector(icon,name,url) {
   if(name===undefined) { name = ''; }
   if(url===undefined)  { url = ''; }
   this.icon = globalCustomIconUrl;
-  this.name = 'Connector';
+  this.typeName = 'Connector';
   this.basic = {
       'header': 'Basic config',
       'isCollapsible': false,
