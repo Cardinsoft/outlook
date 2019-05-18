@@ -200,11 +200,11 @@ function createWidgetCreateType(section,type) {
 
   //access parameters in type;
   var params = {
-    'basic': JSON.stringify(type.basic),
-    'config': JSON.stringify(type.config),
-    'type': type.name,
-    'icon': type.icon,
-    'name': type.name
+    'basic'  : JSON.stringify(type.basic),
+    'config' : JSON.stringify(type.config),
+    'type'   : type.name,
+    'icon'   : type.icon,
+    'name'   : type.typeName
   };
   if(type.short) { params.short = type.short; }
   
