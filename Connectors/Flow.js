@@ -1,9 +1,9 @@
 //Flow connector class;
 function Flow() {
   Connector.call(this);
-  this.icon  = globalFlowIconUrl;
-  this.name  = 'Flow';
-  this.short = globalFlowShort;
+  this.icon     = globalFlowIconUrl;
+  this.typeName = 'Flow';
+  this.short    = globalFlowShort;
   this.config = [
     {
       'header': 'Flow config',

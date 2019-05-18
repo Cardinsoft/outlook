@@ -1,9 +1,9 @@
 function LessAnnoyingCRM() {
   Connector.call(this);
-  this.icon   = globalLACRMiconUrl; 
-  this.name   = 'LessAnnoyingCRM';
-  this.short  = globalLACRMshort;
-  this.url    = 'https://api.lessannoyingcrm.com';
+  this.icon     = globalLACRMiconUrl; 
+  this.typeName = 'LessAnnoyingCRM';
+  this.short    = globalLACRMshort;
+  this.url      = 'https://api.lessannoyingcrm.com';
   this.config = [
     {
       widgets : [

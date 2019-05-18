@@ -1,13 +1,12 @@
 //sample GitHub connector class;
 function GitHub() {
   Connector.call(this);
-  this.icon   = globalGitHubIconUrl;
-  this.name   = 'GitHub';
-  this.short  = globalGitHubShort;
-  this.url    = 'https://api.github.com/user';
+  this.icon     = globalGitHubIconUrl;
+  this.typeName = 'GitHub';
+  this.short    = globalGitHubShort;
+  this.url      = 'https://api.github.com/user';
   this.config = [];
   this.auth = {
-    name: 'GitHub',
     urlAuth: 'https://github.com/login/oauth/authorize',
     urlToken: 'https://github.com/login/oauth/access_token',
     id: '346b6610e8ebf7dd79b8',

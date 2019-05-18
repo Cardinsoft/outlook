@@ -11,7 +11,7 @@ function cardCreate(e) {
   
   //create and set card header;
   var header = CardService.newCardHeader();
-      header.setTitle(type.name);
+      header.setTitle(type.typeName);
       header.setImageUrl(type.icon);
       builder.setHeader(header);
   
@@ -39,8 +39,8 @@ function cardCreate(e) {
   
   //create config object and section;
   var config = {
-    header: globalConfigHeader,
-    widgets: widgets
+    header  : globalConfigHeader,
+    widgets : widgets
   };
   createSectionConfig(builder,config);
   
