@@ -1,4 +1,20 @@
 /**
+ * Creates KeyValue widgets with help info;
+ * @param {CardSection} section section to append widget sets;
+ * @returns {Array}
+ */
+function createWidgetGetSupport(section) {
+  //create widgets with help prompt and email;
+  var contactText  = simpleKeyValueWidget(globalContactSupportTitle,'Be sure to contact us if you need any assistance',true);
+  var contactEmail = simpleKeyValueWidget('','<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',true,'EMAIL');
+  
+  //append to section and return;
+  section.addWidget(contactText);
+  section.addWidget(contactEmail);
+  return [contactText,contactEmail];  
+}
+
+/**
  * Creates KeyValue widget with 401 code and text explaining further actions;
  * @param {CardSection} section section to append widget sets;
  * @param {String} content widget content or value;
