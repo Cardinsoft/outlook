@@ -445,7 +445,7 @@ async function cardOpen(e) {
  */
 async function cardSettings(e) {
   var builder = CardService.newCardBuilder();
-
+      
   var config = await getConfig();
   
   if(config.length!==0) {
@@ -453,8 +453,21 @@ async function cardSettings(e) {
   }
   
   await createSectionChooseType(builder,false,globalChooseTypeHeader);
-  await createAdvanced(builder,false,globalAdvancedHeader);
+  await createSectionSettings(builder,false,globalSettingsHeader);
   
+  return builder.build();
+}
+
+/**
+ * Generates advanced settings card according to configuration;
+ * @param {Object} e event object;
+ */
+function cardAdvanced(e) {
+  var builder = CardService.newCardBuilder();
+	  builder.setHeader(CardService.newCardHeader().setTitle(globalAdvancedHeader));
+  
+  createSectionAdvanced(builder,false);
+
   return builder.build();
 }
 
