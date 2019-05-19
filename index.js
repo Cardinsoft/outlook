@@ -9,6 +9,10 @@ Office.initialize = (reason) => {
 		const settingsAction = CardService.newAction();
 			settingsAction.setFunctionName('universalSettings');
 			settingsAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+			
+		const advancedAction = CardService.newAction();
+			advancedAction.setFunctionName('universalAdvanced');
+			advancedAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);		
 				
 		const helpAction = CardService.newAction();
 			helpAction.setFunctionName('universalHelp');
@@ -17,6 +21,7 @@ Office.initialize = (reason) => {
 		const items = [
 			{icon : 'ms-Icon--Home',     text : 'Home',     action : JSON.stringify(homeAction)},
 			{icon : 'ms-Icon--Settings', text : 'Settings', action : JSON.stringify(settingsAction)},
+			{icon : 'ms-Icon--Advanced', text : 'Advanced', action : JSON.stringify(advancedAction)},
 			{icon : 'ms-Icon--Help',     text : 'Help',     action : JSON.stringify(helpAction)}
 		];
 		

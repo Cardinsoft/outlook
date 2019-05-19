@@ -15,6 +15,14 @@ async function universalSettings(e) {
 };
 
 /**
+ * Opens advanced settings card as corresponding universal action callback;
+ * @param {Object} e event object;
+ */
+async function universalAdvanced(e) {
+	await cardAdvanced(e); 
+}
+
+/**
  * Opens help card as corresponding universal action callback;
  * @param {Object} e event object;
  */
