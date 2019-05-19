@@ -490,10 +490,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
   }
   
   //create contact us widget;
-  var contactText  = simpleKeyValueWidget(globalContactSupportTitle,'Be sure to contact us if you need any assistance',true);
-  var contactEmail = simpleKeyValueWidget('','<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',true,'EMAIL');
-  section.addWidget(contactText);
-  section.addWidget(contactEmail);
+  createWidgetGetSupport(section);
 
   //add section and return;
   builder.addSection(section);
