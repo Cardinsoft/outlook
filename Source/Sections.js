@@ -1053,37 +1053,6 @@ function createCustomIconsSection(builder,isCollapsed,content) {
   return section;
 }
 
-
-/**
- * Creates section for advanced settings;
- * @param {CardBuilder} builder card builder to append section to;
- * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {String} header section header text;
- * @returns {CardSection}
- */
-async function createAdvanced(builder,isCollapsed,header) {
-  
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-      section.setCollapsible(isCollapsed);
-  
-  //set optional parameters;
-  if(header) { section.setHeader(header); }
-
-  //create sorting widgets;
-  await createWidgetSortBy(section);
-
-  //create reset prompt;
-  createWidgetResetText(section);
-  
-  //create reset button with reset action;
-  createWidgetResetSubmit(section);
-
-  //append section and return it;
-  builder.addSection(section);
-  return section;  
-}
-
 /**
  * Creates section for welcome info;
  * @param {CardBuilder} builder card builder to append section to;
@@ -1106,6 +1075,57 @@ function createSectionWelcome(builder,isCollapsed,header) {
   //append section and return it;
   builder.addSection(section);
   return section;
+}
+
+/**
+ * Creates section for settings;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ * @returns {CardSection}
+ */
+async function createSectionSettings(builder,isCollapsed,header) {
+  
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  
+  //set optional parameters;
+  if(header) { section.setHeader(header); }
+
+  //create sorting widgets;
+  await createWidgetSortBy(section); 
+  
+  //append section and return it;
+  builder.addSection(section);
+  return section;
+}
+
+/**
+ * Creates section for advanced settings;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {String} header section header text;
+ * @returns {CardSection}
+ */
+function createSectionAdvanced(builder,isCollapsed,header) {
+  
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  
+  //set optional parameters;
+  if(header) { section.setHeader(header); }
+
+  //create reset prompt;
+  createWidgetResetText(section);
+  
+  //create reset button with reset action;
+  createWidgetResetSubmit(section);
+
+  //append section and return it;
+  builder.addSection(section);
+  return section;  
 }
 
 /**
