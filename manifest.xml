@@ -14,12 +14,12 @@
 	<DefaultLocale>en-US</DefaultLocale>
 
 	<DisplayName DefaultValue="Cardin" />
-	<Description DefaultValue="The Add-in allows creating custom connections to APIs to fetch and display data"/>
+	<Description DefaultValue="Cardin for Outlook brings together info from multiple data sources such as CRM systems and workflows without you ever needing to get out of the comfort of your Outlook client"/>
 
 	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
 	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
 
-	<SupportUrl DefaultValue="https://cardinsoft.github.io/outlook/support.html" />
+	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook" />
 
 	<Hosts>
 		<Host Name="Mailbox" />
@@ -53,9 +53,6 @@
 			<Hosts>
 				<Host xsi:type="MailHost">
 					<DesktopFormFactor>
-						<!-- Location of the Functions that UI-less buttons can trigger (ExecuteFunction Actions). -->
-						<FunctionFile resid="functionFile" />
-
 						<!-- Message Read -->
 						<ExtensionPoint xsi:type="MessageReadCommandSurface">
 							<OfficeTab id="TabDefault">
@@ -95,7 +92,6 @@
 					<bt:Image id="cardin-icon-80" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
 				</bt:Images>
 				<bt:Urls>
-					<bt:Url id="functionFile" DefaultValue="https://cardinsoft.github.io/outlook/function-file/function-file.html"/>
 					<bt:Url id="paneReadUrl" DefaultValue="https://cardinsoft.github.io/outlook/index.html"/>
 				</bt:Urls>
 				<bt:ShortStrings>
