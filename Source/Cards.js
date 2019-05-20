@@ -466,7 +466,7 @@ function cardAdvanced(e) {
   var builder = CardService.newCardBuilder();
 	  builder.setHeader(CardService.newCardHeader().setTitle(globalAdvancedHeader));
   
-  createSectionAdvanced(builder,false);
+  createSectionAdvancedSettings(builder,false);
 
   return builder.build();
 }

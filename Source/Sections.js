@@ -1105,7 +1105,7 @@ async function createSectionSettings(builder,isCollapsed,header) {
  * @param {String} header section header text;
  * @returns {CardSection}
  */
-function createSectionAdvanced(builder,isCollapsed,header) {
+function createSectionAdvancedSettings(builder,isCollapsed,header) {
   
   //create section and set required parameters;
   var section = CardService.newCardSection();
