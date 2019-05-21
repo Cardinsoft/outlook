@@ -164,6 +164,92 @@ class Menu {
 }
 
 /**
+ * Creates an instance of Selector;
+ */
+class Selector {
+	constructor(){
+        this.className = 'Select';
+        this.element;
+        this.options = [];
+        this.isOpen = false;
+    }
+    create(parent,name) {
+        //create displayed select wrapper;
+        const wrap = document.createElement('div');
+        wrap.classList.add(this.className/*,'singulared'*/);
+        parent.append(wrap);
+
+        //create select for form input;
+        const input = document.createElement('select');
+        input.name = name;
+        input.hidden = true;
+        wrap.append(input);
+		  
+        this.element = wrap;
+          
+        return this;
+    }
+    add(items) {
+      	//add item to instance;
+        const opt  = this.options;
+        const elem = this.element;
+        
+        //add items to select;
+        if(items instanceof Array) {
+        	items.forEach( (item) => { opt.push(item); });
+        }else {
+        	opt.push(items);
+		}
+        
+        //append options to select;
+        opt.forEach( (o) => {      
+            //create displayed option;
+            const optionUi = document.createElement('div');
+            optionUi.classList.add('selectItem');
+            elem.append(optionUi);
+            
+            //create displayed text;
+            const text = document.createElement('p');
+            text.textContent = o.text;
+            text.classList.add('selectText');
+            optionUi.append(text);
+            
+            //create option for form input;
+            const option = document.createElement('option');
+            option.value = o.value;
+            elem.children.item(0).append(option);  
+        });
+		
+    return this;
+	}
+    remove(index) {
+        //remove item from instance;
+        const opt = this.options;
+        opt.splice(index,1);
+        this.element.children.item(index+1).remove();
+          
+        return this;
+    }
+    select(index) {
+        //select option;
+        const opt  = this.options;
+        const elem = this.element;
+          
+        opt[index].selected = true;
+        opt.forEach( (o,idx) => {
+            if(o.selected&&idx!==index) { o.selected = false; }
+        });
+          
+        //elem.children.item(0).children.item(index).selected = true;
+		
+		return this;
+    }
+    toggle() {
+		
+	}
+}
+
+/**
  * Creates an instance of Overlay;
  */
 class Overlay {
