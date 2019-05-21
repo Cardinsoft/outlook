@@ -28,7 +28,8 @@ Office.initialize = (reason) => {
 		//initiate menu with universal actions;
 		const menu = new Menu();
 		menu.create(items);
-		$('.navelem').click(() => {
+		$('.navelem').click( (event) => {
+			event.preventDefault();
 			menu.switchShow();
 		});
 		
