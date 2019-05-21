@@ -36,7 +36,7 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 		
 		//close menu on out-of-boundaries click;
-		$('body').click( (event) => {
+		$('#app-clickarea').click( (event) => {
 			
 			event.stopPropagation();
 			
