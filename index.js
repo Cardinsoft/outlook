@@ -35,6 +35,7 @@ Office.initialize = (reason) => {
 		
 		$('#app-body').show();
 		
+		/*
 		//close menu on out-of-boundaries click;
 		$('#app-clickarea').click( (event) => {
 			
@@ -63,6 +64,7 @@ Office.initialize = (reason) => {
 				}	
 			}
 		});
+		*/
 		
 		//show app body overlay;
 		const o = new Overlay();
