@@ -41,11 +41,11 @@ Office.initialize = (reason) => {
 		elem.addEventListener('pointerover',function () {
             
             const out = function () { 
-                this.removeEventListener('pointerout',out);
+                elem.removeEventListener('pointerout',out);
                 
                 const switchMenu = function () {
 					if(menu.isOpen) { menu.switchShow(); }
-                    this.removeEventListener('click',switchMenu);
+                    body.removeEventListener('click',switchMenu);
                 }
                 
                 body.addEventListener('click',switchMenu);
