@@ -36,34 +36,27 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 		
 		/*
-		//close menu on out-of-boundaries click;
-		$('#app-clickarea').click( (event) => {
-			
-			event.stopPropagation();
-			
-			let computed = window.getComputedStyle(menu.menu);
-			let width    = trimPx(computed.width);
-			let height   = trimPx(computed.height);
-
-			if(width>0) {
-				
-				let cr = menu.menu.getBoundingClientRect();
-				let t = cr.top;
-				let l = cr.left;
-				let r = cr.right;
-				//let b = cr.bottom;
-				let mx = event.clientX;
-				let my = event.clientY;
-
-				if(((mx<l||mx>width)&&my>=t&&my<=height)||my<t||my>height) {
-					console.log('switching')
-					console.log(cr)
-					console.log(mx)
-					console.log(my)
+		
+		let elem = menu.menu;
+		
+		elem.addEventListener('pointerover',function () {
+            
+            const out = function () { 
+                this.removeEventListener('pointerout',out);
+                
+                const switchMenu = function () {
 					menu.switchShow();
-				}	
-			}
-		});
+                    this.removeEventListener('click',switchMenu);
+                }
+                
+                $('body').click(switchMenu);
+                
+            }
+            
+            elem.addEventListener('pointerout',out);
+        
+        });		
+	
 		*/
 		
 		//show app body overlay;
