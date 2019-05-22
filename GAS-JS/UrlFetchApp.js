@@ -1,15 +1,3 @@
-
-( () => {
-	
-	XMLHttpRequest.prototype.open = () => {
-		
-		console.log(this);
-		
-	}
-	
-})();
-
-
 /*(function() {
     var cors_api_host = 'cors-anywhere.herokuapp.com';
     var cors_api_url = 'https://' + cors_api_host + '/';
@@ -123,7 +111,7 @@ function makeRequest(url,params) {
 		//initiate and open XMLHttpRequest;
 		let request = new XMLHttpRequest();
 			request.timeout = 29000;
-			request.open(params.method.toUpperCase(),url);
+			request.open(params.method.toUpperCase(),'https://cardin.azurewebsites.net/api/request?code=yPVbhskFWGCHMMizLE8mRRc6o9h9aB4ZZPVeD77WoJlMKj6TwLbGZg==&endpoint='+url);
 		
 		//if content type is provided -> set request Content-Type header;
 		if(params.contentType) { request.setRequestHeader('Content-Type',params.contentType); }
