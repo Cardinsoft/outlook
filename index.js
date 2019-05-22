@@ -44,7 +44,7 @@ Office.initialize = (reason) => {
                 this.removeEventListener('pointerout',out);
                 
                 const switchMenu = function () {
-					menu.switchShow();
+					if(menu.isOpen) { menu.switchShow(); }
                     this.removeEventListener('click',switchMenu);
                 }
                 
