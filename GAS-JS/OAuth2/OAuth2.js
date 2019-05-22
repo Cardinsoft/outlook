@@ -33,10 +33,8 @@ class Service {
 }
 //add new methods to the class - FOR NOW WITH NO OPTIONAL PARAMETERS;
 Service.prototype.getAuthorizationUrl = function(parameters) {
-	//initiate JSO with set parameters;
+	//initiate Service with set parameters;
 	const service = this.build();
-	
-	service.setLoader(jso.Popup);
 	
 	let params = this.params;
 
@@ -132,7 +130,7 @@ Service.prototype.setCache = function(userCache) {};
 Service.prototype.setLock = function(userLock) {};
 
 Service.prototype.hasAccess = function() {
-	//initiate JSO with set parameters;
+	//initiate Service with set parameters;
 	const service = this.build();
 	
 	//await for token;
@@ -146,7 +144,7 @@ Service.prototype.hasAccess = function() {
 	//if(token!==null) { return true; }else { return false; }
 };
 Service.prototype.getAccessToken = async function() {
-	//initiate JSO with set parameters;
+	//initiate Service with set parameters;
 	const service = this.build();
 	
 	service.setLoader(jso.IFramePassive);
@@ -168,7 +166,7 @@ Service.prototype.getAccessToken = async function() {
 	return captured;
 }
 Service.prototype.reset = async function() {
-	//initiate JSO with set parameters;
+	//initiate Service with set parameters;
 	const service = this.build();	
 	
 	await service.wipeTokens();
