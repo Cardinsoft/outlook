@@ -39,7 +39,6 @@ Office.initialize = (reason) => {
 		const elem = menu.menu;
 		const body = document.body;
 		elem.addEventListener('pointerover',function () {
-			console.log(menu);
 			const out = function () { 
 				elem.removeEventListener('pointerout',out);
 				const switchMenu = function () {
