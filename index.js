@@ -34,10 +34,9 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#app-body').show();
-		
-		/*
-		
+
 		let elem = menu.menu;
+		
 		
 		elem.addEventListener('pointerover',function () {
             
@@ -55,9 +54,8 @@ Office.initialize = (reason) => {
             
             elem.addEventListener('pointerout',out);
         
-        });		
-	
-		*/
+        });
+		
 		
 		//show app body overlay;
 		const o = new Overlay();
