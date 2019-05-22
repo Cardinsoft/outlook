@@ -3,7 +3,7 @@
 	
 	XMLHttpRequest.prototype.open = () => {
 		
-		console.log(arguments);
+		console.log(this);
 		
 	}
 	
