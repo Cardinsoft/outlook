@@ -11,7 +11,7 @@ function cardCreate(e) {
   
   //create and set card header;
   var header = CardService.newCardHeader();
-      header.setTitle(type.typeName);
+      header.setTitle(type.name);
       header.setImageUrl(type.icon);
       builder.setHeader(header);
   
