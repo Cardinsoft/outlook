@@ -27,7 +27,7 @@ class Service {
 		};
 	}
 	build() {
-		const service = new jso.JSO(this.params);
+		const service = {};
 		return service;
 	}
 }
