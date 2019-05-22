@@ -35,8 +35,8 @@ Office.initialize = (reason) => {
 		
 		$('#app-body').show();
 
-		let elem = menu.menu;
-		
+		const elem = menu.menu;
+		const body = document.body;
 		
 		elem.addEventListener('pointerover',function () {
             
@@ -48,7 +48,7 @@ Office.initialize = (reason) => {
                     this.removeEventListener('click',switchMenu);
                 }
                 
-                $('body').click(switchMenu);
+                body.addEventListener('click',switchMenu);
                 
             }
             
