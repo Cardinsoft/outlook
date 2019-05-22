@@ -1,4 +1,16 @@
-(function() {
+
+( () => {
+	
+	XMLHttpRequest.prototype.open = () => {
+		
+		console.log(arguments);
+		
+	}
+	
+})();
+
+
+/*(function() {
     var cors_api_host = 'cors-anywhere.herokuapp.com';
     var cors_api_url = 'https://' + cors_api_host + '/';
     var slice = [].slice;
@@ -13,7 +25,7 @@
         }
         return open.apply(this, args);
     };
-})();
+})();*/
 
 //===========================================START URL FETCH===========================================//
 //Emulate HTTPResponse class;
