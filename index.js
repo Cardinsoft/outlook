@@ -39,21 +39,19 @@ Office.initialize = (reason) => {
 		const body = document.body;
 		
 		elem.addEventListener('pointerover',function () {
-			if(!this.classList.contains('singulared')) {
 			
-				const out = function () { 
-					elem.removeEventListener('pointerout',out);
+			const out = function () { 
+				elem.removeEventListener('pointerout',out);
 					
-					const switchMenu = function () {
-						if(menu.isOpen) { menu.switchShow(); }
-						body.removeEventListener('click',switchMenu);
-					}
-					
-					body.addEventListener('click',switchMenu);
+				const switchMenu = function () {
+					if(menu.isOpen) { menu.switchShow(); }
+					body.removeEventListener('click',switchMenu);
 				}
-				
-				elem.addEventListener('pointerout',out);
+					
+				body.addEventListener('click',switchMenu);
 			}
+				
+			elem.addEventListener('pointerout',out);
         });
 		
 		
