@@ -39,21 +39,21 @@ Office.initialize = (reason) => {
 		const body = document.body;
 		
 		elem.addEventListener('pointerover',function () {
-            
-            const out = function () { 
-                elem.removeEventListener('pointerout',out);
-                
-                const switchMenu = function () {
-					if(menu.isOpen) { menu.switchShow(); }
-                    body.removeEventListener('click',switchMenu);
-                }
-                
-                body.addEventListener('click',switchMenu);
-                
-            }
-            
-            elem.addEventListener('pointerout',out);
-        
+			if(!this.classList.contains('singulared')) {
+			
+				const out = function () { 
+					elem.removeEventListener('pointerout',out);
+					
+					const switchMenu = function () {
+						if(menu.isOpen) { menu.switchShow(); }
+						body.removeEventListener('click',switchMenu);
+					}
+					
+					body.addEventListener('click',switchMenu);
+				}
+				
+				elem.addEventListener('pointerout',out);
+			}
         });
 		
 		
@@ -152,7 +152,13 @@ class Menu {
 	switchShow() {
 		let menu = menus[0].menu;
 		let cl = menu.classList;
-		if(cl.contains('singulared')) { menus[0].isOpen = true; }else { menus[0].isOpen = false; }
+		
+		if(cl.contains('singulared')) { 
+			this.isOpen = true; 
+		}else { 
+			this.isOpen = false; 
+		}
+		
 		menu.classList.toggle('singulared');
 	}
 }
