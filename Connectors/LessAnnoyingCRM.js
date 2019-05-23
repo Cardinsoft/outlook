@@ -291,6 +291,7 @@ function LessAnnoyingCRM() {
       
       //perform data fetch and return result;
       result  = await performFetch(endpoint+query,method,headers);
+	  console.log(result);
       code    = result.code;
       var content = JSON.parse(result.content);
       success = content.Success;
