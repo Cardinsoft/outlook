@@ -308,6 +308,7 @@ async function updateSectionAdvanced(e) {
       delete connector.caText;
     }
     resp = await cType.update(msg,connector,forms,data,method);
+	if(connector.method==='add') { delete connector.method; }
   }else {
     resp = await cType.run(msg,connector,data);
   }
