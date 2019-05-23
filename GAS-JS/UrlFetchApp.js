@@ -71,13 +71,17 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 	
 	//check if response is an object and if it has properties;
 	const checkResp  = typeof response==='object';
-	const checkProps = Object.keys(response).length>0;
 	
 	//make sure response is parsed correctly and return HTTPResponse instance;
-	if(checkResp) {
-		if(checkProps) {
-			return new HTTPResponse(response.headers,response.content,response.code);
-		}
+	if(!checkResp) {
+		checkResp = JSON.parse(response);
+	}
+	
+	//check if response object has properties;
+	const checkProps = Object.keys(response).length>0;
+	
+	if(checkProps) {
+		return new HTTPResponse(response.headers,response.content,response.code);
 	}
 }
 
