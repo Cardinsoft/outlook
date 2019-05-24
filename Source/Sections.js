@@ -339,7 +339,6 @@ function createNoFieldsSection(builder,isCollapsed,connector,msg) {
   section.addWidget(noData);
   
   //create TextButton for adding contact if config provides one;
-  console.log(connector)
   var addConfig = new this[connector.type]().addConfig;
   if(addConfig) {
     var add = textButtonWidget('Add contact',false,false,'configureContactAdd',addConfig(propertiesToString(connector),msg));
