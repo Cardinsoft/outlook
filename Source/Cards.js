@@ -229,6 +229,9 @@ async function cardDisplay(e) {
 				  action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
 			  
 			  var caText = connector.caText;
+			  
+			  console.log(caText);
+			  
 			  if(!caText) { caText = globalUpdateConnectorText; }
 			  
 			  var ca = cardAction(caText,globalActionClick,action);
