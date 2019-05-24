@@ -1,21 +1,3 @@
-/*(function() {
-    var cors_api_host = 'cors-anywhere.herokuapp.com';
-    var cors_api_url = 'https://' + cors_api_host + '/';
-    var slice = [].slice;
-    var origin = window.location.protocol + '//' + window.location.host;
-    var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function() {
-        var args = slice.call(arguments);
-        var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
-        if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
-            targetOrigin[1] !== cors_api_host) {
-            args[1] = cors_api_url + args[1];
-        }
-        return open.apply(this, args);
-    };
-})();*/
-
-//===========================================START URL FETCH===========================================//
 //Emulate HTTPResponse class;
 class HTTPResponse {
 	constructor(headers,content,code) {
@@ -57,14 +39,12 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 			console.log(response);
 		}
 		catch(error) {
-			
 			response = {
 				code    : error.code,
 				headers : error.headers,
 				content : error.content
 			};
 			console.log(response);
-			
 		}
 	}else {
 		response = await makeRequest(url,params);
