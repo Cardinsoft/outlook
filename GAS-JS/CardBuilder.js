@@ -97,6 +97,7 @@ CardBuilder.prototype.build = async function () {
 		
 		//if card action provided -> set it on menu top and add event handler;
 		const menu = menus[0];
+		console.log(menu)
 		if(menu.menu.children.length>4) { menu.removeItem(0); } //make adjustable in future updates;
 		if(cardAction) {
 			let params, cAction;
