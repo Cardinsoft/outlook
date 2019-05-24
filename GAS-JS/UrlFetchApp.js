@@ -63,6 +63,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 				headers : error.headers,
 				content : error.content
 			};
+			console.log(response);
 			
 		}
 	}else {
