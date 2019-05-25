@@ -216,10 +216,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 	wrapText.append(contentText);
 
 	if(content) { 
-		let checkAnchor = checkAnchor(content);
+		let loadDialog  = checkAnchor(content);
 		let loadCompose = checkMailto(content);
 		
-		if(checkAnchor&&loadCompose) {	
+		if(loadDialog&&loadCompose) {	
 			contentText.children.item(0).addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
@@ -234,7 +234,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 				Office.context.mailbox.displayNewMessageForm(mailParams);
 				return false;
 			});
-		}else if(checkAnchor) {
+		}else if(loadDialog) {
 			contentText.children.item(0).addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
