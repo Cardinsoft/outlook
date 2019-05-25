@@ -449,12 +449,16 @@ function loadMailto(element,input) {
 	//get children that are anchors with mailto;
 	let children = Array.from(element.children);
 	children = children.filter(function(elem){
-		if(elem.tagName.toLowerCase()==='a'&&elem.href.search('mailto:')!==-1) { return elem; }
+		let isAnchor   = elem.tagName.toLowerCase()==='a';
+		let isMail     = elem.href.search('mailto:')!==-1;
+		let isNotPhone = elem.href.search('tel:')===-1;
+		
+		if(isAnchor&&isMail&&isNotPhone) { return elem; }
 	});
 	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
-			let anchor = element.children.item(index);
+			let anchor = children.item(index);
 			
 			//change event listener to open Compose Ui;
 			anchor.addEventListener('click',function (event) {	
@@ -489,7 +493,11 @@ function loadAnchor(element,input) {
 	//get children that are anchors;
 	let children = Array.from(element.children);
 	children = children.filter(function(elem){
-		if(elem.tagName.toLowerCase()==='a') { return elem; }
+		let isAnchor   = elem.tagName.toLowerCase()==='a';
+		let isNotMail  = elem.href.search('mailto:')===-1;
+		let isNotPhone = elem.href.search('tel:')===-1;
+		
+		if(isAnchor&&isNotMail&&isNotPhone) { return elem; }
 	});
 	
 	if(matches!==null&&matches.length>0) {
