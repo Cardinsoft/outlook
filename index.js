@@ -440,22 +440,15 @@ async function actionCallback(elem) {
 /**
  * Matches input for missing target="_blank" attribute and adds it;
  * @param {String} input <a> html tag string to check;
- * @returns {String}
+ * @returns {Boolean}
  */
 function checkTarget(input) {
-	const regexp = /(<a\s*?href=".+?"\s*?>.*?<\/a>)/g;
+	const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
 	const result = input.match(regexp);
 	if(result&&result.length>0) {
-		for(let r=0; r<result.length; r++) {
-			let matched = result[r];
-			if(!matched.includes('target="_blank"')) {
-				let tmp = matched.split(' ');
-              		tmp.splice(1,0,'target="_blank"');
-				input = input.replace(matched,tmp.join(' '));
-            }
-		}
+		return true;
 	}
-	return input;
+	return false;
 }
 
 /**
