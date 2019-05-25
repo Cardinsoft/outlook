@@ -498,8 +498,8 @@ function loadAnchor(element,input) {
 		let isAnchor = elem.tagName.toLowerCase()==='a';
 		if(isAnchor) {
 			let isNotMail  = elem.href.search('mailto:')===-1;
-			let isNotPhone = elem.href.search('tel:')===-1;
-			if(isNotMail&&isNotPhone) { return elem; }
+			//let isNotPhone = elem.href.search('tel:')===-1;
+			if(isNotMail/*&&isNotPhone*/) { return elem; }
 		}
 	});
 	
