@@ -229,7 +229,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 					};
 				
 					Office.context.mailbox.displayNewMessageForm(mailParams);
-				});	
+				};	
 			});
 		}
 		
