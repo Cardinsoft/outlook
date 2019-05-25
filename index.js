@@ -488,7 +488,28 @@ function loadAnchor(element,input) {
 	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result){
+			let anchor = element.children.item(index);
 			
+			
+			
+			anchor.addEventListener('click',function (event) {	
+				event.stopPropagation();
+				event.preventDefault();
+				
+				console.log(anchor);
+				
+				/*
+				let mailRegEx = /(?:(?<=mailto:).+)(?=")/;
+				let recipient = input.match(mailRegEx);
+				
+				let mailParams = {
+					toRecipients : recipient
+				};
+				
+				Office.context.mailbox.displayNewMessageForm(mailParams);
+				*/
+				return false;
+			});			
 			
 			
 		});
