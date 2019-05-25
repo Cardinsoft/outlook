@@ -224,7 +224,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 				event.stopPropagation();
 				event.preventDefault();
 				
-				const mailRegEx = /((?<=mailto:).+)(?=")/;
+				const mailRegEx = /(?:(?<=mailto:).+)(?=")/;
 				const recipient = content.match(mailRegEx);
 				
 				let mailParams = {
