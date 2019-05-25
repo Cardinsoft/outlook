@@ -487,16 +487,16 @@ function loadMailto(element,input) {
  * @param {String} input <a> html tag string to check;
  */
 function loadAnchor(element,input) {
-	const regexp = /<a.*?>.+?<\/a>/;
+	const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
 	const matches = input.match(regexp);
 	
 	//get children that are anchors;
 	let children = Array.from(element.children);
 	children = children.filter(function(elem){
+		//filter out anchors with mailto or phone set;
 		let isAnchor   = elem.tagName.toLowerCase()==='a';
 		let isNotMail  = elem.href.search('mailto:')===-1;
 		let isNotPhone = elem.href.search('tel:')===-1;
-		
 		if(isAnchor&&isNotMail&&isNotPhone) { return elem; }
 	});
 	
@@ -508,12 +508,7 @@ function loadAnchor(element,input) {
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
-				
-				//find original Url target;
-				const anchorRegEx = /(?<=href=").*(?=")/;
-				const target = result.match(anchorRegEx);
-				
-				Office.context.ui.displayDialogAsync(target);
+				Office.context.ui.displayDialogAsync(this.href);
 				return false;
 			});			
 			
