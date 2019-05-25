@@ -220,19 +220,18 @@ KeyValue.prototype.appendToUi = function (parent) {
 		console.log(loadCompose);
 		
 		if(loadCompose) {	
-			contentText.children.item(0).addEventListener('click',function(content) {
-				return function (event) {	
-					event.stopPropagation();
-					event.preventDefault();
+			contentText.children.item(0).addEventListener('click',function (event) {	
+				event.stopPropagation();
+				event.preventDefault();
 				
-					let mailParams = {
-						toRecipients : [content]
-					};
-				
-					Office.context.mailbox.displayNewMessageForm(mailParams);
-					return false;
+				let mailParams = {
+					toRecipients : [content]
 				};
-			
+				
+				console.log(mailParams);
+				
+				Office.context.mailbox.displayNewMessageForm(mailParams);
+				return false;
 			});
 		}
 		
