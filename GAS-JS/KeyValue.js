@@ -216,37 +216,8 @@ KeyValue.prototype.appendToUi = function (parent) {
 	wrapText.append(contentText);
 
 	if(content) { 
-		let loadDialog  = checkAnchor(content);
-		let loadCompose = checkMailto(content);
-		
-		if(loadDialog&&loadCompose) {	
-			contentText.children.item(0).addEventListener('click',function (event) {	
-				event.stopPropagation();
-				event.preventDefault();
-				
-				const mailRegEx = /(?:(?<=mailto:).+)(?=")/;
-				const recipient = content.match(mailRegEx);
-				
-				let mailParams = {
-					toRecipients : recipient
-				};
-				
-				Office.context.mailbox.displayNewMessageForm(mailParams);
-				return false;
-			});
-		}else if(loadDialog) {
-			contentText.children.item(0).addEventListener('click',function (event) {	
-				event.stopPropagation();
-				event.preventDefault();
-				
-				const anchorRegEx = /(?<=href=").*(?=")/;
-				const target = content.match(anchorRegEx);
-				
-				Office.context.ui.displayDialogAsync(target);
-				return false;
-			});			
-		}
-		
+		loadAnchor(contentText,content);
+		loadMailto(contentText,content);
 	}
 	
 	//handle button or switch creation;
