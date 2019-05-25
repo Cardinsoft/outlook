@@ -438,7 +438,7 @@ async function actionCallback(elem) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Matches input for being a mailto anchor and sets event listener;
+ * Matches input for being a mailto anchor and sets event listeners;
  * @param {HtmlElement} element element to set listeners to on success;
  * @param {String} input <a> html tag string to check;
  */
@@ -478,11 +478,11 @@ function loadMailto(element,input) {
 }
 
 /**
- * Matches input for being an anchor;
+ * Matches input for being an anchor and sets event listeners;
+ * @param {HtmlElement} element element to set listeners to on success;
  * @param {String} input <a> html tag string to check;
- * @returns {Boolean} check success status;
  */
-function loadAnchor(input) {
+function loadAnchor(element,input) {
 	const regexp = /^<a.*>.+<\/a>$/;
 	const matches = input.match(regexp);
 	
