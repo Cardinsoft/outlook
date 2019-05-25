@@ -164,7 +164,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	let content   = this.content;
-	//if(content) { content = checkTarget(content); }
 	
 	//create row element;
 	const widget = document.createElement('div');
@@ -215,6 +214,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 	contentText.className = 'ms-font-m-plus KeyValueText';
 	contentText.innerHTML = content;
 	wrapText.append(contentText);
+
+	if(content) { 
+		let loadCompose = checkTarget(content); 
+		console.log(loadCompose);
+		
+	}
 	
 	//handle button or switch creation;
 	const btn = this.button;
