@@ -488,16 +488,15 @@ function loadAnchor(element,input) {
 	const regexp = /<a.*?>.+?<\/a>/;
 	const matches = input.match(regexp);
 	
-	console.log(matches);
-	
 	//get children that are anchors;
 	const children = Array.from(element.children);
-	
-	console.log(children);
+	children = children.filter(function(elem){
+		if(elem.tagName.toLowerCase()==='a') { return elem; }
+	});
 	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
-			let anchor = element.children.item(index);
+			let anchor = children[index];
 			
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
