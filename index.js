@@ -438,14 +438,43 @@ async function actionCallback(elem) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Matches input for being a mailto anchor;
+ * Matches input for being a mailto anchor and sets event listener;
+ * @param {HtmlElement} element element to set listeners to on success;
  * @param {String} input <a> html tag string to check;
- * @returns {Boolean} check success status;
  */
-function checkMailto(input) {
+function loadMailto(element,input) {
 	const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
-	const result = regexp.test(input);
-	return result;
+	const matches = input.match(regexp);
+	
+	if(matches.length>0) {
+		matches.forEach(function(result,index){
+			let anchor = element.children.item(index);
+			
+			
+			
+			anchor.addEventListener('click',function (event) {	
+				event.stopPropagation();
+				event.preventDefault();
+				
+				console.log(anchor);
+				
+				/*
+				let mailRegEx = /(?:(?<=mailto:).+)(?=")/;
+				let recipient = input.match(mailRegEx);
+				
+				let mailParams = {
+					toRecipients : recipient
+				};
+				
+				Office.context.mailbox.displayNewMessageForm(mailParams);
+				*/
+				return false;
+			});
+			
+		
+			
+		});
+	}
 }
 
 /**
@@ -453,10 +482,17 @@ function checkMailto(input) {
  * @param {String} input <a> html tag string to check;
  * @returns {Boolean} check success status;
  */
-function checkAnchor(input) {
+function loadAnchor(input) {
 	const regexp = /^<a.*>.+<\/a>$/;
-	const result = regexp.test(input);
-	return result;
+	const matches = input.match(regexp);
+	
+	if(matches.length>0) {
+		matches.forEach(function(result){
+			
+			
+			
+		});
+	}
 }
 
 /**
