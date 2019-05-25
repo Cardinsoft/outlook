@@ -446,35 +446,33 @@ function loadMailto(element,input) {
 	const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
 	const matches = input.match(regexp);
 	
-	console.log(matches);
+	//get children that are anchors with mailto;
+	let children = Array.from(element.children);
+	children = children.filter(function(elem){
+		if(elem.tagName.toLowerCase()==='a'&&elem.href.search('mailto:')!==-1) { return elem; }
+	});
 	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
 			
-			console.log(anchor);
-			
+			//change event listener to open Compose Ui;
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
 				
-				console.log(anchor);
-				
-				/*
+				//find original recipient;
 				let mailRegEx = /(?:(?<=mailto:).+)(?=")/;
 				let recipient = input.match(mailRegEx);
 				
+				//set parameters for Compose Ui;
 				let mailParams = {
 					toRecipients : recipient
 				};
 				
 				Office.context.mailbox.displayNewMessageForm(mailParams);
-				*/
 				return false;
 			});
-			
-		
-			
 		});
 	}
 }
@@ -498,25 +496,18 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = children[index];
 			
+			//change event listener to open Dialog;
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
 				
-				console.log(anchor);
+				//find original Url target;
+				const anchorRegEx = /(?<=href=").*(?=")/;
+				const target = input.match(anchorRegEx);
 				
-				/*
-				let mailRegEx = /(?:(?<=mailto:).+)(?=")/;
-				let recipient = input.match(mailRegEx);
-				
-				let mailParams = {
-					toRecipients : recipient
-				};
-				
-				Office.context.mailbox.displayNewMessageForm(mailParams);
-				*/
+				Office.context.ui.displayDialogAsync(target);
 				return false;
 			});			
-			
 			
 		});
 	}
