@@ -499,10 +499,6 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
 			
-			if(
-			
-			console.log(anchor);
-			
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
