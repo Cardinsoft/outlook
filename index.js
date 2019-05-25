@@ -446,6 +446,8 @@ function loadMailto(element,input) {
 	const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
 	const matches = input.match(regexp);
 	
+	console.log(matches);
+	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
@@ -485,6 +487,8 @@ function loadMailto(element,input) {
 function loadAnchor(element,input) {
 	const regexp = /^<a.*>.+<\/a>$/;
 	const matches = input.match(regexp);
+	
+	console.log(matches);
 	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
