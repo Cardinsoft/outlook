@@ -219,6 +219,20 @@ KeyValue.prototype.appendToUi = function (parent) {
 		let loadCompose = checkTarget(content); 
 		console.log(loadCompose);
 		
+		if(loadCompose) {	
+			contentText.addEventListener('click',function (content) {
+				return function (event) {
+					event.preventDefault();
+				
+					let mailParams = {
+						toRecipients : [content]
+					};
+				
+					Office.context.mailbox.displayNewMessageForm(mailParams);
+				});	
+			});
+		}
+		
 	}
 	
 	//handle button or switch creation;
