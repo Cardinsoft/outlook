@@ -224,11 +224,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 				event.stopPropagation();
 				event.preventDefault();
 				
-				let mailParams = {
-					toRecipients : [content]
-				};
+				const mailRegEx = /((?<=mailto:).+)(?=")/;
+				const recipient = content.match(mailRegEx);
 				
-				console.log(mailParams);
+				let mailParams = {
+					toRecipients : recipient
+				};
 				
 				Office.context.mailbox.displayNewMessageForm(mailParams);
 				return false;
