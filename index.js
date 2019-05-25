@@ -459,7 +459,6 @@ function checkAnchor(input) {
 	return result;
 }
 
-
 /**
  * Parses input into Boolean;
  * @param {*=} input input to parse;
