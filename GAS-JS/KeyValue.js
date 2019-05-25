@@ -220,8 +220,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 		console.log(loadCompose);
 		
 		if(loadCompose) {	
-			contentText.addEventListener('click',function (content) {
+			contentText.children.item(0).addEventListener('click',function (content) {
 				return function (event) {
+					
+					event.stopPropagation();
 					event.preventDefault();
 				
 					let mailParams = {
