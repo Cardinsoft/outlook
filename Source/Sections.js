@@ -728,7 +728,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
           var content = widget.content;
           
           switch(type) {
-            case 'TextParagraph':
+            case 'TextP	aragraph':
               element = textWidget(content);
               break;
             case 'Image':
@@ -784,6 +784,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
                 //set section and widget index and stringify;
                 connector.sectionIdx = sectionIndex;
                 connector.widgetIdx  = index;
+				console.log(connector)
                 connector = propertiesToString(connector);
               
                 if(buttonText) {
