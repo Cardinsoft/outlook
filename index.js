@@ -489,7 +489,7 @@ function loadAnchor(element,input) {
 	const matches = input.match(regexp);
 	
 	//get children that are anchors;
-	const children = Array.from(element.children);
+	let children = Array.from(element.children);
 	children = children.filter(function(elem){
 		if(elem.tagName.toLowerCase()==='a') { return elem; }
 	});
