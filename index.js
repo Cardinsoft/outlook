@@ -456,7 +456,7 @@ function loadMailto(element,input) {
 		if(isAnchor&&isMail&&isNotPhone) { return elem; }
 	});
 	
-	if(matches!==null&&matches.length>0) {
+	if(matches!==null&&matches.length>0&&children.length>0) {
 		matches.forEach(function(result,index){
 			let anchor = children.item(index);
 			
@@ -500,7 +500,7 @@ function loadAnchor(element,input) {
 		if(isAnchor&&isNotMail&&isNotPhone) { return elem; }
 	});
 	
-	if(matches!==null&&matches.length>0) {
+	if(matches!==null&&matches.length>0&&children.length>0) {
 		matches.forEach(function(result,index){
 			let anchor = children[index];
 			
