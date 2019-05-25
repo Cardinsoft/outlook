@@ -223,6 +223,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 			contentText.children.item(0).addEventListener('click',function (content) {
 				return function (event) {
 					
+					event.stopImmediatePropagation();
 					event.stopPropagation();
 					event.preventDefault();
 				
