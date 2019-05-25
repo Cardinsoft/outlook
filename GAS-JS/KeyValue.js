@@ -216,10 +216,10 @@ KeyValue.prototype.appendToUi = function (parent) {
 	wrapText.append(contentText);
 
 	if(content) { 
-		let loadCompose = checkMailto(content); 
-		console.log(loadCompose);
+		let checkAnchor = checkAnchor(content);
+		let loadCompose = checkMailto(content);
 		
-		if(loadCompose) {	
+		if(checkAnchor&&loadCompose) {	
 			contentText.children.item(0).addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
@@ -234,6 +234,17 @@ KeyValue.prototype.appendToUi = function (parent) {
 				Office.context.mailbox.displayNewMessageForm(mailParams);
 				return false;
 			});
+		}else if(checkAnchor) {
+			contentText.children.item(0).addEventListener('click',function (event) {	
+				event.stopPropagation();
+				event.preventDefault();
+				
+				const anchorRegEx = /(?<=href=").*(?=")/;
+				const target = content.match(anchorRegEx);
+				
+				Office.context.ui.displayDialogAsync(target);
+				return false;
+			});			
 		}
 		
 	}
