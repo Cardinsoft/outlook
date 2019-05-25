@@ -458,7 +458,7 @@ function loadMailto(element,input) {
 	
 	if(matches!==null&&matches.length>0&&children.length>0) {
 		matches.forEach(function(result,index){
-			let anchor = children.item(index);
+			let anchor = children[index];
 			
 			//change event listener to open Compose Ui;
 			anchor.addEventListener('click',function (event) {	
@@ -511,7 +511,7 @@ function loadAnchor(element,input) {
 				
 				//find original Url target;
 				const anchorRegEx = /(?<=href=").*(?=")/;
-				const target = input.match(anchorRegEx);
+				const target = result.match(anchorRegEx);
 				
 				Office.context.ui.displayDialogAsync(target);
 				return false;
