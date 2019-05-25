@@ -36,7 +36,6 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 	if(params.muteHttpExceptions===true) {
 		try {
 			response = await makeRequest(url,params);
-			console.log(response);
 		}
 		catch(error) {
 			response = {
@@ -44,7 +43,6 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 				headers : error.headers,
 				content : error.content
 			};
-			console.log(response);
 		}
 	}else {
 		response = await makeRequest(url,params);
