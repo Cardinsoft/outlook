@@ -216,7 +216,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 	wrapText.append(contentText);
 
 	if(content) { 
-		let loadCompose = checkTarget(content); 
+		let loadCompose = checkMailto(content); 
 		console.log(loadCompose);
 		
 		if(loadCompose) {	

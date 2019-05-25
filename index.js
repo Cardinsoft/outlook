@@ -438,18 +438,27 @@ async function actionCallback(elem) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Matches input for missing target="_blank" attribute and adds it;
+ * Matches input for being a mailto anchor;
  * @param {String} input <a> html tag string to check;
- * @returns {Boolean}
+ * @returns {Boolean} check success status;
  */
-function checkTarget(input) {
+function checkMailto(input) {
 	const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
-	const result = input.match(regexp);
-	if(result&&result.length>0) {
-		return true;
-	}
-	return false;
+	const result = regexp.test(input);
+	return result;
 }
+
+/**
+ * Matches input for being an anchor;
+ * @param {String} input <a> html tag string to check;
+ * @returns {Boolean} check success status;
+ */
+function checkAnchor(input) {
+	const regexp = /^<a.*>.+<\/a>$/;
+	const result = regexp.test(input);
+	return result;
+}
+
 
 /**
  * Parses input into Boolean;
