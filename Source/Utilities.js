@@ -1,4 +1,25 @@
 /**
+ * Generates a unique identifier for new entity;
+ * @param {Array} ids an array of objects with identifiers;
+ * @returns {String} new identifier;
+ */
+function generateId(ids) {
+  
+  var id = Utilities.base64Encode(Math.random().toString());
+	
+  var isUnique = function(a,i){ 
+    var result = true;
+		for(var p in a) {		
+			if(a[p].ID===i) { result = false; }
+		}
+		return result;
+  }(ids,id);
+  
+  if(isUnique) { return id }else { return generateId(ids); }
+}
+
+
+/**
  * Fills content for each widget provided with preserved values;
  * @param {Object} connector object containing preserved values;
  * @param {Array} widgets an array of widgets to loop through;
@@ -534,7 +555,8 @@ function checkEditable(data) {
     if(widgets instanceof Array) {
       var elemHasEditable = widgets.some(function(widget){
         var state = widget.state;
-        if(state==='editable') { return widget; }
+        var type  = widget.type;
+        if(state==='editable'||type===globalTextInput) { return widget; }
       });
     }else { elemHasEditable = false; }
     if(elemHasEditable) { return elem; }
