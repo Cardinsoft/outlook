@@ -110,6 +110,10 @@ body {
 	cursor         : pointer;
 }
 
+.btn-disabled {
+	background-color : #848484;
+}
+
 .btn-text {
 	background : none;
 	color      : #0078d7;
