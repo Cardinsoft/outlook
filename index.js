@@ -485,7 +485,7 @@ function loadMailto(element,input) {
  * @param {String} input <a> html tag string to check;
  */
 function loadAnchor(element,input) {
-	const regexp = /^<a.*>.+<\/a>$/;
+	const regexp = /<a.*?>.+?<\/a>/;
 	const matches = input.match(regexp);
 	
 	console.log(matches);
