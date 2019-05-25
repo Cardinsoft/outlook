@@ -612,7 +612,6 @@ function parseData(data) {
     return data;
   }
   catch(err) { 
-    console.error('Encountered an error while trying to parse input: %s',err);
     data = data; 
   }
   
@@ -634,7 +633,6 @@ function parseData(data) {
     }
   }
   catch(error) {
-    console.error('Encountered an error while applying conditional parsing after everything else failed (unexpected, check parseData function): %s',error);
     return data;
   }
   
