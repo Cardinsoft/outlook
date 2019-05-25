@@ -221,9 +221,9 @@ KeyValue.prototype.appendToUi = function (parent) {
 		
 		if(loadCompose) {	
 			contentText.children.item(0).addEventListener('click',function (event) {	
-				event.stopImmediatePropagation();
-				event.stopPropagation();
-				event.preventDefault();
+				//event.stopImmediatePropagation();
+				//event.stopPropagation();
+				//event.preventDefault();
 				
 				let mailParams = {
 					toRecipients : [content]
