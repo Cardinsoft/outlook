@@ -487,7 +487,7 @@ function loadAnchor(element,input) {
 	const matches = input.match(regexp);
 	
 	if(matches!==null&&matches.length>0) {
-		matches.forEach(function(result){
+		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
 			
 			
