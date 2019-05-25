@@ -449,11 +449,12 @@ function loadMailto(element,input) {
 	//get children that are anchors with mailto;
 	let children = Array.from(element.children);
 	children = children.filter(function(elem){
-		let isAnchor   = elem.tagName.toLowerCase()==='a';
-		let isMail     = elem.href.search('mailto:')!==-1;
-		let isNotPhone = elem.href.search('tel:')===-1;
-		
-		if(isAnchor&&isMail&&isNotPhone) { return elem; }
+		let isAnchor = elem.tagName.toLowerCase()==='a';
+		if(isAnchor) {
+			let isMail     = elem.href.search('mailto:')!==-1;
+			let isNotPhone = elem.href.search('tel:')===-1;
+			if(isMail&&isNotPhone) { return elem; }			
+		}
 	});
 	
 	if(matches!==null&&matches.length>0&&children.length>0) {
@@ -494,10 +495,12 @@ function loadAnchor(element,input) {
 	let children = Array.from(element.children);
 	children = children.filter(function(elem){
 		//filter out anchors with mailto or phone set;
-		let isAnchor   = elem.tagName.toLowerCase()==='a';
-		let isNotMail  = elem.href.search('mailto:')===-1;
-		let isNotPhone = elem.href.search('tel:')===-1;
-		if(isAnchor&&isNotMail&&isNotPhone) { return elem; }
+		let isAnchor = elem.tagName.toLowerCase()==='a';
+		if(isAnchor) {
+			let isNotMail  = elem.href.search('mailto:')===-1;
+			let isNotPhone = elem.href.search('tel:')===-1;
+			if(isNotMail&&isNotPhone) { return elem; }
+		}
 	});
 	
 	if(matches!==null&&matches.length>0&&children.length>0) {
