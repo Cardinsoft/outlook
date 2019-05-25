@@ -490,9 +490,16 @@ function loadAnchor(element,input) {
 	
 	console.log(matches);
 	
+	//get children that are anchors;
+	const children = Array.from(element.children);
+	
+	console.log(children);
+	
 	if(matches!==null&&matches.length>0) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
+			
+			if(
 			
 			console.log(anchor);
 			
