@@ -450,7 +450,7 @@ function loadMailto(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
 			
-			
+			console.log(anchor);
 			
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
@@ -490,7 +490,7 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = element.children.item(index);
 			
-			
+			console.log(anchor);
 			
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
