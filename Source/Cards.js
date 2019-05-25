@@ -219,10 +219,6 @@ async function cardDisplay(e) {
 		   
 			//check for editable widgets and create update section if found;
 			var hasEditable = checkEditable(content);
-			
-			console.log(content)
-			console.log(hasEditable)
-			
 			if(hasEditable) {
 			  //stringify connector properties;
 			  connector = propertiesToString(connector);
@@ -233,9 +229,6 @@ async function cardDisplay(e) {
 				  action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
 			  
 			  var caText = connector.caText;
-			  
-			  console.log(caText);
-			  
 			  if(!caText) { caText = globalUpdateConnectorText; }
 			  
 			  var ca = cardAction(caText,globalActionClick,action);
