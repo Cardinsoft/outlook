@@ -164,7 +164,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 	const iconUrl = this.url;
 	const icon    = this.icon;
 	let content   = this.content;
-	if(content) { content = checkTarget(content); }
+	//if(content) { content = checkTarget(content); }
 	
 	//create row element;
 	const widget = document.createElement('div');
