@@ -507,6 +507,15 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = children[index];
 			
+			//set event listener to choose 
+			if(elem.href.search('tel:')===-1) {
+				anchor.addEventListener('click',function (event) {
+					
+					console.log(anchor.target);
+					
+				});
+			}
+			
 			//change event listener to open Dialog;
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
