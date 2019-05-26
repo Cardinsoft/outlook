@@ -30,7 +30,6 @@ Office.initialize = (reason) => {
 		menu.create(items);
 		$('.navelem').click( (event) => {
 			event.stopPropagation();
-			event.stopImmediatePropagation();
 			event.preventDefault();
 			menu.switchShow();
 		});
