@@ -33,10 +33,31 @@ function cardAction(text,type,action,composeType){
   return cardAction;
 }
 
+
+/**
+ * Creates Action that can be used anywhere;
+ * @param {String} funcName callback function name;
+ * @param {Boolean} hasSpinner set spinner on Ui or not;
+ * @param {Object} params parameters to pass to function;
+ * @returns {Action} this Action;
+ */
+function Action(funcName,hasSpinner,params) {
+  
+  //create action and set required parameters;
+  var action = CardService.newAction();
+      action.setFunctionName(funcName);
+     
+  //set optional parameters;
+  if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER); }
+  if(params) { action.setParameters(params); }
+  
+  return action;
+}
+
 /**
  * Creates a TextParagraph widget
- * @param {String} text specifies a text to populate widget with
- * @returns {TextParagraph} 
+ * @param {String} text specifies a text to populate widget with;
+ * @returns {TextParagraph} this TextParagraph;
  */
 function textWidget(text) {
   var widget = CardService.newTextParagraph();
@@ -51,12 +72,12 @@ function textWidget(text) {
  * @param {String} hint text that appears on the input;
  * @param {String} content value that is passed to widget by default;
  * @param {Boolean} multiline truthy value to determine whether to make input multiline;
- * @param {String} changeFunc name of the function fired on user change;
- * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params parameters to pass to function;
+ * @param {String=} funcName callback function name;
+ * @param {Boolean=} hasSpinner set spinner on Ui or not;
+ * @param {Object=} params parameters to pass to function;
  * @returns {TextInput} 
  */
-function textInputWidget(title,name,hint,content,multiline,changeFunc,hasSpinner,params) {
+function textInputWidget(title,name,hint,content,multiline,funcName,hasSpinner,params) {
   //check if value is an instanceof Date and format if so;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
   
@@ -64,23 +85,18 @@ function textInputWidget(title,name,hint,content,multiline,changeFunc,hasSpinner
   var widget = CardService.newTextInput();
       widget.setFieldName(name);
   
-  //set conditional parameters;
+  //set optional parameters;
   if(title)     { widget.setTitle(title); }
   if(content)   { widget.setValue(content); }else { widget.setValue(''); }
   if(hint)      { widget.setHint(hint); }
   if(multiline) { widget.setMultiline(multiline); }
   
-  if(changeFunc) { 
-    var action = CardService.newAction();
-        action.setFunctionName(changeFunc);
-    if(hasSpinner===true) {
-      action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
-    }else {
-      action.setLoadIndicator(CardService.LoadIndicator.NONE);
-    }
-    if(params) {action.setParameters(params);}
+  //set action if function name provided;
+  if(funcName) {
+    var action = Action(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
+  
   return widget;
 }
 
@@ -135,22 +151,21 @@ function buttonSet(buttons) {
  * @param {String} text text to appear on the button;
  * @param {Boolean} disabled truthy value to disable / enable click event;
  * @param {Boolean} isFilled sets buttons style to filled if true;
- * @param {String} clickFunc name of the function fired on user click;
+ * @param {String} funcName callback function name;
  * @param {Object} params parameters to pass to function;
  * @returns {TextButton} 
  */
-function textButtonWidget(text,disabled,isFilled,clickFunc,params) {
+function textButtonWidget(text,disabled,isFilled,funcName,params) {
   var widget = CardService.newTextButton();
       widget.setText(text);
   
-  //set optional parameters and default behaviour;
+  //set optional parameters;
   if(disabled) { widget.setDisabled(disabled); }else { widget.setDisabled(false); }
   if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
   
-    var action = CardService.newAction();
-        action.setFunctionName(clickFunc);
-    if(params) {action.setParameters(params);}
-    widget.setOnClickAction(action);
+  //set action on button click;
+  var action = Action(funcName,true,params);
+  widget.setOnClickAction(action);
   
   return widget;
 }
@@ -161,6 +176,7 @@ function textButtonWidget(text,disabled,isFilled,clickFunc,params) {
  * @param {Boolean} disabled truthy value to disable / enable click event;
  * @param {Boolean} isFilled sets buttons style to filled if true;
  * @param {String} url authorization url; 
+ * @returns {TextButton} this TextButton;
  */
 function textButtonWidgetAuth(text,disabled,isFilled,url) {
   var widget = CardService.newTextButton();
@@ -178,6 +194,35 @@ function textButtonWidgetAuth(text,disabled,isFilled,url) {
 }
 
 /**
+ * Creates an ImageButton widget with authorization action to trigger Auth flow;
+ * @param {String} image either icon name or image url to set;
+ * @param {String} altText text to appear on the button on image load failure;
+ * @param {String} url authorization url; 
+ * @returns {ImageButton} this ImageButton;
+ */
+function imageButtonWidgetAuth(image,altText,url) {
+  var widget = CardService.newImageButton();
+      widget.setAltText(altText);
+  
+  //set icon if found or set icon url if not;
+  if(image&&image!=='') { 
+    var iconEnum = CardService.Icon[image];
+    if(iconEnum) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(image);
+    } 
+  } 
+  
+  var action = CardService.newAuthorizationAction();
+      action.setAuthorizationUrl(url);
+      
+  widget.setAuthorizationAction(action);
+
+  return widget;
+}
+
+/**
  * Creates a TextButton widget with link action set to it instead of an inbound action;
  * @param {String} text text to appear on the button;
  * @param {Boolean} disabled truthy value to disable / enable click event;
@@ -186,11 +231,11 @@ function textButtonWidgetAuth(text,disabled,isFilled,url) {
  * @param {Boolean} fullsized truthy value to detemine whether to open link as fullsized or overlayed;
  * @param {Boolean} needsReload truthy value to determine whether it needs to reload the Add-on on link close;
  * @param {Boolean} useAction truthy value to determine whether to set OpenLink or link builder;
- * @param {String} clickFunc name of the function fired on user click;
- * @param {Object} params parameters to pass to function;
- * @returns {TextButton} 
+ * @param {String} funcName callback function name;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {TextButton} this TextButton;
  */
-function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload,useAction,clickFunc,params) {
+function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload,useAction,funcName,params) {
   var widget = CardService.newTextButton();
       widget.setText(text);
       
@@ -201,7 +246,7 @@ function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload
   if(useAction) {
     //create action and set required parameters;
     var action = CardService.newAction();
-        action.setFunctionName(clickFunc);
+        action.setFunctionName(funcName);
         
     //set parameters if provided;
     if(params) { 
@@ -233,17 +278,16 @@ function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload
 /*
  * Creates a ImageButton widget with icon content;
  * @param {Icon} icon icon object to appear on the button;
- * @param {String} changeFunc name of the function fired on user click;
+ * @param {String} funcName callback function name;
  * @param {Object} params parameters to pass to function;
- * @returns {ImageButton} 
+ * @returns {ImageButton} this ImageButton;
  */
-function imageButtonWidget(icon,clickFunc,params) {
+function imageButtonWidget(icon,funcName,params) {
   var widget = CardService.newImageButton();
       widget.setIcon(icon);
-      
-  var action = CardService.newAction();
-      action.setFunctionName(clickFunc);
-  if(params) {action.setParameters(params);}
+  
+  //set action on button click;
+  var action = Action(funcName,true,params);
   widget.setOnClickAction(action);
 
   return widget;
@@ -253,21 +297,21 @@ function imageButtonWidget(icon,clickFunc,params) {
  * Creates an Image widget;
  * @param {String} src string url of publicly deployed image;
  * @param {String} alt text to display if image cannot be loaded or denied access;
- * @param {String} clickFunc name of the function fired on user click;
- * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params parameters to pass to function;
- * @returns {Image}
+ * @param {String=} funcName callback function name;
+ * @param {Boolean=} hasSpinner set spinner on Ui or not;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {Image} this Image;
  */
-function imageWidget(src,alt,clickFunc,hasSpinner,params) {
+function imageWidget(src,alt,funcName,hasSpinner,params) {
+  
+  //create Image widget and set required parameters;
   var widget = CardService.newImage();
       widget.setImageUrl(src);
       widget.setAltText(alt);
 
-  if(clickFunc) { 
-    var action = CardService.newAction();
-        action.setFunctionName(clickFunc);
-    if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER); }
-    if(params) {action.setParameters(params);}
+  //set action if callback name provided;
+  if(funcName) { 
+    var action = Action(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
 
@@ -282,12 +326,12 @@ function imageWidget(src,alt,clickFunc,hasSpinner,params) {
  * @param {String} name unique fieldname (non-unique if multi-switch widget);
  * @param {Boolean} selected truthy value to set on / off click event;
  * @param {String} value value to pass to handler if selected;
- * @param {String} changeFunc name of the function fired on user change;
- * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params parameters to pass to function;
- * @returns {KeyValue} 
+ * @param {String=} funcName callback function name;
+ * @param {Boolean=} hasSpinner set spinner on Ui or not;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {KeyValue} this KeyValue with Switch set;
  */
-function switchWidget(icon,top,content,name,selected,value,changeFunc,hasSpinner,params) {  
+function switchWidget(icon,top,content,name,selected,value,funcName,hasSpinner,params) {  
   //create base KeyValue widget and set required parameters;
   var keyValue = CardService.newKeyValue();
       keyValue.setContent(content);
@@ -315,11 +359,8 @@ function switchWidget(icon,top,content,name,selected,value,changeFunc,hasSpinner
       widget.setValue(value);
   
   //set an onchange action;
-  if(changeFunc) { 
-    var action = CardService.newAction();
-        action.setFunctionName(changeFunc);
-    if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER) }
-    if(params) {action.setParameters(params);}
+  if(funcName) { 
+    var action = Action(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
   
@@ -334,8 +375,8 @@ function switchWidget(icon,top,content,name,selected,value,changeFunc,hasSpinner
  * @param {String} top label text;
  * @param {String} content content text;
  * @param {Boolean} isMultiline truthy value for determining multiline feature;
- * @param {TextButton} button a button object to add on the right; 
- * @returns {KeyValue}
+ * @param {TextButton} button a TextButton widget to set; 
+ * @returns {KeyValue} this KeyValue with TextButton set;
  */
 function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
   //check if content is a Date and format to locale to avoid errors;
@@ -370,11 +411,11 @@ function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
  * @param {String} icon url or enum of icon to use;
  * @param {String} top label text;
  * @param {String} content content text;
- * @param {String} clickFunc name of the function fired on user click;
- * @param {Object} params parameters to pass to function;
- * @returns {KeyValue} 
+ * @param {String} funcName callback function name;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {KeyValue} this KeyValue with action;
  */
-function actionKeyValueWidget(icon,top,content,clickFunc,params) {
+function actionKeyValueWidget(icon,top,content,funcName,params) {
   //check if content is a Date and format to locale to avoid errors;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
   
@@ -396,26 +437,24 @@ function actionKeyValueWidget(icon,top,content,clickFunc,params) {
     } 
   }
 
-  //set onclick action and set parameters if provided;
-  var action = CardService.newAction();
-      action.setFunctionName(clickFunc);
-  if(params) {action.setParameters(params);}
+  //set onclick action;
+  var action = Action(funcName,true,params);
   widget.setOnClickAction(action);
       
   return widget;
 }
 
 /** 
- * Creates a keyValue widget with button on the right;
+ * Creates a KeyValue widget with TextButton on the right;
  * @param {String} icon url or enum of icon to use;
  * @param {String} top widget title;
  * @param {String} content content text;
  * @param {TextButton} button a button object to add on the right; 
- * @param {String} clickFunc name of the function fired on user click;
- * @param {Object} params parameters to pass to function;
- * @returns {KeyValue} 
+ * @param {String} funcName callback function name;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {KeyValue} this KeyValue with TextButton;
  */
-function actionKeyValueWidgetButton(icon,top,content,button,clickFunc,params) {
+function actionKeyValueWidgetButton(icon,top,content,button,funcName,params) {
   //check if content is a Date and format to locale to avoid errors;
   if(content instanceof Date) { content = content.toLocaleDateString(); }
   
@@ -438,9 +477,7 @@ function actionKeyValueWidgetButton(icon,top,content,button,clickFunc,params) {
   }
   
   //set onclick action and set parameters if provided;
-  var action = CardService.newAction();
-      action.setFunctionName(clickFunc);
-  if(params) {action.setParameters(params);}
+  var action = Action(funcName,true,params);
   widget.setOnClickAction(action);
       
   return widget;  
@@ -452,12 +489,12 @@ function actionKeyValueWidgetButton(icon,top,content,button,clickFunc,params) {
  * @param {String} name fieldname of the input;
  * @param {String} type type of select to render: checkboxes / radio btns / dropdown list;
  * @param {Array} options an array of objects representing selection options;
- * @param {String} changeFunc name of the function fired on value change;
- * @param {Boolean} hasSpinner truthy value to determine whether to set spinner for changeFunc;
- * @param {Object} params parameters to pass to function;
- * @returns {SelectionInput}
+ * @param {String=} funcName callback function name;
+ * @param {Boolean=} hasSpinner set spinner on Ui or not;
+ * @param {Object=} params parameters to pass to function;
+ * @returns {SelectionInput} this SelectionInput;
  */
-function selectionInputWidget(top,name,type,options,changeFunc,hasSpinner,params) {
+function selectionInputWidget(top,name,type,options,funcName,hasSpinner,params) {
   //create widget and set required parameters;
   var widget = CardService.newSelectionInput();
       widget.setFieldName(name);
@@ -469,11 +506,8 @@ function selectionInputWidget(top,name,type,options,changeFunc,hasSpinner,params
   if(top&&top!=='') { widget.setTitle(top); }
 
   //set an onchange action;
-  if(changeFunc) { 
-    var action = CardService.newAction();
-        action.setFunctionName(changeFunc);
-    if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER) }
-    if(params) {action.setParameters(params);}
+  if(funcName) { 
+    var action = Action(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
   
