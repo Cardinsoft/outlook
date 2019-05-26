@@ -290,6 +290,28 @@ async function cardDisplay(e) {
 }
 
 /**
+ * Creates and shows home or a connector config card;
+ * @param {Object} e event object;
+ * @returns {Card}
+ */
+async function cardHome(e) {
+  var builder = CardService.newCardBuilder();
+  
+  var config = await getConfig();
+  
+  if(config.length>0) {
+    //if there are any Connectors configured, load Ui as usual;
+    return cardOpen(e);
+  }else {
+    //if no Connectors are configured, load prompt and choice;
+    createSectionSimple(builder,{'No Connectors' : globalNoConnectorsContent},false);
+    createSectionChooseType(builder,false,globalChooseTypeHeader);
+  }
+  
+  return builder.build();
+}
+
+/**
  * Creates and shows welcome card on FTE or after reset;
  * @param {Object} e event object;
  * @returns {Card}
