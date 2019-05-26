@@ -510,9 +510,13 @@ function loadAnchor(element,input) {
 			//set event listener to choose 
 			if(anchor.href.search('tel:')!==-1) {
 				anchor.addEventListener('click',function (event) {
+					event.stopPropagation();
+					event.preventDefault();
 					
 					console.log(anchor.target);
 					
+					anchor.target = '_self';
+					return false;
 				});
 			}else {
 				//change event listener to open Dialog;
