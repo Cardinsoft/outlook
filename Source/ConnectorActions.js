@@ -133,7 +133,7 @@ async function createConnector(e) {
   
   //change data state and build settings card;
   builder.setStateChanged(true); 
-  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+  builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
   return builder.build();
 }
 
@@ -274,7 +274,7 @@ async function updateConnector(e) {
   
   //change data state and build settings card;
   builder.setStateChanged(true);
-  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+  builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
   return builder.build();
 }
 
@@ -318,6 +318,6 @@ async function removeConnector(e) {
 		  
 	//change data state and build settings card;
 	builder.setStateChanged(true);
-	builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+	builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
 	return builder.build();
 }
