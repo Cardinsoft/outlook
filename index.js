@@ -516,6 +516,7 @@ function loadAnchor(element,input) {
 					console.log(anchor.target);
 					
 					anchor.target = '_self';
+					window.open(anchor.href);
 					return false;
 				});
 			}else {
