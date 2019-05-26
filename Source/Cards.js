@@ -223,10 +223,7 @@ async function cardDisplay(e) {
 			  //stringify connector properties;
 			  connector = propertiesToString(connector);
 			  
-			  var action = CardService.newAction();
-				  action.setFunctionName('updateSectionAdvanced');
-				  action.setParameters(connector);
-				  action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+			  var action = actionAction('updateSectionAdvanced',true,connector);
 			  
 			  var caText = connector.caText;
 			  if(!caText) { caText = globalUpdateConnectorText; }
@@ -342,7 +339,7 @@ async function cardOpen(e) {
   var builder = CardService.newCardBuilder();
 
   //add refresher action;
-  var caAction = Action('cardHome',true);
+  var caAction = actionAction('cardHome',true);
   var ca = cardAction(globalRefreshText,globalActionClick,caAction);
   
   var config = await getConfig();
