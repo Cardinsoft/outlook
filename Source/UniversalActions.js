@@ -1,9 +1,9 @@
 /* 
- * Attempts to clear any pre-cached data from the widget
+ * Opens home card as corresponding universal action callback;
  * @param {Object} e event object;
  */
 async function universalHome(e) {
-	await cardOpen(e);
+	await cardHome(e);
 };
 
 /**
