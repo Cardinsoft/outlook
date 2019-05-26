@@ -498,8 +498,7 @@ function loadAnchor(element,input) {
 		let isAnchor = elem.tagName.toLowerCase()==='a';
 		if(isAnchor) {
 			let isNotMail  = elem.href.search('mailto:')===-1;
-			//let isNotPhone = elem.href.search('tel:')===-1;
-			if(isNotMail/*&&isNotPhone*/) { return elem; }
+			if(isNotMail&&isNotPhone) { return elem; }
 		}
 	});
 	
@@ -507,11 +506,19 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = children[index];
 			
+			//set no prompt for tel anchors;
+			let params = {};
+			if(anchor.href.search('tel:')!==-1) {
+				params.promptBeforeOpen : false
+			}else {
+				params.promptBeforeOpen : true
+			}
+			
 			//change event listener to open Dialog;
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
-				Office.context.ui.displayDialogAsync(this.href);
+				Office.context.ui.displayDialogAsync(this.href,params);
 				return false;
 			});			
 			
