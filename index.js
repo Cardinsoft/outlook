@@ -509,9 +509,9 @@ function loadAnchor(element,input) {
 			//set no prompt for tel anchors;
 			let params = {};
 			if(anchor.href.search('tel:')!==-1) {
-				params.promptBeforeOpen : false
+				params.promptBeforeOpen = false
 			}else {
-				params.promptBeforeOpen : true
+				params.promptBeforeOpen = true
 			}
 			
 			//change event listener to open Dialog;
