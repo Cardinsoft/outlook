@@ -506,19 +506,11 @@ function loadAnchor(element,input) {
 		matches.forEach(function(result,index){
 			let anchor = children[index];
 			
-			//set no prompt for tel anchors;
-			let params = {};
-			if(anchor.href.search('tel:')!==-1) {
-				params.promptBeforeOpen = false
-			}else {
-				params.promptBeforeOpen = true
-			}
-			
 			//change event listener to open Dialog;
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
-				Office.context.ui.displayDialogAsync(this.href,params);
+				Office.context.ui.displayDialogAsync(this.href);
 				return false;
 			});			
 			
