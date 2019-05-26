@@ -29,6 +29,8 @@ Office.initialize = (reason) => {
 		const menu = new Menu();
 		menu.create(items);
 		$('.navelem').click( (event) => {
+			event.stopPropagation();
+			event.stopImmediatePropagation();
 			event.preventDefault();
 			menu.switchShow();
 		});
@@ -472,8 +474,7 @@ function loadMailto(element,input) {
 				
 				//set parameters for Compose Ui;
 				let mailParams = {
-					toRecipients    : recipient,
-					displayInIframe : true
+					toRecipients : recipient
 				};
 				
 				Office.context.mailbox.displayNewMessageForm(mailParams);
