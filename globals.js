@@ -82,6 +82,7 @@ var globalLoadExtraBackText          = 'Back';
 var globalLoadExtraForwardText       = 'Next';
 var globalLoginText                  = 'Login';
 var globalOpenAuthText               = 'Authorize';
+var globalRefreshText                = 'Refresh';
 var globalRemoveConnectorText        = 'Remove';
 var globalResetWidgetSubmitText      = 'Reset';
 var globalRevokeAuthText             = 'Revoke';
