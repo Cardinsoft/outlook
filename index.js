@@ -508,21 +508,21 @@ function loadAnchor(element,input) {
 			let anchor = children[index];
 			
 			//set event listener to choose 
-			if(elem.href.search('tel:')===-1) {
+			if(anchor.href.search('tel:')===-1) {
 				anchor.addEventListener('click',function (event) {
 					
 					console.log(anchor.target);
 					
 				});
-			}
-			
-			//change event listener to open Dialog;
-			anchor.addEventListener('click',function (event) {	
-				event.stopPropagation();
-				event.preventDefault();
-				Office.context.ui.displayDialogAsync(this.href,{width:50,height:50});
-				return false;
-			});			
+			}else {
+				//change event listener to open Dialog;
+				anchor.addEventListener('click',function (event) {	
+					event.stopPropagation();
+					event.preventDefault();
+					Office.context.ui.displayDialogAsync(this.href,{width:50,height:50});
+					return false;
+				});
+			}			
 			
 		});
 	}
