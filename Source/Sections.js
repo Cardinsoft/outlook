@@ -676,7 +676,7 @@ function createSectionSimple(builder,data,isCollapsed,index) {
   if(Object.keys(data).length!==0) {
     //append wigets to section;
     for(var key in data) {
-      var widget = simpleKeyValueWidget(key,data[key],false);
+      var widget = simpleKeyValueWidget(key,data[key],true);
       section.addWidget(widget);
     }
   
