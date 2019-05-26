@@ -376,7 +376,7 @@ async function goSettings(e) {
   var builder = CardService.newActionResponseBuilder();
   
   //set data state change and navigate to settings card;
-  builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardSettings(e)));
+  builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
   builder.setStateChanged(true);  
   return builder.build();    
 }
@@ -391,7 +391,7 @@ async function actionConfirm(e) {
   var builder = CardService.newActionResponseBuilder();
   
   //set data state change and navigate to confirmation card;
-  builder.setNavigation(CardService.newNavigation().pushCard(cardConfirm(e)));
+  builder.setNavigation(CardService.newNavigation().updateCard(cardConfirm(e)));
   builder.setStateChanged(false);
   return builder.build();
 }
