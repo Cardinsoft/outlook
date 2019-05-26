@@ -457,7 +457,12 @@ async function cardOpen(e) {
  */
 async function cardSettings(e) {
   var builder = CardService.newCardBuilder();
-      
+  
+  //build and set CardHeader;
+  var header = CardService.newCardHeader();
+      header.setTitle(globalSettingsHeader);
+      builder.setHeader(header);  
+	  
   var config = await getConfig();
   
   if(config.length!==0) {
