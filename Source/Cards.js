@@ -289,6 +289,27 @@ async function cardDisplay(e) {
   return builder.build();
 }
 
+/**
+ * Creates and shows welcome card on FTE or after reset;
+ * @param {Object} e event object;
+ * @returns {Card}
+ */
+function cardWelcome(e) {
+  var builder = CardService.newCardBuilder();
+        
+  //create card header and set icon and title on FTE;
+  var header = CardService.newCardHeader();
+      header.setImageUrl(globalCardinIconUrl);
+      header.setTitle(globalWelcomeHeader);
+      builder.setHeader(header);
+        
+  //build welcome, types and settings section on FTE;
+  createSectionWelcome(builder,false);
+  createSectionChooseType(builder,false,globalChooseTypeHeader);
+  createSectionHelp(builder,false); 
+        
+  return builder.build();
+}
 
 /**
  * Triggers either a welcome or display of connections card generators;
@@ -402,16 +423,7 @@ async function cardOpen(e) {
       //check if any Connectors configured;
       if(config.length===0) {
         
-        //create card header and set icon and title on FTE;
-        var header = CardService.newCardHeader();
-            header.setImageUrl(globalCardinIconUrl);
-            header.setTitle(globalWelcomeHeader);
-            builder.setHeader(header);
-        
-        //build welcome, types and settings section on FTE;
-        createSectionWelcome(builder,false);
-        createSectionChooseType(builder,false,globalChooseTypeHeader);
-        createSectionHelp(builder,false);
+		return cardWelcome(e);
         
       }else {
       
