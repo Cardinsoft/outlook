@@ -536,7 +536,7 @@ async function performFullReset(e) {
   }
   
   //set data state change and navigate to main card;
-  builder.setNavigation(CardService.newNavigation().updateCard(cardOpen(e)));
+  builder.setNavigation(CardService.newNavigation().updateCard(cardHome(e)));
   builder.setStateChanged(true);
   return builder.build();
 }
