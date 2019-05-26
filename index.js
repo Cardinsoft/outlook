@@ -508,7 +508,7 @@ function loadAnchor(element,input) {
 			let anchor = children[index];
 			
 			//set event listener to choose 
-			if(anchor.href.search('tel:')===-1) {
+			if(anchor.href.search('tel:')!==-1) {
 				anchor.addEventListener('click',function (event) {
 					
 					console.log(anchor.target);
