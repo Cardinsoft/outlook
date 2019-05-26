@@ -510,7 +510,7 @@ function loadAnchor(element,input) {
 			anchor.addEventListener('click',function (event) {	
 				event.stopPropagation();
 				event.preventDefault();
-				Office.context.ui.displayDialogAsync(this.href,{width:50%,height:50%});
+				Office.context.ui.displayDialogAsync(this.href,{width:50,height:50});
 				return false;
 			});			
 			
