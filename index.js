@@ -472,7 +472,8 @@ function loadMailto(element,input) {
 				
 				//set parameters for Compose Ui;
 				let mailParams = {
-					toRecipients : recipient
+					toRecipients    : recipient,
+					displayInIframe : true
 				};
 				
 				Office.context.mailbox.displayNewMessageForm(mailParams);
