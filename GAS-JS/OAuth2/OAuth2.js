@@ -135,13 +135,8 @@ Service.prototype.hasAccess = function() {
 	
 	//await for token;
 	const hasToken = service.checkToken();
-	
-	console.log(hasToken);
-	
-	return false;
 
-	
-	//if(token!==null) { return true; }else { return false; }
+	return false;
 };
 Service.prototype.getAccessToken = async function() {
 	//initiate Service with set parameters;
@@ -164,6 +159,9 @@ Service.prototype.getAccessToken = async function() {
 	console.log(captured);
 	
 	return captured;
+}
+Service.prototype.wipeTokens = async function () {
+	return;
 }
 Service.prototype.reset = async function() {
 	//initiate Service with set parameters;
