@@ -41,7 +41,7 @@ function cardAction(text,type,action,composeType){
  * @param {Object} params parameters to pass to function;
  * @returns {Action} this Action;
  */
-function Action(funcName,hasSpinner,params) {
+function actionAction(funcName,hasSpinner,params) {
   
   //create action and set required parameters;
   var action = CardService.newAction();
@@ -93,7 +93,7 @@ function textInputWidget(title,name,hint,content,multiline,funcName,hasSpinner,p
   
   //set action if function name provided;
   if(funcName) {
-    var action = Action(funcName,hasSpinner,params);
+    var action = actionAction(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
   
@@ -164,7 +164,7 @@ function textButtonWidget(text,disabled,isFilled,funcName,params) {
   if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
   
   //set action on button click;
-  var action = Action(funcName,true,params);
+  var action = actionAction(funcName,true,params);
   widget.setOnClickAction(action);
   
   return widget;
@@ -287,7 +287,7 @@ function imageButtonWidget(icon,funcName,params) {
       widget.setIcon(icon);
   
   //set action on button click;
-  var action = Action(funcName,true,params);
+  var action = actionAction(funcName,true,params);
   widget.setOnClickAction(action);
 
   return widget;
@@ -311,7 +311,7 @@ function imageWidget(src,alt,funcName,hasSpinner,params) {
 
   //set action if callback name provided;
   if(funcName) { 
-    var action = Action(funcName,hasSpinner,params);
+    var action = actionAction(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
 
@@ -360,7 +360,7 @@ function switchWidget(icon,top,content,name,selected,value,funcName,hasSpinner,p
   
   //set an onchange action;
   if(funcName) { 
-    var action = Action(funcName,hasSpinner,params);
+    var action = actionAction(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
   
@@ -438,7 +438,7 @@ function actionKeyValueWidget(icon,top,content,funcName,params) {
   }
 
   //set onclick action;
-  var action = Action(funcName,true,params);
+  var action = actionAction(funcName,true,params);
   widget.setOnClickAction(action);
       
   return widget;
@@ -477,7 +477,7 @@ function actionKeyValueWidgetButton(icon,top,content,button,funcName,params) {
   }
   
   //set onclick action and set parameters if provided;
-  var action = Action(funcName,true,params);
+  var action = actionAction(funcName,true,params);
   widget.setOnClickAction(action);
       
   return widget;  
@@ -507,7 +507,7 @@ function selectionInputWidget(top,name,type,options,funcName,hasSpinner,params) 
 
   //set an onchange action;
   if(funcName) { 
-    var action = Action(funcName,hasSpinner,params);
+    var action = actionAction(funcName,hasSpinner,params);
     widget.setOnChangeAction(action);
   }
   
