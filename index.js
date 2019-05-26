@@ -511,7 +511,7 @@ function loadAnchor(element,input) {
 			if(anchor.href.search('tel:')!==-1) {
 				anchor.addEventListener('click',function (event) {
 					event.stopPropagation();
-					anchor.target = '_self';
+					anchor.target = '_parent';
 					return false;
 				});
 			}else {
