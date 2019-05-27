@@ -194,7 +194,10 @@ class Menu {
 		
 		//clear HtmlElement;
 		let menu = menus[0].element;
-			menu.empty();
+		let menuItems = menu.children;
+		for(let i in menuItems) {
+			menu.item(i).remove();
+		}
 		
 		//reset items according to type;
 		if(isCardAction) {
