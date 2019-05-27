@@ -38,6 +38,36 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
 }
 
 /**
+ * Creates section with a ButtonSet of actionable TextButtons;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Array} actionsConfig an Array of objects with action config for TextButtons;
+ * @returns {CardSection} this CardSection;
+ */
+function createActionsSection(builder,isCollapsed,actionsConfig) {
+
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+      section.setCollapsible(isCollapsed);
+  
+  var buttons = [];
+  
+  //createTextButtons;
+  actionsConfig.forEach(function(action){
+    var button = textButtonWidget(action.text,false,false,action.funcName,action.params);
+    buttons.push(button);
+  });
+  
+  //create ButtonSet and set TextButtons;
+  var set = buttonSet(buttons);
+  section.addWidget(set);
+  
+  //append section and return it;
+  builder.addSection(section);  
+  return section;  
+}
+
+/**
  * Creates section with a list of configured Connectors to display;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
