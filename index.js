@@ -80,9 +80,11 @@ Office.initialize = (reason) => {
  */
 class Menu {
 	constructor() {
+		this.id        = '';
 		this.className = 'Menu';
+		this.items     = [];
+		this.isOpen    = false;		
 		this.menu;
-		this.isOpen = false;
 	}
 	create(items) {
 		const navbar = document.querySelector('.navbar');
@@ -91,8 +93,10 @@ class Menu {
 		menu.classList.add(this.className,'singulared');
 		navbar.append(menu);
 		
-		//set element reference
-		this.menu = menu;		
+		//set element reference;
+		this.id   = btoa((menus.length+1).toString());
+		console.log(this.id)
+		this.menu = menu;	
 		
 		for(let i=0; i<items.length; i++) {
 			let item = items[i];	
@@ -106,6 +110,9 @@ class Menu {
 		let self   = this;
 		let menu   = this.menu;
 		let action = item.action;
+		
+		//add item to Menu;
+		this.items.push(item);
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
@@ -140,9 +147,31 @@ class Menu {
 			await actionCallback(this);		
 		});
 	}
+	/**
+	 * Removes item from Menu by index;
+	 * @param {Integer} index item index to remove;
+	 * @returns {Object} this Menu;
+	 */
 	removeItem(index) {
+		//remove item from Menu;
+		this.items.splice(index,1);
+		
+		//remove item from HtmlElement;
 		let menu = menus[0].menu;
 		menu.children.item(index).remove();
+		
+		return this;
+	}
+	/**
+	 * Clears Menu of items;
+	 * @returns {Object} this Menu;
+	 */
+	clear() {
+		//clear HtmlElement;
+		let menu = menus[0].menu;
+		menu.empty();
+		
+		return this;
 	}
 	switchShow() {
 		let menu = menus[0].menu;
