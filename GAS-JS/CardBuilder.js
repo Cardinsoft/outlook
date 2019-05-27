@@ -57,7 +57,7 @@ CardBuilder.prototype.build = async function () {
 	
 	const sections = [];
 	
-	//if there is at least one section;
+	//if there is at least one section -> append;
 	if(cardSections.length>0) {
 		
 		let serialize = true;
@@ -100,6 +100,8 @@ CardBuilder.prototype.build = async function () {
 		const menu = menus[0];
 		if(menu.menu.children.length>8) { menu.removeItem(0); } //make adjustable in future updates;
 		if(cardActions.length>0) {
+			
+			cardActions.reverse();
 			
 			cardActions.forEach(function (cardAction) {
 			
