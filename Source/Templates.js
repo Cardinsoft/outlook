@@ -1,10 +1,39 @@
 /**
+ * Creates menu for navigating between Cards;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @returns {Card} Card that menu is appended to;
+ */
+function menu(builder) {
+  
+  //create menu Actions;
+  var actionDashboard = actionAction('cardHome',true);
+  var actionSettings  = actionAction('cardSettings',true);
+  var actionAdvanced  = actionAction('cardAdvanced',true);
+  var actionHelp      = actionAction('cardHelp',true);
+  
+  //create menu CardActions;
+  var cardDashboard = cardAction('Dashboard',globalActionClick,actionDashboard);
+  var cardSettings  = cardAction(globalSettingsHeader,globalActionClick,actionSettings);
+  var cardAdvanced  = cardAction(globalAdvancedHeader,globalActionClick,actionAdvanced);
+  var cardHelp      = cardAction(globalHelpHeader,globalActionClick,actionHelp);
+  
+  //set actions to builder;
+  builder.addCardAction(cardDashboard);
+  builder.addCardAction(cardSettings);
+  builder.addCardAction(cardAdvanced);
+  builder.addCardAction(cardHelp);
+  
+  //build Card as menu should be appended last;
+  return builder.build();
+}
+
+/**
  * Creates CardAction to set on a CardHeader;
  * @param {Text} text text to set on header;
  * @param {String} action type;
  * @param {Action} action action to set;
  * @param {String=} composeType type of email to set; 
- * @returns {CardAction}
+ * @returns {CardAction} this CardAction;
  */
 function cardAction(text,type,action,composeType){
   
@@ -121,7 +150,7 @@ function suggestions(textInputWidget,suggestions,suggestFunc) {
 /**
  * Creates Suggestions object for TextInput autocomplete handler;
  * @param {Array} suggestions an array of string values for creating options;
- * @returns {Suggestions}
+ * @returns {Suggestions} Suggestions to set;
  */
 function suggestion(suggestions) {
   var list = CardService.newSuggestions();
@@ -132,7 +161,7 @@ function suggestion(suggestions) {
 /**
  * Creates a ButtonSet widget and appends buttons if provided;
  * @param {Array} buttons an array of button widgets to add to button set;
- * @returns {ButtonSet}
+ * @returns {ButtonSet} this ButtonSet;
  */
 function buttonSet(buttons) {
   var widget = CardService.newButtonSet();
