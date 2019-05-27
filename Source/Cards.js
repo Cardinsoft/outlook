@@ -53,7 +53,7 @@ function cardCreate(e) {
   //create config for connector behaviour;
   createSectionAddConnector(builder,false,'',type);
   
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -133,7 +133,7 @@ function cardUpdate(e) {
   //create section with manual and default widgets + update button;
   createSectionUpdateConnector(builder,false,connector,true,isReloaded,authType);
 
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -185,7 +185,7 @@ async function cardDisplay(e) {
 	  await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
 	}	
     createNotAuthorizedSection(builder,false,connector,code);
-    return builder.build();
+    return menu(builder);
   }else {
  
 	  //parse content;
@@ -290,7 +290,7 @@ async function cardDisplay(e) {
     await createConnectorListSection(builder,true,globalConnectorListHeader,config,msg);
   }
   
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -312,7 +312,7 @@ async function cardHome(e) {
     createSectionChooseType(builder,false,globalChooseTypeHeader);
   }
   
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -334,7 +334,7 @@ function cardWelcome(e) {
   createSectionChooseType(builder,false,globalChooseTypeHeader);
   createSectionHelp(builder,false); 
         
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -465,7 +465,7 @@ async function cardOpen(e) {
         
       }
       
-      return builder.build();
+      return menu(builder);
     }
   
   }
@@ -473,7 +473,7 @@ async function cardOpen(e) {
     //log error to stackdriver and build config error section;
     console.error(error);
     createConfigErrorSection(builder,false,globalConfigErrorHeader,globalConfigErrorWidgetTitle,globalConfigErrorWidgetContent);
-    return builder.build();
+    return menu(builder);
   }
 }
 
@@ -498,7 +498,7 @@ async function cardSettings(e) {
   await createSectionChooseType(builder,false,globalChooseTypeHeader);
   await createSectionSettings(builder,false,globalSettingsHeader);
   
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -511,7 +511,7 @@ function cardAdvanced(e) {
   
   createSectionAdvancedSettings(builder,false);
 
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -524,7 +524,7 @@ function cardHelp(e) {
       
   createSectionHelp(builder,false);
 
-  return builder.build();
+  return menu(builder);
 }
 
 /**
@@ -542,5 +542,5 @@ function cardConfirm(e) {
   
   createSectionConfirm(builder,false,e);
   
-  return builder.build();
+  return menu(builder);
 }
