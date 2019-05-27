@@ -56,7 +56,8 @@ CardBuilder.prototype.build = async function () {
 	}
 	
 	const sections = [];
-		
+	
+	//if there is at least one section;
 	if(cardSections.length>0) {
 		
 		let serialize = true;
@@ -121,7 +122,8 @@ CardBuilder.prototype.build = async function () {
 				menu.addItem(item,true);
 				
 			});
-
+		}
+		
 	}
 	
 	cardStack.push(this);
