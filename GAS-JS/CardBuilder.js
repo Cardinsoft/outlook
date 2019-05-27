@@ -2,15 +2,15 @@
 class CardBuilder {
 	constructor() {
 		this.className = 'CardBuilder';
-		this.action;
-		this.sections = [];
+		this.actions   = [];
+		this.sections  = [];
 		this.cardHeader;
 		this.name;
 	}
 }
 //add new methods to the class;
 CardBuilder.prototype.addCardAction = function (action) {
-	this.action = action;
+	this.actions.push(action);
 	return this;
 };
 CardBuilder.prototype.addSection = function (section) {
@@ -28,7 +28,7 @@ CardBuilder.prototype.setName = function (name) {
 CardBuilder.prototype.build = async function () {
 	const cardHeader   = this.cardHeader;
 	const cardSections = this.sections;
-	const cardAction   = this.action;
+	const cardActions   = this.actions;
 	
 	$('#main-Ui-header').empty();
 	$('#app-body').empty();
@@ -95,28 +95,32 @@ CardBuilder.prototype.build = async function () {
 		});
 		
 		
-		//if card action provided -> set it on menu top and add event handler;
+		//if card actions provided -> set on menu top and add event handler;
 		const menu = menus[0];
 		if(menu.menu.children.length>8) { menu.removeItem(0); } //make adjustable in future updates;
-		if(cardAction) {
-			let params, cAction;
-			if(cardAction.action) {
-				cAction = cardAction.action;
-			}else if(cardAction.authorizationAction) {
-				cAction = cardAction.authorizationAction;
-			}else if(cardAction.openLink) {
-				cAction = cardAction.openLink;
-			}
+		if(cardActions.length>0) {
 			
-			let item = {
-				icon       : 'ms-Icon--Forward',
-				text       : cardAction.text,
-				classList  : ['CardAction'],
-				action     : cAction
-			};
+			cardActions.forEach(function (cardAction) {
 			
-			menu.addItem(item,true);
-		}
+				let params, cAction;
+				if(cardAction.action) {
+					cAction = cardAction.action;
+				}else if(cardAction.authorizationAction) {
+					cAction = cardAction.authorizationAction;
+				}else if(cardAction.openLink) {
+					cAction = cardAction.openLink;
+				}
+			
+				let item = {
+					icon       : 'ms-Icon--Forward',
+					text       : cardAction.text,
+					classList  : ['CardAction'],
+					action     : cAction
+				};
+			
+				menu.addItem(item,true);
+				
+			});
 
 	}
 	
