@@ -4,7 +4,7 @@
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Object} connector connector object;
  * @param {String} error error message to set to title;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
   
@@ -44,7 +44,7 @@ function createNotAuthorizedSection(builder,isCollapsed,connector,error) {
  * @param {String} header section header text;
  * @param {Array} config an array of Connector settings objects;
  * @param {GmailMessage} msg current meassge object;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 async function createConnectorListSection(builder,isCollapsed,header,config,msg) {
 
@@ -189,7 +189,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Array} config an array of Connector settings objects;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createConfiguredConnectorsSection(builder,isCollapsed,config) {
   
@@ -241,7 +241,7 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
  * @param {String} header section header text;
  * @param {String} title error prompt widget title;
  * @param {String} content error prompt widget content;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createConfigErrorSection(builder,isCollapsed,header,title,content) {
   
@@ -274,7 +274,7 @@ function createConfigErrorSection(builder,isCollapsed,header,title,content) {
  * @param {Integet} max maximum number of elements to show; 
  * @param {Array} data results array to traverse;
  * @param {Object} connector connector object;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createExtraDataSection(builder,isCollapsed,end,begin,max,data,connector) {
   
@@ -323,7 +323,7 @@ function createExtraDataSection(builder,isCollapsed,end,begin,max,data,connector
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Object} connector connector configuration object;
  * @param {GmailMessage} msg current meassge object;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createNoFieldsSection(builder,isCollapsed,connector,msg) {
   
@@ -355,7 +355,7 @@ function createNoFieldsSection(builder,isCollapsed,connector,msg) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Integer} index connector index;
- * @returns {CardSection}  
+ * @returns {CardSection} this CardSection;
  */
 function createSectionBack(builder,isCollapsed,index) {
   
@@ -375,7 +375,7 @@ function createSectionBack(builder,isCollapsed,index) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Object} e event object;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createSectionConfirm(builder,isCollapsed,e) {
   
@@ -396,7 +396,7 @@ function createSectionConfirm(builder,isCollapsed,e) {
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} error error message to show;
  * @param {String} content unparsed content;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createUnparsedSection(builder,isCollapsed,error,content) {
   
@@ -424,7 +424,7 @@ function createUnparsedSection(builder,isCollapsed,error,content) {
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Integer} code response status code;
  * @param {String} error error message to show; 
- * @returns {CardSection}  
+ * @returns {CardSection} this CardSection;  
  */
 function createErrorSection(builder,isCollapsed,code,error) {
   var section = CardService.newCardSection();
@@ -501,7 +501,7 @@ function createErrorSection(builder,isCollapsed,code,error) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Object} connector connector configuration object;
  * @param {Object} auth section auth config object;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createSectionAuth(builder,connector,auth) {
   var section = CardService.newCardSection();
@@ -551,7 +551,7 @@ function createSectionAuth(builder,connector,auth) {
  * Creates section from widgets config;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Object} config section config object;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */ 
 function createSectionConfig(builder,config) {
   
@@ -661,7 +661,7 @@ function createSectionConfig(builder,config) {
  * @param {Array} data a set of key-value pairs representing widgets; 
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Integer} index result index to append to section header;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createSectionSimple(builder,data,isCollapsed,index) {
   
@@ -693,7 +693,7 @@ function createSectionSimple(builder,data,isCollapsed,index) {
  * @param {Integer} sectionIndex index of section currently created;
  * @param {Object} connector connector config object;
  * @param {Integer} max maximum number of widgets to create;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
   //create section;
@@ -838,7 +838,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
  * Creates section with update TextButton to reload advanced section with user input form;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible; 
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */ 
 function createSectionUpdate(builder,isCollapsed,connector) {
   
@@ -863,7 +863,7 @@ function createSectionUpdate(builder,isCollapsed,connector) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String=} header section header text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createSectionChooseType(builder,isCollapsed,header) {
   
@@ -898,7 +898,7 @@ function createSectionChooseType(builder,isCollapsed,header) {
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} header section header text;
  * @param {Object} type connector type object;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createSectionAddConnector(builder,isCollapsed,header,type) {
   
@@ -942,7 +942,7 @@ function createSectionAddConnector(builder,isCollapsed,header,type) {
  * @param {Object} connector connector configuration object;
  * @param {Boolean} isReloaded truthy value to derermine wheter it is invoked from input change;
  * @param {String} authType authorization type to set auth type choice group to;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,authType) {
   
@@ -1004,7 +1004,7 @@ function createSectionUpdateConnector(builder,isCollapsed,connector,isReloaded,a
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} short connector type description;
  * @param {String} header section header text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createDescriptionSection(builder,isCollapsed,short,header) {
   
@@ -1027,7 +1027,7 @@ function createDescriptionSection(builder,isCollapsed,short,header) {
  * Creates section for Connector custom icon input;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {String} content input content text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createCustomIconsSection(builder,isCollapsed,content) {
   
@@ -1054,7 +1054,7 @@ function createCustomIconsSection(builder,isCollapsed,content) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} header section header text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createSectionWelcome(builder,isCollapsed,header) {
  
@@ -1078,7 +1078,7 @@ function createSectionWelcome(builder,isCollapsed,header) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} header section header text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 async function createSectionSettings(builder,isCollapsed,header) {
   
@@ -1102,7 +1102,7 @@ async function createSectionSettings(builder,isCollapsed,header) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} header section header text;
- * @returns {CardSection}
+ * @returns {CardSection} this CardSection;
  */
 function createSectionAdvancedSettings(builder,isCollapsed,header) {
   
@@ -1129,7 +1129,7 @@ function createSectionAdvancedSettings(builder,isCollapsed,header) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {String} header section header text;
- * @returns {CardSection} 
+ * @returns {CardSection} this CardSection;
  */
 function createSectionHelp(builder,isCollapsed,header) {
   
