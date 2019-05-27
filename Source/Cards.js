@@ -344,10 +344,6 @@ function cardWelcome(e) {
  */
 async function cardOpen(e) {  
   var builder = CardService.newCardBuilder();
-
-  //add refresher action;
-  var caAction = actionAction('cardHome',true);
-  var ca = cardAction(globalRefreshText,globalActionClick,caAction);
   
   var config = await getConfig();
   
@@ -456,8 +452,6 @@ async function cardOpen(e) {
 		return cardWelcome(e);
         
       }else {
-		
-		builder.addCardAction(ca);
 		
         //build section with a list of configured Connectors;
         try {
