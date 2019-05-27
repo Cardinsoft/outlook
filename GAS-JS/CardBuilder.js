@@ -8,23 +8,51 @@ class CardBuilder {
 		this.name;
 	}
 }
-//add new methods to the class;
+
+/**
+ * Adds Card action (multiple actions allowed);
+ * @param {CardAction) action CardAction class instance;
+ * @returns {CardBuilder} this CardBuilder;
+ */
 CardBuilder.prototype.addCardAction = function (action) {
 	this.actions.push(action);
 	return this;
 };
+
+/**
+ * Adds Card section (multiple sections allowed);
+ * @param {CardSection} section CardSection class instance;
+ * @returns {CardBuilder} this CardBuilder;
+ */
 CardBuilder.prototype.addSection = function (section) {
 	this.sections.push(section);
 	return this;
 };
+
+/**
+ * Sets Card header;
+ * @params {CardHeader} cardHeader CardHeader class instance;
+ * @returns {CardBuilder} this CardBuilder;
+ */
 CardBuilder.prototype.setHeader = function (cardHeader) {
 	this.cardHeader = cardHeader;
 	return this;
 };
+
+/**
+ * Sets Card name;
+ * @param {String} name name to reference Card by;
+ * @returns {CardBuilder} this CardBuilder;
+ */
 CardBuilder.prototype.setName = function (name) {
 	this.name = name;
 	return this;
 };
+
+/**
+ * Builds the Card;
+ * @returns {CardBuilder} this CardBuilder;
+ */
 CardBuilder.prototype.build = async function () {
 	const cardHeader   = this.cardHeader;
 	const cardSections = this.sections;
@@ -63,6 +91,7 @@ CardBuilder.prototype.build = async function () {
 		let serialize = true;
 		if(cardSections.length===1) { serialize = false; }
 		
+		//append each CardSection to Card;
 		for(let s=0; s<cardSections.length; s++) {
 			let cardSection = cardSections[s];
 			let numuncoll   = cardSection.numUncollapsibleWidgets;
@@ -72,7 +101,8 @@ CardBuilder.prototype.build = async function () {
 			sections.push({s:section,u:numuncoll});
 		}
 		
-		sections.forEach( (obj) => {
+		//set collapsibility event listener on each CardSection;
+		sections.forEach(function (obj) {
 			
 			let section   = obj.s;
 			let numuncoll = obj.u;
