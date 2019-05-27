@@ -126,9 +126,9 @@ CardBuilder.prototype.build = async function () {
 		});
 		
 		
-		//if card actions provided -> set on menu top and add event handler;
+		//if CardActions provided, clear menu and set new items;
 		const menu = menus[0];
-		if(menu.menu.children.length>8) { menu.removeItem(0); } //make adjustable in future updates;
+		menu.clear(true);
 		if(cardActions.length>0) {
 			
 			cardActions.reverse();

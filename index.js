@@ -80,10 +80,13 @@ Office.initialize = (reason) => {
  */
 class Menu {
 	constructor() {
-		this.id        = '';
+		this.id = '';
 		this.className = 'Menu';
-		this.items     = [];
-		this.isOpen    = false;		
+		this.items = {
+			cardActions      : [],
+			universalActions : []
+		};
+		this.isOpen = false;		
 		this.menu;
 	}
 	create(items) {
@@ -95,24 +98,24 @@ class Menu {
 		
 		//set element reference;
 		this.id   = btoa((menus.length+1).toString());
-		console.log(this.id)
 		this.menu = menu;	
 		
 		for(let i=0; i<items.length; i++) {
 			let item = items[i];	
-			this.addItem(item);
+			this.addItem(item,item.isCA);
 		}
 		
 		this.isOpen = true;
 		menus.push(this);
 	}
-	addItem(item,toTop) {
+	addItem(item,isCardAction) {
 		let self   = this;
 		let menu   = this.menu;
 		let action = item.action;
+		let items  = this.items;
 		
 		//add item to Menu;
-		this.items.push(item);
+		
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
@@ -122,11 +125,14 @@ class Menu {
 			});
 		}
 		menuItem.classList.add('menuItem');
-			
-		if(toTop) { 
-			menu.prepend(menuItem); 
+		
+		//add to CardActions or UniversalActions;
+		if(isCardAction) { 
+			menu.prepend(menuItem);
+			items.cardActions.push(item);
 		}else { 
-			menu.append(menuItem); 
+			menu.append(menuItem);
+			items.universalActions.push(item);
 		}
 		
 		//set item's icon and text;
@@ -150,9 +156,10 @@ class Menu {
 	/**
 	 * Removes item from Menu by index;
 	 * @param {Integer} index item index to remove;
+	 * @param {Boolean} isCardAction from where to remove item;
 	 * @returns {Object} this Menu;
 	 */
-	removeItem(index) {
+	removeItem(index,isCardAction) {
 		//remove item from Menu;
 		this.items.splice(index,1);
 		
@@ -164,12 +171,22 @@ class Menu {
 	}
 	/**
 	 * Clears Menu of items;
+	 * @param {Boolean} isCardAction from where to remove item;
 	 * @returns {Object} this Menu;
 	 */
-	clear() {
+	clear(isCardAction) {;
+		let items = this.items;
+		
 		//clear HtmlElement;
 		let menu = menus[0].menu;
-		menu.empty();
+			menu.empty();
+		
+		//reset items according to type;
+		if(isCardAction) {
+			items.cardActions = [];
+		}else {
+			items.universalActions = [];
+		}		
 		
 		return this;
 	}
