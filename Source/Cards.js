@@ -198,6 +198,28 @@ async function cardDisplay(e) {
 		  //check if there are any nested objects or not;
 		  var hasNested = checkNested(content);
 		  if(hasNested) {
+
+			//check for editable widgets and create actions (add,edit,etc) section;
+			var hasEditable = checkEditable(content);
+			if(hasEditable) {
+				//stringify connector properties;
+				connector = propertiesToString(connector);
+				
+				//get action text or default to global value;
+				var caText = connector.caText;
+				if(!caText) { caText = globalUpdateConnectorText; }
+				
+				//create actions configuration;
+				var actionsConfig = [
+					{
+						text     : caText,
+						funcName : 'updateSectionAdvanced',
+						params   : connector
+					}
+				];
+				
+				createActionsSection(builder,false,actionsConfig); 
+			}
 		  
 			//get maximum number of widgets for each section;
 			var layout = getLayout(content);
@@ -216,22 +238,7 @@ async function cardDisplay(e) {
 				createSectionSimple(builder,section,true,j);
 			  }
 			}
-		   
-			//check for editable widgets and create update section if found;
-			var hasEditable = checkEditable(content);
-			if(hasEditable) {
-			  //stringify connector properties;
-			  connector = propertiesToString(connector);
-			  
-			  var action = actionAction('updateSectionAdvanced',true,connector);
-			  
-			  var caText = connector.caText;
-			  if(!caText) { caText = globalUpdateConnectorText; }
-			  
-			  var ca = cardAction(caText,globalActionClick,action);
-			  builder.addCardAction(ca);
-			}
-	 
+		 
 		  }else {
 			
 			//get parameters for extra data;
