@@ -37,7 +37,7 @@ Office.initialize = (reason) => {
 		$('#app-body').show();
 
 		//handle menu close on outside border click;
-		const elem = menu.menu;
+		const elem = menu.element;
 		const body = document.body;
 		elem.addEventListener('pointerover',function () {
 			const out = function () { 
@@ -87,8 +87,14 @@ class Menu {
 			universalActions : []
 		};
 		this.isOpen = false;		
-		this.menu;
+		this.element;
 	}
+	
+	/**
+	 * Creates Menu and appends to Ui;
+	 * @param {Array} items an Array of items to add initially;
+	 * @returns {Object} this Menu;
+	 */
 	create(items) {
 		const navbar = document.querySelector('.navbar');
 		
@@ -98,7 +104,7 @@ class Menu {
 		
 		//set element reference;
 		this.id   = btoa((menus.length+1).toString());
-		this.menu = menu;	
+		this.element = menu;	
 		
 		for(let i=0; i<items.length; i++) {
 			let item = items[i];	
@@ -107,15 +113,20 @@ class Menu {
 		
 		this.isOpen = true;
 		menus.push(this);
+		
+		return this;
 	}
+	/**
+	 * Adds item to Menu;
+	 * @param {Object} item item to add;
+	 * @param {Boolean} isCardAction from where to remove item;
+	 * @returns {Object} this Menu;
+	 */
 	addItem(item,isCardAction) {
 		let self   = this;
-		let menu   = this.menu;
+		let menu   = this.element;
 		let action = item.action;
 		let items  = this.items;
-		
-		//add item to Menu;
-		
 		
 		//create menu item;
 		let menuItem = document.createElement('div');
@@ -152,7 +163,10 @@ class Menu {
 			self.switchShow();
 			await actionCallback(this);		
 		});
+		
+		return this;
 	}
+	
 	/**
 	 * Removes item from Menu by index;
 	 * @param {Integer} index item index to remove;
@@ -164,11 +178,12 @@ class Menu {
 		this.items.splice(index,1);
 		
 		//remove item from HtmlElement;
-		let menu = menus[0].menu;
-		menu.children.item(index).remove();
+		let menu = menus[0].element;
+		element.children.item(index).remove();
 		
 		return this;
 	}
+	
 	/**
 	 * Clears Menu of items;
 	 * @param {Boolean} isCardAction from where to remove item;
@@ -178,7 +193,7 @@ class Menu {
 		let items = this.items;
 		
 		//clear HtmlElement;
-		let menu = menus[0].menu;
+		let menu = menus[0].element;
 			menu.empty();
 		
 		//reset items according to type;
@@ -190,8 +205,12 @@ class Menu {
 		
 		return this;
 	}
+	
+	/**
+	 * Switches Menu display;
+	 */
 	switchShow() {
-		let menu = menus[0].menu;
+		let menu = menus[0].element;
 		let cl = menu.classList;
 		
 		if(cl.contains('singulared')) { 
