@@ -19,10 +19,10 @@ Office.initialize = (reason) => {
 			helpAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);	
 
 		const items = [
-			{icon : 'ms-Icon--Home',       text : 'Dashboard', action : JSON.stringify(homeAction)},
-			{icon : 'ms-Icon--Settings',   text : 'Settings',  action : JSON.stringify(settingsAction)},
-			{icon : 'ms-Icon--Processing', text : 'Advanced',  action : JSON.stringify(advancedAction)},
-			{icon : 'ms-Icon--Help',       text : 'Help',      action : JSON.stringify(helpAction)}
+			//{icon : 'ms-Icon--Home',       text : 'Dashboard', action : JSON.stringify(homeAction)},
+			//{icon : 'ms-Icon--Settings',   text : 'Settings',  action : JSON.stringify(settingsAction)},
+			//{icon : 'ms-Icon--Processing', text : 'Advanced',  action : JSON.stringify(advancedAction)},
+			//{icon : 'ms-Icon--Help',       text : 'Help',      action : JSON.stringify(helpAction)}
 		];
 		
 		//initiate menu with universal actions;
