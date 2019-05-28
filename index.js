@@ -203,11 +203,15 @@ class Menu {
 		//clear HtmlElement;
 		let menu = menus[0].element;
 		let menuItems = menu.children;
-
+		
+		console.log(menuItems.length);
+		console.log(menuItems);
+		
 		//skip empty Menus;
 		if(menuItems.length>0) {
 			//remove items from Menu;
 			for(let i=0; i<menuItems.length; i++) {
+				console.log(this);
 				this.removeItem(0,isCardAction);
 			}
 		}
