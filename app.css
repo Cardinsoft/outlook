@@ -18,12 +18,12 @@ body {
     padding : 0;
 }
 
-.KeyValue p {
-    margin : 0.6em 0;
-}
-
 .pointer {
 	cursor : pointer;
+}
+
+.KeyValue p {
+    margin : 0.6em 0;
 }
 
 .KeyValueImage {
@@ -34,14 +34,14 @@ body {
     border-radius : 5px;
 }
 
+.KeyValueLabel + .KeyValueText {
+	word-break : break-word;
+}
+
 .KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
 	display       : block;
 	margin-bottom : 5px;
 	color         : #a6a6a6;
-}
-
-.ms-TextField {
-	width : 100%;
 }
 
 .TextInputLabel {
@@ -84,11 +84,6 @@ body {
 	margin-right : 16px;
 }
 
-.ms-Dropdown-title {
-	border  : none;
-	padding : 6px 40px 0 0;
-}
-
 .ButtonSet .TextButton {
 	margin-right : 16px;
 }
@@ -117,16 +112,6 @@ body {
 	top    : 4px;
 }
 
-.ms-ContextualHost {
-	left : 94px !important;
-	top  : 8px  !important;
-}
-
-.ms-Panel-contentInner {
-	margin  : 0;
-	padding : 0;
-}
-
 .row {
 	display     : flex;
 	align-items : center;
@@ -146,10 +131,6 @@ body {
 .column-text {
 	margin-right : 8px;
 	flex-grow    : 100;
-}
-
-.ms-MessageBar {
-	width : 93.5%;
 }
 
 .separated, .separated-both {
@@ -339,4 +320,27 @@ span.menu:before {
 	width        : 20px;
 	height       : 20px;
 	border-width : 1px;
+}
+
+.ms-TextField {
+	width : 100%;
+}
+
+.ms-Dropdown-title {
+	border  : none;
+	padding : 6px 40px 0 0;
+}
+
+.ms-ContextualHost {
+	left : 94px !important;
+	top  : 8px  !important;
+}
+
+.ms-Panel-contentInner {
+	margin  : 0;
+	padding : 0;
+}
+
+.ms-MessageBar {
+	width : 93.5%;
 }
