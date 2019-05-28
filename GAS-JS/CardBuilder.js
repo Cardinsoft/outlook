@@ -146,10 +146,9 @@ CardBuilder.prototype.build = async function () {
 				}
 			
 				let item = {
-					icon       : 'ms-Icon--Forward',
-					text       : cardAction.text,
-					classList  : ['CardAction'],
-					action     : cAction
+					text      : cardAction.text,
+					classList : [],
+					action    : cAction
 				};
 			
 				menu.addItem(item,true);
