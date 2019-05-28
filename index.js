@@ -131,7 +131,7 @@ class Menu {
 		//create menu item;
 		let menuItem = document.createElement('div');
 		if(item.classList) {
-			item.classList.forEach((cl) => {
+			item.classList.forEach(function (cl) {
 				menuItem.classList.add(cl);
 			});
 		}
@@ -211,6 +211,9 @@ class Menu {
 				this.removeItem(0,isCardAction);
 			}
 		}
+		
+		console.log(menuItems.length)
+		console.log(menus[0]);
 
 		return this;
 	}
