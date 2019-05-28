@@ -188,7 +188,7 @@ class Menu {
 		
 		//remove item from HtmlElement;
 		let menu = menus[0].element;
-		element.children.item(index).remove();
+		menu.children.item(index).remove();
 		
 		return this;
 	}
