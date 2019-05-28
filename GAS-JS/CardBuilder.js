@@ -128,9 +128,7 @@ CardBuilder.prototype.build = async function () {
 		
 		//if CardActions provided, clear menu and set new items;
 		const menu = menus[0];
-		await menu.clear(true);
-		
-		console.log(menu);
+		menu.clear(true);
 		
 		if(cardActions.length>0) {
 			
