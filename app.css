@@ -108,7 +108,8 @@ body {
 }
 
 .btn-disabled {
-	color : #a6a6a6;
+	pointer-events : none;
+	color          : #a6a6a6;
 }
 
 .Switch {
