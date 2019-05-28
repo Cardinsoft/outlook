@@ -199,7 +199,7 @@ class Menu {
 		console.log(menuItems);
 		
 		//skip empty Menus;
-		if(menuItems!==null) {
+		if(menuItems.length>0) {
 			//remove items from HtmlElement;
 			for(let i in menuItems) {
 				menuItems.item(i).remove();
