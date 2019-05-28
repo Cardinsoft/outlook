@@ -196,7 +196,7 @@ class Menu {
 		let menu = menus[0].element;
 		let menuItems = menu.children;
 		
-		console.log(menuItems);
+		console.log(menuItems.length);
 		
 		//skip empty Menus;
 		if(menuItems.length>0) {
