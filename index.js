@@ -198,15 +198,7 @@ class Menu {
 	 * @param {Boolean} isCardAction from where to remove item;
 	 * @returns {Object} this Menu;
 	 */
-	clear(isCardAction) {;
-		let items = this.items;
-		
-		//access type-appropriate items;
-		if(isCardAction) {
-			items = items.cardActions;
-		}else {
-			items = items.universalActions;
-		}
+	clear(isCardAction) {
 		
 		//clear HtmlElement;
 		let menu = menus[0].element;
@@ -216,7 +208,7 @@ class Menu {
 		if(menuItems.length>0) {
 			//remove items from Menu;
 			for(let i=0; i<menuItems.length; i++) {
-				this.removeItem(i,isCardAction);
+				this.removeItem(0,isCardAction);
 			}
 		}
 
