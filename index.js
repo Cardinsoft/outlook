@@ -192,6 +192,12 @@ class Menu {
 	clear(isCardAction) {;
 		let items = this.items;
 		
+		if(isCardAction) {
+			items = items.cardActions;
+		}else {
+			items = items.universalActions;
+		}
+		
 		//clear HtmlElement;
 		let menu = menus[0].element;
 		let menuItems = menu.children;
