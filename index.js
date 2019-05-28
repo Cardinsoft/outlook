@@ -1,33 +1,10 @@
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = (reason) => {
 	$(document).ready(async () => {
-
-		const homeAction = CardService.newAction();
-			homeAction.setFunctionName('universalHome');
-			homeAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
-				
-		const settingsAction = CardService.newAction();
-			settingsAction.setFunctionName('universalSettings');
-			settingsAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);
-			
-		const advancedAction = CardService.newAction();
-			advancedAction.setFunctionName('universalAdvanced');
-			advancedAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);		
-				
-		const helpAction = CardService.newAction();
-			helpAction.setFunctionName('universalHelp');
-			helpAction.setLoadIndicator(CardService.LoadIndicator.SPINNER);	
-
-		const items = [
-			//{icon : 'ms-Icon--Home',       text : 'Dashboard', action : JSON.stringify(homeAction)},
-			//{icon : 'ms-Icon--Settings',   text : 'Settings',  action : JSON.stringify(settingsAction)},
-			//{icon : 'ms-Icon--Processing', text : 'Advanced',  action : JSON.stringify(advancedAction)},
-			//{icon : 'ms-Icon--Help',       text : 'Help',      action : JSON.stringify(helpAction)}
-		];
 		
 		//initiate menu with universal actions;
 		const menu = new Menu();
-		menu.create(items);
+		menu.create([]);
 		$('.navelem').click( (event) => {
 			event.stopPropagation();
 			event.preventDefault();
@@ -96,6 +73,7 @@ class Menu {
 	 * @returns {Object} this Menu;
 	 */
 	create(items) {
+		const self = this;
 		const navbar = document.querySelector('.navbar');
 		
 		const menu = document.createElement('div');
@@ -111,6 +89,21 @@ class Menu {
 			this.addItem(item,item.isCA);
 		}
 		
+		//handle menu close on outside border click;
+		const body = document.body;
+		menu.addEventListener('pointerover',function () {
+			const out = function () { 
+				menu.removeEventListener('pointerout',out);
+				const switchMenu = function () {
+					if(self.isOpen) { self.switchShow(); }
+					body.removeEventListener('click',switchMenu);
+				}
+				body.addEventListener('click',switchMenu);
+			}
+			menu.addEventListener('pointerout',out);
+        });		
+		
+		//default to open and push to global context;
 		this.isOpen = true;
 		menus.push(this);
 		
