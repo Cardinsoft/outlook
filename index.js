@@ -186,7 +186,6 @@ class Menu {
 		if(menuItems.length>0) {
 			//remove items from Menu;
 			for(let i=0; i<length; i++) {
-				console.log(this);
 				this.removeItem(0,isCardAction);
 			}
 		}
