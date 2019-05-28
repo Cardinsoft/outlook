@@ -196,6 +196,8 @@ class Menu {
 		let menu = menus[0].element;
 		let menuItems = menu.children;
 		
+		console.log(menuItems);
+		
 		//skip empty Menus;
 		if(menuItems!==null) {
 			//remove items from HtmlElement;
