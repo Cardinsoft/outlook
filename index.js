@@ -195,16 +195,21 @@ class Menu {
 		//clear HtmlElement;
 		let menu = menus[0].element;
 		let menuItems = menu.children;
-		for(let i in menuItems) {
-			menuItems.item(i).remove();
-		}
 		
-		//reset items according to type;
-		if(isCardAction) {
-			items.cardActions = [];
-		}else {
-			items.universalActions = [];
-		}		
+		//skip empty Menus;
+		if(menuItems!==null) {
+			//remove items from HtmlElement;
+			for(let i in menuItems) {
+				menuItems.item(i).remove();
+			}
+			
+			//reset items according to type;
+			if(isCardAction) {
+				items.cardActions = [];
+			}else {
+				items.universalActions = [];
+			}
+		}
 		
 		return this;
 	}
