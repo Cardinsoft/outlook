@@ -174,8 +174,17 @@ class Menu {
 	 * @returns {Object} this Menu;
 	 */
 	removeItem(index,isCardAction) {
+		let items = this.items;
+		
+		//access type-appropriate items;
+		if(isCardAction) {
+			items = items.cardActions;
+		}else {
+			items = items.universalActions;
+		}		
+		
 		//remove item from Menu;
-		this.items.splice(index,1);
+		items.splice(index,1);
 		
 		//remove item from HtmlElement;
 		let menu = menus[0].element;
@@ -192,6 +201,7 @@ class Menu {
 	clear(isCardAction) {;
 		let items = this.items;
 		
+		//access type-appropriate items;
 		if(isCardAction) {
 			items = items.cardActions;
 		}else {
