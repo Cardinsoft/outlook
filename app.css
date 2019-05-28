@@ -196,12 +196,12 @@ body {
 }
 
 .navelem {
-	margin-left      : auto;
-    margin-right     : 0;
-	height           : 35px;
-    width            : 28px;
-	text-align       : center;
-    font-size        : x-large;
+	margin-left  : auto;
+    margin-right : 0;
+	height       : 35px;
+    width        : 28px;
+	text-align   : center;
+    font-size    : x-large;
 }
 
 .navelem:hover {
@@ -214,11 +214,11 @@ span.menu:before {
 }
 
 .Menu {
-	z-index          : 999;
-	overflow         : hidden;
-	position         : absolute;
-    top              : 16px;
-    left             : auto;
+	z-index  : 999;
+	overflow : hidden;
+	position : absolute;
+    top      : 16px;
+    left     : auto;
 }
 
 .Select {
@@ -255,6 +255,10 @@ span.menu:before {
 	margin      : 0;
 	padding-top : 8px;
 	color       : #333;
+}
+
+.menuText {
+	margin-left: 12px;
 }
 
 .selectText {
