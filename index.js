@@ -196,7 +196,7 @@ class Menu {
 		let menu = menus[0].element;
 		let menuItems = menu.children;
 		for(let i in menuItems) {
-			menu.item(i).remove();
+			menuItems.item(i).remove();
 		}
 		
 		//reset items according to type;
