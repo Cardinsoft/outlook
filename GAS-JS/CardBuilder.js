@@ -129,6 +129,9 @@ CardBuilder.prototype.build = async function () {
 		//if CardActions provided, clear menu and set new items;
 		const menu = menus[0];
 		menu.clear(true);
+		
+		console.log(menu);
+		
 		if(cardActions.length>0) {
 			
 			cardActions.reverse();
