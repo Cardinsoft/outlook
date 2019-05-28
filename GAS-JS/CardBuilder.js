@@ -132,6 +132,8 @@ CardBuilder.prototype.build = async function () {
 		
 		console.log(menu);
 		
+		console.log(cardActions);
+		
 		if(cardActions.length>0) {
 			
 			cardActions.reverse();
