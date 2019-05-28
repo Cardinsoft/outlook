@@ -12,22 +12,6 @@ Office.initialize = (reason) => {
 		});
 		
 		$('#app-body').show();
-
-		//handle menu close on outside border click;
-		const elem = menu.element;
-		const body = document.body;
-		elem.addEventListener('pointerover',function () {
-			const out = function () { 
-				elem.removeEventListener('pointerout',out);
-				const switchMenu = function () {
-					if(menu.isOpen) { menu.switchShow(); }
-					body.removeEventListener('click',switchMenu);
-				}
-				body.addEventListener('click',switchMenu);
-			}
-			elem.addEventListener('pointerout',out);
-        });
-		
 		
 		//show app body overlay;
 		const o = new Overlay();
