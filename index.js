@@ -203,6 +203,7 @@ class Menu {
 		//clear HtmlElement;
 		let menu = menus[0].element;
 		let menuItems = menu.children;
+		const length = menuItems.length;
 		
 		console.log(menuItems.length);
 		console.log(menuItems);
@@ -210,7 +211,7 @@ class Menu {
 		//skip empty Menus;
 		if(menuItems.length>0) {
 			//remove items from Menu;
-			for(let i=0; i<menuItems.length; i++) {
+			for(let i=0; i<length; i++) {
 				console.log(this);
 				this.removeItem(0,isCardAction);
 			}
