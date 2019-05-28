@@ -201,7 +201,7 @@ class Menu {
 		//skip empty Menus;
 		if(menuItems.length>0) {
 			//remove items from HtmlElement;
-			for(let i in menuItems) {
+			for(let i=0; i<menuItems.length; i++) {
 				menuItems.item(i).remove();
 			}
 			
