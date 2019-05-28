@@ -207,13 +207,7 @@ class Menu {
 		}else {
 			items = items.universalActions;
 		}
-		
-		//clear HtmlElement;
-		let menu = menus[0].element;
-		let menuItems = menu.children;
-		
-		console.log(menuItems.length);
-		
+
 		//skip empty Menus;
 		if(menuItems.length>0) {
 			//remove items from Menu;
