@@ -200,16 +200,9 @@ class Menu {
 		
 		//skip empty Menus;
 		if(menuItems.length>0) {
-			//remove items from HtmlElement;
+			//remove items from Menu;
 			for(let i=0; i<menuItems.length; i++) {
-				menuItems.item(i).remove();
-			}
-			
-			//reset items according to type;
-			if(isCardAction) {
-				items.cardActions = [];
-			}else {
-				items.universalActions = [];
+				removeItem(i,isCardAction);
 			}
 		}
 		
