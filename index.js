@@ -207,6 +207,10 @@ class Menu {
 		}else {
 			items = items.universalActions;
 		}
+		
+		//clear HtmlElement;
+		let menu = menus[0].element;
+		let menuItems = menu.children;
 
 		//skip empty Menus;
 		if(menuItems.length>0) {
@@ -215,9 +219,7 @@ class Menu {
 				this.removeItem(i,isCardAction);
 			}
 		}
-		
-		console.log(this)
-		
+
 		return this;
 	}
 	
