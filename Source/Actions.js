@@ -300,6 +300,11 @@ async function updateSectionAdvanced(e) {
   //initiate check variables;
   var resp;
   var method = connector.method;
+
+  //if type only has run() method or connector is simply comm;
+  if((!cType.update&&!cType.remove)||method==='send') {
+    resp = cType.run(msg,connector,forms);
+  }
   
   //if type has update() method and entity should be added;
   if(cType.update&&method==='add') {
