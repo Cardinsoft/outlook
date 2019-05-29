@@ -217,7 +217,7 @@ async function cardDisplay(e) {
 				  var actionParams = {};
 				  
 				  //if has update() method, add action;
-				  if(cType.update) {
+				  if(cType.update||connector.method==='send') {
 					var paramsUpdate = copyObject(connector,{method:connector.method},false);
 					actionsConfig.push({
 					  text     : caText,
