@@ -495,10 +495,11 @@ function createErrorSection(builder,isCollapsed,code,error) {
     errorDetails = error;
     
   }else {
-    var custom = parseData(error);
+    var custom;
     if(typeof error==='string') { 
       custom = {descr : globalGeneralErrorContent, additional : error}; 
     }
+    custom = parseData(error);
     if(custom.descr) { content = custom.descr; }
     if(custom.additional) { errorDetails = custom.additional; }
   }
