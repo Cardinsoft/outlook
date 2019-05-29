@@ -26,6 +26,8 @@ function Flow() {
 
     //set headers for url fetch;
     var headers = {};
+	
+	connector.method = 'send';
     
     //set payload in case POST request will be triggered;
     var trimmed = trimMessage(msg,true,true);
