@@ -152,6 +152,7 @@ async function cardDisplay(e) {
   var isDefault  = connector.isDefault;
   var type       = connector.type;
   var authType   = connector.auth;
+  var cType      = new this[type]();
   
   //get optional parameters;
   var error      = connector.error;
