@@ -154,6 +154,9 @@ function LessAnnoyingCRM() {
     ];
     return mergeObjects({config:JSON.stringify(config),icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
   };
+  
+  
+  
   this.update = async function(msg,connector,forms,data,method) {
   
     //access API parameters and connector type;
@@ -447,6 +450,10 @@ function LessAnnoyingCRM() {
 
       //create result config;
       if(info.length>0) {
+		  
+		//as there is entity, set action to edit;
+        connector.method = 'edit';
+		  
 		for(var e=0; e<info.length; e++) {
 		  var entry = info[e];
           var isCompany = +entry.IsCompany;
@@ -694,6 +701,13 @@ function LessAnnoyingCRM() {
             if(contactEdited) { num -= 3; }else { num -= 2; }
             if(num<=0) { num = 1; }
             contSection.numUncollapsible = num;
+
+            //push hidden Id widget;
+            var hiddenId = {
+              state   : 'hidden',
+              content : contactId
+            };
+            contWidgets.push(hiddenId);
 
             sections.push(contSection);
             

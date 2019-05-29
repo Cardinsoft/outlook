@@ -852,8 +852,8 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
               element = selectionInputWidget(title,name,type,content);
               break;
           }
+		  section.addWidget(element);
         }
-        section.addWidget(element);
       
       }
       
@@ -863,30 +863,6 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
     return section;
   }
 }
-
-/**
- * Creates section with update TextButton to reload advanced section with user input form;
- * @param {CardBuilder} builder card builder to append section to;
- * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible; 
- * @returns {CardSection} this CardSection;
- */ 
-function createSectionUpdate(builder,isCollapsed,connector) {
-  
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-
-  //set optional parameters;
-  if(isCollapsed) { section.setCollapsible(isCollapsed); }
-  
-  //create update button;
-  var updateButton = textButtonWidget(globalUpdateShowText,false,false,'updateSectionAdvanced',connector);
-  section.addWidget(updateButton);
-  
-  //append section and return it;
-  builder.addSection(section);
-  return section;
-}
-
 
 /**
  * Creates section containing widgets representing connector types;
