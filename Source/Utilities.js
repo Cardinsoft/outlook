@@ -1,4 +1,19 @@
 /**
+ * Copies object's properties to another object;
+ * @param {Object} original object to copy;
+ * @param {Object} target object to copy to;
+ * @param {Boolean} override override props under same name;
+ * @returns {Object} target object;
+ */
+function copyObject(original,target,override) {
+  for(var key in original) {
+    if(!override&&target[key]!==undefined) { continue; }
+    target[key] = original[key];
+  }
+  return target;
+}
+
+/**
  * Generates a unique identifier for new entity;
  * @param {Array} ids an array of objects with identifiers;
  * @returns {String} new identifier;

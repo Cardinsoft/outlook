@@ -205,20 +205,38 @@ async function cardDisplay(e) {
 				//stringify connector properties;
 				connector = propertiesToString(connector);
 				
-				//get action text or default to global value;
-				var caText = connector.caText;
-				if(!caText) { caText = globalUpdateConnectorText; }
+				if(connector.method) {
 				
-				//create actions configuration;
-				var actionsConfig = [
-					{
-						text     : caText,
-						funcName : 'updateSectionAdvanced',
-						params   : connector
-					}
-				];
-				
-				createActionsSection(builder,false,actionsConfig); 
+				  //get action text or default to global value;
+				  var caText = connector.caText;
+				  if(!caText) { caText = globalUpdateConnectorText; }
+				  
+				  //initialize actions configuration;
+				  var actionsConfig = [];
+				  var actionParams = {};
+				  
+				  //if has update() method, add action;
+				  if(cType.update) {
+					var paramsUpdate = copyObject(connector,{method:connector.method},false);
+					actionsConfig.push({
+					  text     : caText,
+					  funcName : 'updateSectionAdvanced',
+					  params   : paramsUpdate
+					});
+				  }
+				  
+				  //if has remove() method, add action;
+				  if(cType.remove&&connector.method!=='add') {
+					var paramsRemove = copyObject(connector,{method:'remove'},false);
+					actionsConfig.push({
+					  text     : globalRemoveConnectorText,
+					  funcName : 'updateSectionAdvanced',
+					  params   : paramsRemove
+					});
+				  }
+				  
+				  createActionsSection(builder,false,actionsConfig);
+				}
 			}
 		  
 			//get maximum number of widgets for each section;
@@ -434,7 +452,10 @@ async function cardOpen(e) {
       //handle response codes;
       if(code>=200&&code<300) {
         var len = content.length;
-        if(len!==0) { params.content = content; }
+        if(len!==0) { 
+			params.content = content; 
+			params.method  = def.method;
+		}
       }else {
         params.content  = '[]';
         params.error = content;

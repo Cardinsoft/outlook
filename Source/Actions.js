@@ -297,25 +297,30 @@ async function updateSectionAdvanced(e) {
   var msg   = getToken(e);
   var cType = new this[connector.type]();
   
-  //check if type has edit() method or use run() if none provided;
+  //initiate check variables;
   var resp;
-  if(cType.update) {
-    var method;
-    if(!connector.method) { 
-      method = 'edit' 
-    }else { 
-      method = 'add'; 
-      delete connector.caText;
-    }
-    resp = await cType.update(msg,connector,forms,data,method);
-	if(connector.method==='add') { delete connector.method; }
-  }else {
-    resp = await cType.run(msg,connector,data);
+  var method = connector.method;
+  
+  //if type has update() method and entity should be added;
+  if(cType.update&&method==='add') {
+    delete connector.caText;
+    resp = cType.update(msg,connector,forms,data,method);
+  }
+  
+  //if type has update() method and entity should be updated;
+  if(cType.update&&method==='edit') {
+    resp = cType.update(msg,connector,forms,data,method);
+  }
+  
+  //if type has remove() method and entity should be removed;
+  if(cType.remove&&method==='remove') {
+    resp = cType.remove(msg,connector,data);
   }
   
   //override event object parameters with response data;
   e.parameters.code    = resp.code;
   e.parameters.content = resp.content;
+  e.parameters.method  = connector.method;
   
   return actionShow(e);
 }
