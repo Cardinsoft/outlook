@@ -164,10 +164,7 @@ Service.prototype.wipeTokens = async function () {
 	return;
 }
 Service.prototype.reset = async function() {
-	//initiate Service with set parameters;
-	const service = this.build();	
-	
-	await service.wipeTokens();
+	await this.wipeTokens();
 };
 
 const OAuth2 = new e_OAuth2();
