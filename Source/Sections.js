@@ -752,117 +752,122 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
         var state = widget.state;
         if(state!=='hidden') { 
           var element;
-          var icon    = widget.icon;
+		  
           var type    = widget.type;
-          var title   = widget.title;
-          var name    = widget.name;
-          var content = widget.content;
+          if(type) {
+            var icon    = widget.icon;
+            var title   = widget.title;
+            var name    = widget.name;
+            var content = widget.content;
           
-          switch(type) {
-            case 'TextP	aragraph':
-              element = textWidget(content);
-              break;
-            case 'Image':
-              var alt = widget.alt;
-              element = imageWidget(content,alt); //expand on future UPD;
-              break;
-            case globalTextButton:
-              //access TextButton-specific params;
-              var disabled   = widget.disabled;
-              var filled     = widget.filled;
-              var fullsized  = widget.fullsized;
-              var reload     = widget.reload;
-              var action     = widget.action;
-              var funcName   = widget.funcName;
-              var parameters = widget.parameters; 
-              var colour     = widget.colour;
-              
-              //set button text colour if provided;
-              if(colour) { title = '<font color="'+colour+'">'+title+'</font>'; }
-              
-              //set parameters if provided and default to connector;
-              if(!parameters) { parameters = connector; }
-            
-              //build either a clickable or a linked button;
-              if(action===globalActionClick) {
-                element = textButtonWidget(title,disabled,filled,funcName,parameters);
-              }else if(action===globalActionAction) {
-                element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload,true,funcName,parameters);
-              }else {
-                element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
-              }
+			switch(type) {
+				case 'TextP	aragraph':
+				  element = textWidget(content);
+				  break;
+				case 'Image':
+				  var alt = widget.alt;
+				  element = imageWidget(content,alt); //expand on future UPD;
+				  break;
+				case globalTextButton:
+				  //access TextButton-specific params;
+				  var disabled   = widget.disabled;
+				  var filled     = widget.filled;
+				  var fullsized  = widget.fullsized;
+				  var reload     = widget.reload;
+				  var action     = widget.action;
+				  var funcName   = widget.funcName;
+				  var parameters = widget.parameters; 
+				  var colour     = widget.colour;
+				  
+				  //set button text colour if provided;
+				  if(colour) { title = '<font color="'+colour+'">'+title+'</font>'; }
+				  
+				  //set parameters if provided and default to connector;
+				  if(!parameters) { parameters = connector; }
+				
+				  //build either a clickable or a linked button;
+				  if(action===globalActionClick) {
+					element = textButtonWidget(title,disabled,filled,funcName,parameters);
+				  }else if(action===globalActionAction) {
+					element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload,true,funcName,parameters);
+				  }else {
+					element = textButtonWidgetLinked(title,disabled,filled,content,fullsized,reload);
+				  }
+			  
+				  break;
+				case globalKeyValue:
+				  //access KeyValue-specific params;
+				  var isMultiline = widget.isMultiline;
+				  var switchValue = widget.switchValue;
+				  var buttonText  = widget.buttonText;
+				  var disabled    = widget.disabled;
+				  var filled      = widget.filled;
+				  
+				  //default to multiline;
+				  if(!isMultiline) { isMultiline = true; }
+				 
+				  //default to no icon;
+				  if(!icon) { icon = ''; }
+				  
+				  //set Switch or TextButton to widget if provided;
+				  if(switchValue) {
+					element = switchWidget(icon,title,content,name,switchValue,switchValue);
+				  }else {
+				  
+					//set section and widget index and stringify;
+					connector.sectionIdx = sectionIndex;
+					connector.widgetIdx  = index;
+					connector = propertiesToString(connector);
+				  
+					if(buttonText) {
+					  if(disabled===undefined) { disabled = true; }
+					  if(!filled) { filled = false; }
+					  var button = textButtonWidget(buttonText,disabled,filled);
+					  if(state!=='editable') {
+						element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
+					  }else {
+						element = actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
+					  }
+					}else {
+					  if(state!=='editable') {
+						element = simpleKeyValueWidget(title,content,isMultiline,icon);
+					  }else {
+						element = actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
+					  }
+					}
+				  }
+				  
+				  break;
+				case 'TextInput':
+				  //access TextInput-specific params;
+				  var hint      = widget.hint;
+				  var multiline = widget.multiline;
+				  
+				  element = textInputWidget(title,name,hint,content,multiline);
+				  break;
+				case globalEnumRadio:
+				  element = selectionInputWidget(title,name,type,content);
+				  break;
+				case globalEnumCheckbox:
+				  element = selectionInputWidget(title,name,type,content);
+				  break;
+				case globalEnumDropdown:
+				  element = selectionInputWidget(title,name,type,content);
+				  break;
+            }
+            section.addWidget(element);
+          } //end type check;
           
-              break;
-            case globalKeyValue:
-              //access KeyValue-specific params;
-              var isMultiline = widget.isMultiline;
-              var switchValue = widget.switchValue;
-              var buttonText  = widget.buttonText;
-              var disabled    = widget.disabled;
-              var filled      = widget.filled;
-              
-              //default to multiline;
-              if(!isMultiline) { isMultiline = true; }
-             
-              //default to no icon;
-              if(!icon) { icon = ''; }
-              
-              //set Switch or TextButton to widget if provided;
-              if(switchValue) {
-                element = switchWidget(icon,title,content,name,switchValue,switchValue);
-              }else {
-              
-                //set section and widget index and stringify;
-                connector.sectionIdx = sectionIndex;
-                connector.widgetIdx  = index;
-                connector = propertiesToString(connector);
-              
-                if(buttonText) {
-                  if(disabled===undefined) { disabled = true; }
-                  if(!filled) { filled = false; }
-                  var button = textButtonWidget(buttonText,disabled,filled);
-                  if(state!=='editable') {
-                    element = simpleKeyValueWidget(title,content,isMultiline,icon,button);
-                  }else {
-                    element = actionKeyValueWidgetButton(icon,title,content,button,'editSectionAdvanced',connector);
-                  }
-                }else {
-                  if(state!=='editable') {
-                    element = simpleKeyValueWidget(title,content,isMultiline,icon);
-                  }else {
-                    element = actionKeyValueWidget(icon,title,content,'editSectionAdvanced',connector);
-                  }
-                }
-              }
-              
-              break;
-            case 'TextInput':
-              //access TextInput-specific params;
-              var hint      = widget.hint;
-              var multiline = widget.multiline;
-              
-              element = textInputWidget(title,name,hint,content,multiline);
-              break;
-            case globalEnumRadio:
-              element = selectionInputWidget(title,name,type,content);
-              break;
-            case globalEnumCheckbox:
-              element = selectionInputWidget(title,name,type,content);
-              break;
-            case globalEnumDropdown:
-              element = selectionInputWidget(title,name,type,content);
-              break;
-          }
-		  section.addWidget(element);
-        }
-      
-      }
+        } //end state check;
+        
+      } //end cap check;
       
     });
     //append section and return it;
     builder.addSection(section);
     return section;
-  }
+    
+  } //end non-empty check;
 }
 
 /**
