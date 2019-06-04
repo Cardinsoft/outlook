@@ -347,6 +347,12 @@ function LessAnnoyingCRM() {
             isCollapsible : false,
             widgets       : []
           };
+		  
+		  //if more than one section -> collapse;
+          if(pipelineIds.length>1) {
+            pipelineSection.isCollapsible = true;
+          }
+		  
           var pipelineWidgets = pipelineSection.widgets;
           
           for(var c=0; c<pipeline.length; c++) {
