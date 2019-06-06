@@ -19,6 +19,7 @@ var globalWelcomeHeader              = 'Welcome to Cardin!';
 //titles;
 var globalAuthTypeApiTokenTitle      = 'API token auth';
 var globalAuthTypeErrorTitle         = 'Auth type mismatch';
+var globalAuthTypeUserCredTitle      = 'User Credentials';
 var globalConfigErrorWidgetTitle     = '';
 var globalConfirmWidgetTitle         = '';
 var globalContactSupportTitle        = 'Contact support';
@@ -28,6 +29,7 @@ var globalCustomWidgetNameTitle      = 'Connector name';
 var globalErrorWidgetTitle           = 'Error description';
 var globalExtraDataTitle             = '';
 var globalHelpWidgetTitle            = '';
+var globalNoConnectorsWidgetTitle    = 'No Connectors';
 var globalNoDataWidgetTitle          = 'No content';
 var globalOrderingWidgetTitle        = 'Sort by';
 var globalResetWidgetTitle           = 'Reset';
@@ -91,6 +93,7 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
+var globalBpmIconUrl                 = 'https://cardinsoft.com/wp-content/uploads/2019/06/bpmonline.png';
 var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
@@ -157,8 +160,6 @@ var globalActionLink                 = 'link';
 
 //parameters;
 var globalIncludeGitHub              = false;
-var globalInfusionsoftApptsCap       = 5;
-var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
 var globalWidgetsCap                 = 50;
@@ -177,11 +178,13 @@ var globalSecretInputHint            = 'Obtained from API';
 var globalTokenUrlInputHint          = 'Token URL';
 
 //Auth types;
+var globalUserCredentials            = 'UserCred';
 var globalApiTokenAuthType           = 'APItoken';
 var globalOAuth2AuthType             = 'OAuth2';
 
 //connector types specific globals;
+var globalBpmShort                   = 'Fetches sales and marketing info from Bpm\'Online CRM platform';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
 var globalFlowShort                  = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
-var globalLACRMshort                 = 'Fetches contact and pipeline information from LessAnnoying CRM';
+var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
