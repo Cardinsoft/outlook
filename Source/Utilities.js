@@ -11,9 +11,9 @@ function getByProperty(array,name,value) {
     if(element[name]===value) { return element; }
   });
   
-  //if none -> return undefined, if several -> Array;
-  if(output.length===0) { return; }else { return output; }
+  return output;
 }
+
 
 /**
  * Copies object's properties to another object;
