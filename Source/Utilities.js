@@ -1,4 +1,21 @@
 /**
+ * Gets an Array element by its property;
+ * @param {Array} array an Array of objects;
+ * @param {String} name property name;
+ * @param {*} value property value;
+ * @returns {Object|Array} element
+ */
+function getByProperty(array,name,value) {
+
+  var output = array.filter(function(element){
+    if(element[name]===value) { return element; }
+  });
+  
+  //if only one -> return element, if none -> undefined, if several -> Array;
+  if(output.length===1) { return output[0]; }else if(output.length===0) { return; }else { return output; }
+}
+
+/**
  * Copies object's properties to another object;
  * @param {Object} original object to copy;
  * @param {Object} target object to copy to;
