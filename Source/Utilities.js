@@ -11,8 +11,8 @@ function getByProperty(array,name,value) {
     if(element[name]===value) { return element; }
   });
   
-  //if only one -> return element, if none -> undefined, if several -> Array;
-  if(output.length===1) { return output[0]; }else if(output.length===0) { return; }else { return output; }
+  //if none -> return undefined, if several -> Array;
+  if(output.length===0) { return; }else { return output; }
 }
 
 /**
