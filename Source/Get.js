@@ -18,12 +18,12 @@ function getTypes(filter) {
   //create an array of used types;
   var types = [flow,lacrm,pipedrive];
   
-  //add github conn if in testing mode;
-  if(globalIncludeGitHub) {
-    var github = new GitHub();
-	github.name = GitHub.name;
-    types.push(github);
-  }  
+  //include dev-status connectors;
+  if(!includeConnectorsInDev) {
+    types = types.filter(function(type){
+      if(!type.dev) { return type; }
+    });
+  }
   
   //apply filter;
   if(filter) {
