@@ -15,7 +15,7 @@ function Pipedrive() {
       numUncollapsible : 1,
       widgets : [
         {
-          type    : 'KeyValue',
+          type    : globalKeyValue,
           title   : globalAuthTypeApiTokenTitle,
           content : 'This Connector uses API token-based authorization (your API token can be obtained from <a href="https://app.pipedrive.com/settings/personal/api">Pipedrive settings</a>)'
         },
@@ -146,7 +146,7 @@ function Pipedrive() {
           
             //create separator;
             var separator = {
-              type: 'KeyValue',
+              type: globalKeyValue,
               content: '\r'
             };
             
@@ -184,7 +184,7 @@ function Pipedrive() {
             var personName = {
               icon    : 'PERSON',
               title   : 'Full Name',
-              type    : 'KeyValue',
+              type    : globalKeyValue,
               content : fullname
             };
             widgetsPerson.push(personName);
@@ -204,7 +204,7 @@ function Pipedrive() {
             
               var personLabel = {
                 icon    : 'BOOKMARK',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : sText+color+'">'+label+eText
               };
               widgetsPerson.push(personLabel);
@@ -220,7 +220,7 @@ function Pipedrive() {
                 var personEmail = {
                   icon       : 'EMAIL',
                   title      : label,
-                  type       : 'KeyValue',
+                  type       : globalKeyValue,
                   content    : value
                 };
                 if(isPrimary) { personEmail.buttonText = 'Primary'; }
@@ -239,7 +239,7 @@ function Pipedrive() {
                 var personPhone = {
                   icon    : 'PHONE',
                   title   : label,
-                  type    : 'KeyValue',
+                  type    : globalKeyValue,
                   content : value
                 };
                 if(isPrimary) { personPhone.buttonText = 'Primary'; }
@@ -254,7 +254,7 @@ function Pipedrive() {
               color  = '#007A00';
             }
             var personActive = {
-              type    : 'KeyValue',
+              type    : globalKeyValue,
               content : '<font color="'+color+'">'+active.toString()+'</font>'     
             };
             widgetsPerson.push(personActive);            
@@ -269,7 +269,7 @@ function Pipedrive() {
             var personCreated = {
               icon    : 'INVITE',
               title   : 'Created on',
-              type    : 'KeyValue',
+              type    : globalKeyValue,
               content : created
             };
             widgetsPerson.push(personCreated);
@@ -279,7 +279,7 @@ function Pipedrive() {
               var pesronUpdated = {
                 icon    : 'INVITE',
                 title   : 'Updated on',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : updated
               };
               widgetsPerson.push(pesronUpdated);
@@ -305,7 +305,7 @@ function Pipedrive() {
               //create number of won deals widget;
               var won = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_thumbs_up_down_black_18dp.png',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : numWon+' won | '+numLost+' lost'
               };
               dealsWidgets.push(won);
@@ -313,7 +313,7 @@ function Pipedrive() {
               //create number of open deals widget;
               var open = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_work_outline_black_18dp.png',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : numOpen + ' open deal' + modOpen
               };
               dealsWidgets.push(open);
@@ -321,7 +321,7 @@ function Pipedrive() {
               //create number of closed deals widget;
               var closed = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_work_black_18dp.png',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : numClosed + ' closed deal' + modClosed
               };
               dealsWidgets.push(closed);
@@ -348,7 +348,7 @@ function Pipedrive() {
               if(endsOnOne(numActiv)) { activsMod = 'y'; }
               var activs = {
                 icon    : 'EVENT_PERFORMER',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : numActiv+' activit'+activsMod
               };
               activsWidgets.push(activs);
@@ -358,7 +358,7 @@ function Pipedrive() {
                 var nextD = {
                   icon    : 'INVITE',
                   title   : 'Next activity on',
-                  type    : 'KeyValue',
+                  type    : globalKeyValue,
                   content : nextDate
                 };
                 activsWidgets.push(nextD);
@@ -390,7 +390,7 @@ function Pipedrive() {
                   var activSubject = {
                     icon    : 'EVENT_PERFORMER',
                     title   : 'Subject',
-                    type    : 'KeyValue',
+                    type    : globalKeyValue,
                     content : subject
                   };
                   activsWidgets.push(activSubject);
@@ -399,16 +399,16 @@ function Pipedrive() {
                   var activNotes = {
                     icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_speaker_notes_black_18dp.png',
                     title   : 'Notes',
-                    type    : 'KeyValue',
-                    content : note
+                    type    : globalKeyValue
                   };
+				  if(note!==null) { activNotes.content = note; }else { activNotes.content = ''; }
                   activsWidgets.push(activNotes);
                   
                   //create due date and time widget;
                   var activDue = {
                     icon    : 'INVITE',
                     title   : 'Due to',
-                    type    : 'KeyValue',
+                    type    : globalKeyValue,
                     content : dueDate+' '+dueTime
                   };
                   activsWidgets.push(activDue);
@@ -417,7 +417,7 @@ function Pipedrive() {
                   var activDur = {
                     icon    : 'CLOCK',
                     title   : 'Duration',
-                    type    : 'KeyValue',
+                    type    : globalKeyValue,
                     content : duration
                   };
                   activsWidgets.push(activDur);
@@ -446,7 +446,7 @@ function Pipedrive() {
               var companyName = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
                 title   : 'Name',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : company.name
               };
               widgetsCompany.push(companyName);
@@ -456,7 +456,7 @@ function Pipedrive() {
                 var companyAddress = {
                   icon    : 'MAP_PIN',
                   title   : 'Address',
-                  type    : 'KeyValue',
+                  type    : globalKeyValue,
                   content : company.address
                 };
                 widgetsCompany.push(companyAddress);
@@ -481,7 +481,7 @@ function Pipedrive() {
               var ownerName = {
                 icon    : 'PERSON',
                 title   : 'Name',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : owner.name
               };
               widgetsOwner.push(ownerName);
@@ -490,7 +490,7 @@ function Pipedrive() {
               var ownerEmail = {
                 icon    : 'EMAIL',
                 title   : 'Email',
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : '<a href="mailto:'+owner.email+'">'+owner.email+'</a>'
               };
               widgetsOwner.push(ownerEmail);
@@ -502,7 +502,7 @@ function Pipedrive() {
                 color  = '#007A00';
               }
               var ownerActive = {
-                type    : 'KeyValue',
+                type    : globalKeyValue,
                 content : '<font color="'+color+'">'+active.toString()+'</font>'     
               };
               widgetsOwner.push(ownerActive);
