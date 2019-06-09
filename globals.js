@@ -159,7 +159,7 @@ var globalActionCompose              = 'compose';
 var globalActionLink                 = 'link';
 
 //parameters;
-var globalIncludeGitHub              = false;
+var includeConnectorsInDev           = false;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
 var globalWidgetsCap                 = 50;
