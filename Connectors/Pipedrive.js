@@ -396,13 +396,15 @@ function Pipedrive() {
                   activsWidgets.push(activSubject);
                   
                   //create notes widget;
-                  var activNotes = {
-                    icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_speaker_notes_black_18dp.png',
-                    title   : 'Notes',
-                    type    : globalKeyValue
-                  };
-				  if(note!==null) { activNotes.content = note; }else { activNotes.content = ''; }
-                  activsWidgets.push(activNotes);
+                  if(note!==null) {
+                    var activNotes = {
+                      icon    : 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_speaker_notes_black_18dp.png',
+                      title   : 'Notes',
+                      type    : globalKeyValue,
+                      content : note
+                    };
+                    activsWidgets.push(activNotes);
+                  }
                   
                   //create due date and time widget;
                   var activDue = {
@@ -414,14 +416,15 @@ function Pipedrive() {
                   activsWidgets.push(activDue);
                   
                   //create duration widget;
-                  var activDur = {
-                    icon    : 'CLOCK',
-                    title   : 'Duration',
-                    type    : globalKeyValue,
-                    content : duration
-                  };
-                  activsWidgets.push(activDur);
-                  
+                  if(duration!=='') {
+                    var activDur = {
+                      icon    : 'CLOCK',
+                      title   : 'Duration',
+                      type    : globalKeyValue,
+                      content : duration
+                    };
+                    activsWidgets.push(activDur);
+                  }
                   
                 });
               
