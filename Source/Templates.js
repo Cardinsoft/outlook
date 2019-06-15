@@ -491,6 +491,7 @@ function actionKeyValueWidgetButton(icon,top,content,button,funcName,params) {
   var widget = CardService.newKeyValue();
       widget.setContent(content);
       widget.setButton(button);
+	  widget.setMultiline(true);
    
   //set top title if found;
   if(top&&top!=='') { widget.setTopLabel(top); }
