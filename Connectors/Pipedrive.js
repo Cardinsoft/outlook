@@ -259,6 +259,15 @@ function Pipedrive() {
             };
             widgetsPerson.push(personActive);            
             
+            //create edit-in-CRM widget;
+            var personEditIn = {
+              type    : globalTextButton,
+              action  : globalActionLink,
+              title   : 'Edit in Pipedrive',
+              content : domain+'.pipedrive.com/person/'+person.id
+            };
+            widgetsPerson.push(personEditIn);
+            
             //set number of uncollapsible widgets to main info;
             sectionPersons.numUncollapsible = widgetsPerson.length;
             
