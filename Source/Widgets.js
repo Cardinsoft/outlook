@@ -137,21 +137,6 @@ function createWidgetHelpText(section) {
 }
 
 /**
- * Creates TextButton widget for Cardin homepage link open;
- * @param {CardSection} section section to append widget sets;
- * @returns {TextButton}
- */
-function createWidgetGoToCardin(section) {
-
-  //create TextButton widget with Cardinsoft authorized domain link;
-  var widget = textButtonWidgetLinked(globalCardinUrlText,false,false,globalCardinUrl,false,false);
-  
-  //append widget to section and return;
-  section.addWidget(widget);
-  return widget;
-}
-
-/**
  * Creates widget for diplaying hint for optional fields usage;
  * @param {CardSection} section section to append widget sets;
  * @param {String} text text to diplay on widget;
