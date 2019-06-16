@@ -254,7 +254,14 @@ async function cardDisplay(e) {
 			  catch(er) {
 				console.error(er);
 				//try to handle nested objects that do not conform to our schema;
-				createSectionSimple(builder,section,true,j);
+				  try {
+					createSectionSimple(builder,section,true,j);
+				  }
+				  catch(err) {
+					console.error(err);
+					//try handle simple section faling as well;
+					createUnparsedSection(builder,true,err.message,JSON.stringify(content));
+				  }
 			  }
 			}
 		 
