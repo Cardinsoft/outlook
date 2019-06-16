@@ -260,7 +260,7 @@ async function cardDisplay(e) {
 				  catch(err) {
 					console.error(err);
 					//try handle simple section faling as well;
-					createUnparsedSection(builder,true,err.message,JSON.stringify(content));
+					createUnparsedSection(builder,true,err.message,JSON.stringify(section));
 				  }
 			  }
 			}
