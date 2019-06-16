@@ -44,6 +44,9 @@ var globalConfigErrorWidgetContent   = 'Seems like you have a configuration issu
 var globalConnectorListErrorContent  = 'An error occured during Connector list generation';
 var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered an error. Please, see details provided below for troubleshooting';
 
+//custom icons;
+var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png'
+
 //content;
 var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
 var globalConfirmRemoveWidgetContent = 'The Connector will be permanently removed. Are you sure?';
