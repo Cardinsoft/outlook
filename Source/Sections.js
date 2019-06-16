@@ -1159,8 +1159,11 @@ function createSectionHelp(builder,isCollapsed,header) {
   //create help prompt widget;
   createWidgetHelpText(section);
   
-  //create go to Cardin widget;
-  createWidgetGoToCardin(section);
+  //create help action widgets;
+  var web  = simpleKeyValueWidget('','<a href="https://cardinsoft.com/support/">cardinsoft.com</a>',false,globalIconWebsite);
+  var mail = simpleKeyValueWidget('','<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',false,'EMAIL');
+  section.addWidget(web);
+  section.addWidget(mail);
    
   //append section and return it;
   builder.addSection(section);
