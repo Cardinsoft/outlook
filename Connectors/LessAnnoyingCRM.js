@@ -65,6 +65,7 @@ function LessAnnoyingCRM() {
       ]
     }
   };
+  /*
   this.addConfig = function(connector,msg) {
   
     var trimmed = trimMessage(msg,true,true);
@@ -154,9 +155,8 @@ function LessAnnoyingCRM() {
     ];
     return mergeObjects({config:JSON.stringify(config),icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
   };
-  
-  
-  
+  */
+  /*
   this.update = async function(msg,connector,forms,data,method) {
   
     //access API parameters and connector type;
@@ -254,7 +254,7 @@ function LessAnnoyingCRM() {
     
     return this.run(msg,connector,data);
   }
-  
+  */
   this.run = async function (msg,connector,data) {
    
     //access API parameters and connector type;
@@ -424,7 +424,19 @@ function LessAnnoyingCRM() {
               };
               pipelineWidgets.push(contactPhone);
             });
+			       
+            //create background widget;
+            if(background) {
+              var contactBkg = {
+                icon    : globalIconBackground,
+                type    : globalKeyValue,
+                //title   : 'Background',
+                content : background 
+              };
+              pipelineWidgets.push(contactBkg);
+            }
             
+            //create last notes widget;
             if(lastNote) {
               var contactNote = {
                 icon    : 'DESCRIPTION',
@@ -432,6 +444,22 @@ function LessAnnoyingCRM() {
                 content : lastNote
               };
               pipelineWidgets.push(contactNote);
+            }
+            
+            //create custom properties widgets;
+            if(Object.keys(custom).length>0) {
+              for(var prop in custom) {
+                var value = custom[prop];
+                if(value!=='') {
+                  var contactCustom = {
+                    icon    : 'https://cardinsoft.com/wp-content/uploads/2019/06/CUSTOM.png',
+                    title   : prop,
+                    type    : globalKeyValue,
+                    content : value
+                  };
+                  pipelineWidgets.push(contactCustom);     
+                }
+              }
             }
 
             //create separator widget;
@@ -507,7 +535,7 @@ function LessAnnoyingCRM() {
               icon    : 'PERSON',
               type    : globalKeyValue,
               title   : 'Full Name',
-              state   : 'editable',
+              //state   : 'editable',
               editMap : [
                 {title : 'Salutation',  content : salutation, name : 'Salutation&'+contactId },
                 {title : 'First name',  content : first,      name : 'FirstName&'+contactId },
@@ -527,7 +555,7 @@ function LessAnnoyingCRM() {
               var contactTitle = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/WORK_BLACK.png',
                 type    : globalKeyValue,
-                state   : 'editable',
+                //state   : 'editable',
                 editMap : [
                   {title : 'Title', content : title, name : 'Title&'+contactId}
                 ],
@@ -543,7 +571,7 @@ function LessAnnoyingCRM() {
               var contactEmail = {
                 icon    : 'EMAIL',
                 type    : globalKeyValue,
-                state   : 'editable',
+                //state   : 'editable',
                 editMap : [
                   {
                     title: 'Text', 
@@ -575,7 +603,7 @@ function LessAnnoyingCRM() {
               var contactPhone = {
                 icon    : 'PHONE',
                 type    : globalKeyValue,
-                state   : 'editable',
+                //state   : 'editable',
                 editMap : [
                   {
                     title: 'Text', 
@@ -609,7 +637,7 @@ function LessAnnoyingCRM() {
               var contactWebsite = {
                 icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png',
                 type    : globalKeyValue,
-                state   : 'editable',
+                //state   : 'editable',
                 name    : 'Website-'+index+'&Text&'+contactId,
                 title   : 'Website '+(index+1),
                 content : website.Text
@@ -635,7 +663,7 @@ function LessAnnoyingCRM() {
               var contactAddress = {
                 icon    : 'MAP_PIN',
                 type    : globalKeyValue,
-                state   : 'editable',
+                //state   : 'editable',
                 editMap : [
                   {title: 'Street',  content: street,  name: 'Address-'+index+'&Street&'+contactId},
                   {title: 'City',    content: city,    name: 'Address-'+index+'&City&'+contactId},
@@ -751,7 +779,7 @@ function LessAnnoyingCRM() {
                   var companyName = {
                     icon       : 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
                     type       : globalKeyValue,
-                    state      : 'editable',
+                    //state      : 'editable',
                     name       : 'CompanyName&'+companyId,
                     title      : 'Name',
                     content    : cName
@@ -763,7 +791,7 @@ function LessAnnoyingCRM() {
                     var companyInd = {
                       icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/CITY.png',
                       type    : globalKeyValue,
-                      state   : 'editable',
+                      //state   : 'editable',
                       name    : 'Industry&'+companyId,
                       title   : 'Industry',
                       content : cIndustry
@@ -777,7 +805,7 @@ function LessAnnoyingCRM() {
                       var companyEmail = {
                         icon    : 'EMAIL',
                         type    : globalKeyValue,
-                        state   : 'editable',
+                        //state   : 'editable',
                         editMap : [
                           {
                             title: 'Text', 
@@ -810,7 +838,7 @@ function LessAnnoyingCRM() {
                       var companyPhone = {
                         icon    : 'PHONE',
                         type    : globalKeyValue,
-                        state   : 'editable',
+                        //state   : 'editable',
                         editMap : [
                           {
                             title: 'Text', 
@@ -846,7 +874,7 @@ function LessAnnoyingCRM() {
                       var companyWebsite = {
                         icon    : 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png',
                         type    : globalKeyValue,
-                        state   : 'editable',
+                        //state   : 'editable',
                         name    : 'Website-'+index+'&Text&'+companyId,
                         title   : 'Website '+(index+1),
                         content : website.Text
@@ -874,7 +902,7 @@ function LessAnnoyingCRM() {
                       var companyAddress = {
                         icon    : 'MAP_PIN',
                         type    : globalKeyValue,
-                        state   : 'editable',
+                        //state   : 'editable',
                         editMap : [
                           {title: 'Street',  content: street,  name: 'Address-'+index+'&Street&'+companyId},
                           {title: 'City',    content: city,    name: 'Address-'+index+'&City&'+companyId},
@@ -911,7 +939,7 @@ function LessAnnoyingCRM() {
                     var numEmployees = {
                       icon    : 'EVENT_PERFORMER',
                       type    : globalKeyValue,
-                      state   : 'editable',
+                      //state   : 'editable',
                       editMap : [
                         {title : 'Number of employees', content : cEmpl, name : 'NumEmployees&'+companyId}
                       ],
@@ -984,7 +1012,7 @@ function LessAnnoyingCRM() {
                 var contactBirthday = {
                   icon      : 'https://cardinsoft.com/wp-content/uploads/2019/04/CAKE.png',
                   type      : globalKeyValue,
-                  state     : 'editable',
+                  //state     : 'editable',
                   name      : 'Birthday&'+contactId,
                   title     : 'Birthday',
                   content   : birthday,
@@ -997,7 +1025,7 @@ function LessAnnoyingCRM() {
               var contactBackground = {
                 icon      : 'DESCRIPTION',
                 type      : globalKeyValue,
-                state     : 'editable',
+                //state     : 'editable',
                 name      : 'BackgroundInfo&'+contactId,
                 content   : background,
                 multiline : true
@@ -1020,7 +1048,7 @@ function LessAnnoyingCRM() {
                 if(custom[field]) {
                   var customWidget = {
                     type    : globalKeyValue,
-                    state   : 'editable',
+                    //state   : 'editable',
                     name    : ['CustomFields-'+customIdx,field,contactId].join('&'),
                     title   : field,
                     content : custom[field]
