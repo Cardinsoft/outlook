@@ -371,6 +371,7 @@ function LessAnnoyingCRM() {
             var emails     = contact.Email;
             var phones     = contact.Phone;
             var lastNote   = contact.LastNote;
+			var custom     = contact.ContactCustomFields;
 			var background = contact.BackgroundInfo;
             
             //create fullName;
