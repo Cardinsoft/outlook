@@ -371,6 +371,7 @@ function LessAnnoyingCRM() {
             var emails     = contact.Email;
             var phones     = contact.Phone;
             var lastNote   = contact.LastNote;
+			var background = contact.BackgroundInfo;
             
             //create fullName;
             if(salutation&&salutation!==null) { fullName.push(salutation); }
