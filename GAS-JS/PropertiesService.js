@@ -24,7 +24,7 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
 		current.documentProperties = JSON.stringify(this.persisted.documentProperties);
 	}
 	
-	return new Properties(current.documentProperties,'document');	
+	return new Properties(this.current.documentProperties,'document');	
 }
 
 /**
@@ -38,7 +38,7 @@ e_PropertiesService.prototype.getScriptProperties = function () {
 		current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
 	}
 	
-	return new Properties(current.scriptProperties,'script');	
+	return new Properties(this.current.scriptProperties,'script');	
 }
 
 /**
@@ -52,7 +52,7 @@ e_PropertiesService.prototype.getUserProperties = function () {
 		current.userProperties = JSON.stringify(this.persisted.userProperties);
 	}
 	
-	return new Properties(current.userProperties,'user');
+	return new Properties(this.current.userProperties,'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
