@@ -107,7 +107,7 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(PropertiesService.current)
 	
-	PropertiesService.current.UP = 
+	//PropertiesService.current.UP = 
 	
 	//set property and persist;
 	//storage[key] = value;
