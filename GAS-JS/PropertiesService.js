@@ -85,10 +85,11 @@ class Properties {
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
+	console.log(storage);
+	
 	let property = storage[key];
 	
 	if(property) { 
-		PropertiesService.current.userProperties = storage;
 		return property; 
 	}else { 
 		return null; 
