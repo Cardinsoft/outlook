@@ -81,6 +81,7 @@ Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
 	console.log(storage)
+	console.log(storage[0])
 	
 	let property = storage[key];
 	
