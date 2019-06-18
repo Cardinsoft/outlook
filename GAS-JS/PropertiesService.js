@@ -82,7 +82,7 @@ Properties.prototype.getProperty = function (key) {
 }
 
 Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
-	let settings = this.settings;
+	let settings = PropertiesService.userProperties;
 	for(let key in properties) {
 		let value = properties[key];
 		settings.setProperty(key,value);
@@ -93,7 +93,7 @@ Properties.prototype.setProperties = function (properties,deleteAllOthers) { //a
 }
 
 Properties.prototype.setProperty = function (key,value) {
-	let settings = this.settings;
+	let settings = PropertiesService.userProperties;
 		settings.set(key,value);
 		settings.saveAsync();
 		
