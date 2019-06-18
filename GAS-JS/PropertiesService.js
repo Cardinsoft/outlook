@@ -84,6 +84,8 @@ Properties.prototype.getProperty = function (key) {
 	
 	let property = storage[key];
 	
+	PropertiesService.current.UP = storage;
+	
 	console.log(PropertiesService.current);
 	console.log(PropertiesService.initial);
 	
