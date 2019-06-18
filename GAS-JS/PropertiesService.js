@@ -103,16 +103,11 @@ Properties.prototype.setProperty = function (key,value) {
 	//set property and persist;
 	storage[key] = value;
 	
-	console.log(value)
-	
-	console.log(storage[key])
-	
 	PropertiesService.persisted.userProperties.set(key,value);
-	PropertiesService.persisted.userProperties.saveAsync();
 	PropertiesService.current.userProperties = storage;
+	PropertiesService.persisted.userProperties.saveAsync();
 	
-	console.log(PropertiesService)
-	
+
 	//acess storage type;
 	const type = this.type;
 	
