@@ -29,11 +29,15 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  */
 e_PropertiesService.prototype.getUserProperties = function () {	
 	let storage;
-	if(!this.UP) { storage = Office.context.roamingSettings; }else { storage = this.UP; }	
+	if(!this.UP) {
+		storage = Office.context.roamingSettings;
+	}else {
+		storage = new RS(this.UP);
+	}
 	
-	this.UP = new RS(storage);
+	this.UP = storage;
 	
-	return new Properties(this.UP,'UP');
+	return new Properties(storage,'UP');
 }
 
 
@@ -41,7 +45,7 @@ e_PropertiesService.prototype.getUserProperties = function () {
 function RS(settings) {
 	this.className = 'RS';
 	this.storage = Object.create(settings);
-	console.log(storage);
+	console.log(this.storage);
 }
 RS.prototype.get = function (key) {
 	return this.storage[key];
