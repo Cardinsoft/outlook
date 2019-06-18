@@ -11,6 +11,9 @@ Office.initialize = (reason) => {
 			menu.switchShow();
 		});
 		
+		//initiate properties;
+		PropertiesService = new e_PropertiesService()
+		
 		$('#app-body').show();
 		
 		//show app body overlay;
@@ -764,3 +767,4 @@ const cardStack = [];
 const menus     = [];
 const GLOBAL    = this;
 const e_actions = {};
+const PropertiesService;

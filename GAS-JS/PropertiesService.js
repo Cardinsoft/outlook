@@ -100,6 +100,3 @@ Properties.prototype.setProperty = function (key,value) {
 	const type = this.type;
 	return settings;
 }
-
-//initiate PropertiesService;
-const PropertiesService = new e_PropertiesService();
