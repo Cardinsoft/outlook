@@ -103,7 +103,7 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(key)
 	
-	console.log(JSON.parse(value)[0])
+	console.log(value)
 	
 	console.log(PropertiesService.current)
 	
