@@ -2,8 +2,6 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
-		this.initial   = {};
-		this.current   = {};
 	}
 }
 
@@ -13,13 +11,6 @@ class e_PropertiesService {
  */
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	let storage;
-		
-	if(!current.DP) {
-		storage = this.initial.DP['_rawData$p$0'];
-	}else {
-		storage = this.current.DP;
-	}
-	
 	return new Properties(storage,'DP');	
 }
 
@@ -29,13 +20,6 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
  */
 e_PropertiesService.prototype.getScriptProperties = function () {
 	let storage;
-	
-	if(!current.SP) {
-		storage = this.initial.SP['_rawData$p$0'];
-	}else {
-		storage = this.current.SP;
-	}
-	
 	return new Properties(storage,'SP');	
 }
 
@@ -43,19 +27,35 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  * Access user properties;
  * @returns {Object} Properties instance;
  */
-e_PropertiesService.prototype.getUserProperties = function () {
+e_PropertiesService.prototype.getUserProperties = function () {	
 	let storage;
-	
-	this.initial.UP = Office.context.roamingSettings;
-	
-	if(!this.current.UP) {
-		storage = this.initial.UP['_rawData$p$0'];
+	if(!this.UP) {
+		storage = Office.context.roamingSettings;
 	}else {
-		storage = this.current.UP;
+		storage = new RS(this.UP);
 	}
-
+	
+	this.UP = storage;
+	
 	return new Properties(storage,'UP');
 }
+
+
+
+function RS(settings) {
+	this.className = 'RS';
+	this.storage = Object.create(settings);
+	console.log(storage);
+}
+RS.prototype.get = function (key) {
+	return this.storage[key];
+}
+RS.prototype.set = function (key,value) {
+	
+	
+}
+
+
 
 //Emulate Class Properties for PropertiesService service;
 class Properties {
