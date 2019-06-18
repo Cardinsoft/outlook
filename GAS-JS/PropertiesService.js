@@ -57,22 +57,22 @@ Properties.prototype.deleteAllProperties = function () {
 	
 	const type = this.type;
 	
-	//reload settings object;
-	if(type==='user') { settings = Office.context.roamingSettings; }
-	const updated = new Properties(settings);
-	return updated;	
+	//update RoamingSettings in PropertiesService;
+	if(type==='user') { PropertiesService.userProperties = settings; }
+	return settings;
 }
 Properties.prototype.deleteProperty = function (key) {
 	let settings = this.settings;
-	settings.remove(key);
-	settings.saveAsync();
+		settings.remove(key);
+		settings.saveAsync();
+		
 	const type = this.type;
 	
-	//reload settings object;
-	if(type==='user') { settings = Office.context.roamingSettings; }
-	const updated = new Properties(settings);
-	return updated;	
+	//update RoamingSettings in PropertiesService;
+	if(type==='user') { PropertiesService.userProperties = settings; }
+	return settings;	
 }
+
 //Properties.prototype.getKeys = function () {} - not needed for initial release;
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
 Properties.prototype.getProperty = function (key) {
@@ -84,20 +84,26 @@ Properties.prototype.getProperty = function (key) {
 		return null; 
 	}
 }
+
 Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
-	const self = this;
+	let settings = this.settings;
 	for(let key in properties) {
 		let value = properties[key];
-		self.setProperty(key,value);
+		settings.setProperty(key,value);
 	}
 	const type = this.type;
+	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
+
 Properties.prototype.setProperty = function (key,value) {
 	let settings = this.settings;
-	settings.set(key,value);
-	settings.saveAsync();
+		settings.set(key,value);
+		settings.saveAsync();
+		
 	const type = this.type;
+	
+	//update RoamingSettings in PropertiesService;
 	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
