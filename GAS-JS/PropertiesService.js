@@ -45,14 +45,13 @@ e_PropertiesService.prototype.getUserProperties = function () {
 function RS(settings) {
 	this.className = 'RS';
 	this.storage = Object.create(settings);
-	console.log(this.storage);
 }
 RS.prototype.get = function (key) {
 	return this.storage[key];
 }
 RS.prototype.set = function (key,value) {
-	
-	
+	this.storage.set(key,value);
+	return this.storage[key];
 }
 
 
