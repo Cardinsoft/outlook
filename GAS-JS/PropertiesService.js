@@ -4,12 +4,14 @@ class e_PropertiesService {
 		this.className = 'PropertiesService';
 		
 		this.persisted = {
-			documentProperties : Office.context.roamingSettings,
-			scriptProperties   : Office.context.roamingSettings,
-			userProperties     : Office.context.roamingSettings			
+			DP : Office.context.roamingSettings,
+			SP : Office.context.roamingSettings,
+			UP : Office.context.roamingSettings			
 		};
 		
-		this.current = {};
+		this.current = {
+			
+		};
 	}
 }
 
@@ -18,13 +20,12 @@ class e_PropertiesService {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	let current = this.current;
 	let storage;
 	
 	if(!current.documentProperties) {
 		storage = this.persisted.documentProperties;
 	}else {
-		storage = current.documentProperties;
+		storage = this.current.documentProperties;
 	}
 	
 	return new Properties(JSON.stringify(storage),'document');	
@@ -52,19 +53,15 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getUserProperties = function () {
-	let current = this.current;
 	let storage;
 	
-	if(!current.userProperties) {
+	if(!this.current.UP) {
 		storage = this.persisted.userProperties['_rawData$p$0'];
-		console.log('USED PERSISTENT')
+		console.log('USED PERSISTENT');
 	}else {
-		storage = current.userProperties['_rawData$p$0'];
-		console.log('USED CURRENT')
+		storage = this.current.UP;
+		console.log('USED CURRENT');
 	}
-	
-	console.log(typeof storage)
-	console.log(storage['config'])
 
 	return new Properties(storage,'user');
 }
@@ -85,9 +82,9 @@ class Properties {
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
-	console.log(storage);
-	
 	let property = storage[key];
+	
+	console.log(PropertiesService.current);
 	
 	if(property) { 
 		return property; 

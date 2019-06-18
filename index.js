@@ -12,7 +12,7 @@ Office.initialize = (reason) => {
 		});
 		
 		//initiate properties;
-		PropertiesService = new e_PropertiesService()
+		PropertiesService = new e_PropertiesService();
 		
 		$('#app-body').show();
 		
