@@ -2,16 +2,8 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
-		
-		this.initial = {
-			DP : Office.context.roamingSettings,
-			SP : Office.context.roamingSettings,
-			UP : Office.context.roamingSettings			
-		};
-		
-		this.current = {
-			
-		};
+		this.initial   = {};
+		this.current   = {};
 	}
 }
 
@@ -21,7 +13,7 @@ class e_PropertiesService {
  */
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	let storage;
-	
+		
 	if(!current.DP) {
 		storage = this.initial.DP['_rawData$p$0'];
 	}else {
@@ -53,6 +45,8 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  */
 e_PropertiesService.prototype.getUserProperties = function () {
 	let storage;
+	
+	this.initial.UP = Office.context.roamingSettings;
 	
 	if(!this.current.UP) {
 		storage = this.initial.UP['_rawData$p$0'];
@@ -224,3 +218,4 @@ Properties.prototype.deleteAllProperties = function () {
 
 
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
+const PropertiesService = new e_PropertiesService();
