@@ -101,7 +101,13 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(storage)
 	
+	console.log(key)
+	
+	console.log(JSON.parse(value)[0])
+	
 	console.log(PropertiesService.current)
+	
+	PropertiesService.current.UP = 
 	
 	//set property and persist;
 	//storage[key] = value;
