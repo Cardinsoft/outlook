@@ -98,8 +98,6 @@ Properties.prototype.getProperty = function (key) {
 Properties.prototype.setProperty = function (key,value) {
 	let storage = JSON.parse(this.storage);
 	
-	let property = storage['_rawData$p$0'][key];
-	
 	//set property and persist;
 	storage['_rawData$p$0'][key] = value;
 	
