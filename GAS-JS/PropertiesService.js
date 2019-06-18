@@ -75,6 +75,8 @@ Properties.prototype.getProperty = function (key) {
 	//access property;
 	let property = storage.get(key);
 	
+	console.log(property)
+	
 	//return property or null;
 	if(property) { 
 		return property; 
