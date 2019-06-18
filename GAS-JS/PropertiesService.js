@@ -52,7 +52,7 @@ RS.prototype.get = function (key) {
 RS.prototype.set = function (key,value) {
 	this.storage.set(key,value);
 	this.storage.saveAsync();
-	PropertiesService.UP = value;
+	console.log(PropertiesService.UP)
 	return this.storage[key];
 }
 
