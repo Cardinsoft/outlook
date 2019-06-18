@@ -68,8 +68,6 @@ Properties.prototype.setProperty = function (key,value) {
 	//acess storage type;
 	const type = this.type;
 	
-	//update RoamingSettings in PropertiesService and return;
-	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
 	return settings;
 }
 
