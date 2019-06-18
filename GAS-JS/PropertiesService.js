@@ -24,7 +24,7 @@ class Properties {
 	}
 }
 //add new methods to the class;
-Properties.prototype.deleteAllProperties = function () {
+Properties.prototype.deleteAllProperties = async function () {
 	//initiate settings storage;
 	let settings = PropertiesService.userProperties;
 	
@@ -41,7 +41,7 @@ Properties.prototype.deleteAllProperties = function () {
 			let props = Object.keys(obj);
 			if(props.length>0) { 
 				props.forEach(function(prop){
-					settings.remove(prop);
+					await settings.remove(prop);
 				});
 			}
 		}
@@ -49,7 +49,7 @@ Properties.prototype.deleteAllProperties = function () {
 	});
 	
 	//persist changes;
-	settings.saveAsync(); 
+	await settings.saveAsync(); 
 	
 	const type = this.type;
 	
@@ -57,10 +57,10 @@ Properties.prototype.deleteAllProperties = function () {
 	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
-Properties.prototype.deleteProperty = function (key) {
+Properties.prototype.deleteProperty = async function (key) {
 	let settings = PropertiesService.userProperties;
-		settings.remove(key);
-		settings.saveAsync();
+		await settings.remove(key);
+		await settings.saveAsync();
 		
 	const type = this.type;
 	
@@ -71,9 +71,9 @@ Properties.prototype.deleteProperty = function (key) {
 
 //Properties.prototype.getKeys = function () {} - not needed for initial release;
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
-Properties.prototype.getProperty = function (key) {
+Properties.prototype.getProperty = async function (key) {
 	let settings = PropertiesService.userProperties;
-	let property = settings.get(key);
+	let property = await settings.get(key);
 	if(property) { 
 		return property; 
 	}else { 
@@ -81,21 +81,21 @@ Properties.prototype.getProperty = function (key) {
 	}
 }
 
-Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
+Properties.prototype.setProperties = async function (properties,deleteAllOthers) { //add delete others after initial release;
 	let settings = PropertiesService.userProperties;
 	for(let key in properties) {
 		let value = properties[key];
-		settings.setProperty(key,value);
+		await settings.setProperty(key,value);
 	}
 	const type = this.type;
 	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
 
-Properties.prototype.setProperty = function (key,value) {
+Properties.prototype.setProperty = async function (key,value) {
 	let settings = PropertiesService.userProperties;
-		settings.set(key,value);
-		settings.saveAsync();
+		await settings.set(key,value);
+		await settings.saveAsync();
 		
 	const type = this.type;
 	
