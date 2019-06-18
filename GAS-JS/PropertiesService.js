@@ -81,9 +81,8 @@ Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
 	console.log(storage)
-	console.log(storage[0])
 	
-	let property = storage[key];
+	let property = storage['_rawData$p$0'][key];
 	
 	if(property) { 
 		return property; 
@@ -103,8 +102,10 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(storage)
 	
+	let property = storage['_rawData$p$0'][key];
+	
 	//set property and persist;
-	storage[key] = value;
+	storage['_rawData$p$0'][key] = value;
 	PropertiesService.persisted.userProperties.set(key,value);
 	PropertiesService.persisted.userProperties.saveAsync();
 	PropertiesService.current.userProperties = JSON.stringify(storage);
