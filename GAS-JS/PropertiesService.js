@@ -68,7 +68,7 @@ e_PropertiesService.prototype.getUserProperties = function () {
 class Properties {
 	constructor(storage,type) {
 		this.type    = type;
-		this.storage = JSON.parse(storage);
+		this.storage = storage;
 	}
 }
 
@@ -78,7 +78,7 @@ class Properties {
  * @returns {Object} this property;
  */
 Properties.prototype.getProperty = function (key) {
-	let storage = this.storage;
+	let storage = JSON.parse(this.storage);
 	
 	console.log(storage)
 	
@@ -98,7 +98,7 @@ Properties.prototype.getProperty = function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = function (key,value) {
-	let storage = this.storage;
+	let storage = JSON.parse(this.storage);
 	
 	console.log(storage)
 	
