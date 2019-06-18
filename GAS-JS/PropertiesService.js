@@ -61,6 +61,8 @@ e_PropertiesService.prototype.getUserProperties = function () {
 		storage = current.userProperties;
 	}
 	
+	console.log(storage)
+	
 	return new Properties(JSON.stringify(storage),'user');
 }
 
@@ -108,7 +110,7 @@ Properties.prototype.setProperty = function (key,value) {
 	storage['_rawData$p$0'][key] = value;
 	PropertiesService.persisted.userProperties.set(key,value);
 	PropertiesService.persisted.userProperties.saveAsync();
-	PropertiesService.current.userProperties = JSON.stringify(storage);
+	PropertiesService.current.userProperties = storage;
 	
 	//acess storage type;
 	const type = this.type;
@@ -128,7 +130,7 @@ Properties.prototype.deleteProperty = function (key) {
 	delete storage[key];
 	PropertiesService.persisted.userProperties.remove(key);
 	PropertiesService.persisted.userProperties.saveAsync();
-	PropertiesService.current.userProperties = JSON.stringify(storage);
+	PropertiesService.current.userProperties = storage;
 		
 	const type = this.type;
 	
