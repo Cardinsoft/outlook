@@ -12,8 +12,7 @@ Office.initialize = (reason) => {
 		});
 		
 		//initiate properties;
-		PropertiesService = new e_PropertiesService();
-		Utilities         = new e_Utilities();
+		Utilities = new e_Utilities();
 		
 		$('#app-body').show();
 		
