@@ -22,13 +22,13 @@ class e_PropertiesService {
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	let storage;
 	
-	if(!current.documentProperties) {
-		storage = this.initial.documentProperties;
+	if(!current.DP) {
+		storage = this.initial.DP['_rawData$p$0'];
 	}else {
-		storage = this.current.documentProperties;
+		storage = this.current.DP;
 	}
 	
-	return new Properties(JSON.stringify(storage),'document');	
+	return new Properties(storage,'DP');	
 }
 
 /**
@@ -36,16 +36,15 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getScriptProperties = function () {
-	let current = this.current;
 	let storage;
 	
-	if(!current.scriptProperties) {
-		storage = this.initial.scriptProperties;
+	if(!current.SP) {
+		storage = this.initial.SP['_rawData$p$0'];
 	}else {
-		storage = current.scriptProperties;
+		storage = this.current.SP;
 	}
 	
-	return new Properties(JSON.stringify(storage),'script');	
+	return new Properties(storage,'SP');	
 }
 
 /**
@@ -57,13 +56,11 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	
 	if(!this.current.UP) {
 		storage = this.initial.UP['_rawData$p$0'];
-		console.log('USED PERSISTENT');
 	}else {
 		storage = this.current.UP;
-		console.log('USED CURRENT');
 	}
 
-	return new Properties(storage,'user');
+	return new Properties(storage,'UP');
 }
 
 //Emulate Class Properties for PropertiesService service;
@@ -84,11 +81,8 @@ Properties.prototype.getProperty = function (key) {
 	
 	let property = storage[key];
 	
-	PropertiesService.current.UP = storage;
-	
-	console.log(PropertiesService.current);
-	console.log(PropertiesService.initial);
-	
+	PropertiesService.current[this.type] = storage;
+
 	if(property) { 
 		return property; 
 	}else { 
@@ -105,11 +99,13 @@ Properties.prototype.getProperty = function (key) {
 Properties.prototype.setProperty = function (key,value) {
 	let storage = this.storage;
 	
+	console.log(storage)
+	
 	//set property and persist;
-	storage[key] = value;
+	//storage[key] = value;
 	
 	//PropertiesService.persisted.userProperties.set(key,value);
-	PropertiesService.current.userProperties = storage;
+	//PropertiesService.current.userProperties = storage;
 	//PropertiesService.persisted.userProperties.saveAsync();
 	
 	return storage;
