@@ -3,7 +3,7 @@ class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
 		
-		this.persisted = {
+		this.initial = {
 			DP : Office.context.roamingSettings,
 			SP : Office.context.roamingSettings,
 			UP : Office.context.roamingSettings			
@@ -23,7 +23,7 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
 	let storage;
 	
 	if(!current.documentProperties) {
-		storage = this.persisted.documentProperties;
+		storage = this.initial.documentProperties;
 	}else {
 		storage = this.current.documentProperties;
 	}
@@ -40,7 +40,7 @@ e_PropertiesService.prototype.getScriptProperties = function () {
 	let storage;
 	
 	if(!current.scriptProperties) {
-		storage = this.persisted.scriptProperties;
+		storage = this.initial.scriptProperties;
 	}else {
 		storage = current.scriptProperties;
 	}
@@ -56,7 +56,7 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	let storage;
 	
 	if(!this.current.UP) {
-		storage = this.persisted.UP['_rawData$p$0'];
+		storage = this.initial.UP['_rawData$p$0'];
 		console.log('USED PERSISTENT');
 	}else {
 		storage = this.current.UP;
@@ -85,6 +85,7 @@ Properties.prototype.getProperty = function (key) {
 	let property = storage[key];
 	
 	console.log(PropertiesService.current);
+	console.log(PropertiesService.initial);
 	
 	if(property) { 
 		return property; 
