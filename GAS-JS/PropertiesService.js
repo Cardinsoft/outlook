@@ -2,18 +2,21 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
+		this.documentProperties = Office.context.roamingSettings;
+		this.scriptProperties   = Office.context.roamingSettings;
+		this.userProperties     = Office.context.roamingSettings;
 	}
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	const settings = Office.context.roamingSettings;
+	const settings = this.documentProperties;
 	return new Properties(settings,'document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
-	const settings = Office.context.roamingSettings;
+	const settings = this.scriptProperties;
 	return new Properties(settings,'script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
-	const settings = Office.context.roamingSettings;
+	const settings = this.userProperties;
 	return new Properties(settings,'user');
 }
 
@@ -88,18 +91,14 @@ Properties.prototype.setProperties = function (properties,deleteAllOthers) { //a
 		self.setProperty(key,value);
 	}
 	const type = this.type;
-	if(type==='user') { settings = Office.context.roamingSettings; }
-	const updated = new Properties(settings);
-	return updated;
+	return settings;
 }
 Properties.prototype.setProperty = function (key,value) {
 	let settings = this.settings;
 	settings.set(key,value);
 	settings.saveAsync();
 	const type = this.type;
-	if(type==='user') { settings = Office.context.roamingSettings; }
-	const updated = new Properties(settings);
-	return updated;
+	return settings;
 }
 
 //initiate PropertiesService;
