@@ -74,15 +74,18 @@ class Properties {
 /**
  * Get property by key;
  * @param {String} key key to access property by;
- * @returns {Object} this property;
+ * @returns {Object|null} this property;
  */
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
+	//access property;
 	let property = storage[key];
 	
+	//switch to session settings;
 	PropertiesService.current[this.type] = storage;
-
+	
+	//return property or null;
 	if(property) { 
 		return property; 
 	}else { 
@@ -107,14 +110,10 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(PropertiesService.current)
 	
-	//PropertiesService.current.UP = 
-	
 	//set property and persist;
-	//storage[key] = value;
-	
-	//PropertiesService.persisted.userProperties.set(key,value);
-	//PropertiesService.current.userProperties = storage;
-	//PropertiesService.persisted.userProperties.saveAsync();
+	PropertiesService.current[this.type][key] = value;
+	PropertiesService.initial[this.type].set(key,value);
+	PropertiesService.initial[this.type]saveAsync();
 	
 	return storage;
 }
