@@ -20,13 +20,13 @@ e_PropertiesService.prototype.getUserProperties = function () {
 //Emulate Class Properties for PropertiesService service;
 class Properties {
 	constructor(type) {
-		this.type     = type;
+		this.type = type;
 	}
 }
 //add new methods to the class;
 Properties.prototype.deleteAllProperties = function () {
 	//initiate settings storage;
-	let settings = this.settings;
+	let settings = PropertiesService.userProperties;
 	
 	//access configured keys;
 	let keys = Object.keys(settings);
