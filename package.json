@@ -1,0 +1,23 @@
+{
+  "name": "cardin-outlook",
+  "version": "1.0.0",
+  "description": "Cardin for Outlook Add-in",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cardinsoft/outlook.git"
+  },
+  "keywords": [
+    "cardin",
+    "integrations"
+  ],
+  "author": "Oleg Valter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cardinsoft/outlook/issues"
+  },
+  "homepage": "https://github.com/cardinsoft/outlook#readme"
+}
