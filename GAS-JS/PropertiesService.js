@@ -2,19 +2,19 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
-		this.documentProperties = JSON.stringify(Office.context.roamingSettings);
-		this.scriptProperties   = JSON.stringify(Office.context.roamingSettings);
-		this.userProperties     = JSON.stringify(Office.context.roamingSettings);
+		this.documentProperties = Office.context.roamingSettings;
+		this.scriptProperties   = Office.context.roamingSettings;
+		this.userProperties     = Office.context.roamingSettings;
 	}
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	return new Properties(this.documentProperties,'document');	
+	return new Properties(JSON.stringify(this.documentProperties),'document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
-	return new Properties(this.scriptProperties,'script');	
+	return new Properties(JSON.stringify(this.scriptProperties),'script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
-	return new Properties(this.userProperties,'user');
+	return new Properties(JSON.stringify(this.userProperties),'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
