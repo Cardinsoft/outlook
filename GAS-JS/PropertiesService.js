@@ -8,22 +8,18 @@ class e_PropertiesService {
 	}
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	const settings = this.documentProperties;
-	return new Properties(settings,'document');	
+	return new Properties('document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
-	const settings = this.scriptProperties;
-	return new Properties(settings,'script');	
+	return new Properties('script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
-	const settings = this.userProperties;
-	return new Properties(settings,'user');
+	return new Properties('user');
 }
 
 //Emulate Class Properties for PropertiesService service;
 class Properties {
-	constructor(settings,type) {
-		this.settings = settings;
+	constructor(type) {
 		this.type     = type;
 	}
 }
@@ -62,7 +58,7 @@ Properties.prototype.deleteAllProperties = function () {
 	return settings;
 }
 Properties.prototype.deleteProperty = function (key) {
-	let settings = this.settings;
+	let settings = PropertiesService.userProperties;
 		settings.remove(key);
 		settings.saveAsync();
 		
@@ -76,7 +72,7 @@ Properties.prototype.deleteProperty = function (key) {
 //Properties.prototype.getKeys = function () {} - not needed for initial release;
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
 Properties.prototype.getProperty = function (key) {
-	const settings = PropertiesService.userProperties;
+	let settings = PropertiesService.userProperties;
 	let property = settings.get(key);
 	if(property) { 
 		return property; 
