@@ -101,7 +101,7 @@ Properties.prototype.setProperty = function (key,value) {
 	//set property and persist;
 	storage['_rawData$p$0'][key] = value;
 	
-	console.log(storage)
+	console.log(storage['_rawData$p$0'])
 	console.log(typeof storage)
 	
 	PropertiesService.persisted.userProperties.set(key,value);
