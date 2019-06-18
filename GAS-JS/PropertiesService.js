@@ -62,6 +62,9 @@ e_PropertiesService.prototype.getUserProperties = function () {
 		storage = current.userProperties['_rawData$p$0'];
 		console.log('USED CURRENT')
 	}
+	
+	console.log(typeof storage)
+	console.log(storage['config'])
 
 	return new Properties(storage,'user');
 }
