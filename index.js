@@ -13,6 +13,7 @@ Office.initialize = (reason) => {
 		
 		//initiate properties;
 		PropertiesService = new e_PropertiesService();
+		Utilities         = new e_Utilities();
 		
 		$('#app-body').show();
 		
@@ -768,3 +769,4 @@ const menus     = [];
 const GLOBAL    = this;
 const e_actions = {};
 let PropertiesService;
+let Utilities;
