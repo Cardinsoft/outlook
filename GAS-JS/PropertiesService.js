@@ -32,7 +32,9 @@ Properties.prototype.deleteAllProperties = async function () {
 	let keys = Object.keys(settings);
 	
 	//delete every key found;
-	keys.forEach(function (key) { 
+	for(let p in keys) {
+		let key = keys[p];
+		
 		//access settings props;
 		let obj = settings[key];
 		
@@ -44,9 +46,8 @@ Properties.prototype.deleteAllProperties = async function () {
 					await settings.remove(prop);
 				});
 			}
-		}
-		
-	});
+		}		
+	}
 	
 	//persist changes;
 	await settings.saveAsync(); 
