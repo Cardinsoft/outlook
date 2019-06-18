@@ -101,6 +101,8 @@ Properties.prototype.setProperty = function (key,value) {
 	//set property and persist;
 	storage[key] = value;
 	
+	console.log(value)
+	
 	console.log(storage[key])
 	
 	PropertiesService.persisted.userProperties.set(key,value);
