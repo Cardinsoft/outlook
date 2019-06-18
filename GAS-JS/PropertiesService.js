@@ -19,12 +19,15 @@ class e_PropertiesService {
  */
 e_PropertiesService.prototype.getDocumentProperties = function () {
 	let current = this.current;
+	let storage;
 	
 	if(!current.documentProperties) {
-		current.documentProperties = JSON.stringify(this.persisted.documentProperties);
+		storage = this.persisted.documentProperties;
+	}else {
+		storage = current.documentProperties;
 	}
 	
-	return new Properties(this.current.documentProperties,'document');	
+	return new Properties(JSON.stringify(storage),'document');	
 }
 
 /**
@@ -33,12 +36,15 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
  */
 e_PropertiesService.prototype.getScriptProperties = function () {
 	let current = this.current;
+	let storage;
 	
 	if(!current.scriptProperties) {
-		current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
+		storage = this.persisted.scriptProperties;
+	}else {
+		storage = current.scriptProperties;
 	}
 	
-	return new Properties(this.current.scriptProperties,'script');	
+	return new Properties(JSON.stringify(storage),'script');	
 }
 
 /**
@@ -47,12 +53,15 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  */
 e_PropertiesService.prototype.getUserProperties = function () {
 	let current = this.current;
+	let storage;
 	
 	if(!current.userProperties) {
-		current.userProperties = JSON.stringify(this.persisted.userProperties);
+		storage = this.persisted.userProperties;
+	}else {
+		storage = current.userProperties;
 	}
 	
-	return new Properties(this.current.userProperties,'user');
+	return new Properties(JSON.stringify(storage),'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
