@@ -79,10 +79,12 @@ class Properties {
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
+	console.log(storage)
+	
 	//access property;
 	let property = storage[key];
 	
-	//switch to session settings;
+	//switch to session settings;	
 	PropertiesService.current[this.type] = storage;
 	
 	//return property or null;
