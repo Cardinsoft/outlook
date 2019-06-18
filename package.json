@@ -22,5 +22,9 @@
   "homepage": "https://github.com/cardinsoft/outlook#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.4.5"
-  }
+  },
+  "babel": {
+	"presets": ["@babel/preset-env"]
+  },
+  "browserslist": ["ie 11"]
 }
