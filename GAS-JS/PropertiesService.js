@@ -57,8 +57,10 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	
 	if(!current.userProperties) {
 		storage = this.persisted.userProperties['_rawData$p$0'];
+		console.log('USED PERSISTENT')
 	}else {
 		storage = current.userProperties['_rawData$p$0'];
+		console.log('USED CURRENT')
 	}
 
 	return new Properties(storage,'user');
