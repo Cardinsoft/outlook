@@ -2,28 +2,131 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
-		this.documentProperties = Office.context.roamingSettings;
-		this.scriptProperties   = Office.context.roamingSettings;
-		this.userProperties     = Office.context.roamingSettings;
+		
+		this.persisted = {
+			documentProperties : Office.context.roamingSettings,
+			scriptProperties   : Office.context.roamingSettings,
+			userProperties     : Office.context.roamingSettings			
+		};
+		
+		this.current = {};
 	}
 }
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	return new Properties(JSON.stringify(this.documentProperties),'document');	
+	this.current.documentProperties = JSON.stringify(this.persisted.documentProperties);
+	return new Properties(this.current.documentProperties,'document');	
 }
 e_PropertiesService.prototype.getScriptProperties = function () {
-	return new Properties(JSON.stringify(this.scriptProperties),'script');	
+	this.current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
+	return new Properties(this.current.scriptProperties,'script');	
 }
 e_PropertiesService.prototype.getUserProperties = function () {
-	return new Properties(JSON.stringify(this.userProperties),'user');
+	this.current.userProperties = JSON.stringify(this.persisted.userProperties);
+	return new Properties(this.current.userProperties,'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
 class Properties {
-	constructor(settings,type) {
-		this.type     = type;
-		this.settings = JSON.parse(settings);
+	constructor(storage,type) {
+		this.type    = type;
+		this.storage = JSON.parse(storage);
 	}
 }
+
+/**
+ * Get property by key;
+ * @param {String} key key to access property by;
+ * @returns {Object} this settings;
+ */
+Properties.prototype.getProperty = function (key) {
+	let settings = this.storage;
+	
+	let property = settings[key];
+	
+	if(property) { 
+		return property; 
+	}else { 
+		return null; 
+	}
+}
+
+/**
+ * Set property by key;
+ * @param {String} key key to access property by;
+ * @param {String} value stringified representation of value;
+ * @returns {Object} this settings;
+ */
+Properties.prototype.setProperty = function (key,value) {
+	let storage = this.storage;
+	
+	//set property and persist;
+	storage[key] = value;
+	PropertiesService.persisted.userProperties.set(key,value);
+	PropertiesService.persisted.userProperties.saveAsync();
+	PropertiesService.current.userProperties = JSON.stringify(storage);
+	
+	//acess storage type;
+	const type = this.type;
+	
+	//update RoamingSettings in PropertiesService and return;
+	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
+	return settings;
+}
+
+/**
+ * Deletes property by key;
+ * @param {String} key key to access property by;
+ * @returns {Object} this settings;
+ */
+Properties.prototype.deleteProperty = function (key) {
+	let settings = JSON.parse(this.settings);
+	
+	//remove setting from storage;
+	delete this.settings[key];
+	PropertiesService.userProperties.remove(key);
+	
+	//persist changes;
+	PropertiesService.userProperties.saveAsync();
+		
+	const type = this.type;
+	
+	//update RoamingSettings in PropertiesService;
+	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
+	return settings;	
+}
+
+
+
+
+/**
+ * Sets multiple properties;
+ * @param {Array} properties list of property keys;
+ * @param {Boolean} deleteAllOthers delete all others or not;
+ * @returns {Object} this settings;
+ */
+Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
+	let settings = JSON.parse(this.settings);
+	
+	//set properties;
+	for(let key in properties) {
+		let value = properties[key];
+		settings.setProperty(key,value);
+	}
+	
+	//persist changes;
+	this.settings = JSON.stringify(settings);
+	PropertiesService.userProperties.saveAsync();
+	
+	//acess storage type;
+	const type = this.type;
+	
+	//update RoamingSettings in PropertiesService and return;
+	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
+	return settings;
+}
+
+
+
 
 /**
  * Deletes all properties from storage;
@@ -31,7 +134,7 @@ class Properties {
  */
 Properties.prototype.deleteAllProperties = function () {
 	//initiate settings storage;
-	let settings = this.settings;
+	let settings = JSON.parse(this.settings);
 	
 	//access configured keys;
 	let keys = Object.keys(settings);
@@ -66,79 +169,9 @@ Properties.prototype.deleteAllProperties = function () {
 	return settings;
 }
 
-/**
- * Deletes property by key;
- * @param {String} key key to access property by;
- * @returns {Object} this settings;
- */
-Properties.prototype.deleteProperty = function (key) {
-	let settings = this.settings;
-	
-	//remove setting from storage;
-	delete this.settings[key];
-	PropertiesService.userProperties.remove(key);
-	
-	//persist changes;
-	PropertiesService.userProperties.saveAsync();
-		
-	const type = this.type;
-	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
-	return settings;	
-}
+
 
 //Properties.prototype.getKeys = function () {} - not needed for initial release;
 
-/**
- * Get property by key;
- * @param {String} key key to access property by;
- * @returns {Object} this settings;
- */
-Properties.prototype.getProperty = function (key) {
-	let settings = this.settings;
-	let property = settings[key];
-	
-	if(property) { 
-		return property; 
-	}else { 
-		return null; 
-	}
-}
+
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
-
-/**
- * Set property by key;
- * @param {String} key key to access property by;
- * @param {String} value stringified representation of value;
- * @returns {Object} this settings;
- */
-Properties.prototype.setProperty = function (key,value) {
-	let settings = this.settings;
-	
-	//set property;
-	settings[key] = value;
-	PropertiesService.userProperties.set(key,value);
-	
-	//persist changes;
-	PropertiesService.userProperties.saveAsync();
-	
-	//acess storage type;
-	const type = this.type;
-	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
-	return settings;
-}
-
-Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
-	let settings = this.settings;
-	for(let key in properties) {
-		let value = properties[key];
-		settings.setProperty(key,value);
-	}
-	const type = this.type;
-	if(type==='user') { PropertiesService.userProperties = JSON.stringify(settings); }
-	return settings;
-}
-
