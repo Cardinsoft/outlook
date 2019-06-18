@@ -71,13 +71,9 @@ class Properties {
  */
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
-	
-	console.log(storage)
-	
+
 	//access property;
 	let property = storage.get(key);
-	
-	
 	
 	//return property or null;
 	if(property) { 
@@ -96,18 +92,8 @@ Properties.prototype.getProperty = function (key) {
 Properties.prototype.setProperty = function (key,value) {
 	let storage = this.storage;
 	
-	console.log(storage)
-	
-	console.log(key)
-	
-	console.log(value)
-	
-	console.log(PropertiesService.current)
-	
 	//set property and persist;
-	PropertiesService.current[this.type][key] = value;
-	PropertiesService.initial[this.type].set(key,value);
-	PropertiesService.initial[this.type].saveAsync();
+	storage.set(key,value);
 	
 	return storage;
 }
