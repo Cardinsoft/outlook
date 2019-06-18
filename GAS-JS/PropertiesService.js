@@ -12,17 +12,47 @@ class e_PropertiesService {
 		this.current = {};
 	}
 }
+
+/**
+ * Access document properties;
+ * @returns {Object} Properties instance;
+ */
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	this.current.documentProperties = JSON.stringify(this.persisted.documentProperties);
-	return new Properties(this.current.documentProperties,'document');	
+	let current = this.current.documentProperties;
+	
+	if(!current.documentProperties) {
+		current.documentProperties = JSON.stringify(this.persisted.documentProperties);
+	}
+	
+	return new Properties(current.documentProperties,'document');	
 }
+
+/**
+ * Access script properties;
+ * @returns {Object} Properties instance;
+ */
 e_PropertiesService.prototype.getScriptProperties = function () {
-	this.current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
-	return new Properties(this.current.scriptProperties,'script');	
+	let current = this.current.scriptProperties;
+	
+	if(!current.scriptProperties) {
+		current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
+	}
+	
+	return new Properties(current.scriptProperties,'script');	
 }
+
+/**
+ * Access user properties;
+ * @returns {Object} Properties instance;
+ */
 e_PropertiesService.prototype.getUserProperties = function () {
-	this.current.userProperties = JSON.stringify(this.persisted.userProperties);
-	return new Properties(this.current.userProperties,'user');
+	let current = this.current.userProperties;
+	
+	if(!current.userProperties) {
+		current.userProperties = JSON.stringify(this.persisted.userProperties);
+	}
+	
+	return new Properties(current.userProperties,'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
@@ -36,12 +66,12 @@ class Properties {
 /**
  * Get property by key;
  * @param {String} key key to access property by;
- * @returns {Object} this settings;
+ * @returns {Object} this property;
  */
 Properties.prototype.getProperty = function (key) {
-	let settings = this.storage;
+	let storage = this.storage;
 	
-	let property = settings[key];
+	let property = storage[key];
 	
 	if(property) { 
 		return property; 
@@ -68,7 +98,7 @@ Properties.prototype.setProperty = function (key,value) {
 	//acess storage type;
 	const type = this.type;
 	
-	return settings;
+	return storage;
 }
 
 /**
@@ -77,14 +107,13 @@ Properties.prototype.setProperty = function (key,value) {
  * @returns {Object} this settings;
  */
 Properties.prototype.deleteProperty = function (key) {
-	let settings = JSON.parse(this.settings);
+	let storage = this.storage;
 	
-	//remove setting from storage;
-	delete this.settings[key];
-	PropertiesService.userProperties.remove(key);
-	
-	//persist changes;
-	PropertiesService.userProperties.saveAsync();
+	//remove setting from storage and persist;
+	delete storage[key];
+	PropertiesService.persisted.userProperties.remove(key);
+	PropertiesService.persisted.userProperties.saveAsync();
+	PropertiesService.current.userProperties = JSON.stringify(storage);
 		
 	const type = this.type;
 	
