@@ -56,7 +56,7 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	let storage;
 	
 	if(!this.current.UP) {
-		storage = this.persisted.userProperties['_rawData$p$0'];
+		storage = this.persisted.UP['_rawData$p$0'];
 		console.log('USED PERSISTENT');
 	}else {
 		storage = this.current.UP;
