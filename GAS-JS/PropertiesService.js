@@ -47,6 +47,7 @@ function RS(settings) {
 	this.storage = Object.create(settings);
 }
 RS.prototype.get = function (key) {
+	console.log(this.storage);
 	return this.storage[key];
 }
 RS.prototype.set = function (key,value) {
@@ -74,9 +75,7 @@ Properties.prototype.getProperty = function (key) {
 
 	//access property;
 	let property = storage.get(key);
-	
-	console.log(property)
-	
+
 	//return property or null;
 	if(property) { 
 		return property; 
