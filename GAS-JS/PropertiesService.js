@@ -29,15 +29,11 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  */
 e_PropertiesService.prototype.getUserProperties = function () {	
 	let storage;
-	if(!this.UP) {
-		storage = Office.context.roamingSettings;
-	}else {
-		storage = new RS(this.UP);
-	}
+	if(!this.UP) { storage = Office.context.roamingSettings; }	
 	
-	this.UP = storage;
+	this.UP = new RS(storage);
 	
-	return new Properties(storage,'UP');
+	return new Properties(this.UP,'UP');
 }
 
 
