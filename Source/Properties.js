@@ -4,7 +4,7 @@
  * @param {String} type 'user' or 'script' to determine prop type to get;
  * @returns {String}
  */
-async function getProperty(key,type) {
+function getProperty(key,type) {
   var props;
   
   //access corresponding store;
@@ -18,7 +18,7 @@ async function getProperty(key,type) {
   }
   
   //get property from store by key;
-  var value = await props.getProperty(key);
+  var value = props.getProperty(key);
   
   //try to parse value or return as is;
   try { value = JSON.parse(value); }
@@ -34,7 +34,7 @@ async function getProperty(key,type) {
  * @param {String} value new value of the property;
  * @param {String} type 'user' or 'script' to determine prop type to get;
  */
-async function setProperty(key,value,type) {
+function setProperty(key,value,type) {
   var props;
   
   //access corresponding store;
@@ -49,7 +49,7 @@ async function setProperty(key,value,type) {
   
   //try to stringify value or set as is on failure;
   try { value = JSON.stringify(value); }
-  catch(e) { await props.setProperty(key,value); }  
+  catch(e) { props.setProperty(key,value); }  
   
   //set property with given key and value;
   props.setProperty(key,value);
@@ -60,7 +60,7 @@ async function setProperty(key,value,type) {
  * @param {String} key key of the property to find;
  * @param {String} type 'user' or 'script' to determine prop type to get;
  */
-async function deleteProperty(key,type) {
+function deleteProperty(key,type) {
   var props;
   
   //access corresponding store;
@@ -74,7 +74,7 @@ async function deleteProperty(key,type) {
   }
   
   //delete property from store by key;
-  await props.deleteProperty(key);
+  props.deleteProperty(key);
 }
 
 /**
@@ -82,7 +82,7 @@ async function deleteProperty(key,type) {
  * @param {String} key key of the property to find
  * @param {String} type 'user' or 'script' to determine prop type to get 
  */
-async function deleteAllProperties(type) {
+function deleteAllProperties(type) {
   var props;
   
   //access corresponding store;
@@ -96,5 +96,5 @@ async function deleteAllProperties(type) {
   }
   
   //delete all properties in store;
-  await props.deleteAllProperties(); 
+  props.deleteAllProperties(); 
 }
