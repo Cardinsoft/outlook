@@ -41,10 +41,11 @@ Properties.prototype.deleteAllProperties = async function () {
 		//remove every setting;
 		if(obj!==null) {
 			let props = Object.keys(obj);
-			if(props.length>0) { 
-				props.forEach(function(prop){
+			if(props.length>0) {
+				for(let k in props) {
+					let prop = props[k];
 					await settings.remove(prop);
-				});
+				}
 			}
 		}		
 	}
