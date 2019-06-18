@@ -17,7 +17,6 @@ e_PropertiesService.prototype.getScriptProperties = function () {
 }
 e_PropertiesService.prototype.getUserProperties = function () {
 	const settings = this.userProperties;
-	console.log(settings)
 	return new Properties(settings,'user');
 }
 
@@ -97,8 +96,8 @@ Properties.prototype.setProperties = function (properties,deleteAllOthers) { //a
 Properties.prototype.setProperty = function (key,value) {
 	let settings = this.settings;
 	settings.set(key,value);
-	console.log(settings);
 	settings.saveAsync();
 	const type = this.type;
+	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
