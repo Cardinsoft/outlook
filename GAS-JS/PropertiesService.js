@@ -113,7 +113,7 @@ Properties.prototype.setProperty = function (key,value) {
 	//set property and persist;
 	PropertiesService.current[this.type][key] = value;
 	PropertiesService.initial[this.type].set(key,value);
-	PropertiesService.initial[this.type]saveAsync();
+	PropertiesService.initial[this.type].saveAsync();
 	
 	return storage;
 }
