@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/cardinsoft/outlook/issues"
   },
-  "homepage": "https://github.com/cardinsoft/outlook#readme"
+  "homepage": "https://github.com/cardinsoft/outlook#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.4.5"
+  }
 }
