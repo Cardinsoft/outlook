@@ -18,7 +18,7 @@ class e_PropertiesService {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getDocumentProperties = function () {
-	let current = this.current.documentProperties;
+	let current = this.current;
 	
 	if(!current.documentProperties) {
 		current.documentProperties = JSON.stringify(this.persisted.documentProperties);
@@ -32,7 +32,7 @@ e_PropertiesService.prototype.getDocumentProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getScriptProperties = function () {
-	let current = this.current.scriptProperties;
+	let current = this.current;
 	
 	if(!current.scriptProperties) {
 		current.scriptProperties = JSON.stringify(this.persisted.scriptProperties);
@@ -46,7 +46,7 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getUserProperties = function () {
-	let current = this.current.userProperties;
+	let current = this.current;
 	
 	if(!current.userProperties) {
 		current.userProperties = JSON.stringify(this.persisted.userProperties);
