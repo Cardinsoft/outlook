@@ -103,13 +103,9 @@ Properties.prototype.setProperty = function (key,value) {
 	//set property and persist;
 	storage[key] = value;
 	
-	PropertiesService.persisted.userProperties.set(key,value);
+	//PropertiesService.persisted.userProperties.set(key,value);
 	PropertiesService.current.userProperties = storage;
-	PropertiesService.persisted.userProperties.saveAsync();
-	
-
-	//acess storage type;
-	const type = this.type;
+	//PropertiesService.persisted.userProperties.saveAsync();
 	
 	return storage;
 }
@@ -124,9 +120,12 @@ Properties.prototype.deleteProperty = function (key) {
 	
 	//remove setting from storage and persist;
 	delete storage[key];
-	PropertiesService.persisted.userProperties.remove(key);
-	PropertiesService.persisted.userProperties.saveAsync();
+	
 	PropertiesService.current.userProperties = storage;
+	
+	//PropertiesService.persisted.userProperties.remove(key);
+	//PropertiesService.persisted.userProperties.saveAsync();
+	
 		
 	const type = this.type;
 	
