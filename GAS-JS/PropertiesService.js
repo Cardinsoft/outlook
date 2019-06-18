@@ -101,7 +101,7 @@ Properties.prototype.setProperty = function (key,value) {
 	
 	console.log(storage)
 	
-	console.log(GLOBAL)
+	console.log(this)
 	
 	//set property and persist;
 	//storage[key] = value;
