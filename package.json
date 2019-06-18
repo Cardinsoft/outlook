@@ -24,7 +24,12 @@
     "@babel/preset-env": "^7.4.5"
   },
   "babel": {
-	"presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
-  "browserslist": ["ie 11"]
+  "browserslist": [
+    "ie 11"
+  ],
+  "dependencies": {}
 }
