@@ -56,12 +56,12 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	let storage;
 	
 	if(!current.userProperties) {
-		storage = this.persisted.userProperties;
+		storage = this.persisted.userProperties['_rawData$p$0'];
 	}else {
-		storage = current.userProperties;
+		storage = current.userProperties['_rawData$p$0'];
 	}
 
-	return new Properties(JSON.stringify(storage),'user');
+	return new Properties(storage,'user');
 }
 
 //Emulate Class Properties for PropertiesService service;
@@ -78,9 +78,9 @@ class Properties {
  * @returns {Object} this property;
  */
 Properties.prototype.getProperty = function (key) {
-	let storage = JSON.parse(this.storage);
+	let storage = this.storage;
 	
-	let property = storage['_rawData$p$0'][key];
+	let property = storage[key];
 	
 	if(property) { 
 		return property; 
@@ -96,17 +96,18 @@ Properties.prototype.getProperty = function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = function (key,value) {
-	let storage = JSON.parse(this.storage);
+	let storage = this.storage;
 	
 	//set property and persist;
-	storage['_rawData$p$0'][key] = value;
+	storage[key] = value;
 	
-	console.log(storage['_rawData$p$0'])
-	console.log(typeof storage)
+	console.log(storage[key])
 	
 	PropertiesService.persisted.userProperties.set(key,value);
 	PropertiesService.persisted.userProperties.saveAsync();
 	PropertiesService.current.userProperties = storage;
+	
+	console.log(PropertiesService)
 	
 	//acess storage type;
 	const type = this.type;
