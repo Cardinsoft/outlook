@@ -80,6 +80,8 @@ class Properties {
 Properties.prototype.getProperty = function (key) {
 	let storage = this.storage;
 	
+	console.log(storage)
+	
 	let property = storage[key];
 	
 	if(property) { 
@@ -97,6 +99,8 @@ Properties.prototype.getProperty = function (key) {
  */
 Properties.prototype.setProperty = function (key,value) {
 	let storage = this.storage;
+	
+	console.log(storage)
 	
 	//set property and persist;
 	storage[key] = value;
