@@ -767,4 +767,4 @@ const cardStack = [];
 const menus     = [];
 const GLOBAL    = this;
 const e_actions = {};
-const PropertiesService;
+let PropertiesService;
