@@ -76,10 +76,9 @@ Properties.prototype.getProperty = function (key) {
 	console.log(storage)
 	
 	//access property;
-	let property = storage[key];
+	let property = storage.get(key);
 	
-	//switch to session settings;	
-	PropertiesService.current[this.type] = storage;
+	
 	
 	//return property or null;
 	if(property) { 
