@@ -88,6 +88,7 @@ Properties.prototype.getProperty = function (key) {
 	let property = storage[key];
 	
 	if(property) { 
+		PropertiesService.current.userProperties = storage;
 		return property; 
 	}else { 
 		return null; 
