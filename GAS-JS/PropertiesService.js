@@ -51,6 +51,7 @@ RS.prototype.get = function (key) {
 }
 RS.prototype.set = function (key,value) {
 	this.storage.set(key,value);
+	this.storage.saveAsync();
 	return this.storage[key];
 }
 
