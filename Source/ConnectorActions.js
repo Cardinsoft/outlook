@@ -122,6 +122,11 @@ async function createConnector(e) {
     
     //create connector and notify thwe user of success;
     config.push(connector);
+	
+	//generate new ID for the connector;
+    var newID = generateId(config);
+    connector.ID = newID;
+	
     await setProperty('config',config,'user');
     builder.setNotification(notification(globalCreateSuccess));
   }
@@ -157,12 +162,13 @@ async function updateConnector(e) {
   if(isDefault!==undefined) { isDefault = true; }else { isDefault = false; }
   if(useManual!==undefined) { useManual = true; }else { useManual = false; }
   
-  //initialize connector type;
+  //initialize connector type and get its ID;
+  var ID   = e.parameters.ID;
   var type = e.parameters.type;
   var cType = new this[type](icon,name,url);
 
   //connector default properties;
-  var connector = {type:type,isDefault:isDefault,manual:useManual};  
+  var connector = {type:type,isDefault:isDefault,manual:useManual,ID:ID};  
   
   //set connector properties;
   for(var key in data) {
@@ -293,7 +299,7 @@ async function removeConnector(e) {
 		  //access parameters and formInput;
 		  var params = e.parameters;
 		  var form   = e.formInput;
-		  
+		  var cType  = new this[params.type]();
 		  
 		  //uninstall Application from endpoint;
 		  var uninstall = form.uninstall;
