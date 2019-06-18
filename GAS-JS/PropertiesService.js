@@ -47,8 +47,7 @@ function RS(settings) {
 	this.storage = Object.create(settings);
 }
 RS.prototype.get = function (key) {
-	console.log(this.storage);
-	return this.storage[key];
+	return this.storage.get(key);
 }
 RS.prototype.set = function (key,value) {
 	this.storage.set(key,value);
