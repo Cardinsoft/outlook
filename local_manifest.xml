@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<OfficeApp
+          xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+          xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides"
+          xsi:type="MailApp">
+
+	<Id>4353e2f8-8dad-497a-87e7-9e2f4d460b16</Id>
+
+	<!--Version. Updates from the store only get triggered if there is a version change. -->
+	<Version>1.0.0.0</Version>
+	<ProviderName>Cardin</ProviderName>
+	<DefaultLocale>en-US</DefaultLocale>
+
+	<DisplayName DefaultValue="Development_Cardin" />
+	<Description DefaultValue="Cardin for Outlook brings together info from multiple data sources such as CRM systems and workflows without you ever needing to get out of the comfort of your Outlook client"/>
+
+	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
+	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
+
+	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook" />
+
+	<Hosts>
+		<Host Name="Mailbox" />
+	</Hosts>
+	<Requirements>
+		<Sets>
+			<Set Name="Mailbox" MinVersion="1.1" />
+		</Sets>
+	</Requirements>
+	<FormSettings>
+		<Form xsi:type="ItemRead">
+			<DesktopSettings>
+				<SourceLocation DefaultValue="https://localhost/index.html"/>
+				<RequestedHeight>250</RequestedHeight>
+			</DesktopSettings>
+		</Form>
+	</FormSettings>
+	<Permissions>ReadWriteItem</Permissions>
+	<Rule xsi:type="RuleCollection" Mode="Or">
+		<Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+	</Rule>
+	<DisableEntityHighlighting>false</DisableEntityHighlighting>
+	
+	<VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+		<VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+			<Requirements>
+				<bt:Sets DefaultMinVersion="1.3">
+					<bt:Set Name="Mailbox" />
+				</bt:Sets>
+			</Requirements>
+			<Hosts>
+				<Host xsi:type="MailHost">
+					<DesktopFormFactor>
+						<!-- Message Read -->
+						<ExtensionPoint xsi:type="MessageReadCommandSurface">
+							<OfficeTab id="TabDefault">
+								<Group id="msgReadGroup">
+									<Label resid="groupLabel" />
+									<!-- Adds a control to ribbon to launch the Add-in task pane -->
+									<Control xsi:type="Button" id="msgReadButton">
+										<!-- Add a label -->
+										<Label resid="paneReadButtonLabel" />
+										<!-- Add a supertip -->
+										<Supertip>
+											<Title resid="paneReadSuperTipTitle" />
+											<Description resid="paneReadSuperTipDescription" />
+										</Supertip>
+										<!-- Add an icon -->
+										<Icon>
+											<bt:Image size="16" resid="cardin-icon-16" />
+											<bt:Image size="32" resid="cardin-icon-32" />
+											<bt:Image size="80" resid="cardin-icon-80" />
+										</Icon>
+										<!-- Add an action with pin support -->
+										<Action xsi:type="ShowTaskpane">
+											<SourceLocation resid="paneReadUrl" />
+											<SupportsPinning>true</SupportsPinning>
+										</Action>
+									</Control>
+								</Group>
+							</OfficeTab>
+						</ExtensionPoint>
+					</DesktopFormFactor>
+				</Host>
+			</Hosts>
+			<Resources>
+				<bt:Images>
+					<bt:Image id="cardin-icon-16" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png"/>
+					<bt:Image id="cardin-icon-32" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-32.png"/>
+					<bt:Image id="cardin-icon-80" DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
+				</bt:Images>
+				<bt:Urls>
+					<bt:Url id="paneReadUrl" DefaultValue="https://cardinsoft.github.io/outlook/index.html"/>
+				</bt:Urls>
+				<bt:ShortStrings>
+					<bt:String id="groupLabel" DefaultValue="Cardin"/>
+					<bt:String id="customTabLabel"  DefaultValue="Cardin for Outlook"/>
+					<bt:String id="paneReadButtonLabel" DefaultValue="Launch"/>
+					<bt:String id="paneReadSuperTipTitle" DefaultValue="Show Task Pane"/>
+				</bt:ShortStrings>
+				<bt:LongStrings>
+					<bt:String id="paneReadSuperTipDescription" DefaultValue="Opens Cardin Add-in"/>
+				</bt:LongStrings>
+			</Resources>
+		</VersionOverrides>
+	</VersionOverrides>
+	
+</OfficeApp>
