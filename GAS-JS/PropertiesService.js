@@ -76,7 +76,7 @@ Properties.prototype.deleteProperty = function (key) {
 //Properties.prototype.getKeys = function () {} - not needed for initial release;
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
 Properties.prototype.getProperty = function (key) {
-	const settings = this.settings;
+	const settings = PropertiesService.userProperties;
 	let property = settings.get(key);
 	if(property) { 
 		return property; 
