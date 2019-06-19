@@ -51,8 +51,9 @@ RS.prototype.set = function (key,value) {
 	this.settings.set(key,value);
 	this.settings.saveAsync();
 	
+	let storage = this.settings['_settingsData$p$0'];
 	
-	console.log(this.settings);
+	console.log(storage);
 	
 	
 	return this.settings.get(key);
