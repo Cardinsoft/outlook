@@ -11,7 +11,8 @@ Office.initialize = function (reason) {
 			menu.switchShow();
 		});
 		
-		//initiate properties;
+		//initiate Services;
+		CardService       = new e_CardService();
 		Utilities         = new e_Utilities();
 		PropertiesService = new e_PropertiesService();
 		
@@ -776,3 +777,4 @@ const GLOBAL    = this;
 const e_actions = {};
 let Utilities;
 let PropertiesService;
+let CardService;
