@@ -754,7 +754,7 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
-function e_EventObject {
+function e_EventObject() {
 	this.messageMetadata = {
 		accessToken : '',
 		messageId : ''
