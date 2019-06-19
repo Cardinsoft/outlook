@@ -1,9 +1,11 @@
-//Emulate PropertiesService service;
-class e_PropertiesService {
-	constructor() {
-		this.className = 'PropertiesService';
-		this.RS = Office.context.roamingSettings;
-	}
+/**
+ * PropertiesService constructor function;
+ */
+function e_PropertiesService {
+	this.className = 'PropertiesService';
+	this.documentProperties = Office.context.roamingSettings;
+	this.scriptProperties   = Office.context.roamingSettings;
+	this.userProperties     = Office.context.roamingSettings;
 }
 
 /**
@@ -34,11 +36,9 @@ e_PropertiesService.prototype.getUserProperties = function () {
 }
 
 //Emulate Class Properties for PropertiesService service;
-class Properties {
-	constructor(settings,type) {
-		this.settings = settings;
-		this.type     = type;
-	}
+function Properties (settings,type) {
+	this.settings = settings;
+	this.type     = type;
 }
 
 /**
