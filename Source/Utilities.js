@@ -676,9 +676,9 @@ function parseData(data) {
  * Creates settings storage;
  * @param {String} content content to pass to JSON file;
  */
-function createSettings(content) {
+async function createSettings(content) {
   if(!content) { content = []; }
-  setProperty('config',content,'user');
+  await setProperty('config',content,'user');
 }
 
 /**
