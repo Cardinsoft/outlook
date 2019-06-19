@@ -71,6 +71,7 @@ Properties.prototype.setProperty = async function (key,value) {
 	//update RoamingSettings in PropertiesService;
 	if(type==='user') { PropertiesService.userProperties = settings; }
 	
+	console.log(JSON.parse(settings.get(key))
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
 	settings.saveAsync();
