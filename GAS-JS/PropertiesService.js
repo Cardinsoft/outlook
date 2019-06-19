@@ -63,6 +63,9 @@ Properties.prototype.getProperty = function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = function (key,value) {
+	
+	console.log(
+	
 	let settings = this.settings;
 		settings.set(key,value);
 		settings.saveAsync();
@@ -70,6 +73,11 @@ Properties.prototype.setProperty = function (key,value) {
 	const type = this.type;
 	
 	//update RoamingSettings in PropertiesService;
+	var s = JSON.parse(settings.get(key))
+	s.forEach(function(ss){
+	console.log(ss)
+	})
+	
 	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
