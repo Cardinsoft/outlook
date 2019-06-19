@@ -28,14 +28,12 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getUserProperties = function () {	
-	let storage;
-	if(!this.UP) {
-		storage = Office.context.roamingSettings;
-	}else {
-		storage = new RS(this.UP);
-	}
+
+	//if no user properties -> set to RoamingSettings;
+	if(!this.UP) { this.UP = Office.context.roamingSettings; }
 	
-	this.UP = storage;
+	//create a copy of the store;
+	let storage = new RS(this.UP);
 	
 	return new Properties(storage,'UP');
 }
@@ -44,16 +42,20 @@ e_PropertiesService.prototype.getUserProperties = function () {
 
 function RS(settings) {
 	this.className = 'RS';
-	this.storage = Object.create(settings);
+	this.settings = Object.create(settings);
 }
 RS.prototype.get = function (key) {
-	return this.storage.get(key);
+	return this.settings.get(key);
 }
 RS.prototype.set = function (key,value) {
-	this.storage.set(key,value);
-	this.storage.saveAsync();
-	console.log(PropertiesService.UP.storage.storage)
-	return this.storage[key];
+	this.settings.set(key,value);
+	this.settings.saveAsync();
+	
+	
+	console.log(this.settings);
+	
+	
+	return this.settings.get(key);
 }
 
 
