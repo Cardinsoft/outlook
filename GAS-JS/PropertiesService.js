@@ -46,9 +46,9 @@ function Properties (settings,type) {
  * @param {String} key key to access property by;
  * @returns {Object|null} this property;
  */
-Properties.prototype.getProperty = function (key) {
+Properties.prototype.getProperty = async function (key) {
 	const settings = this.settings;
-	let property = settings.get(key);
+	let property = await settings.get(key);
 	if(property) { 
 		return property; 
 	}else { 
@@ -73,7 +73,7 @@ Properties.prototype.setProperty = async function (key,value) {
 	//update RoamingSettings in PropertiesService;
 	var s = JSON.parse(settings.get(key))
 	s.forEach(function(ss){
-	console.log(ss)
+		console.log(ss)
 	})
 	
 	if(type==='user') { PropertiesService.userProperties = settings; }
@@ -85,10 +85,10 @@ Properties.prototype.setProperty = async function (key,value) {
  * @param {String} key key to access property by;
  * @returns {Object} this settings;
  */
-Properties.prototype.deleteProperty = function (key) {
+Properties.prototype.deleteProperty = async function (key) {
 	let settings = this.settings;
-		settings.remove(key);
-		settings.saveAsync();
+		await settings.remove(key);
+		await settings.saveAsync();
 		
 	const type = this.type;
 	
