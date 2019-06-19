@@ -694,6 +694,33 @@ function LessAnnoyingCRM() {
               contWidgets.push(contactAddress);
             });
 
+            //create edit-in-CRM widget;
+            /*
+            var contactEditIn = {
+              type    : globalTextButton,
+              action  : globalActionLink,
+              title   : 'Edit in LACRM',
+              content : 'https://www.lessannoyingcrm.com/app/View_Contact?ContactId='+contactId
+            };
+            contWidgets.push(contactEditIn);
+            */
+            
+            var customIdx = 0;              
+            for(var field in custom) {
+              if(custom[field]) {
+                var customWidget = {
+                  icon    : 'https://cardinsoft.com/wp-content/uploads/2019/06/CUSTOM.png',
+                  type    : globalKeyValue,
+                  state   : 'editable',
+                  name    : 'CustomFields-'+customIdx+'&'+field+'&'+contactId,
+                  title   : field,
+                  content : custom[field]
+                };
+                contWidgets.push(customWidget);
+                customIdx++;
+              }
+            }
+
             //create separator, creation and edit widgets;
             var separator = {type: globalKeyValue,content: '\r'};
             contWidgets.push(separator);
@@ -1034,33 +1061,6 @@ function LessAnnoyingCRM() {
               };
               backgroundWidgets.push(contactBackground);
               sections.push(backgroundSection);
-            }
-            
-            //if contact has custom fields -> add;
-            if(custom) {
-              var customSection = {
-                header        : 'Custom fields',
-                isCollapsible : true,
-                widgets       : []
-              };
-              var customWidgets = customSection.widgets;
-              
-              var customIdx = 0;
-              for(var field in custom) {
-                if(custom[field]) {
-                  var customWidget = {
-                    type    : globalKeyValue,
-                    //state   : 'editable',
-                    name    : ['CustomFields-'+customIdx,field,contactId].join('&'),
-                    title   : field,
-                    content : custom[field]
-                  };
-                  customWidgets.push(customWidget);
-                  customIdx++;
-                }
-              }
-              
-              sections.push(customSection);
             }
             
           }
