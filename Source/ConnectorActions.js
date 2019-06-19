@@ -270,7 +270,7 @@ async function updateConnector(e) {
     
     //update connector and notify the user of success;
     config[index] = connector;
-    await setProperty('config',config,'user');
+    setProperty('config',config,'user');
     builder.setNotification(notification(globalUpdateSuccess));
   }
   catch(err) {
