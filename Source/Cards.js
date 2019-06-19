@@ -521,7 +521,7 @@ async function cardSettings(e) {
   var config = await getConfig();
   
   if(config.length!==0) {
-    createConfiguredConnectorsSection(builder,false,config);
+    await createConfiguredConnectorsSection(builder,false,config);
   }
   
   await createSectionChooseType(builder,false,globalChooseTypeHeader);

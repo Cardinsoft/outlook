@@ -91,7 +91,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
   if(isCollapsed) { section.setNumUncollapsibleWidgets(globalNumUncollapsibleList); }
   
   //sort configuration;
-  sortConfig(config);
+  await sortConfig(config);
   
   //add Connectors representation;
   for(var key in config) {
@@ -225,7 +225,7 @@ async function createConnectorListSection(builder,isCollapsed,header,config,msg)
  * @param {Array} config an array of Connector settings objects;
  * @returns {CardSection} this CardSection;
  */
-function createConfiguredConnectorsSection(builder,isCollapsed,config) {
+async function createConfiguredConnectorsSection(builder,isCollapsed,config) {
   
   //create section and set required parameters;
   var section = CardService.newCardSection();
@@ -237,7 +237,7 @@ function createConfiguredConnectorsSection(builder,isCollapsed,config) {
       
   try {
     //sort configuration;
-    sortConfig(config);
+    await sortConfig(config);
   
     config.forEach(function(connector) {
       var icon = connector.icon;
