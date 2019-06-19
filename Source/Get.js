@@ -52,9 +52,9 @@ function getTypes(filter) {
  * @param {Object=} filter filter settings;
  * @returns {Array} array of Connector config objects;
  */
-function getConfig(filter) {
+async function getConfig(filter) {
   
-  var connectors = getProperty('config','user');
+  var connectors = await getProperty('config','user');
   if(connectors===null) { return []; }
   
   //apply filter;
