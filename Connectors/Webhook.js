@@ -1,18 +1,18 @@
 //Flow connector class;
 function Flow() {
   Connector.call(this);
-  this.icon     = globalFlowIconUrl;
-  this.typeName = 'Flow';
-  this.short    = globalFlowShort;
+  this.icon     = globalIconWebhook;
+  this.typeName = 'Webhook';
+  this.short    = globalWebhookShort;
   this.config = [
     {
-      'header': 'Flow config',
+      'header': 'Webhook config',
       'isCollapsible': false,
       'widgets': [
         {
           'name': globalURLfieldName,
           'type': 'TextInput',
-          'title': 'Flow URL',
+          'title': 'Webhook URL',
           'content': '',
           'hint': 'e.g. Http get or post URL'
         }
@@ -31,7 +31,7 @@ function Flow() {
     
     //set payload in case POST request will be triggered;
     var trimmed = trimMessage(msg,true,true);
-    var labels = []//msg.getThread().getLabels().map(function(label){ return label.getName(); });
+
     var payload = {
       'Bcc': msg.getBcc(),
       'Cc': msg.getCc(),
@@ -39,8 +39,7 @@ function Flow() {
       'sender': trimmed.name,
       'from': trimmed.email,
       'id': msg.getId(),
-      'subject': msg.getSubject(),
-      'labels': labels
+      'subject': msg.getSubject()
     };
     if(data) { payload.data = data; }
     
