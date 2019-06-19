@@ -66,7 +66,6 @@ Properties.prototype.setProperty = async function (key,value) {
 
 	let settings = this.settings;
 		await settings.set(key,value);
-		await settings.saveAsync();
 		
 	const type = this.type;
 	
@@ -77,6 +76,7 @@ Properties.prototype.setProperty = async function (key,value) {
 	})
 	
 	if(type==='user') { PropertiesService.userProperties = settings; }
+	settings.saveAsync();
 	return settings;
 }
 
