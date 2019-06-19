@@ -47,6 +47,7 @@ var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered
 //custom icons;
 var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png';
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
+var globalIconWebhook                = 'https://cardinsoft.com/wp-content/uploads/2019/06/WEBHOOK.png';
 
 //content;
 var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
@@ -189,6 +190,6 @@ var globalOAuth2AuthType             = 'OAuth2';
 //connector types specific globals;
 var globalBpmShort                   = 'Fetches sales and marketing info from Bpm\'Online CRM platform';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
-var globalFlowShort                  = 'Sends and recieves data from Microsoft Flow - this Connector type can work with iterative data updating';
 var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
+var globalWebhookShort               = 'Sends and recieves data from custom webhooks, including Microsoft Flow (supports iterative data updating)';
