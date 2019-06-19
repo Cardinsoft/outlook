@@ -62,13 +62,11 @@ RS.prototype.get = function (key) {
 RS.prototype.set = function (key,value) {
 	let storage = this.settings;
 	
-	console.log(this)
-	
 	let settings = Object.create(PropertiesService.RS['_settingsData$p$0']);
 		settings[key] = value;
 		PropertiesService.RS.set(key,value);
 		PropertiesService.RS.saveAsync();
-		PropertiesService.UP = settings;
+		window.PropertiesService.UP = settings;
 }
 
 
