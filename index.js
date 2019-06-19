@@ -485,7 +485,7 @@ async function actionCallback(elem) {
 			s.hide();
 			
 		}else {
-			await GLOBAL[functionName](e);
+			await GLOBAL[functionName].call(GLOBAL,e);
 		}
 		
 	return;
