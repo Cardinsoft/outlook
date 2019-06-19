@@ -1,8 +1,6 @@
 //Emulate base Class Widget for CardService service;
-class Widget {
-	constructor() {
-		this.className = 'Widget';
-	}
+function Widget() {
+	this.className = 'Widget';
 }
 
 /**
