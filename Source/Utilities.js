@@ -89,11 +89,11 @@ function preserveValues(connector,widgets) {
  * Helper function to sort config array;
  * @param {Array} config an array of Connector settings objects;
  */
-function sortConfig(config) {
+async function sortConfig(config) {
 
   //sort configuration;
-  var orderType = getProperty('order','user');
-  var reverse   = getProperty('reverse','user');
+  var orderType = await getProperty('order','user');
+  var reverse   = await getProperty('reverse','user');
   
   switch(orderType) {
     case 'alphabet' :
