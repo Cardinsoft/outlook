@@ -114,5 +114,7 @@ Image.prototype.appendToUi = function (parent) {
 			return actionCallback(this);
 		});
 	}
+	
+	
 
 }
