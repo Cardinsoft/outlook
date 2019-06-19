@@ -1,7 +1,7 @@
 /**
  * PropertiesService constructor function;
  */
-function e_PropertiesService {
+function e_PropertiesService () {
 	this.className = 'PropertiesService';
 	this.documentProperties = Office.context.roamingSettings;
 	this.scriptProperties   = Office.context.roamingSettings;
