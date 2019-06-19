@@ -765,7 +765,7 @@ function createSectionAdvanced(builder,obj,sectionIndex,connector,max) {
             var content = widget.content;
           
 			switch(type) {
-				case 'TextP	aragraph':
+				case 'TextParagraph':
 				  element = textWidget(content);
 				  break;
 				case 'Image':
