@@ -49,6 +49,8 @@ RS.prototype.get = function (key) {
 	let output;
 	let storage = this.settings;
 	
+	console.log(storage)
+	
 	if(storage.get) {
 		output = storage.get(key);
 	}else {
@@ -60,16 +62,11 @@ RS.prototype.get = function (key) {
 RS.prototype.set = function (key,value) {
 	let storage = this.settings;
 	
-	if(storage.set) {
-		storage.set(key,value);
-		storage.saveAsync();
-	}else {
-		let settings = Object.create(PropertiesService.RS['_settingsData$p$0']);
-			settings[key] = value;
-			PropertiesService.RS.set(key,value);
-			PropertiesService.RS.saveAsync();
+	let settings = Object.create(PropertiesService.RS['_settingsData$p$0']);
+		settings[key] = value;
+		PropertiesService.RS.set(key,value);
+		PropertiesService.RS.saveAsync();
 		PropertiesService.UP = settings;
-	}
 }
 
 
