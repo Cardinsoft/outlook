@@ -5,20 +5,22 @@ class Widget {
 	}
 }
 
-//Emulate Class TextParagraph for base Class Widget for CacheService service;
-class TextParagraph extends Widget {
-	constructor() {
-		super();
-		this.className = 'TextParagraph';
-		this.content;
-	}
+/**
+ * TextParagraph constructor function;
+ */
+function TextParagraph() {
+	Widget.call(this);
+	this.className = 'TextParagraph';
+	this.content;
 }
-//add new methods to the class;
+TextParagraph.prototype = Object.create(Widget.prototype);
+
 TextParagraph.prototype.setText = function (text) {
 	this.content = text;
 	return this;
 }
-TextParagraph.prototype.appendToUi = function(parent) {	
+
+TextParagraph.prototype.appendToUi = function (parent) {	
 	//append row;
 	const widget = document.createElement('div');
 	widget.className = 'row '+this.className;
