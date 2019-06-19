@@ -31,7 +31,7 @@ e_PropertiesService.prototype.getScriptProperties = function () {
  * @returns {Object} Properties instance;
  */
 e_PropertiesService.prototype.getUserProperties = function () {	
-	const settings = this.userProperties;
+	const settings = Office.context.roamingSettings;
 	return new Properties(settings,'user');
 }
 
@@ -76,7 +76,7 @@ Properties.prototype.setProperty = async function (key,value) {
 		console.log(ss)
 	})
 	
-	//if(type==='user') { PropertiesService.userProperties = settings; }
+	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
 
