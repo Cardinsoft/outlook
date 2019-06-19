@@ -1,11 +1,11 @@
 // The initialize function must be run each time a new page is loaded;
-Office.initialize = (reason) => {
-	$(document).ready(async () => {
+Office.initialize = function (reason) {
+	$(document).ready(async function () {
 		
 		//initiate menu with universal actions;
 		const menu = new Menu();
 		menu.create([]);
-		$('.navelem').click( (event) => {
+		$('.navelem').click( function (event) {
 			event.stopPropagation();
 			event.preventDefault();
 			menu.switchShow();
@@ -43,24 +43,23 @@ Office.initialize = (reason) => {
 /**
  * Creates an instance of Menu;
  */
-class Menu {
-	constructor() {
-		this.id = '';
-		this.className = 'Menu';
-		this.items = {
-			cardActions      : [],
-			universalActions : []
-		};
-		this.isOpen = false;		
-		this.element;
-	}
+function Menu() {
+	this.id = '';
+	this.className = 'Menu';
+	this.items = {
+		cardActions      : [],
+		universalActions : []
+	};
+	this.isOpen = false;		
+	this.element;
+}
 	
 	/**
 	 * Creates Menu and appends to Ui;
 	 * @param {Array} items an Array of items to add initially;
 	 * @returns {Object} this Menu;
 	 */
-	create(items) {
+Menu.prototype.create(items) {
 		const self = this;
 		const navbar = document.querySelector('.navbar');
 		
@@ -97,134 +96,135 @@ class Menu {
 		
 		return this;
 	}
-	/**
-	 * Adds item to Menu;
-	 * @param {Object} item item to add;
-	 * @param {Boolean} isCardAction from where to remove item;
-	 * @returns {Object} this Menu;
-	 */
-	addItem(item,isCardAction) {
-		let self   = this;
-		let menu   = this.element;
-		let action = item.action;
-		let items  = this.items;
-		
-		//create menu item;
-		let menuItem = document.createElement('div');
-		if(item.classList) {
-			item.classList.forEach(function (cl) {
-				menuItem.classList.add(cl);
-			});
-		}
-		menuItem.classList.add('menuItem');
-		
-		//add to CardActions or UniversalActions;
-		if(isCardAction) { 
-			menu.prepend(menuItem);
-			items.cardActions.push(item);
-		}else { 
-			menu.append(menuItem);
-			items.universalActions.push(item);
-		}
-		
-		//set item's icon and text;
-		let menuText = document.createElement('p');
-			menuText.textContent = item.text;
-		
-		let cl = menuText.classList;
-			cl.add('menuText');
-		if(item.icon) { cl.add(item.icon); }
-		
-		menuItem.append(menuText);
-		
-		//set reference;
-		setAction(menuItem,action);
-			
-		menuItem.addEventListener('click',async function(){	
-			self.switchShow();
-			await actionCallback(this);		
-		});
-		
-		return this;
-	}
-	
-	/**
-	 * Removes item from Menu by index;
-	 * @param {Integer} index item index to remove;
-	 * @param {Boolean} isCardAction from where to remove item;
-	 * @returns {Object} this Menu;
-	 */
-	removeItem(index,isCardAction) {
-		let items = this.items;
-		
-		//access type-appropriate items;
-		if(isCardAction) {
-			items = items.cardActions;
-		}else {
-			items = items.universalActions;
-		}		
-		
-		//remove item from Menu;
-		items.splice(index,1);
-		
-		//remove item from HtmlElement;
-		let menu = menus[0].element;
-		menu.children.item(index).remove();
-		
-		return this;
-	}
-	
-	/**
-	 * Clears Menu of items;
-	 * @param {Boolean} isCardAction from where to remove item;
-	 * @returns {Object} this Menu;
-	 */
-	clear(isCardAction) {
-		
-		//clear HtmlElement;
-		let menu = menus[0].element;
-		let menuItems = menu.children;
-		const length = menuItems.length;
-		
-		//skip empty Menus;
-		if(menuItems.length>0) {
-			//remove items from Menu;
-			for(let i=0; i<length; i++) {
-				this.removeItem(0,isCardAction);
-			}
-		}
 
-		return this;
-	}
-	
-	/**
-	 * Switches Menu display;
-	 */
-	switchShow() {
-		let menu = menus[0].element;
-		let cl = menu.classList;
+/**
+ * Adds item to Menu;
+ * @param {Object} item item to add;
+ * @param {Boolean} isCardAction from where to remove item;
+ * @returns {Object} this Menu;
+ */
+Menu.prototype.addItem(item,isCardAction) {
+	let self   = this;
+	let menu   = this.element;
+	let action = item.action;
+	let items  = this.items;
 		
-		if(cl.contains('singulared')) { 
-			this.isOpen = true; 
-		}else { 
-			this.isOpen = false; 
-		}
-		
-		menu.classList.toggle('singulared');
+	//create menu item;
+	let menuItem = document.createElement('div');
+	if(item.classList) {
+		item.classList.forEach(function (cl) {
+			menuItem.classList.add(cl);
+		});
 	}
+	menuItem.classList.add('menuItem');
+		
+	//add to CardActions or UniversalActions;
+	if(isCardAction) { 
+		menu.prepend(menuItem);
+		items.cardActions.push(item);
+	}else { 
+		menu.append(menuItem);
+		items.universalActions.push(item);
+	}
+		
+	//set item's icon and text;
+	let menuText = document.createElement('p');
+		menuText.textContent = item.text;
+		
+	let cl = menuText.classList;
+		cl.add('menuText');
+	if(item.icon) { cl.add(item.icon); }
+		
+	menuItem.append(menuText);
+		
+	//set reference;
+	setAction(menuItem,action);
+			
+	menuItem.addEventListener('click',async function(){	
+		self.switchShow();
+		await actionCallback(this);		
+	});
+		
+	return this;
 }
+	
+/**
+ * Removes item from Menu by index;
+ * @param {Integer} index item index to remove;
+ * @param {Boolean} isCardAction from where to remove item;
+ * @returns {Object} this Menu;
+ */
+Menu.prototype.removeItem(index,isCardAction) {
+	let items = this.items;
+		
+	//access type-appropriate items;
+	if(isCardAction) {
+		items = items.cardActions;
+	}else {
+		items = items.universalActions;
+	}		
+		
+	//remove item from Menu;
+	items.splice(index,1);
+		
+	//remove item from HtmlElement;
+	let menu = menus[0].element;
+	menu.children.item(index).remove();
+		
+	return this;
+}
+	
+/**
+ * Clears Menu of items;
+ * @param {Boolean} isCardAction from where to remove item;
+ * @returns {Object} this Menu;
+ */
+Menu.prototype.clear(isCardAction) {
+		
+	//clear HtmlElement;
+	let menu = menus[0].element;
+	let menuItems = menu.children;
+	const length = menuItems.length;
+	
+	//skip empty Menus;
+	if(menuItems.length>0) {
+		//remove items from Menu;
+		for(let i=0; i<length; i++) {
+			this.removeItem(0,isCardAction);
+		}
+	}
+
+	return this;
+}
+	
+/**
+ * Switches Menu display;
+ */
+Menu.prototype.switchShow() {
+	let menu = menus[0].element;
+	let cl = menu.classList;
+		
+	if(cl.contains('singulared')) { 
+		this.isOpen = true; 
+	}else { 
+		this.isOpen = false; 
+	}
+		
+	menu.classList.toggle('singulared');
+}
+
 
 /**
  * Creates an instance of Selector;
  */
-class Selector {
-	constructor(){
-        this.className = 'Select';
-        this.element;
-        this.options = [];
-        this.isOpen = false;
-    }
-    create(parent,name) {
+function Selector() {
+    this.className = 'Select';
+    this.element;
+    this.options = [];
+    this.isOpen = false;
+}
+
+Selector.prototype.create = function (parent,name) {
         //create displayed select wrapper;
         const wrap = document.createElement('div');
         wrap.classList.add(this.className/*,'singulared'*/);
@@ -239,145 +239,153 @@ class Selector {
         this.element = wrap;
           
         return this;
-    }
-    add(items) {
-      	//add item to instance;
-        const opt  = this.options;
-        const elem = this.element;
+}
+
+Selector.prototype.add = function (items) {
+    //add item to instance;
+    const opt  = this.options;
+    const elem = this.element;
         
-        //add items to select;
-        if(items instanceof Array) {
-        	items.forEach( (item) => { opt.push(item); });
-        }else {
-        	opt.push(items);
-		}
+    //add items to select;
+    if(items instanceof Array) {
+		items.forEach(function (item) { opt.push(item); });
+    }else {
+		opt.push(items);
+	}
         
-        //append options to select;
-        opt.forEach( (o) => {      
-            //create displayed option;
-            const optionUi = document.createElement('div');
-            optionUi.classList.add('selectItem');
-            elem.append(optionUi);
+    //append options to select;
+    opt.forEach(function (o) {      
+        //create displayed option;
+        const optionUi = document.createElement('div');
+			  optionUi.classList.add('selectItem');
+        elem.append(optionUi);
             
-            //create displayed text;
-            const text = document.createElement('p');
-            text.textContent = o.text;
-            text.classList.add('selectText');
-            optionUi.append(text);
+        //create displayed text;
+        const text = document.createElement('p');
+              text.textContent = o.text;
+              text.classList.add('selectText');
+        optionUi.append(text);
             
-            //create option for form input;
-            const option = document.createElement('option');
-            option.value = o.value;
-            elem.children.item(0).append(option);  
-        });
+        //create option for form input;
+        const option = document.createElement('option');
+              option.value = o.value;
+        elem.children.item(0).append(option);  
+    });
 		
     return this;
-	}
-    remove(index) {
-        //remove item from instance;
-        const opt = this.options;
-        opt.splice(index,1);
-        this.element.children.item(index+1).remove();
-          
-        return this;
-    }
-    select(index) {
-        //select option;
-        const opt  = this.options;
-        const elem = this.element;
-          
-        opt[index].selected = true;
-        opt.forEach( (o,idx) => {
-            if(o.selected&&idx!==index) { o.selected = false; }
-        });
-          
-        //elem.children.item(0).children.item(index).selected = true;
-		
-		return this;
-    }
-    toggle() {
-		
-	}
 }
+
+Selector.prototype.remove = function (index) {
+    //remove item from instance;
+    const opt = this.options;
+		  opt.splice(index,1);
+    
+	this.element.children.item(index+1).remove();
+          
+	return this;
+}
+
+Selector.prototype.select = function (index) {
+    //select option;
+    const opt  = this.options;
+    const elem = this.element;
+          
+    opt[index].selected = true;
+    opt.forEach(function (o,idx) {
+		if(o.selected&&idx!==index) { o.selected = false; }
+    });
+          
+    //elem.children.item(0).children.item(index).selected = true;
+		
+	return this;
+}
+
+Selector.prototype.toggle = function () {
+	//future release;
+}
+
 
 /**
  * Creates an instance of Overlay;
  */
-class Overlay {
-	constructor() {
-		this.className;
-		this.color;
-		this.tone;
-		this.overlay;
-	}
-	setColor(color) {
-		this.color = color;
-		return this;
-	}
-	setTone(tone) {
-		this.tone = tone;
-		return this;
-	}
-	show(selector) {
-		let p = document.querySelector(selector);
-		let c = document.createElement('div');
+function Overlay() {
+	this.className;
+	this.color;
+	this.tone;
+	this.overlay;
+}
+
+Overlay.prototype.setColor = function (color) {
+	this.color = color;
+	return this;
+}
+	
+Overlay.prototype.setTone = function (tone) {
+	this.tone = tone;
+	return this;
+}
+
+Overlay.prototype.show = function (selector) {
+	let p = document.querySelector(selector);
+	let c = document.createElement('div');
 		
-		p.append(c);
+	p.append(c);
 		
-		if(this.color) {
-			let list = c.classList;
-			list.add('overlay');
-			if(this.tone) { 
-				list.add('overlay-'+this.tone); 
-			}else { 
-				list.add('overlay-light'); 
-			}
-			c.style.backgroundColor = this.color;
+	if(this.color) {
+		let list = c.classList;
+		list.add('overlay');
+		if(this.tone) { 
+			list.add('overlay-'+this.tone); 
+		}else { 
+			list.add('overlay-light'); 
 		}
-		
-		this.overlay = c;
-		return this;
+		c.style.backgroundColor = this.color;
 	}
-	hide() {		
-		this.overlay.remove();
-		return this;
-	}
+	
+	this.overlay = c;
+	return this;
+}
+
+Overlay.prototype.hide = function () {		
+	this.overlay.remove();
+	return this;
 }
 
 
 /**
  * Creates an instance of Spinner;
  */
-class Spinner {
-	constructor(){
-		this.className = 'spinner';
-		this.size;
-	}
-	setSize(size) {
-		this.size = 'spinner-'+size;
-		return this;
-	}
-	show() {
-		let d = GLOBAL.document;
-		let p = d.querySelector('#app-overlay');
-		let c = d.createElement('div');
-		
-		p.append(c);
-		
-		let base    = this.className;
-		let size    = this.size;
-		
-		c.className = [base,size].join(' ');
-		return this;
-	}
-	hide() {
-		let d = GLOBAL.document;
-		let c = d.querySelector('.spinner');
-		c.remove();
-	}
+function Spinner() {
+	this.className = 'spinner';
+	this.size;
 }
 
-//=======================================START Ui Classes======================================//
+Spinner.prototype.setSize = function (size) {
+		this.size = 'spinner-'+size;
+		return this;
+}
+
+Spinner.prototype.show = function () {
+	let d = GLOBAL.document;
+	let p = d.querySelector('#app-overlay');
+	let c = d.createElement('div');
+		
+	p.append(c);
+	
+	let base    = this.className;
+	let size    = this.size;
+		
+	c.className = [base,size].join(' ');
+	return this;
+}
+	
+Spinner.prototype.hide = function () {
+	let d = GLOBAL.document;
+	let c = d.querySelector('.spinner');
+	c.remove();
+}
+
+//=======================================END Ui Classes======================================//
 
 //========================================START CALLBACKS======================================//
 
@@ -435,7 +443,7 @@ async function actionCallback(elem) {
 							
 							if(isSelected) {
 								
-								let exists = Object.keys(e.formInput).some((key) => { return key===name; });
+								let exists = Object.keys(e.formInput).some(function (key) { return key===name; });
 								
 								e.formInput[name] = value;
 								if(!exists) { 
@@ -746,21 +754,19 @@ function collapse(trigger,overlay,property,interval,increment,initial) {
 
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
-class e_EventObject {
-	constructor() {
-		this.messageMetadata = {
-			accessToken : '',
-			messageId : ''
-		};
-		this.formInput  = {};
-		this.clientPlatform;
-		this.formInputs = {};
-		this.parameters = {};
-		this.userLocale;
-		this.userTimezone = {
-			offset : '',
-			id : ''
-		}
+function e_EventObject {
+	this.messageMetadata = {
+		accessToken : '',
+		messageId : ''
+	};
+	this.formInput  = {};
+	this.clientPlatform;
+	this.formInputs = {};
+	this.parameters = {};
+	this.userLocale;
+	this.userTimezone = {
+		offset : '',
+		id : ''
 	}
 }
 
