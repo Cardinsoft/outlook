@@ -535,6 +535,7 @@ function LessAnnoyingCRM() {
             var contactId   = entry.ContactId;
             var companyId   = entry.CompanyId;
             var companyName = entry.CompanyName;
+			var companyBckg; //will be needed in company section;
             var createdCont = entry.CreationDate;
             var editedCont  = entry.EditedDate;
             var birthday    = entry.Birthday;
@@ -812,6 +813,7 @@ function LessAnnoyingCRM() {
                   var cAddresses = company.Address;
                   var cCreated   = company.CreationDate;
                   var cEdited    = company.EditedDate;
+				  companyBckg    = company.BackgroundInfo; 
                   
                   //create company section and access widgets;
                   var cSection = {
@@ -1052,7 +1054,15 @@ function LessAnnoyingCRM() {
                 widgets       : []
               };
               var backgroundWidgets = backgroundSection.widgets;
-            
+
+              //create contact background label widget;
+              var contactBckLabel = {
+                type    : globalKeyValue,
+                title   : 'Contact',
+                content : ''
+              };
+              backgroundWidgets.push(contactBckLabel);  
+  
               //if birthday provided -> set widget;
               if(birthday) {
                 var contactBirthday = {
@@ -1077,6 +1087,28 @@ function LessAnnoyingCRM() {
                 multiline : true
               };
               backgroundWidgets.push(contactBackground);
+			  
+              if(companyBckg) {
+              
+                var companyBckLabel = {
+                  type    : globalKeyValue,
+                  title   : 'Company',
+                  content : ''
+                };
+                backgroundWidgets.push(companyBckLabel);     
+                
+                var companyBackground = {
+                  icon      : globalIconBackground,
+                  type      : globalKeyValue,
+                  state     : 'editable',
+                  name      : 'BackgroundInfo&'+companyId,
+                  content   : companyBckg,
+                  multiline : true
+                };
+                backgroundWidgets.push(companyBackground);                
+              
+              }			  
+			  
               sections.push(backgroundSection);
             }
             
