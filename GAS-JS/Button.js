@@ -115,7 +115,9 @@ TextButton.prototype.appendToUi = function (parent) {
 		setAction(button,action);
 		
 		//add event listener to button;
-		button.addEventListener('click',async function(){ await actionCallback(this); });
+		button.addEventListener('click', function(){ 
+			return actionCallback(this); 
+		});
 		
 	}else if(openLink) {
 		new fabric['Button'](button, function(){
