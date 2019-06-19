@@ -60,6 +60,8 @@ CardSection.prototype.appendToUi = async function (parent,serialize,sI) {
 	//access widgets and append;
 	const widgets = this.widgets;
 	
+	console.log(widgets)
+	
 	if(widgets.length!==0) {
 
 		//check if at least one widget is a form input;
