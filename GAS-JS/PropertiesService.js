@@ -63,9 +63,7 @@ Properties.prototype.getProperty = function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = function (key,value) {
-	
-	console.log(
-	
+
 	let settings = this.settings;
 		settings.set(key,value);
 		settings.saveAsync();
