@@ -130,29 +130,6 @@ TextButton.prototype.appendToUi = function (parent) {
 	}
 }
 
-
-//Emulate Class Image extending base Class Button for CardService service;
-class Image extends Button {	
-	constructor() {
-		super();
-		this.className = 'Image';
-		this.altText;
-		this.url;
-	}
-}
-//Chain Class Image to Button base class;
-Image.prototype = Object.create(Button.prototype);
-//add new methods to the class;
-Image.prototype.setAltText = function (altText) {
-	this.altText = altText;
-	return this;
-}
-Image.prototype.setImageUrl = function (url) {
-	this.url = url;
-	return this;
-}
-
-
 //Emulate Class ImageButton extending base Class Button for CardService service;
 class ImageButton extends Button {
 	constructor() {
