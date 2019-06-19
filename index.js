@@ -59,7 +59,7 @@ function Menu() {
 	 * @param {Array} items an Array of items to add initially;
 	 * @returns {Object} this Menu;
 	 */
-Menu.prototype.create(items) {
+Menu.prototype.create = function (items) {
 		const self = this;
 		const navbar = document.querySelector('.navbar');
 		
@@ -103,7 +103,7 @@ Menu.prototype.create(items) {
  * @param {Boolean} isCardAction from where to remove item;
  * @returns {Object} this Menu;
  */
-Menu.prototype.addItem(item,isCardAction) {
+Menu.prototype.addItem = function (item,isCardAction) {
 	let self   = this;
 	let menu   = this.element;
 	let action = item.action;
