@@ -63,20 +63,17 @@ Properties.prototype.getProperty = async function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = async function (key,value) {
-
-	let settings = this.settings;
-		await settings.set(key,value);
+	const settings = this.settings;
+	await settings.set(key,value);
 		
 	const type = this.type;
 	
 	//update RoamingSettings in PropertiesService;
-	var s = JSON.parse(settings.get(key))
-	s.forEach(function(ss){
-		console.log(ss)
-	})
-	
 	if(type==='user') { PropertiesService.userProperties = settings; }
-	settings.saveAsync(function(e){console.log(e)});
+	
+	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
+	
+	settings.saveAsync();
 	return settings;
 }
 
@@ -86,7 +83,7 @@ Properties.prototype.setProperty = async function (key,value) {
  * @returns {Object} this settings;
  */
 Properties.prototype.deleteProperty = async function (key) {
-	let settings = this.settings;
+	const settings = this.settings;
 		await settings.remove(key);
 		await settings.saveAsync();
 		
