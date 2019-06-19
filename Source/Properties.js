@@ -34,7 +34,7 @@ function getProperty(key,type) {
  * @param {String} value new value of the property;
  * @param {String} type 'user' or 'script' to determine prop type to get;
  */
-function setProperty(key,value,type) {
+async function setProperty(key,value,type) {
   var props;
   
   //access corresponding store;
@@ -49,10 +49,10 @@ function setProperty(key,value,type) {
   
   //try to stringify value or set as is on failure;
   try { value = JSON.stringify(value); }
-  catch(e) { props.setProperty(key,value); }  
+  catch(e) { await props.setProperty(key,value); }  
   
   //set property with given key and value;
-  props.setProperty(key,value);
+  await props.setProperty(key,value);
 }
 
 /**
