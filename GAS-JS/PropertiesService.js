@@ -62,11 +62,11 @@ Properties.prototype.getProperty = function (key) {
  * @param {String} value stringified representation of value;
  * @returns {Object} this settings;
  */
-Properties.prototype.setProperty = function (key,value) {
+Properties.prototype.setProperty = async function (key,value) {
 
 	let settings = this.settings;
-		settings.set(key,value);
-		settings.saveAsync();
+		await settings.set(key,value);
+		await settings.saveAsync();
 		
 	const type = this.type;
 	
