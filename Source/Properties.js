@@ -4,7 +4,7 @@
  * @param {String} type 'user' or 'script' to determine prop type to get;
  * @returns {String}
  */
-function getProperty(key,type) {
+async function getProperty(key,type) {
   var props;
   
   //access corresponding store;
@@ -18,7 +18,7 @@ function getProperty(key,type) {
   }
   
   //get property from store by key;
-  var value = props.getProperty(key);
+  var value = await props.getProperty(key);
   
   //try to parse value or return as is;
   try { value = JSON.parse(value); }
@@ -60,7 +60,7 @@ async function setProperty(key,value,type) {
  * @param {String} key key of the property to find;
  * @param {String} type 'user' or 'script' to determine prop type to get;
  */
-function deleteProperty(key,type) {
+async function deleteProperty(key,type) {
   var props;
   
   //access corresponding store;
@@ -74,7 +74,7 @@ function deleteProperty(key,type) {
   }
   
   //delete property from store by key;
-  props.deleteProperty(key);
+  await props.deleteProperty(key);
 }
 
 /**
@@ -82,7 +82,7 @@ function deleteProperty(key,type) {
  * @param {String} key key of the property to find
  * @param {String} type 'user' or 'script' to determine prop type to get 
  */
-function deleteAllProperties(type) {
+async function deleteAllProperties(type) {
   var props;
   
   //access corresponding store;
@@ -96,5 +96,5 @@ function deleteAllProperties(type) {
   }
   
   //delete all properties in store;
-  props.deleteAllProperties(); 
+  await props.deleteAllProperties(); 
 }
