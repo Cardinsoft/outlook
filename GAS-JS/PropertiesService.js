@@ -64,10 +64,10 @@ RS.prototype.set = function (key,value) {
 		storage.set(key,value);
 		storage.saveAsync();
 	}else {
-		let settings = PropertiesService.RS['_settingsData$p$0'];
+		let settings = Object.create(PropertiesService.RS['_settingsData$p$0']);
 			settings[key] = value;
-			settings.set(key,value);
-			settings.saveAsync();
+			PropertiesService.RS.set(key,value);
+			PropertiesService.RS.saveAsync();
 		PropertiesService.UP = settings;
 	}
 }
