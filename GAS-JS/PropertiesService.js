@@ -76,7 +76,7 @@ Properties.prototype.setProperty = async function (key,value) {
 		console.log(ss)
 	})
 	
-	if(type==='user') { PropertiesService.userProperties = settings; }
+	//if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
 
