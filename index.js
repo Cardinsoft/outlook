@@ -154,7 +154,7 @@ Menu.prototype.addItem(item,isCardAction) {
  * @param {Boolean} isCardAction from where to remove item;
  * @returns {Object} this Menu;
  */
-Menu.prototype.removeItem(index,isCardAction) {
+Menu.prototype.removeItem = function (index,isCardAction) {
 	let items = this.items;
 		
 	//access type-appropriate items;
@@ -179,7 +179,7 @@ Menu.prototype.removeItem(index,isCardAction) {
  * @param {Boolean} isCardAction from where to remove item;
  * @returns {Object} this Menu;
  */
-Menu.prototype.clear(isCardAction) {
+Menu.prototype.clear = function (isCardAction) {
 		
 	//clear HtmlElement;
 	let menu = menus[0].element;
@@ -200,7 +200,7 @@ Menu.prototype.clear(isCardAction) {
 /**
  * Switches Menu display;
  */
-Menu.prototype.switchShow() {
+Menu.prototype.switchShow = function () {
 	let menu = menus[0].element;
 	let cl = menu.classList;
 		
