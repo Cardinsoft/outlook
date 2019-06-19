@@ -81,3 +81,38 @@ Image.prototype.setOpenLink = function(openLink) {
 	this.openLink = JSON.stringify(openLink);
 	return this;	
 }
+
+/**
+ * Utility function appending Image widget to Ui;
+ * @param {HtmlElement} parent parent element to append to;
+ */
+Image.prototype.appendToUi = function (parent) {
+	
+	//access parameters;
+	let source     = this.src;
+	let altText    = this.alt; 
+	let action     = this.action;
+	let authAction = this.authorizationAction;
+	let openAction = this.openLink;
+
+	//create row element;
+	const widget = document.createElement('div');
+	widget.className = 'row '+this.className;
+	parent.append(widget);	
+
+	//add event listener chain ( click -> callback );
+	if(action||openAction) {
+		//set refrence;
+		
+		if(openAction) { action = openAction; }
+		
+		setAction(widget,action);
+		
+		//set event listener to widget;
+		widget.addEventListener('click',async function(event){
+			event.stopPropagation();
+			return actionCallback(this);
+		});
+	}
+
+}
