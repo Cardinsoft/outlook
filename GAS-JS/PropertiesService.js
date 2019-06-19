@@ -2,6 +2,7 @@
 class e_PropertiesService {
 	constructor() {
 		this.className = 'PropertiesService';
+		this.RS = Office.context.roamingSettings;
 	}
 }
 
@@ -45,16 +46,30 @@ function RS(settings) {
 	this.settings = Object.create(settings);
 }
 RS.prototype.get = function (key) {
-	return this.settings.get(key);
+	let output;
+	let storage = this.settings;
+	
+	if(storage.get) {
+		output = storage.get(key);
+	}else {
+		output = storage[key];
+	}
+	
+	return output;
 }
 RS.prototype.set = function (key,value) {
-	this.settings.set(key,value);
-	this.settings.saveAsync();
+	let storage = this.settings;
 	
-	let storage = this.settings['_settingsData$p$0'];
-		storage[key] = value;
-	
-	console.log(storage);
+	if(storage.set) {
+		storage.set(key,value);
+		storage.saveAsync();
+	}else {
+		let settings = PropertiesService.RS['_settingsData$p$0'];
+			settings[key] = value;
+			settings.set(key,value);
+			settings.saveAsync();
+		PropertiesService.UP = settings;
+	}
 }
 
 
@@ -205,4 +220,3 @@ Properties.prototype.deleteAllProperties = function () {
 
 
 //Properties.prototype.getProperties = function () {} - not needed for initial release;
-const PropertiesService = new e_PropertiesService();
