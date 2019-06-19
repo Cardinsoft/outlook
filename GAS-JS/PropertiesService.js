@@ -101,13 +101,13 @@ Properties.prototype.deleteProperty = async function (key) {
  * @param {Boolean} deleteAllOthers delete all others or not;
  * @returns {Object} this settings;
  */
-Properties.prototype.setProperties = function (properties,deleteAllOthers) { //add delete others after initial release;
+Properties.prototype.setProperties = async function (properties,deleteAllOthers) { //add delete others after initial release;
 	let settings = this.settings;
 	
 	//set properties;
 	for(let key in properties) {
 		let value = properties[key];
-		settings.setProperty(key,value);
+		await settings.setProperty(key,value);
 	}
 	
 	//persist changes;
