@@ -76,7 +76,7 @@ Properties.prototype.setProperty = async function (key,value) {
 	})
 	
 	if(type==='user') { PropertiesService.userProperties = settings; }
-	settings.saveAsync();
+	settings.saveAsync(function(e){console.log(e)});
 	return settings;
 }
 
