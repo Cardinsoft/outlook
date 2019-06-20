@@ -118,7 +118,7 @@ Properties.prototype.deleteProperty = async function (key) {
 	await settings.remove(key);
 	await PropertiesService.settings.remove(key);
 	
-	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
+	console.log(JSON.parse(PropertiesService.userProperties.get(key)).ID)
 	
 	await PropertiesService.settings.saveAsync();	
 	return settings;
@@ -160,7 +160,15 @@ Properties.prototype.setProperties = async function (properties,deleteAllOthers)
  */
 Properties.prototype.deleteAllProperties = function () {
 	//initiate settings storage;
-	let settings = this.settings;
+	let settings;
+	
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
 	
 	//access configured keys;
 	let keys = Object.keys(settings);
@@ -178,19 +186,16 @@ Properties.prototype.deleteAllProperties = function () {
 			if(props.length>0) {
 				for(let k in props) {
 					let prop = props[k];
-					settings.remove(prop);
+					await settings.remove(key);
+					await PropertiesService.settings.remove(key);
 				}
 			}
 		}		
 	}
 	
 	//persist changes;
-	settings.saveAsync(); 
+	await PropertiesService.settings.saveAsync();
 	
-	const type = this.type;
-	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
 
