@@ -171,7 +171,7 @@ Properties.prototype.deleteAllProperties = async function () {
 	}
 	
 	//access configured keys;
-	let keys = Object.keys(settings);
+	let keys = Object.keys(settings['_settingsData$p$0']);
 	
 	console.log(keys)
 	
