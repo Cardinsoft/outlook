@@ -2,10 +2,12 @@
  * PropertiesService constructor function;
  */
 function e_PropertiesService () {
-	this.className = 'PropertiesService';
-	this.documentProperties = Office.context.roamingSettings;
-	this.scriptProperties   = Office.context.roamingSettings;
-	this.userProperties     = Office.context.roamingSettings;
+	this.className          = 'PropertiesService';
+	this.settings           = Office.context.roamingSettings;
+	this.documentProperties = null;
+	this.scriptProperties   = null;
+	this.userProperties     = null;
+	this.updated            = false;
 }
 
 /**
@@ -35,10 +37,12 @@ e_PropertiesService.prototype.getUserProperties = function () {
 	return new Properties(settings,'user');
 }
 
-//Emulate Class Properties for PropertiesService service;
-function Properties (settings,type) {
-	this.settings = settings;
-	this.type     = type;
+/**
+ * Properties class constructor function;
+ */
+function Properties (type) {
+	this.className = 'Properties';
+	this.type      = type;
 }
 
 /**
@@ -47,8 +51,19 @@ function Properties (settings,type) {
  * @returns {Object|null} this property;
  */
 Properties.prototype.getProperty = async function (key) {
-	const settings = this.settings;
+	
+	let settings;
+	
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
+	
 	let property = await settings.get(key);
+	
 	if(property) { 
 		return property; 
 	}else { 
@@ -63,18 +78,23 @@ Properties.prototype.getProperty = async function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = async function (key,value) {
-	const settings = this.settings;
+
+	let settings;
+	
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
+	
 	await settings.set(key,value);
-		
-	const type = this.type;
+	await PropertiesService.settings.set(key,value);
 	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
-	
-	console.log(JSON.parse(settings.get(key)))
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
-	settings.saveAsync();
+	await PropertiesService.settings.saveAsync();
 	return settings;
 }
 
@@ -84,14 +104,23 @@ Properties.prototype.setProperty = async function (key,value) {
  * @returns {Object} this settings;
  */
 Properties.prototype.deleteProperty = async function (key) {
-	const settings = this.settings;
-		await settings.remove(key);
-		await settings.saveAsync();
-		
-	const type = this.type;
+
+	let settings;
 	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
+	
+	await settings.remove(key);
+	await PropertiesService.settings.remove(key);
+	
+	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
+	
+	await PropertiesService.settings.saveAsync();	
 	return settings;
 }
 
@@ -129,19 +158,29 @@ Properties.prototype.setProperties = async function (properties,deleteAllOthers)
  * Deletes all properties from storage;
  * @returns {Object} this settings;
  */
-Properties.prototype.deleteAllProperties = function () {
+Properties.prototype.deleteAllProperties = async function () {
 	//initiate settings storage;
-	let settings = this.settings;
+	let settings;
+	
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
 	
 	//access configured keys;
-	let keys = Object.keys(settings);
+	let keys = Object.keys(settings['_settingsData$p$0']);
+	
+	console.log(keys)
 	
 	//delete every key found;
 	for(let p in keys) {
 		let key = keys[p];
 		
 		//access settings props;
-		let obj = settings[key];
+		let obj = settings.get(key);
 		
 		//remove every setting;
 		if(obj!==null) {
@@ -149,19 +188,16 @@ Properties.prototype.deleteAllProperties = function () {
 			if(props.length>0) {
 				for(let k in props) {
 					let prop = props[k];
-					settings.remove(prop);
+					await settings.remove(key);
+					await PropertiesService.settings.remove(key);
 				}
 			}
 		}		
 	}
 	
 	//persist changes;
-	settings.saveAsync(); 
+	await PropertiesService.settings.saveAsync();
 	
-	const type = this.type;
-	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
 	return settings;
 }
 
