@@ -38,6 +38,9 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 			response = await makeRequest(url,params);
 		}
 		catch(error) {
+			
+			throw new Error('t');
+			
 			response = {
 				code    : error.code,
 				headers : error.headers,
@@ -82,9 +85,7 @@ function makeRequest(url,params) {
 			//construct empty URL error;
 			let emptyUrlErr = {
 				code    : 0,
-				content : {
-					descr : 'Attribute provided with no value: url'
-				},
+				content : 'Attribute provided with no value: url',
 				headers : {}				
 			};
 			reject(emptyUrlErr);
