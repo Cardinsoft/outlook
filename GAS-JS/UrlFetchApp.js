@@ -82,10 +82,11 @@ function makeRequest(url,params) {
 			//construct empty URL error;
 			let emptyUrlErr = {
 				code    : 0,
-				content : 'Attribute provided with no value: url',
+				content : {
+					descr : 'Attribute provided with no value: url'
+				},
 				headers : {}				
 			};
-			throw new Error(emptyUrlErr.content)
 			reject(emptyUrlErr);
 		}
 		
