@@ -38,7 +38,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 			response = await makeRequest(url,params);
 		}
 		catch(error) {
-			response = error;
+			throw new Error(error.content);
 		}
 	}else {
 		response = await makeRequest(url,params);
