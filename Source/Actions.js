@@ -303,23 +303,23 @@ async function updateSectionAdvanced(e) {
 
   //if type only has run() method or connector is simply comm;
   if((!cType.update&&!cType.remove)||method==='send') {
-    resp = cType.run(msg,connector,data);
+    resp = await cType.run(msg,connector,data);
   }
   
   //if type has update() method and entity should be added;
   if(cType.update&&method==='add') {
     delete connector.caText;
-    resp = cType.update(msg,connector,forms,data,method);
+    resp = await cType.update(msg,connector,forms,data,method);
   }
   
   //if type has update() method and entity should be updated;
   if(cType.update&&method==='edit') {
-    resp = cType.update(msg,connector,forms,data,method);
+    resp = await cType.update(msg,connector,forms,data,method);
   }
   
   //if type has remove() method and entity should be removed;
   if(cType.remove&&method==='remove') {
-    resp = cType.remove(msg,connector,data);
+    resp = await cType.remove(msg,connector,data);
   }
   
   //override event object parameters with response data;
