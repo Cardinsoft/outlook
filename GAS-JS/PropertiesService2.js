@@ -158,7 +158,7 @@ Properties.prototype.setProperties = async function (properties,deleteAllOthers)
  * Deletes all properties from storage;
  * @returns {Object} this settings;
  */
-Properties.prototype.deleteAllProperties = function () {
+Properties.prototype.deleteAllProperties = async function () {
 	//initiate settings storage;
 	let settings;
 	
