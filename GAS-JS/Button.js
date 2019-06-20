@@ -97,6 +97,7 @@ TextButton.prototype.appendToUi = function (parent) {
 	//initiate button;
 	const button = document.createElement('button');
 	button.className = this.className;
+	button.type      = 'button';
 	button.disabled  = disabled;
 	button.innerHTML = text;
 	
