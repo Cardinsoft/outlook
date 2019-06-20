@@ -218,7 +218,7 @@ function createWidgetCreateType(section,type) {
   if(type.auth) { params.auth = JSON.stringify(type.auth); }
   
   //create KeyValue widget with Connector creation card display action;
-  var widget = actionKeyValueWidget(type.icon,'',type.name,'cardCreate',params);
+  var widget = actionKeyValueWidget(type.icon,'',type.typeName,'cardCreate',params);
   
   //append widget to section and return;
   section.addWidget(widget);
