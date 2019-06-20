@@ -178,7 +178,7 @@ Properties.prototype.deleteAllProperties = async function () {
 		let key = keys[p];
 		
 		//access settings props;
-		let obj = settings[key];
+		let obj = settings.get(key);
 		
 		//remove every setting;
 		if(obj!==null) {
