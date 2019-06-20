@@ -91,8 +91,6 @@ Properties.prototype.setProperty = async function (key,value) {
 	
 	await settings.set(key,value);
 		
-	const type = this.type;
-	
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
 	await PropertiesService.settings.saveAsync();
@@ -105,14 +103,22 @@ Properties.prototype.setProperty = async function (key,value) {
  * @returns {Object} this settings;
  */
 Properties.prototype.deleteProperty = async function (key) {
-	const settings = this.settings;
-		await settings.remove(key);
-		await settings.saveAsync();
-		
-	const type = this.type;
+
+	let settings;
 	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
+	
+	await settings.remove(key);
+	
+	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
+	
+	await PropertiesService.settings.saveAsync();	
 	return settings;
 }
 
