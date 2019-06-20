@@ -90,7 +90,8 @@ Properties.prototype.setProperty = async function (key,value) {
 	}
 	
 	await settings.set(key,value);
-		
+	await PropertiesService.settings.set(key,value);
+	
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
 	await PropertiesService.settings.saveAsync();
@@ -115,6 +116,7 @@ Properties.prototype.deleteProperty = async function (key) {
 	}
 	
 	await settings.remove(key);
+	await PropertiesService.settings.remove(key);
 	
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
