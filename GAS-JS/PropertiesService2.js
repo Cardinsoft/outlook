@@ -95,7 +95,7 @@ Properties.prototype.setProperty = async function (key,value) {
 	
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
-	PropertiesService.settings.saveAsync();
+	await PropertiesService.settings.saveAsync();
 	return settings;
 }
 
