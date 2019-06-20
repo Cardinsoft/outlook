@@ -39,7 +39,7 @@ e_UrlFetchApp.prototype.fetch = async function (url,params) {
 		}
 		catch(error) {
 			
-			throw new Error('t');
+			throw new Error(error);
 			
 			response = {
 				code    : error.code,
