@@ -116,7 +116,7 @@ TextButton.prototype.appendToUi = function (parent) {
 		
 		//add event listener to button;
 		button.addEventListener('click', async function(){ 
-			return actionCallback(this); 
+			await actionCallback(this); 
 		});
 		
 	}else if(openLink) {
