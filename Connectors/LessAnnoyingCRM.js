@@ -155,6 +155,27 @@ function LessAnnoyingCRM() {
     ];
     return mergeObjects({config:JSON.stringify(config),icon:globalLACRMiconUrl,method:'add',caText:'Create contact'},connector);
   };
+
+  this.remove = async function(msg,connector,data) {
+    //access API parameters and connector type;
+    var usercode   = connector.usercode;
+    var apitoken   = connector.apitoken;
+    var endpoint   = connector.url+'?';
+    
+    var funcName = 'DeleteContact';
+    
+    //access Id property and set Id to params;
+    var widgets = data[0].widgets;
+
+    var contId = widgets[widgets.length-1].content;
+    var params = {ContactId : contId};
+ 
+    var query    = ['UserCode='+usercode,'APIToken='+apitoken,'Function='+funcName,'Parameters='+encodeURIComponent(JSON.stringify(params))].join('&'); 
+    var response = await performFetch(endpoint+query,'get');
+    
+    //send to analytics and return;
+    return this.run(msg,connector);
+  };
  
   this.update = async function(msg,connector,forms,data,method) {
     
@@ -1090,6 +1111,8 @@ function LessAnnoyingCRM() {
 			  
               if(companyBckg) {
               
+				
+			  
                 var companyBckLabel = {
                   type    : globalKeyValue,
                   title   : 'Company',

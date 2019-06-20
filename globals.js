@@ -156,6 +156,9 @@ var globalTextButton                 = 'TextButton';
 var globalTextInput                  = 'TextInput';
 var globalTextParagraph              = 'TextParagraph';
 
+//Global widgets configurations;
+var globalWidgetSeparator            = {type: globalKeyValue,content: '\r'};
+
 //Action types;
 var globalActionAction               = 'action';
 var globalActionAuth                 = 'auth';
