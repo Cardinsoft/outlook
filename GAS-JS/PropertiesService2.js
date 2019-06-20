@@ -78,18 +78,24 @@ Properties.prototype.getProperty = async function (key) {
  * @returns {Object} this settings;
  */
 Properties.prototype.setProperty = async function (key,value) {
-	const settings = this.settings;
+
+	let settings;
+	
+	if(!PropertiesService.updated) {
+		settings = Object.create(PropertiesService.settings); //copy settings to in-memory Object;
+		PropertiesService.userProperties = settings; //set settings to in-memory Object;
+		PropertiesService.updated = true; //prompt service to use in-memory Object;		
+	}else {
+		settings = PropertiesService.userProperties; //user UP storage; TODO: different types;
+	}
+	
 	await settings.set(key,value);
 		
 	const type = this.type;
 	
-	//update RoamingSettings in PropertiesService;
-	if(type==='user') { PropertiesService.userProperties = settings; }
-	
-	console.log(JSON.parse(settings.get(key)))
 	console.log(JSON.parse(PropertiesService.userProperties.get(key)))
 	
-	settings.saveAsync();
+	PropertiesService.settings.saveAsync();
 	return settings;
 }
 
