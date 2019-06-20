@@ -85,7 +85,7 @@ function makeRequest(url,params) {
 				content : 'Attribute provided with no value: url',
 				headers : {}				
 			};
-			
+			throw new Error(emptyUrlErr.content)
 			reject(emptyUrlErr);
 		}
 		
