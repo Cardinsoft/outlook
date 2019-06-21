@@ -1,5 +1,7 @@
 "use strict";
 
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -237,8 +239,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
             /*#__PURE__*/
             _asyncToGenerator(
             /*#__PURE__*/
-            regeneratorRuntime.mark(function _callee() {
-              return regeneratorRuntime.wrap(function _callee$(_context) {
+            _regeneratorRuntime.mark(function _callee() {
+              return _regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
@@ -339,9 +341,9 @@ SelectionInput.prototype.appendToUi = function (parent) {
             /*#__PURE__*/
             _asyncToGenerator(
             /*#__PURE__*/
-            regeneratorRuntime.mark(function _callee2() {
+            _regeneratorRuntime.mark(function _callee2() {
               var isLastChecked;
-              return regeneratorRuntime.wrap(function _callee2$(_context2) {
+              return _regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                   switch (_context2.prev = _context2.next) {
                     case 0:
@@ -446,8 +448,8 @@ SelectionInput.prototype.appendToUi = function (parent) {
         /*#__PURE__*/
         _asyncToGenerator(
         /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee3() {
-          return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        _regeneratorRuntime.mark(function _callee3() {
+          return _regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
