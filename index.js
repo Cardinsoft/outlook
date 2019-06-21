@@ -773,7 +773,7 @@ function e_EventObject() {
 
 const cardStack = [];
 const menus     = [];
-const GLOBAL    = this;
+const GLOBAL    = window;
 const e_actions = {};
 let Utilities;
 let PropertiesService;
