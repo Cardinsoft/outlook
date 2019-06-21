@@ -109,7 +109,7 @@ Menu.prototype.create = function (items) {
   const navbar = document.querySelector('.navbar');
   const menu = document.createElement('div');
   menu.classList.add(this.className, 'singulared');
-  navbar.append(menu); //set element reference;
+  navbar.appendChild(menu); //set element reference;
 
   this.id = btoa((menus.length + 1).toString());
   this.element = menu;
@@ -171,7 +171,7 @@ Menu.prototype.addItem = function (item, isCardAction) {
     menu.prepend(menuItem);
     items.cardActions.push(item);
   } else {
-    menu.append(menuItem);
+    menu.appendChild(menuItem);
     items.universalActions.push(item);
   } //set item's icon and text;
 
@@ -185,7 +185,7 @@ Menu.prototype.addItem = function (item, isCardAction) {
     cl.add(item.icon);
   }
 
-  menuItem.append(menuText); //set reference;
+  menuItem.appendChild(menuText); //set reference;
 
   setAction(menuItem, action);
   menuItem.addEventListener('click',
@@ -289,12 +289,12 @@ Selector.prototype.create = function (parent, name) {
   wrap.classList.add(this.className
   /*,'singulared'*/
   );
-  parent.append(wrap); //create select for form input;
+  parent.appendChild(wrap); //create select for form input;
 
   const input = document.createElement('select');
   input.name = name;
   input.hidden = true;
-  wrap.append(input);
+  wrap.appendChild(input);
   this.element = wrap;
   return this;
 };
@@ -317,16 +317,16 @@ Selector.prototype.add = function (items) {
     //create displayed option;
     const optionUi = document.createElement('div');
     optionUi.classList.add('selectItem');
-    elem.append(optionUi); //create displayed text;
+    elem.appendChild(optionUi); //create displayed text;
 
     const text = document.createElement('p');
     text.textContent = o.text;
     text.classList.add('selectText');
-    optionUi.append(text); //create option for form input;
+    optionUi.appendChild(text); //create option for form input;
 
     const option = document.createElement('option');
     option.value = o.value;
-    elem.children.item(0).append(option);
+    elem.children.item(0).appendChild(option);
   });
   return this;
 };
@@ -380,7 +380,7 @@ Overlay.prototype.setTone = function (tone) {
 Overlay.prototype.show = function (selector) {
   let p = document.querySelector(selector);
   let c = document.createElement('div');
-  p.append(c);
+  p.appendChild(c);
 
   if (this.color) {
     let list = c.classList;
@@ -422,7 +422,7 @@ Spinner.prototype.show = function () {
   let d = GLOBAL.document;
   let p = d.querySelector('#app-overlay');
   let c = d.createElement('div');
-  p.append(c);
+  p.appendChild(c);
   let base = this.className;
   let size = this.size;
   c.className = [base, size].join(' ');
