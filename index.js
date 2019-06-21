@@ -36,7 +36,7 @@ function _asyncToGenerator(fn) {
 
 
 Office.initialize = function (reason) {
-  document.addEventListener('readystatechange',function (event) {
+  window.addEventListener('load',function (event) {
 	
 		  /*#__PURE__*/
 		  _asyncToGenerator(
