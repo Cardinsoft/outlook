@@ -117,7 +117,7 @@ regeneratorRuntime.mark(function _callee() {
         wrap = document.createElement('div');
         wrap.className = 'Card';
 		
-		let body = document.getElementById('#app-body');
+		let body = GLOBAL.document.getElementById('#app-body');
 			body.appendChild(wrap);
 
         if (this.cardHeader) {
