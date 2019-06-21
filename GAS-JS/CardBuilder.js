@@ -129,7 +129,7 @@ regeneratorRuntime.mark(function _callee() {
             icon = document.createElement('img');
             icon.src = this.cardHeader.imageUrl;
             icon.className = 'headerIcon';
-			(headerWrap.parentNode).insertBefore(icon,headerWrap);
+			(headerWrap).insertBefore(icon,headerWrap.children.item(0));
           }
 
           header = document.createElement('p');
