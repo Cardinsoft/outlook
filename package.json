@@ -22,13 +22,20 @@
   "homepage": "https://github.com/cardinsoft/outlook#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5"
+    "@babel/core": "^7.4.5"
   },
   "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
+	  "plugins": [
+		"@babel/plugin-transform-arrow-functions",
+		"@babel/plugin-transform-block-scoped-functions",
+		"@babel/plugin-transform-classes",
+		"@babel/plugin-transform-destructuring",
+		"@babel/plugin-transform-for-of",
+		"@babel/plugin-transform-function-name",
+		"@babel/plugin-transform-parameters",
+		"@babel/plugin-transform-async-to-generator"
+		
+	  ]
   },
   "browserslist": [
     "ie 11"

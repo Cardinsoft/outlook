@@ -1,8 +1,8 @@
 "use strict";
-
 /**
  * Constructor function for Utilities service;
  */
+
 function e_Utilities() {
   this.className = 'Utilities';
 }

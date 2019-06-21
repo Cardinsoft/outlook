@@ -1,8 +1,12 @@
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate CacheService service;
 
-//Emulate CacheService service;
+
 var e_CacheService = function e_CacheService() {
   _classCallCheck(this, e_CacheService);
 
