@@ -63,6 +63,6 @@ Notification.prototype.appendToUi = function ()
   }
 
   window.setTimeout(function () {
-    notification.remove();
+    notification.parentNode.removeChild(notification);
   }, 3000);
 };
