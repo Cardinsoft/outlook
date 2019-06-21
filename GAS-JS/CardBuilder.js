@@ -117,7 +117,7 @@ regeneratorRuntime.mark(function _callee() {
         wrap = document.createElement('div');
         wrap.className = 'Card';
 		
-		console.log(GLOBAL)
+		console.log(GLOBAL.document)
 		console.log(this)
 		console.log(window)
 		
