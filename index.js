@@ -81,7 +81,7 @@ Office.initialize = function (reason) {
 				  return _context.stop();
 			  }
 			}, _callee);
-		  })));
+		  }));
   
 	}
   });
