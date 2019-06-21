@@ -167,8 +167,8 @@ Menu.prototype.addItem = function (item, isCardAction) {
 
   menuItem.classList.add('menuItem'); //add to CardActions or UniversalActions;
 
-  if (isCardAction) {
-    menu.prepend(menuItem);
+  if (isCardAction) {  
+	(menu.parentNode).insertBefore(menuItem,menu); 
     items.cardActions.push(item);
   } else {
     menu.appendChild(menuItem);
