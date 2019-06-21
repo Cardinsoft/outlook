@@ -33,7 +33,8 @@
 		"@babel/plugin-transform-for-of",
 		"@babel/plugin-transform-function-name",
 		"@babel/plugin-transform-parameters",
-		"@babel/plugin-transform-async-to-generator"
+		"@babel/plugin-transform-async-to-generator",
+		"@babel/plugin-transform-regenerator"
 		
 	  ]
   },
