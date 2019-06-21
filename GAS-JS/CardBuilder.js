@@ -116,7 +116,9 @@ regeneratorRuntime.mark(function _callee() {
         $('#app-body').empty();
         wrap = document.createElement('div');
         wrap.className = 'Card';
-        $('#app-body').appendChild(wrap);
+		
+		let body = document.getElementById('#app-body');
+			body.appendChild(wrap);
 
         if (this.cardHeader) {
           headerWrap = document.createElement('div');
