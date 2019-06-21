@@ -50,26 +50,30 @@ Office.initialize = function (reason) {
 				  //initiate menu with universal actions;
 				  menu = new Menu();
 				  menu.create([]);
-				  $('.navelem').click(function (event) {
-					event.stopPropagation();
-					event.preventDefault();
-					menu.switchShow();
-				  }); //initiate Services;
+				
+				let nav = document.getElementsByClassName('.navelem')[0];
+					nav.click(function (event) {
+						event.stopPropagation();
+						event.preventDefault();
+						menu.switchShow();
+					}); //initiate Services;
 
-				  CardService = new e_CardService();
-				  Utilities = new e_Utilities();
-				  PropertiesService = new e_PropertiesService();
-				  $('#app-body').show(); //show app body overlay;
+				CardService       = new e_CardService();
+				Utilities         = new e_Utilities();
+				PropertiesService = new e_PropertiesService();
+				  
+				let body = document.getElementById'app-body');
+					body.show(); //show app body overlay;
 
-				  o = new Overlay();
-				  o.setColor('white');
-				  o.show('#app-overlay'); //show spinner on overlay;
+				o = new Overlay();
+				o.setColor('white');
+				o.show('#app-overlay'); //show spinner on overlay;
 
-				  s = new Spinner();
-				  s.setSize('large');
-				  s.show();
-				  _context.next = 15;
-				  return trigger();
+				s = new Spinner();
+				s.setSize('large');
+				s.show();
+				_context.next = 15;
+				return trigger();
 
 				case 15:
 				  o.hide('#app-overlay');
