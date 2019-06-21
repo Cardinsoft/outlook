@@ -36,55 +36,50 @@ function _asyncToGenerator(fn) {
 
 
 Office.initialize = function (reason) {
-	
-		  /*#__PURE__*/
-		  _asyncToGenerator(
-		  /*#__PURE__*/
-		  regeneratorRuntime.mark(function _callee() {
-			var menu, o, s;
-			return regeneratorRuntime.wrap(function _callee$(_context) {
-			  while (1) switch (_context.prev = _context.next) {
-				case 0:
-				  //initiate menu with universal actions;
-				  menu = new Menu();
-				  menu.create([]);
-				
-				let nav = document.getElementsByClassName('.navelem')[0];
-					nav.click(function (event) {
-						event.stopPropagation();
-						event.preventDefault();
-						menu.switchShow();
-					}); //initiate Services;
+  $(document).ready(
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee() {
+    var menu, o, s;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          //initiate menu with universal actions;
+          menu = new Menu();
+          menu.create([]);
+          $('.navelem').click(function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            menu.switchShow();
+          }); //initiate Services;
 
-				CardService       = new e_CardService();
-				Utilities         = new e_Utilities();
-				PropertiesService = new e_PropertiesService();
-				  
-				let body = document.getElementById('app-body');
-					body.show(); //show app body overlay;
+          CardService = new e_CardService();
+          Utilities = new e_Utilities();
+          PropertiesService = new e_PropertiesService();
+          $('#app-body').show(); //show app body overlay;
 
-				o = new Overlay();
-				o.setColor('white');
-				o.show('#app-overlay'); //show spinner on overlay;
+          o = new Overlay();
+          o.setColor('white');
+          o.show('#app-overlay'); //show spinner on overlay;
 
-				s = new Spinner();
-				s.setSize('large');
-				s.show();
-				_context.next = 15;
-				return trigger();
+          s = new Spinner();
+          s.setSize('large');
+          s.show();
+          _context.next = 15;
+          return trigger();
 
-				case 15:
-				  o.hide('#app-overlay');
-				  s.hide();
-				  Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
+        case 15:
+          o.hide('#app-overlay');
+          s.hide();
+          Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
 
-				case 18:
-				case "end":
-				  return _context.stop();
-			  }
-			}, _callee);
-		  }));
-
+        case 18:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  })));
 }; //=======================================START Ui Classes======================================//
 
 /**
