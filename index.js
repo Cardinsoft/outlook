@@ -36,7 +36,6 @@ function _asyncToGenerator(fn) {
 
 
 Office.initialize = function (reason) {
-  window.addEventListener('load',function (event) {
 	
 		  /*#__PURE__*/
 		  _asyncToGenerator(
@@ -86,7 +85,6 @@ Office.initialize = function (reason) {
 			}, _callee);
 		  }));
 
-  });
 }; //=======================================START Ui Classes======================================//
 
 /**
