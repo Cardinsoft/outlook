@@ -117,17 +117,13 @@ regeneratorRuntime.mark(function _callee() {
         wrap = document.createElement('div');
         wrap.className = 'Card';
 		
-		console.log(GLOBAL.document)
-		console.log(this)
-		console.log(window)
-		
-		let body = GLOBAL.document.getElementById('#app-body');
-			body.appendChild(wrap);
+		const body = GLOBAL.document.getElementById('app-body');
+			  body.appendChild(wrap);
 
         if (this.cardHeader) {
           headerWrap = document.createElement('div');
           headerWrap.className = [cardHeader.className, 'separated-both'].join(' ');
-          $('#app-body').prepend(headerWrap);
+          body.prepend(headerWrap);
 
           if (this.cardHeader.imageUrl) {
             icon = document.createElement('img');
