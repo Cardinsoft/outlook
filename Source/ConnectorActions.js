@@ -1,11 +1,44 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
 
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
 /**
  * Creates new connector and saves it to properties;
  * @param {Object} e event object;
  */
+
+
 function createConnector(_x) {
   return _createConnector.apply(this, arguments);
 }
@@ -181,9 +214,8 @@ function _createConnector() {
           return getConfig();
 
         case 23:
-          config = _context.sent;
+          config = _context.sent; //reset default connectors if new one is default;
 
-          //reset default connectors if new one is default;
           if (connector.isDefault) {
             config.forEach(function (conn) {
               if (conn.isDefault || conn.isDefault === undefined) {
@@ -207,8 +239,8 @@ function _createConnector() {
 
         case 33:
           _context.prev = 33;
-          _context.t0 = _context["catch"](14);
-          //notify the user that connector creation failed;
+          _context.t0 = _context["catch"](14); //notify the user that connector creation failed;
+
           console.error(_context.t0);
           builder.setNotification(error(globalCreateFailure));
 
@@ -402,9 +434,8 @@ function _updateConnector() {
           return getConfig();
 
         case 25:
-          config = _context2.sent;
+          config = _context2.sent; //reset default connectors if updated one is default;
 
-          //reset default connectors if updated one is default;
           if (connector.isDefault) {
             config.forEach(function (conn) {
               if (conn.isDefault || conn.isDefault === undefined) {
@@ -425,8 +456,8 @@ function _updateConnector() {
 
         case 33:
           _context2.prev = 33;
-          _context2.t0 = _context2["catch"](22);
-          //notify the user that connector update failed;
+          _context2.t0 = _context2["catch"](22); //notify the user that connector update failed;
+
           builder.setNotification(error(globalUpdateFailure));
 
         case 36:
@@ -481,8 +512,8 @@ function _removeConnector() {
           return getConfig();
 
         case 13:
-          src = _context3.sent;
-          //remove connector and notify the user of success;
+          src = _context3.sent; //remove connector and notify the user of success;
+
           src = src.filter(function (connect, idx) {
             if (idx !== index) {
               return connect;
@@ -498,8 +529,8 @@ function _removeConnector() {
 
         case 20:
           _context3.prev = 20;
-          _context3.t0 = _context3["catch"](10);
-          //notify the user that connector removal failed;
+          _context3.t0 = _context3["catch"](10); //notify the user that connector removal failed;
+
           builder.setNotification(error(globalRemoveFailure));
 
         case 23:

@@ -1,6 +1,10 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate Class ActionResponseBuilder for CardService service;
 
-//Emulate Class ActionResponseBuilder for CardService service;
+
 let ActionResponseBuilder = function ActionResponseBuilder() {
   _classCallCheck(this, ActionResponseBuilder);
 

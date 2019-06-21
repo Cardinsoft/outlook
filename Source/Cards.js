@@ -1,12 +1,45 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
 
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
 /**
  * Creates and shows card with Connector add form;
  * @param {Object} e event object; 
  * @returns {Card}
  */
+
+
 function cardCreate(e) {
   var builder = CardService.newCardBuilder();
   var data = e.formInput;
@@ -258,17 +291,17 @@ function _cardDisplay() {
           if (!(content.length !== 0)) {
             _context.next = 81;
             break;
-          }
+          } //check if there are any nested objects or not;
 
-          //check if there are any nested objects or not;
+
           hasNested = checkNested(content);
 
           if (!hasNested) {
             _context.next = 62;
             break;
-          }
+          } //check for editable widgets and create actions (add,edit,etc) section;
 
-          //check for editable widgets and create actions (add,edit,etc) section;
+
           hasEditable = checkEditable(content);
 
           if (hasEditable) {
@@ -425,8 +458,8 @@ function _cardDisplay() {
 
         case 84:
           _context.prev = 84;
-          _context.t1 = _context["catch"](37);
-          //handle data that failed to comply to JSON schema;
+          _context.t1 = _context["catch"](37); //handle data that failed to comply to JSON schema;
+
           console.error(_context.t1);
           createUnparsedSection(builder, true, _context.t1.message, JSON.stringify(content));
 
@@ -544,8 +577,8 @@ function _cardOpen() {
           return getConfig();
 
         case 3:
-          config = _context3.sent;
-          //get message object;
+          config = _context3.sent; //get message object;
+
           msg = getToken(e);
           _context3.prev = 5;
           hasDefault = config.some(function (conn) {
@@ -557,9 +590,9 @@ function _cardOpen() {
           if (!hasDefault) {
             _context3.next = 41;
             break;
-          }
+          } //fetch default connector from config;
 
-          //fetch default connector from config;
+
           def = config.filter(function (conn) {
             if (conn.isDefault !== false && conn.isDefault) {
               return conn;
@@ -649,8 +682,8 @@ function _cardOpen() {
 
         case 28:
           _context3.prev = 28;
-          _context3.t0 = _context3["catch"](22);
-          //temporary solution for uncaught 401 error;
+          _context3.t0 = _context3["catch"](22); //temporary solution for uncaught 401 error;
+
           response = {
             headers: '',
             content: _context3.t0.message
@@ -704,8 +737,8 @@ function _cardOpen() {
 
         case 50:
           _context3.prev = 50;
-          _context3.t1 = _context3["catch"](45);
-          //log error to stackdriver and build Connectors list error section;
+          _context3.t1 = _context3["catch"](45); //log error to stackdriver and build Connectors list error section;
+
           console.error('An error occured during Connector list generation: %s', _context3.t1);
           createConfigErrorSection(builder, false, globalErrorHeader, '', globalConnectorListErrorContent);
 
@@ -718,8 +751,8 @@ function _cardOpen() {
 
         case 57:
           _context3.prev = 57;
-          _context3.t2 = _context3["catch"](5);
-          //log error to stackdriver and build config error section;
+          _context3.t2 = _context3["catch"](5); //log error to stackdriver and build config error section;
+
           console.error(_context3.t2);
           createConfigErrorSection(builder, false, globalConfigErrorHeader, globalConfigErrorWidgetTitle, globalConfigErrorWidgetContent);
           return _context3.abrupt("return", menu(builder));
