@@ -227,7 +227,7 @@ TextButton.prototype.appendToUi = function (parent) {
     cl.remove('btn-disabled');
   }
 
-  parent.append(button);
+  parent.appendChild(button);
 
   if (!openLink && !authAction && action) {
     //set refrence;

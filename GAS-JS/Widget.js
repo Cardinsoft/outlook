@@ -77,16 +77,16 @@ TextParagraph.prototype.appendToUi = function (parent) {
   //append row;
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
-  parent.append(widget); //append column;
+  parent.appendChild(widget); //append column;
 
   const wrapText = document.createElement('div');
   wrapText.className = 'column-text';
-  widget.append(wrapText); //set widget text;
+  widget.appendChild(wrapText); //set widget text;
 
   const content = document.createElement('span');
   content.className = 'ms-font-m-plus';
   content.innerHTML = this.content;
-  wrapText.append(content);
+  wrapText.appendChild(content);
 }; //Emulate Class ButtonSet extending base Class Widget for CardService service;
 
 
@@ -120,10 +120,10 @@ ButtonSet.prototype.appendToUi = function (parent) {
   const length = buttons.length;
   const btnRow = document.createElement('div');
   btnRow.className = 'row ' + this.className;
-  parent.append(btnRow);
+  parent.appendChild(btnRow);
   const wrapBtn = document.createElement('div');
   wrapBtn.className = 'column';
-  btnRow.append(wrapBtn);
+  btnRow.appendChild(wrapBtn);
   buttons.forEach(function (button) {
     const backgroundColor = button.backgroundColor;
     const text = button.text;

@@ -33,24 +33,24 @@ Notification.prototype.appendToUi = function ()
 
   const notification = document.createElement('div');
   notification.className = 'ms-MessageBar';
-  parent.append(notification); //message bar content;
+  parent.appendChild(notification); //message bar content;
 
   const content = document.createElement('div');
   content.className = 'ms-MessageBar-content';
-  notification.append(content); //message bar icon;
+  notification.appendChild(content); //message bar icon;
 
   const icon = document.createElement('div');
   icon.className = 'ms-MessageBar-icon';
-  content.append(icon); //message bar icon content;
+  content.appendChild(icon); //message bar icon content;
 
   const icontent = document.createElement('i');
   icontent.className = 'ms-Icon';
-  icon.append(icontent); //message bar text;
+  icon.appendChild(icontent); //message bar text;
 
   const txt = document.createElement('div');
   txt.className = 'ms-MessageBar-text';
   txt.textContent = text;
-  content.append(txt);
+  content.appendChild(txt);
 
   if (type === 'INFO') {
     icontent.classList.add('ms-Icon--Info');

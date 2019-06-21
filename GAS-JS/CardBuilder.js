@@ -116,7 +116,7 @@ regeneratorRuntime.mark(function _callee() {
         $('#app-body').empty();
         wrap = document.createElement('div');
         wrap.className = 'Card';
-        $('#app-body').append(wrap);
+        $('#app-body').appendChild(wrap);
 
         if (this.cardHeader) {
           headerWrap = document.createElement('div');
@@ -133,7 +133,7 @@ regeneratorRuntime.mark(function _callee() {
           header = document.createElement('p');
           header.className = 'ms-font-m-plus';
           header.textContent = this.cardHeader.title;
-          headerWrap.append(header);
+          headerWrap.appendChild(header);
         }
 
         sections = []; //if there is at least one section -> append;
