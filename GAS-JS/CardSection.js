@@ -106,7 +106,7 @@ function () {
             header = document.createElement('p');
             header.className = 'ms-font-m-plus sectionHeader';
             header.textContent = headerText;
-            section.append(header);
+            section.appendChild(header);
           } //append widgets wrapper and handle collapsed Ui;
 
 
@@ -116,7 +116,7 @@ function () {
             widgetsWrap.className = 'collapsible';
           }
 
-          section.append(widgetsWrap); //set wrapper to widgets wrapper;
+          section.appendChild(widgetsWrap); //set wrapper to widgets wrapper;
 
           wrapper = widgetsWrap; //access widgets and append;
 
@@ -182,7 +182,7 @@ function () {
 
           if (hasInput) {
             formElem = document.createElement('form');
-            widgetsWrap.append(formElem);
+            widgetsWrap.appendChild(formElem);
             wrapper = formElem;
           }
 
@@ -195,14 +195,14 @@ function () {
             //create toggler element;
             toggler = document.createElement('div');
             toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
-            section.append(toggler); //add event handler for toggling target element's state;
+            section.appendChild(toggler); //add event handler for toggling target element's state;
 
             toggler.addEventListener('click', function () {
               this.classList.toggle('toggler-up');
             });
           }
 
-          parent.append(section);
+          parent.appendChild(section);
           return _context2.abrupt("return", section);
 
         case 23:

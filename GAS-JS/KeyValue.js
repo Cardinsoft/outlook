@@ -226,7 +226,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
-  parent.append(widget); //add event listener chain ( click -> callback );
+  parent.appendChild(widget); //add event listener chain ( click -> callback );
 
   if (action) {
     //set refrence;
@@ -261,7 +261,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   if (iconUrl || icon) {
     const wrapImg = document.createElement('div');
     wrapImg.className = 'column-icon';
-    widget.append(wrapImg);
+    widget.appendChild(wrapImg);
     const img = document.createElement('img');
     img.className = 'KeyValueImage';
 
@@ -275,26 +275,26 @@ KeyValue.prototype.appendToUi = function (parent) {
       img.alt = this.altText;
     }
 
-    wrapImg.append(img);
+    wrapImg.appendChild(img);
   } //handle label and content creation;
 
 
   const wrapText = document.createElement('div');
   wrapText.className = 'column-text';
-  widget.append(wrapText);
+  widget.appendChild(wrapText);
 
   if (this.topLabel) {
     const label = document.createElement('label');
     label.className = 'ms-fontSize-s KeyValueLabel';
     label.textContent = this.topLabel;
-    wrapText.append(label);
+    wrapText.appendChild(label);
   } //create content text element;
 
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
   contentText.innerHTML = content;
-  wrapText.append(contentText);
+  wrapText.appendChild(contentText);
 
   if (content) {
     loadAnchor(contentText, content);
@@ -308,7 +308,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   if (btn || sw) {
     const wrapButton = document.createElement('div');
     wrapButton.className = 'column-label';
-    widget.append(wrapButton);
+    widget.appendChild(wrapButton);
 
     if (btn) {
       btn.appendToUi(wrapButton);

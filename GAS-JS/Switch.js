@@ -139,11 +139,11 @@ Switch.prototype.appendToUi = function (parent) {
   const value = this.value; //create toggler paragraph;
 
   const pToggle = document.createElement('p');
-  parent.append(pToggle); //create toggler wrapper and set required parameters;
+  parent.appendChild(pToggle); //create toggler wrapper and set required parameters;
 
   const wrapToggle = document.createElement('div');
   wrapToggle.className = 'ms-Toggle ms-font-m-plus ' + this.className;
-  pToggle.append(wrapToggle); //create input and set required parameters;
+  pToggle.appendChild(wrapToggle); //create input and set required parameters;
 
   const input = document.createElement('input');
   input.id = fieldName;
@@ -152,7 +152,7 @@ Switch.prototype.appendToUi = function (parent) {
   input.name = fieldName;
   input.value = value; //append toggler wrap;
 
-  wrapToggle.append(input); //set action if provided;
+  wrapToggle.appendChild(input); //set action if provided;
 
   if (action) {
     //parse action if found;
@@ -200,6 +200,6 @@ Switch.prototype.appendToUi = function (parent) {
     input.classList.toggle('is-selected');
   }); //append toggle label to wrapper;
 
-  wrapToggle.append(label);
+  wrapToggle.appendChild(label);
   new fabric['Toggle'](wrapToggle);
 };

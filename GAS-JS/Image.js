@@ -141,7 +141,7 @@ Image.prototype.appendToUi = function (parent) {
 
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
-  parent.append(widget); //add event listener chain ( click -> callback );
+  parent.appendChild(widget); //add event listener chain ( click -> callback );
 
   if (action || openAction) {
     //set refrence;

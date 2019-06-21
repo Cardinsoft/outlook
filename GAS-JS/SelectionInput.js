@@ -178,11 +178,11 @@ SelectionInput.prototype.appendToUi = function (parent) {
       //set row;
       widget = document.createElement('div');
       widget.className = 'row ' + className;
-      parent.append(widget); //set column;
+      parent.appendChild(widget); //set column;
 
       row = document.createElement('div');
       row.className = 'column';
-      widget.append(row); //create inputs;
+      widget.appendChild(row); //create inputs;
 
       options.forEach(function (option) {
         //access option params;
@@ -192,7 +192,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 
         inputWrap = document.createElement('div');
         inputWrap.className = 'ms-CheckBox';
-        row.append(inputWrap); //create input;
+        row.appendChild(inputWrap); //create input;
 
         let input = document.createElement('input');
         input.type = 'checkbox';
@@ -200,11 +200,11 @@ SelectionInput.prototype.appendToUi = function (parent) {
         input.checked = checked;
         input.value = value;
         input.name = fieldName;
-        inputWrap.append(input); //set label class name, append & check;
+        inputWrap.appendChild(input); //set label class name, append & check;
 
         let label = document.createElement('label');
         label.className = 'ms-CheckBox-field';
-        inputWrap.append(label);
+        inputWrap.appendChild(label);
 
         if (checked) {
           label.classList.add('is-checked');
@@ -257,7 +257,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
         let labelTxt = document.createElement('span');
         labelTxt.className = 'ms-Label';
         labelTxt.textContent = text;
-        label.append(labelTxt);
+        label.appendChild(labelTxt);
       });
       break;
 
@@ -267,19 +267,19 @@ SelectionInput.prototype.appendToUi = function (parent) {
 
       widget = document.createElement('div');
       widget.className = 'row ' + className;
-      parent.append(widget); //set column;
+      parent.appendChild(widget); //set column;
 
       row = document.createElement('div');
       row.className = 'column';
-      widget.append(row); //create input group;
+      widget.appendChild(row); //create input group;
 
       const group = document.createElement('div');
       group.className = 'ms-ChoiceFieldGroup';
-      row.append(group); //create input list;
+      row.appendChild(group); //create input list;
 
       const list = document.createElement('ul');
       list.className = 'ms-ChoiceFieldGroup-list';
-      group.append(list); //create inputs;
+      group.appendChild(list); //create inputs;
 
       options.forEach(function (option) {
         //access option params;
@@ -289,7 +289,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
 
         inputWrap = document.createElement('li');
         inputWrap.className = 'ms-RadioButton';
-        list.append(inputWrap); //set actual input;
+        list.appendChild(inputWrap); //set actual input;
 
         let input = document.createElement('input');
         input.type = 'radio';
@@ -297,12 +297,12 @@ SelectionInput.prototype.appendToUi = function (parent) {
         input.checked = checked;
         input.name = fieldName;
         input.value = value;
-        inputWrap.append(input);
+        inputWrap.appendChild(input);
         inputs.push(input); //set radio label;
 
         let label = document.createElement('label');
         label.className = 'ms-RadioButton-field';
-        inputWrap.append(label);
+        inputWrap.appendChild(label);
 
         if (checked) {
           label.classList.add('is-checked');
@@ -374,7 +374,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
         let labelTxt = document.createElement('span');
         labelTxt.className = 'ms-Label';
         labelTxt.textContent = text;
-        label.append(labelTxt);
+        label.appendChild(labelTxt);
       });
       break;
 
@@ -382,28 +382,28 @@ SelectionInput.prototype.appendToUi = function (parent) {
       //set row;
       widget = document.createElement('div');
       widget.className = 'row ' + this.className;
-      parent.append(widget); //set class name and append to row;
+      parent.appendChild(widget); //set class name and append to row;
 
       inputWrap = document.createElement('div');
       inputWrap.className = 'ms-Dropdown';
-      widget.append(inputWrap); //append title text if provided;
+      widget.appendChild(inputWrap); //append title text if provided;
 
       if (title) {
         let label = document.createElement('label');
         label.className = 'ms-Label SelectionInputTopLabel';
         label.textContent = title;
-        inputWrap.append(label);
+        inputWrap.appendChild(label);
       } //create chevron;
 
 
       const chevron = document.createElement('i');
       chevron.className = 'ms-Dropdown-caretDown ms-Icon ms-Icon--ChevronDown';
-      inputWrap.append(chevron); //create actual select;
+      inputWrap.appendChild(chevron); //create actual select;
 
       let input = document.createElement('select');
       input.className = 'ms-Dropdown-select';
       input.name = fieldName;
-      inputWrap.append(input); //append options;
+      inputWrap.appendChild(input); //append options;
 
       options.forEach(function (option) {
         //access option params;
@@ -415,7 +415,7 @@ SelectionInput.prototype.appendToUi = function (parent) {
         opt.value = value;
         opt.textContent = text;
         opt.selected = selected;
-        input.append(opt);
+        input.appendChild(opt);
       });
 
       if (action) {

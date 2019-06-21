@@ -154,24 +154,24 @@ TextInput.prototype.appendToUi = function (parent) {
   const hint = this.hint;
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
-  parent.append(widget);
+  parent.appendChild(widget);
   const row = document.createElement('div');
   row.className = 'column';
-  widget.append(row); //append title text if provided;
+  widget.appendChild(row); //append title text if provided;
 
   if (title) {
     const topLabel = document.createElement('label');
     topLabel.className = 'ms-fontSize-s TextInputTopLabel';
     topLabel.textContent = title;
-    row.append(topLabel);
+    row.appendChild(topLabel);
   }
 
   const inputWrap = document.createElement('div');
   inputWrap.className = 'ms-TextField ms-TextField--underlined';
-  row.append(inputWrap);
+  row.appendChild(inputWrap);
   const label = document.createElement('label');
   label.className = 'ms-Label TextInputLabel';
-  inputWrap.append(label); //create input element (via input or textarea);
+  inputWrap.appendChild(label); //create input element (via input or textarea);
 
   let input;
 
@@ -224,7 +224,7 @@ TextInput.prototype.appendToUi = function (parent) {
   } //append input to wrapper;
 
 
-  inputWrap.append(input); //initiate Fabric;
+  inputWrap.appendChild(input); //initiate Fabric;
 
   new fabric['TextField'](inputWrap); //append hint text if provided;
 
@@ -232,6 +232,6 @@ TextInput.prototype.appendToUi = function (parent) {
     const bottomLabel = document.createElement('label');
     bottomLabel.className = 'ms-fontSize-s TextInputBottomLabel';
     bottomLabel.textContent = hint;
-    row.append(bottomLabel);
+    row.appendChild(bottomLabel);
   }
 };
