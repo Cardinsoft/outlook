@@ -1,173 +1,252 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 //Emulate base Class Button for CardService service;
-class Button {
-	constructor() {
-		this.className = 'Button';
-		this.action;
-		this.authorizationAction;
-		this.openLink;
-		this.composedEmailType;
-	}
-}
+let Button = function Button() {
+  (0, _classCallCheck2.default)(this, Button);
+  this.className = 'Button';
+  this.action;
+  this.authorizationAction;
+  this.openLink;
+  this.composedEmailType;
+};
 /**
  * Set authorization action to Button;
  * @param {AuthorizationAction} action action to set;
  * @returns {Button}
  */
+
+
 Button.prototype.setAuthorizationAction = function (action) {
-	this.authorizationAction = JSON.stringify(action);
-	return this;
-}
+  this.authorizationAction = JSON.stringify(action);
+  return this;
+};
 /**
  * Set compose action to Button;
  * @param {Action} action action to set;
  * @param {composedEmailType} composedEmailType email type to compose;
  * @returns {Button}
  */
-Button.prototype.setComposeAction = function (action,composedEmailType) {
-	this.action = JSON.stringify(action);
-	this.composedEmailType = composedEmailType;
-	return this;
-}
+
+
+Button.prototype.setComposeAction = function (action, composedEmailType) {
+  this.action = JSON.stringify(action);
+  this.composedEmailType = composedEmailType;
+  return this;
+};
 /**
  * Set onclick action to Button;
  * @param {Action} action action to set;
  * @returns {Button}
  */
+
+
 Button.prototype.setOnClickAction = function (action) {
-	this.action = JSON.stringify(action);
-	return this;
-}
+  this.action = JSON.stringify(action);
+  return this;
+};
 /**
  * Set OpenLink action to Button;
  * @param {Action} action action to set;
  * @returns {Button}
  */
+
+
 Button.prototype.setOnClickOpenLinkAction = function (action) {
-	this.action = JSON.stringify(action);
-	return this;
-}
+  this.action = JSON.stringify(action);
+  return this;
+};
 /**
  * Set OpenLink to Button;
  * @param {OpenLink} openLink openLink action to set;
  * @returns {Button}
  */
+
+
 Button.prototype.setOpenLink = function (openLink) {
-	this.openLink = JSON.stringify(openLink);
-	return this;
-}
+  this.openLink = JSON.stringify(openLink);
+  return this;
+}; //Emulate Class TextButton extending base Class Button for CardService service;
 
 
-//Emulate Class TextButton extending base Class Button for CardService service;
-class TextButton extends Button {
-	constructor() {
-		super();
-		this.className = 'TextButton';
-		this.backgroundColor;
-		this.text;
-		this.disabled;
-		this.textButtonStyle = 'TEXT';
-	}
-}
-//chain TextButton to Button base class;
-TextButton.prototype = Object.create(Button.prototype);
-//add new methods to the class;
+let TextButton =
+/*#__PURE__*/
+function (_Button) {
+  (0, _inherits2.default)(TextButton, _Button);
+
+  function TextButton() {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, TextButton);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TextButton).call(this));
+    _this.className = 'TextButton';
+    _this.backgroundColor;
+    _this.text;
+    _this.disabled;
+    _this.textButtonStyle = 'TEXT';
+    return _this;
+  }
+
+  return TextButton;
+}(Button); //chain TextButton to Button base class;
+
+
+TextButton.prototype = Object.create(Button.prototype); //add new methods to the class;
+
 TextButton.prototype.setDisabled = function (disabled) {
-	this.disabled = disabled;
-	return this;
+  this.disabled = disabled;
+  return this;
 };
+
 TextButton.prototype.setText = function (text) {
-	this.text = text;
-	return this;
+  this.text = text;
+  return this;
 };
+
 TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
-	this.textButtonStyle = textButtonStyle;
-	return this;
+  this.textButtonStyle = textButtonStyle;
+  return this;
 };
+
 TextButton.prototype.appendToUi = function (parent) {
-	
-	//access button properties;
-	let action            = this.action;
-	const backgroundColor = this.backgroundColor;
-	const text            = this.text;
-	const disabled        = this.disabled;
-	const textButtonStyle = this.textButtonStyle;
-	const openLink        = this.openLink;
-	const authAction      = this.authorizationAction; 
-	
-	//initiate button;
-	const button = document.createElement('button');
-	button.className = this.className;
-	button.type      = 'button';
-	button.disabled  = disabled;
-	button.innerHTML = text;
-	
-	//access button style and class list;
-	const st = button.style;
-	const cl = button.classList;
-	
-	if(textButtonStyle==='FILLED') { st.backgroundColor = backgroundColor; }else { cl.add('btn-text'); }
-	if(disabled) { cl.add('btn-disabled'); }else { cl.remove('btn-disabled'); }
-	
-	parent.append(button);
-	
-	if(!openLink&&!authAction&&action) {
-	
-		//set refrence;
-		setAction(button,action);
-		
-		//add event listener to button;
-		button.addEventListener('click', async function(){ 
-			await actionCallback(this); 
-		});
-		
-	}else if(openLink) {
-		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync( JSON.parse(openLink).url );
-		} );
-	}else {
-		new fabric['Button'](button, function(){
-			Office.context.ui.displayDialogAsync( JSON.parse(authAction).url );
-		} );		
-	}
-}
+  //access button properties;
+  let action = this.action;
+  const backgroundColor = this.backgroundColor;
+  const text = this.text;
+  const disabled = this.disabled;
+  const textButtonStyle = this.textButtonStyle;
+  const openLink = this.openLink;
+  const authAction = this.authorizationAction; //initiate button;
 
-//Emulate Class ImageButton extending base Class Button for CardService service;
-class ImageButton extends Button {
-	constructor() {
-		super();
-		this.altText;
-		this.icon;
-		this.url;
-	}
-}
-//chain ImageButton to Button base class;
-ImageButton.prototype = Object.create(Button.prototype);
-//add new methods to the class;
+  const button = document.createElement('button');
+  button.className = this.className;
+  button.type = 'button';
+  button.disabled = disabled;
+  button.innerHTML = text; //access button style and class list;
+
+  const st = button.style;
+  const cl = button.classList;
+
+  if (textButtonStyle === 'FILLED') {
+    st.backgroundColor = backgroundColor;
+  } else {
+    cl.add('btn-text');
+  }
+
+  if (disabled) {
+    cl.add('btn-disabled');
+  } else {
+    cl.remove('btn-disabled');
+  }
+
+  parent.append(button);
+
+  if (!openLink && !authAction && action) {
+    //set refrence;
+    setAction(button, action); //add event listener to button;
+
+    button.addEventListener('click',
+    /*#__PURE__*/
+    (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee() {
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return actionCallback(this);
+
+          case 2:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this);
+    })));
+  } else if (openLink) {
+    new fabric['Button'](button, function () {
+      Office.context.ui.displayDialogAsync(JSON.parse(openLink).url);
+    });
+  } else {
+    new fabric['Button'](button, function () {
+      Office.context.ui.displayDialogAsync(JSON.parse(authAction).url);
+    });
+  }
+}; //Emulate Class ImageButton extending base Class Button for CardService service;
+
+
+let ImageButton =
+/*#__PURE__*/
+function (_Button2) {
+  (0, _inherits2.default)(ImageButton, _Button2);
+
+  function ImageButton() {
+    var _this2;
+
+    (0, _classCallCheck2.default)(this, ImageButton);
+    _this2 = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ImageButton).call(this));
+    _this2.altText;
+    _this2.icon;
+    _this2.url;
+    return _this2;
+  }
+
+  return ImageButton;
+}(Button); //chain ImageButton to Button base class;
+
+
+ImageButton.prototype = Object.create(Button.prototype); //add new methods to the class;
+
 ImageButton.prototype.setAltText = function (altText) {
-	this.altText = altText;
-	return this;
-}
-ImageButton.prototype.setIcon = function (icon) {
-	this.icon = icon;
-	return this;
-}
-ImageButton.prototype.setIconUrl = function (url) {
-	this.url = url;
-	return this;
-}
+  this.altText = altText;
+  return this;
+};
 
-//Emulate Class CardAction extending base Class Button for CardService service;
-class CardAction extends Button {
-	constructor() {
-		super();
-		this.className = 'CardAction';
-		this.text;
-	}
-}
-//chain TextButton to Button base class;
-CardAction.prototype = Object.create(Button.prototype);
-//add new methods to the class;
+ImageButton.prototype.setIcon = function (icon) {
+  this.icon = icon;
+  return this;
+};
+
+ImageButton.prototype.setIconUrl = function (url) {
+  this.url = url;
+  return this;
+}; //Emulate Class CardAction extending base Class Button for CardService service;
+
+
+let CardAction =
+/*#__PURE__*/
+function (_Button3) {
+  (0, _inherits2.default)(CardAction, _Button3);
+
+  function CardAction() {
+    var _this3;
+
+    (0, _classCallCheck2.default)(this, CardAction);
+    _this3 = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(CardAction).call(this));
+    _this3.className = 'CardAction';
+    _this3.text;
+    return _this3;
+  }
+
+  return CardAction;
+}(Button); //chain TextButton to Button base class;
+
+
+CardAction.prototype = Object.create(Button.prototype); //add new methods to the class;
+
 CardAction.prototype.setText = function (text) {
-	this.text = text;
-	return this;
+  this.text = text;
+  return this;
 };
