@@ -229,7 +229,7 @@ Menu.prototype.removeItem = function (index, isCardAction) {
   items.splice(index, 1); //remove item from HtmlElement;
 
   let menu = menus[0].element;
-  menu.children.item(index).remove();
+  menu.removeChild(menu.children.item(index));
   return this;
 };
 /**
@@ -335,7 +335,7 @@ Selector.prototype.remove = function (index) {
   //remove item from instance;
   const opt = this.options;
   opt.splice(index, 1);
-  this.element.children.item(index + 1).remove();
+  this.element.removeChild(this.element.children.item(index + 1));
   return this;
 };
 
@@ -400,7 +400,7 @@ Overlay.prototype.show = function (selector) {
 };
 
 Overlay.prototype.hide = function () {
-  this.overlay.remove();
+  this.overlay.parentNode.removeChild(this.overlay);
   return this;
 };
 /**
@@ -432,7 +432,7 @@ Spinner.prototype.show = function () {
 Spinner.prototype.hide = function () {
   let d = GLOBAL.document;
   let c = d.querySelector('.spinner');
-  c.remove();
+  c.parentNode.removeChild(c);
 }; //=======================================END Ui Classes======================================//
 //========================================START CALLBACKS======================================//
 
