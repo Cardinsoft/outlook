@@ -1,6 +1,10 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate GmailApp service (partially);
 
-//Emulate GmailApp service (partially);
+
 let e_GmailApp = function e_GmailApp() {
   _classCallCheck(this, e_GmailApp);
 
@@ -23,7 +27,7 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
   const item = Office.context.mailbox.item;
   const name = Office.context.mailbox.item.sender.displayName;
   const email = Office.context.mailbox.item.sender.emailAddress;
-  const msgFrom = `${name} <${email}>`;
+  const msgFrom = "".concat(name, " <").concat(email, ">");
   const msg = new Message(msgFrom, '', item.cc, item.dateTimeCreated.toUTCString(), item.body, item.normalizedSubject, item.itemId, item);
   return msg;
 }; //initiate GmailApp service;

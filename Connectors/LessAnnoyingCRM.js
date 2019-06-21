@@ -1,6 +1,38 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
 
 function LessAnnoyingCRM() {
   Connector.call(this);
@@ -527,9 +559,9 @@ function LessAnnoyingCRM() {
             if (!(actionType !== 'pipeline')) {
               _context3.next = 25;
               break;
-            }
+            } //unpack message object with to trimmed data;
 
-            //unpack message object with to trimmed data;
+
             trimmed = trimMessage(msg, true, true); //initiate request parameters;
 
             params = {
@@ -806,9 +838,9 @@ function LessAnnoyingCRM() {
             if (!(info.length > 0)) {
               _context3.next = 131;
               break;
-            }
+            } //as there is entity, set action to edit;
 
-            //as there is entity, set action to edit;
+
             connector.method = 'edit';
             e = 0;
 
@@ -824,9 +856,9 @@ function LessAnnoyingCRM() {
             if (!(isCompany === 0)) {
               _context3.next = 128;
               break;
-            }
+            } //create contact section and access widgets;
 
-            //create contact section and access widgets;
+
             contSection = {
               header: 'Contact info',
               isCollapsible: true,
@@ -847,8 +879,8 @@ function LessAnnoyingCRM() {
             background = entry.BackgroundInfo;
             contactId = entry.ContactId;
             companyId = entry.CompanyId;
-            companyName = entry.CompanyName;
-            //will be needed in company section;
+            companyName = entry.CompanyName; //will be needed in company section;
+
             createdCont = entry.CreationDate;
             editedCont = entry.EditedDate;
             birthday = entry.Birthday;
@@ -1205,9 +1237,9 @@ function LessAnnoyingCRM() {
             if (!companyId) {
               _context3.next = 127;
               break;
-            }
+            } //perform company query by company Id;
 
-            //perform company query by company Id;
+
             getCompanyQuery = ['UserCode=' + usercode, 'APIToken=' + apitoken, 'Function=GetContact', 'Parameters=' + encodeURI(JSON.stringify({
               ContactId: companyId
             }))].join('&');
@@ -1215,9 +1247,8 @@ function LessAnnoyingCRM() {
             return performFetch(endpoint + getCompanyQuery, 'get', {});
 
           case 125:
-            companyResponse = _context3.sent;
+            companyResponse = _context3.sent; //on successful fetch -> create company section;
 
-            //on successful fetch -> create company section;
             if (companyResponse.code >= 200 && companyResponse.code < 300) {
               companyContent = JSON.parse(companyResponse.content);
 
@@ -1541,8 +1572,9 @@ function LessAnnoyingCRM() {
                 sections.push(cSection);
               } //end company fetch success;
 
-            } //end code 200;
+            }
 
+          //end code 200;
 
           case 127:
             //end company id check;
