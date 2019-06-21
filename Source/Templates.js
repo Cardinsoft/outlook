@@ -4,29 +4,24 @@
  * @returns {Card} Card that menu is appended to;
  */
 function menu(builder) {
-  
   //create menu Actions;
-  var actionDashboard = actionAction('cardHome',true);
-  var actionSettings  = actionAction('cardSettings',true);
-  var actionAdvanced  = actionAction('cardAdvanced',true);
-  var actionHelp      = actionAction('cardHelp',true);
-  
-  //create menu CardActions;
-  var cardDashboard = cardAction('Dashboard',globalActionClick,actionDashboard);
-  var cardSettings  = cardAction(globalSettingsHeader,globalActionClick,actionSettings);
-  var cardAdvanced  = cardAction(globalAdvancedHeader,globalActionClick,actionAdvanced);
-  var cardHelp      = cardAction(globalHelpHeader,globalActionClick,actionHelp);
-  
-  //set actions to builder;
+  var actionDashboard = actionAction('cardHome', true);
+  var actionSettings = actionAction('cardSettings', true);
+  var actionAdvanced = actionAction('cardAdvanced', true);
+  var actionHelp = actionAction('cardHelp', true); //create menu CardActions;
+
+  var cardDashboard = cardAction('Dashboard', globalActionClick, actionDashboard);
+  var cardSettings = cardAction(globalSettingsHeader, globalActionClick, actionSettings);
+  var cardAdvanced = cardAction(globalAdvancedHeader, globalActionClick, actionAdvanced);
+  var cardHelp = cardAction(globalHelpHeader, globalActionClick, actionHelp); //set actions to builder;
+
   builder.addCardAction(cardDashboard);
   builder.addCardAction(cardSettings);
   builder.addCardAction(cardAdvanced);
-  builder.addCardAction(cardHelp);
-  
-  //build Card as menu should be appended last;
+  builder.addCardAction(cardHelp); //build Card as menu should be appended last;
+
   return builder.build();
 }
-
 /**
  * Creates CardAction to set on a CardHeader;
  * @param {Text} text text to set on header;
@@ -35,34 +30,39 @@ function menu(builder) {
  * @param {String=} composeType type of email to set; 
  * @returns {CardAction} this CardAction;
  */
-function cardAction(text,type,action,composeType){
-  
+
+
+function cardAction(text, type, action, composeType) {
   //create action and set required parameters;
   var cardAction = CardService.newCardAction();
-      cardAction.setText(text);
-      
-  //set action type corresponding to type;
-  switch(type) {
+  cardAction.setText(text); //set action type corresponding to type;
+
+  switch (type) {
     case globalActionAuth:
       cardAction.setAuthorizationAction(action);
       break;
+
     case globalActionCompose:
       var composeEnum = 'REPLY_AS_DRAFT';
-      if(composeType) { composeEnum = CardService.ComposedEmailType[composeType]; }
-      cardAction.setComposeAction(action,composeEnum);
+
+      if (composeType) {
+        composeEnum = CardService.ComposedEmailType[composeType];
+      }
+
+      cardAction.setComposeAction(action, composeEnum);
       break;
+
     case globalActionClick:
       cardAction.setOnClickAction(action);
       break;
+
     case globalActionLink:
       cardAction.setOnClickOpenLinkAction(action);
       break;
   }
-  
+
   return cardAction;
 }
-
-
 /**
  * Creates Action that can be used anywhere;
  * @param {String} funcName callback function name;
@@ -70,30 +70,35 @@ function cardAction(text,type,action,composeType){
  * @param {Object} params parameters to pass to function;
  * @returns {Action} this Action;
  */
-function actionAction(funcName,hasSpinner,params) {
-  
+
+
+function actionAction(funcName, hasSpinner, params) {
   //create action and set required parameters;
   var action = CardService.newAction();
-      action.setFunctionName(funcName);
-     
-  //set optional parameters;
-  if(hasSpinner) { action.setLoadIndicator(CardService.LoadIndicator.SPINNER); }
-  if(params) { action.setParameters(params); }
-  
+  action.setFunctionName(funcName); //set optional parameters;
+
+  if (hasSpinner) {
+    action.setLoadIndicator(CardService.LoadIndicator.SPINNER);
+  }
+
+  if (params) {
+    action.setParameters(params);
+  }
+
   return action;
 }
-
 /**
  * Creates a TextParagraph widget
  * @param {String} text specifies a text to populate widget with;
  * @returns {TextParagraph} this TextParagraph;
  */
+
+
 function textWidget(text) {
   var widget = CardService.newTextParagraph();
-      widget.setText(text);
+  widget.setText(text);
   return widget;
 }
-
 /**
  * Creates a TextInput widget;
  * @param {String} title title of the input;
@@ -106,75 +111,91 @@ function textWidget(text) {
  * @param {Object=} params parameters to pass to function;
  * @returns {TextInput} 
  */
-function textInputWidget(title,name,hint,content,multiline,funcName,hasSpinner,params) {
+
+
+function textInputWidget(title, name, hint, content, multiline, funcName, hasSpinner, params) {
   //check if value is an instanceof Date and format if so;
-  if(content instanceof Date) { content = content.toLocaleDateString(); }
-  
-  //create widget and set required parameters;
+  if (content instanceof Date) {
+    content = content.toLocaleDateString();
+  } //create widget and set required parameters;
+
+
   var widget = CardService.newTextInput();
-      widget.setFieldName(name);
-  
-  //set optional parameters;
-  if(title)     { widget.setTitle(title); }
-  if(content)   { widget.setValue(content); }else { widget.setValue(''); }
-  if(hint)      { widget.setHint(hint); }
-  if(multiline) { widget.setMultiline(multiline); }
-  
-  //set action if function name provided;
-  if(funcName) {
-    var action = actionAction(funcName,hasSpinner,params);
+  widget.setFieldName(name); //set optional parameters;
+
+  if (title) {
+    widget.setTitle(title);
+  }
+
+  if (content) {
+    widget.setValue(content);
+  } else {
+    widget.setValue('');
+  }
+
+  if (hint) {
+    widget.setHint(hint);
+  }
+
+  if (multiline) {
+    widget.setMultiline(multiline);
+  } //set action if function name provided;
+
+
+  if (funcName) {
+    var action = actionAction(funcName, hasSpinner, params);
     widget.setOnChangeAction(action);
   }
-  
+
   return widget;
 }
-
 /**
  * Creates suggestions for a TextInput widget;
  * @param {textInput} textInputWidget text input to append suggestions to;
  * @param {Suggestions} suggestions list of suggestions to append;
  * @param {String} suggestFunc function name to fire on suggestion select;
  */
-function suggestions(textInputWidget,suggestions,suggestFunc) {
-    
+
+
+function suggestions(textInputWidget, suggestions, suggestFunc) {
   textInputWidget.setSuggestions(suggestions);
-    
-  if(suggestFunc) {
+
+  if (suggestFunc) {
     var sAction = CardService.newAction();
-        sAction.setFunctionName(suggestFunc);
+    sAction.setFunctionName(suggestFunc);
     textInputWidget.setSuggestionsAction(sAction);
   }
-  
 }
-
 /**
  * Creates Suggestions object for TextInput autocomplete handler;
  * @param {Array} suggestions an array of string values for creating options;
  * @returns {Suggestions} Suggestions to set;
  */
+
+
 function suggestion(suggestions) {
   var list = CardService.newSuggestions();
-      list.addSuggestions(suggestions);
+  list.addSuggestions(suggestions);
   return list;
 }
-
 /**
  * Creates a ButtonSet widget and appends buttons if provided;
  * @param {Array} buttons an array of button widgets to add to button set;
  * @returns {ButtonSet} this ButtonSet;
  */
+
+
 function buttonSet(buttons) {
   var widget = CardService.newButtonSet();
-  
-  if(buttons.length>0) {
-    buttons.forEach(function(button){
+
+  if (buttons.length > 0) {
+    buttons.forEach(function (button) {
       widget.addButton(button);
     });
   }
-  
+
   return widget;
 }
-
 /**
  * Creates a TextButton widget with text content;
  * @param {String} text text to appear on the button;
@@ -184,21 +205,27 @@ function buttonSet(buttons) {
  * @param {Object} params parameters to pass to function;
  * @returns {TextButton} 
  */
-function textButtonWidget(text,disabled,isFilled,funcName,params) {
+
+
+function textButtonWidget(text, disabled, isFilled, funcName, params) {
   var widget = CardService.newTextButton();
-      widget.setText(text);
-  
-  //set optional parameters;
-  if(disabled) { widget.setDisabled(disabled); }else { widget.setDisabled(false); }
-  if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
-  
-  //set action on button click;
-  var action = actionAction(funcName,true,params);
+  widget.setText(text); //set optional parameters;
+
+  if (disabled) {
+    widget.setDisabled(disabled);
+  } else {
+    widget.setDisabled(false);
+  }
+
+  if (isFilled) {
+    widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  } //set action on button click;
+
+
+  var action = actionAction(funcName, true, params);
   widget.setOnClickAction(action);
-  
   return widget;
 }
-
 /**
  * Creates a TextButton widget with authorization action to trigger Auth flow;
  * @param {String} text text to appear on the button;
@@ -207,21 +234,22 @@ function textButtonWidget(text,disabled,isFilled,funcName,params) {
  * @param {String} url authorization url; 
  * @returns {TextButton} this TextButton;
  */
-function textButtonWidgetAuth(text,disabled,isFilled,url) {
+
+
+function textButtonWidgetAuth(text, disabled, isFilled, url) {
   var widget = CardService.newTextButton();
-      widget.setText(text);
-      widget.setDisabled(disabled);
-      
-  if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
-  
+  widget.setText(text);
+  widget.setDisabled(disabled);
+
+  if (isFilled) {
+    widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  }
+
   var action = CardService.newAuthorizationAction();
-      action.setAuthorizationUrl(url);
-      
+  action.setAuthorizationUrl(url);
   widget.setAuthorizationAction(action);
-  
   return widget;
 }
-
 /**
  * Creates an ImageButton widget with authorization action to trigger Auth flow;
  * @param {String} image either icon name or image url to set;
@@ -229,28 +257,27 @@ function textButtonWidgetAuth(text,disabled,isFilled,url) {
  * @param {String} url authorization url; 
  * @returns {ImageButton} this ImageButton;
  */
-function imageButtonWidgetAuth(image,altText,url) {
-  var widget = CardService.newImageButton();
-      widget.setAltText(altText);
-  
-  //set icon if found or set icon url if not;
-  if(image&&image!=='') { 
-    var iconEnum = CardService.Icon[image];
-    if(iconEnum) {
-      widget.setIcon(iconEnum);
-    }else {
-      widget.setIconUrl(image);
-    } 
-  } 
-  
-  var action = CardService.newAuthorizationAction();
-      action.setAuthorizationUrl(url);
-      
-  widget.setAuthorizationAction(action);
 
+
+function imageButtonWidgetAuth(image, altText, url) {
+  var widget = CardService.newImageButton();
+  widget.setAltText(altText); //set icon if found or set icon url if not;
+
+  if (image && image !== '') {
+    var iconEnum = CardService.Icon[image];
+
+    if (iconEnum) {
+      widget.setIcon(iconEnum);
+    } else {
+      widget.setIconUrl(image);
+    }
+  }
+
+  var action = CardService.newAuthorizationAction();
+  action.setAuthorizationUrl(url);
+  widget.setAuthorizationAction(action);
   return widget;
 }
-
 /**
  * Creates a TextButton widget with link action set to it instead of an inbound action;
  * @param {String} text text to appear on the button;
@@ -264,46 +291,70 @@ function imageButtonWidgetAuth(image,altText,url) {
  * @param {Object=} params parameters to pass to function;
  * @returns {TextButton} this TextButton;
  */
-function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload,useAction,funcName,params) {
+
+
+function textButtonWidgetLinked(text, disabled, isFilled, url, fullsized, needsReload, useAction, funcName, params) {
   var widget = CardService.newTextButton();
-      widget.setText(text);
-      
-  //set optional parameters and defaults;
-  if(isFilled) { widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED); }
-  if(disabled) { widget.setDisabled(disabled); }else { widget.setDisabled(false); }
-  
-  if(useAction) {
+  widget.setText(text); //set optional parameters and defaults;
+
+  if (isFilled) {
+    widget.setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  }
+
+  if (disabled) {
+    widget.setDisabled(disabled);
+  } else {
+    widget.setDisabled(false);
+  }
+
+  if (useAction) {
     //create action and set required parameters;
     var action = CardService.newAction();
-        action.setFunctionName(funcName);
-        
-    //set parameters if provided;
-    if(params) { 
-      action.setParameters(params); 
-    }else {
-      if(!fullsized)   { fullsized = false; }
-      if(!needsReload) { needsReload = false; }
-      action.setParameters({url:url,fullsized:fullsized.toString(),reload:needsReload.toString()}); 
-    }
-        
-    //set action to button;
+    action.setFunctionName(funcName); //set parameters if provided;
+
+    if (params) {
+      action.setParameters(params);
+    } else {
+      if (!fullsized) {
+        fullsized = false;
+      }
+
+      if (!needsReload) {
+        needsReload = false;
+      }
+
+      action.setParameters({
+        url: url,
+        fullsized: fullsized.toString(),
+        reload: needsReload.toString()
+      });
+    } //set action to button;
+
+
     widget.setOnClickOpenLinkAction(action);
-  }else {
+  } else {
     //create OpenLink action and set required parameters;
     var openLink = CardService.newOpenLink();
-        openLink.setUrl(url);
-            
-    //set OpenAs and OnClose parameters;    
-    if(fullsized) { openLink.setOpenAs(CardService.OpenAs.FULL_SIZE); }else { openLink.setOpenAs(CardService.OpenAs.OVERLAY); }
-    if(needsReload) { openLink.setOnClose(CardService.OnClose.RELOAD_ADD_ON); }else { openLink.setOnClose(CardService.OnClose.NOTHING); }
-        
-    //set OpenLink action to button;
-    widget.setOpenLink(openLink);        
+    openLink.setUrl(url); //set OpenAs and OnClose parameters;    
+
+    if (fullsized) {
+      openLink.setOpenAs(CardService.OpenAs.FULL_SIZE);
+    } else {
+      openLink.setOpenAs(CardService.OpenAs.OVERLAY);
+    }
+
+    if (needsReload) {
+      openLink.setOnClose(CardService.OnClose.RELOAD_ADD_ON);
+    } else {
+      openLink.setOnClose(CardService.OnClose.NOTHING);
+    } //set OpenLink action to button;
+
+
+    widget.setOpenLink(openLink);
   }
-      
+
   return widget;
 }
-
 /*
  * Creates a ImageButton widget with icon content;
  * @param {Icon} icon icon object to appear on the button;
@@ -311,17 +362,16 @@ function textButtonWidgetLinked(text,disabled,isFilled,url,fullsized,needsReload
  * @param {Object} params parameters to pass to function;
  * @returns {ImageButton} this ImageButton;
  */
-function imageButtonWidget(icon,funcName,params) {
-  var widget = CardService.newImageButton();
-      widget.setIcon(icon);
-  
-  //set action on button click;
-  var action = actionAction(funcName,true,params);
-  widget.setOnClickAction(action);
 
+
+function imageButtonWidget(icon, funcName, params) {
+  var widget = CardService.newImageButton();
+  widget.setIcon(icon); //set action on button click;
+
+  var action = actionAction(funcName, true, params);
+  widget.setOnClickAction(action);
   return widget;
 }
-
 /**
  * Creates an Image widget;
  * @param {String} src string url of publicly deployed image;
@@ -331,22 +381,21 @@ function imageButtonWidget(icon,funcName,params) {
  * @param {Object=} params parameters to pass to function;
  * @returns {Image} this Image;
  */
-function imageWidget(src,alt,funcName,hasSpinner,params) {
-  
+
+
+function imageWidget(src, alt, funcName, hasSpinner, params) {
   //create Image widget and set required parameters;
   var widget = CardService.newImage();
-      widget.setImageUrl(src);
-      widget.setAltText(alt);
+  widget.setImageUrl(src);
+  widget.setAltText(alt); //set action if callback name provided;
 
-  //set action if callback name provided;
-  if(funcName) { 
-    var action = actionAction(funcName,hasSpinner,params);
+  if (funcName) {
+    var action = actionAction(funcName, hasSpinner, params);
     widget.setOnChangeAction(action);
   }
 
   return widget;
 }
-
 /**
  * Creates a Switch widget (KeyValue is used as base constructor);
  * @param {String} icon url or enum of icon to use;
@@ -360,44 +409,48 @@ function imageWidget(src,alt,funcName,hasSpinner,params) {
  * @param {Object=} params parameters to pass to function;
  * @returns {KeyValue} this KeyValue with Switch set;
  */
-function switchWidget(icon,top,content,name,selected,value,funcName,hasSpinner,params) {  
+
+
+function switchWidget(icon, top, content, name, selected, value, funcName, hasSpinner, params) {
   //create base KeyValue widget and set required parameters;
   var keyValue = CardService.newKeyValue();
-      keyValue.setContent(content);
+  keyValue.setContent(content); //set icon if found or set icon url if not;
 
-  //set icon if found or set icon url if not;
-  if(icon&&icon!=='') { 
+  if (icon && icon !== '') {
     var iconEnum = CardService.Icon[icon];
-    if(iconEnum) {
-      keyValue.setIcon(iconEnum);
-    }else {
-      keyValue.setIconUrl(icon);
-    } 
-  }
 
-  //set top title if found;
-  if(top&&top!=='') { keyValue.setTopLabel(top); }
-  
-  //convert strings to boolean;
-  if(typeof selected==='string') { selected = selected==='true'; }
-  
-  //create Switch widget and set required parameters;
+    if (iconEnum) {
+      keyValue.setIcon(iconEnum);
+    } else {
+      keyValue.setIconUrl(icon);
+    }
+  } //set top title if found;
+
+
+  if (top && top !== '') {
+    keyValue.setTopLabel(top);
+  } //convert strings to boolean;
+
+
+  if (typeof selected === 'string') {
+    selected = selected === 'true';
+  } //create Switch widget and set required parameters;
+
+
   var widget = CardService.newSwitch();
-      widget.setFieldName(name);
-      widget.setSelected(selected);
-      widget.setValue(value);
-  
-  //set an onchange action;
-  if(funcName) { 
-    var action = actionAction(funcName,hasSpinner,params);
+  widget.setFieldName(name);
+  widget.setSelected(selected);
+  widget.setValue(value); //set an onchange action;
+
+  if (funcName) {
+    var action = actionAction(funcName, hasSpinner, params);
     widget.setOnChangeAction(action);
-  }
-  
-  //set switch and return widget;
+  } //set switch and return widget;
+
+
   keyValue.setSwitch(widget);
   return keyValue;
 }
-
 /** 
  * Creates a simple KeyValue widget;
  * @param {String} icon url or enum of icon to use;
@@ -407,34 +460,41 @@ function switchWidget(icon,top,content,name,selected,value,funcName,hasSpinner,p
  * @param {TextButton} button a TextButton widget to set; 
  * @returns {KeyValue} this KeyValue with TextButton set;
  */
-function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
+
+
+function simpleKeyValueWidget(top, content, isMultiline, icon, button) {
   //check if content is a Date and format to locale to avoid errors;
-  if(content instanceof Date) { content = content.toLocaleDateString(); }
-  
-  //create widget and set required parameters;
+  if (content instanceof Date) {
+    content = content.toLocaleDateString();
+  } //create widget and set required parameters;
+
+
   var widget = CardService.newKeyValue();
-      widget.setContent(content);
-      widget.setMultiline(isMultiline);
-  
-  //set top title if found;
-  if(top&&top!=='') { widget.setTopLabel(top); }
-  
-  //set button to widget;
-  if(button) { widget.setButton(button); }
-  
-  //set icon if found or set icon url if not;
-  if(icon&&icon!=='') { 
+  widget.setContent(content);
+  widget.setMultiline(isMultiline); //set top title if found;
+
+  if (top && top !== '') {
+    widget.setTopLabel(top);
+  } //set button to widget;
+
+
+  if (button) {
+    widget.setButton(button);
+  } //set icon if found or set icon url if not;
+
+
+  if (icon && icon !== '') {
     var iconEnum = CardService.Icon[icon];
-    if(iconEnum) {
+
+    if (iconEnum) {
       widget.setIcon(iconEnum);
-    }else {
+    } else {
       widget.setIconUrl(icon);
-    } 
+    }
   }
-  
+
   return widget;
 }
-
 /** 
  * Creates a KeyValue widget with action set on it;
  * @param {String} icon url or enum of icon to use;
@@ -444,35 +504,39 @@ function simpleKeyValueWidget(top,content,isMultiline,icon,button) {
  * @param {Object=} params parameters to pass to function;
  * @returns {KeyValue} this KeyValue with action;
  */
-function actionKeyValueWidget(icon,top,content,funcName,params) {
-  //check if content is a Date and format to locale to avoid errors;
-  if(content instanceof Date) { content = content.toLocaleDateString(); }
-  
-  //create widget and set required parameters;
-  var widget = CardService.newKeyValue();
-      widget.setContent(content);
-      widget.setMultiline(true);
-  
-  //set top title if found;
-  if(top&&top!=='') { widget.setTopLabel(top); }
-      
-  //set icon if found or set icon url if not;    
-  if(icon&&icon!=='') { 
-    var iconEnum = CardService.Icon[icon];
-    if(iconEnum) {
-      widget.setIcon(iconEnum);
-    }else {
-      widget.setIconUrl(icon);
-    } 
-  }
 
-  //set onclick action;
-  var action = actionAction(funcName,true,params);
+
+function actionKeyValueWidget(icon, top, content, funcName, params) {
+  //check if content is a Date and format to locale to avoid errors;
+  if (content instanceof Date) {
+    content = content.toLocaleDateString();
+  } //create widget and set required parameters;
+
+
+  var widget = CardService.newKeyValue();
+  widget.setContent(content);
+  widget.setMultiline(true); //set top title if found;
+
+  if (top && top !== '') {
+    widget.setTopLabel(top);
+  } //set icon if found or set icon url if not;    
+
+
+  if (icon && icon !== '') {
+    var iconEnum = CardService.Icon[icon];
+
+    if (iconEnum) {
+      widget.setIcon(iconEnum);
+    } else {
+      widget.setIconUrl(icon);
+    }
+  } //set onclick action;
+
+
+  var action = actionAction(funcName, true, params);
   widget.setOnClickAction(action);
-      
   return widget;
 }
-
 /** 
  * Creates a KeyValue widget with TextButton on the right;
  * @param {String} icon url or enum of icon to use;
@@ -483,36 +547,40 @@ function actionKeyValueWidget(icon,top,content,funcName,params) {
  * @param {Object=} params parameters to pass to function;
  * @returns {KeyValue} this KeyValue with TextButton;
  */
-function actionKeyValueWidgetButton(icon,top,content,button,funcName,params) {
-  //check if content is a Date and format to locale to avoid errors;
-  if(content instanceof Date) { content = content.toLocaleDateString(); }
-  
-  //create widget and set required parameters;
-  var widget = CardService.newKeyValue();
-      widget.setContent(content);
-      widget.setButton(button);
-	  widget.setMultiline(true);
-   
-  //set top title if found;
-  if(top&&top!=='') { widget.setTopLabel(top); }
-  
-  //set icon if found or set icon url if not;
-  if(icon&&icon!=='') {
-    var iconEnum = CardService.Icon[icon];
-    if(iconEnum) {
-      widget.setIcon(iconEnum);
-    }else {
-      widget.setIconUrl(icon);
-    } 
-  }
-  
-  //set onclick action and set parameters if provided;
-  var action = actionAction(funcName,true,params);
-  widget.setOnClickAction(action);
-      
-  return widget;  
-}
 
+
+function actionKeyValueWidgetButton(icon, top, content, button, funcName, params) {
+  //check if content is a Date and format to locale to avoid errors;
+  if (content instanceof Date) {
+    content = content.toLocaleDateString();
+  } //create widget and set required parameters;
+
+
+  var widget = CardService.newKeyValue();
+  widget.setContent(content);
+  widget.setButton(button);
+  widget.setMultiline(true); //set top title if found;
+
+  if (top && top !== '') {
+    widget.setTopLabel(top);
+  } //set icon if found or set icon url if not;
+
+
+  if (icon && icon !== '') {
+    var iconEnum = CardService.Icon[icon];
+
+    if (iconEnum) {
+      widget.setIcon(iconEnum);
+    } else {
+      widget.setIconUrl(icon);
+    }
+  } //set onclick action and set parameters if provided;
+
+
+  var action = actionAction(funcName, true, params);
+  widget.setOnClickAction(action);
+  return widget;
+}
 /**
  * Creates a selection widget with specified options;
  * @param {String} top widget title;
@@ -524,25 +592,28 @@ function actionKeyValueWidgetButton(icon,top,content,button,funcName,params) {
  * @param {Object=} params parameters to pass to function;
  * @returns {SelectionInput} this SelectionInput;
  */
-function selectionInputWidget(top,name,type,options,funcName,hasSpinner,params) {
+
+
+function selectionInputWidget(top, name, type, options, funcName, hasSpinner, params) {
   //create widget and set required parameters;
   var widget = CardService.newSelectionInput();
-      widget.setFieldName(name);
-  
-  //set widget's type accordingly [rewrite];
-  widget.setType(CardService.SelectionInputType[type]);
-  
-  //set top title if found;
-  if(top&&top!=='') { widget.setTitle(top); }
+  widget.setFieldName(name); //set widget's type accordingly [rewrite];
 
-  //set an onchange action;
-  if(funcName) { 
-    var action = actionAction(funcName,hasSpinner,params);
+  widget.setType(CardService.SelectionInputType[type]); //set top title if found;
+
+  if (top && top !== '') {
+    widget.setTitle(top);
+  } //set an onchange action;
+
+
+  if (funcName) {
+    var action = actionAction(funcName, hasSpinner, params);
     widget.setOnChangeAction(action);
-  }
-  
-  //set options to widget;
-  options.forEach(function(option) { widget.addItem(option.text,option.value,option.selected); });
-  
+  } //set options to widget;
+
+
+  options.forEach(function (option) {
+    widget.addItem(option.text, option.value, option.selected);
+  });
   return widget;
 }

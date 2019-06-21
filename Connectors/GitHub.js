@@ -1,10 +1,10 @@
 //sample GitHub connector class;
 function GitHub() {
   Connector.call(this);
-  this.icon     = globalGitHubIconUrl;
+  this.icon = globalGitHubIconUrl;
   this.typeName = 'GitHub';
-  this.short    = globalGitHubShort;
-  this.url      = 'https://api.github.com/user';
+  this.short = globalGitHubShort;
+  this.url = 'https://api.github.com/user';
   this.config = [];
   this.auth = {
     urlAuth: 'https://github.com/login/oauth/authorize',
@@ -14,7 +14,6 @@ function GitHub() {
     scope: 'malformed',
     prompt: true
   };
-  
   /**
    * method for performing fetch to external service;
    * @param {Object} msg message object;
@@ -22,27 +21,23 @@ function GitHub() {
    * @param {Object} data custom data object to pass to payload;
    * @return {Function}
    */
-  this.run = function (msg,connector,data) { 
+
+  this.run = function (msg, connector, data) {
     //initiate authorization service;
     var parameters = this.auth;
-        parameters.name = connector.name;
-    
-    
-    var service = authService(parameters);
-    
-    //set method for url fetch ('get' or 'post' for now);
-    var method = 'get';
-  
-    //set headers for url fetch;
+    parameters.name = connector.name;
+    var service = authService(parameters); //set method for url fetch ('get' or 'post' for now);
+
+    var method = 'get'; //set headers for url fetch;
+
     var headers = {
-      'Authorization' : 'Bearer '+service.getAccessToken()
-    };
-  
-    //set payload in case POST request will be triggered;
-    var trimmed = trimMessage(msg,true,true);
-    //var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
-	var labels = msg.getThread().getLabels();
-	console.log(labels);
+      'Authorization': 'Bearer ' + service.getAccessToken()
+    }; //set payload in case POST request will be triggered;
+
+    var trimmed = trimMessage(msg, true, true); //var labels = msg.getThread().getLabels().map(function(label){ return label.getName(); });
+
+    var labels = msg.getThread().getLabels();
+    console.log(labels);
     var payload = {
       'Bcc': msg.getBcc(),
       'Cc': msg.getCc(),
@@ -53,60 +48,59 @@ function GitHub() {
       'subject': msg.getSubject(),
       'labels': labels
     };
-    if(data) { payload.data = data; }
-  
-    //initiate request;
-    var response = performFetch(connector.url,method,headers,payload);
-    
-    //initialize result without content;
-    var parsed;
-    
-    //perform some parsing;
-    if(!(response instanceof Array)) {
+
+    if (data) {
+      payload.data = data;
+    } //initiate request;
+
+
+    var response = performFetch(connector.url, method, headers, payload); //initialize result without content;
+
+    var parsed; //perform some parsing;
+
+    if (!(response instanceof Array)) {
       //change content into array and parse all nested objects;
       parsed = new Array(parseData(response.content));
-    }
-    //add custom key-value pair;
-    parsed[0].custom = 'CUSTOM ADDITION';
-    //filter out empty strings, undefined and nulls from array elements;
-    parsed.forEach(function(elem){
-      for(var key in elem) {
+    } //add custom key-value pair;
+
+
+    parsed[0].custom = 'CUSTOM ADDITION'; //filter out empty strings, undefined and nulls from array elements;
+
+    parsed.forEach(function (elem) {
+      for (var key in elem) {
         var value = elem[key];
-        if(value===''||value===undefined||value===null) { delete elem[key]; }
+
+        if (value === '' || value === undefined || value === null) {
+          delete elem[key];
+        }
       }
-    });
-    
-    //button colour test;
-    parsed = [
-      {
-        header:'Button test',
-        widgets:[
-          {
-            type:'TextButton',
-            title:'Coloured button',
-            colour:'#DE009B',
-            action:'click',
-            content:'actionManual',
-            disabled:false
-          }
-        ]
-      }
-    ];
-    
-    //build return object;
+    }); //button colour test;
+
+    parsed = [{
+      header: 'Button test',
+      widgets: [{
+        type: 'TextButton',
+        title: 'Coloured button',
+        colour: '#DE009B',
+        action: 'click',
+        content: 'actionManual',
+        disabled: false
+      }]
+    }]; //build return object;
+
     var returned = {
-      code     : response.code,
-      headers  : response.headers,
-      content  : parsed,
-      hasMatch : {
-        value  : true,
-        text   : 'found',
-        colour : '#DE009B'
+      code: response.code,
+      headers: response.headers,
+      content: parsed,
+      hasMatch: {
+        value: true,
+        text: 'found',
+        colour: '#DE009B'
       }
     };
-    
     return returned;
-  }
-}
-//chain custom connector to base class;
+  };
+} //chain custom connector to base class;
+
+
 GitHub.prototype = Object.create(Connector.prototype);
