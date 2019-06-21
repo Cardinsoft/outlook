@@ -25,7 +25,6 @@
     "@babel/core": "^7.4.5"
   },
   "babel": {
-	  "sourceType": "script",
 	  "plugins": [
 		"@babel/plugin-transform-arrow-functions",
 		"@babel/plugin-transform-block-scoped-functions",
@@ -35,10 +34,10 @@
 		"@babel/plugin-transform-function-name",
 		"@babel/plugin-transform-parameters",
 		"@babel/plugin-transform-async-to-generator",
-		"@babel/plugin-transform-regenerator",
-		"@babel/plugin-transform-runtime"
+		"@babel/plugin-transform-regenerator"
 	  ]
   },
+  "sourceType": "script",
   "browserslist": [
     "ie 11"
   ],
