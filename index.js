@@ -613,8 +613,8 @@ function loadMailto(element, input) {
         event.stopPropagation();
         event.preventDefault(); //find original recipient;
 
-        let mailRegEx = /(?:(?<=mailto:).+)(?=")/;
-        let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
+        let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
+        let recipient = input.match(mailRegEx)[1]; //set parameters for Compose Ui;
 
         let mailParams = {
           toRecipients: recipient
