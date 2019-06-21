@@ -1,5 +1,7 @@
 "use strict";
 
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+
 function _typeof(obj) {
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     _typeof = function _typeof(obj) {
@@ -102,9 +104,9 @@ e_UrlFetchApp.prototype.fetch =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(url, params) {
+  _regeneratorRuntime.mark(function _callee(url, params) {
     var response, checkResp, checkProps;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:

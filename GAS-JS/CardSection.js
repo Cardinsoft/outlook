@@ -1,5 +1,7 @@
 "use strict";
 
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -79,10 +81,10 @@ CardSection.prototype.appendToUi =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(parent, serialize, sI) {
+  _regeneratorRuntime.mark(function _callee2(parent, serialize, sI) {
     var collapsible, uncollapse, section, headerText, header, widgetsWrap, wrapper, widgets, hasInput, formElem, appendWidgetsAsync, _appendWidgetsAsync, toggler;
 
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -134,9 +136,9 @@ function () {
             _appendWidgetsAsync = function _ref3() {
               _appendWidgetsAsync = _asyncToGenerator(
               /*#__PURE__*/
-              regeneratorRuntime.mark(function _callee(warr, wrapper) {
+              _regeneratorRuntime.mark(function _callee(warr, wrapper) {
                 var i, widget;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
+                return _regeneratorRuntime.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:

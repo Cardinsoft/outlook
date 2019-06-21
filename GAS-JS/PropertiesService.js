@@ -1,5 +1,7 @@
 "use strict";
 
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -99,9 +101,9 @@ Properties.prototype.getProperty =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(key) {
+  _regeneratorRuntime.mark(function _callee(key) {
     var settings, property;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -156,9 +158,9 @@ Properties.prototype.setProperty =
 function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(key, value) {
+  _regeneratorRuntime.mark(function _callee2(key, value) {
     var settings;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -211,9 +213,9 @@ Properties.prototype.deleteProperty =
 function () {
   var _ref3 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(key) {
+  _regeneratorRuntime.mark(function _callee3(key) {
     var settings;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -267,16 +269,16 @@ Properties.prototype.setProperties =
 function () {
   var _ref4 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(properties, deleteAllOthers) {
+  _regeneratorRuntime.mark(function _callee4(properties, deleteAllOthers) {
     var settings, key, value, type;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             //add delete others after initial release;
             settings = this.settings; //set properties;
 
-            _context4.t0 = regeneratorRuntime.keys(properties);
+            _context4.t0 = _regeneratorRuntime.keys(properties);
 
           case 2:
             if ((_context4.t1 = _context4.t0()).done) {
@@ -328,9 +330,9 @@ Properties.prototype.deleteAllProperties =
 /*#__PURE__*/
 _asyncToGenerator(
 /*#__PURE__*/
-regeneratorRuntime.mark(function _callee5() {
+_regeneratorRuntime.mark(function _callee5() {
   var settings, keys, p, key, obj, props, k, prop;
-  return regeneratorRuntime.wrap(function _callee5$(_context5) {
+  return _regeneratorRuntime.wrap(function _callee5$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
@@ -349,7 +351,7 @@ regeneratorRuntime.mark(function _callee5() {
           keys = Object.keys(settings['_settingsData$p$0']);
           console.log(keys); //delete every key found;
 
-          _context5.t0 = regeneratorRuntime.keys(keys);
+          _context5.t0 = _regeneratorRuntime.keys(keys);
 
         case 4:
           if ((_context5.t1 = _context5.t0()).done) {
@@ -374,7 +376,7 @@ regeneratorRuntime.mark(function _callee5() {
             break;
           }
 
-          _context5.t2 = regeneratorRuntime.keys(props);
+          _context5.t2 = _regeneratorRuntime.keys(props);
 
         case 12:
           if ((_context5.t3 = _context5.t2()).done) {

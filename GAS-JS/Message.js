@@ -1,5 +1,7 @@
 "use strict";
 
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -113,9 +115,9 @@ Thread.prototype.getLabels =
 /*#__PURE__*/
 _asyncToGenerator(
 /*#__PURE__*/
-regeneratorRuntime.mark(function _callee() {
+_regeneratorRuntime.mark(function _callee() {
   var curr, id;
-  return regeneratorRuntime.wrap(function _callee$(_context) {
+  return _regeneratorRuntime.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
