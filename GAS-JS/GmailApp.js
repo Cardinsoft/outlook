@@ -1,8 +1,12 @@
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate GmailApp service (partially);
 
-//Emulate GmailApp service (partially);
+
 var e_GmailApp = function e_GmailApp() {
   _classCallCheck(this, e_GmailApp);
 

@@ -1,8 +1,12 @@
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate LockService service;
 
-//Emulate LockService service;
+
 var e_LockService = function e_LockService() {
   _classCallCheck(this, e_LockService);
 

@@ -1,8 +1,12 @@
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+} //Emulate Class Notification for CardService service;
 
-//Emulate Class Notification for CardService service;
+
 var Notification = function Notification() {
   _classCallCheck(this, Notification);
 

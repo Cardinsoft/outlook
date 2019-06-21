@@ -1,6 +1,5 @@
-"use strict";
+"use strict"; //Emulate CardService service;
 
-//Emulate CardService service;
 function e_CardService() {
   this.className = 'CardService';
   this.ComposedEmailType = {
