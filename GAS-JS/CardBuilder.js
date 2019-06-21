@@ -123,7 +123,7 @@ regeneratorRuntime.mark(function _callee() {
         if (this.cardHeader) {
           headerWrap = document.createElement('div');
           headerWrap.className = [cardHeader.className, 'separated-both'].join(' ');
-		  (body.parentNode).insertBefore(headerWrap,body);
+		  (body).insertBefore(headerWrap,body.children.item(0));
 
           if (this.cardHeader.imageUrl) {
             icon = document.createElement('img');
