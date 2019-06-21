@@ -62,7 +62,7 @@ Office.initialize = function (reason) {
 				Utilities         = new e_Utilities();
 				PropertiesService = new e_PropertiesService();
 				  
-				let body = document.getElementById'app-body');
+				let body = document.getElementById('app-body');
 					body.show(); //show app body overlay;
 
 				o = new Overlay();
