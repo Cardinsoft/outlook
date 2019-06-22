@@ -877,7 +877,6 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
 
-
 function e_EventObject() {
   this.messageMetadata = {
     accessToken: '',
@@ -901,3 +900,16 @@ const e_actions = {};
 let Utilities;
 let PropertiesService;
 let CardService;
+
+//=======================================START POLYFILLS===================================//
+
+//polyfill for empty() method of HtmlElement;
+if(!HtmlElement.prototype.empty) {
+	HtmlElement.prototype.empty = function () {
+		let chd = this.children;
+		for(let c=0; c<chd.length; c++) {
+			let child = chd.item(c);
+			this.removeChild(child);
+		}
+	}
+}
