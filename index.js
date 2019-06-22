@@ -924,26 +924,14 @@ if(!HtmlElement.prototype.remove) {
 
 //poltfill for add() method of classList property of HtmlElement;
 const DOMTokenList = GLOBAL.DOMTokenList;
+const addToken = DOMTokenList.prototype.add;
+
 
 DOMTokenList.prototype.add = function () {
 	
-	console.log(this)
-	
-	let value = this.value;
-	if(!value) { value = ''; }
-	value = value.split(' ');
-	
 	for(let i=0; i<arguments.length; i++) {
 		let arg = arguments[i];
-		value.push(arg); 
+		addToken.call(this,arg);
 	}
-	
-	if(value[0]==='') { value.splice(0,1); }
-	
-	console.log(arguments)
-	console.log(value)
-	console.log(value.join(' '))
-	
-	this.length = value.length;
-	this.value  = value.join(' ');
+
 }
