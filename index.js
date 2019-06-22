@@ -928,5 +928,8 @@ DOMTokenList.prototype.add = function () {
 	
 	console.log(arguments);
 	
+	for(let arg = 0; arg < arguments.length; arg++) {
+		DOMTokenList.push(arguments[arg]);
+	}
 	
 }
