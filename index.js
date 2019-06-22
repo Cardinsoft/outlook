@@ -934,6 +934,9 @@ DOMTokenList.prototype.add = function () {
 		value.push(arg); 
 	}
 	
+	console.log(arguments)
+	console.log(value)
+	
 	this.length = value.length;
 	this.value  = value.join(' ');
 }
