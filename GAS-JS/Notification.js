@@ -28,7 +28,7 @@ Notification.prototype.appendToUi = function ()
 {
   const type = this.type;
   const text = this.text;
-  const parent = $('#app-notif');
+  const parent = document.getElementById('app-notif');
   parent.empty(); //message bar;
 
   const notification = document.createElement('div');
