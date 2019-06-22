@@ -904,6 +904,7 @@ let CardService;
 //=======================================START POLYFILLS===================================//
 console.log(window)
 //polyfill for empty() method of HtmlElement;
+const HtmlElement = GLOBAL.HtmlElement;
 if(!HtmlElement.prototype.empty) {
 	HtmlElement.prototype.empty = function () {
 		let chd = this.children;
