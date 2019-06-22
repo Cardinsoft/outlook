@@ -217,6 +217,8 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       }; //resolve or reject according to code;
+	  
+	  console.log(obj)
 
       if (status >= 200 && status < 300) {
         resolve(obj);
