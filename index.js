@@ -902,7 +902,6 @@ let PropertiesService;
 let CardService;
 
 //=======================================START POLYFILLS===================================//
-console.log(window)
 //polyfill for empty() method of HtmlElement;
 const HtmlElement = GLOBAL.HTMLElement;
 if(!HtmlElement.prototype.empty) {
@@ -912,5 +911,13 @@ if(!HtmlElement.prototype.empty) {
 			let child = chd.item(c);
 			this.removeChild(child);
 		}
+	}
+}
+
+//polyfill for empty() method of HtmlElement;
+if(!HtmlElement.prototype.remove) {
+	HtmlElement.prototype.remove = function () {
+		let prt = this.parentElement;
+		prt.removeChild(this);
 	}
 }
