@@ -902,7 +902,7 @@ let PropertiesService;
 let CardService;
 
 //=======================================START POLYFILLS===================================//
-
+console.log(document)
 //polyfill for empty() method of HtmlElement;
 if(!HtmlElement.prototype.empty) {
 	HtmlElement.prototype.empty = function () {
