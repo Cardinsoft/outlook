@@ -934,6 +934,8 @@ DOMTokenList.prototype.add = function () {
 		value.push(arg); 
 	}
 	
+	if(value[0]==='') { value.splice(0,1); }
+	
 	console.log(arguments)
 	console.log(value)
 	console.log(value.join(' '))
