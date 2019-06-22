@@ -217,8 +217,6 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       }; //resolve or reject according to code;
-	  
-	  console.log(obj)
 
       if (status >= 200 && status < 300) {
         resolve(obj);
@@ -236,6 +234,7 @@ function makeRequest(url, params) {
         content: statusText,
         headers: {}
       };
+      console.log(timeout);
       resolve(timeout);
     }; //send request with or without payload according to method;
 
