@@ -924,8 +924,11 @@ if(!HtmlElement.prototype.remove) {
 
 //poltfill for add() method of classList property of HtmlElement;
 const DOMTokenList = GLOBAL.DOMTokenList;
+DOMTokenList.add('test');
+/*
 DOMTokenList.prototype.add = function () {
 	
 	console.log(this);
 	
 }
+*/
