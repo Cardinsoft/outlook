@@ -921,3 +921,12 @@ if(!HtmlElement.prototype.remove) {
 		prt.removeChild(this);
 	}
 }
+
+//poltfill for add() method of classList property of HtmlElement;
+const DOMTokenList = GLOBAL.DOMTokenList;
+DOMTokenList.prototype.add = function () {
+	
+	console.log(arguments);
+	
+	
+}
