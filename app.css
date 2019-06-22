@@ -201,10 +201,13 @@ span.menu:before {
 }
 
 .Menu, .Select {
-    width            : 90%;
-    background-color : white;
-    box-shadow       : 0 0 5px 0 rgba(0,0,0,.4);
-	transition       : width 0.2s;
+    width              : 90%;
+    background-color   : white;
+    box-shadow         : 0 0 5px 0 rgba(0,0,0,.4);
+	transition         : width 0.2s;
+	-moz-transition    : width 0.2s;
+    -o-transition      : width 0.2s;
+	-webkit-transition : width 0.2s;
 }
 
 .singulared {
@@ -213,9 +216,12 @@ span.menu:before {
 }
 
 .menuItem, .selectItem {
-	width       : 100%;
-	height      : 35px;
-	transition  : background-color 
+	width              : 100%;
+	height             : 35px;
+	transition         : background-color;
+	-moz-transition    : background-color;
+    -o-transition      : background-color;
+	-webkit-transition : background-color;	
 }
 
 .menuItem:hover, .selectItem:hover {
