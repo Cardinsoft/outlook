@@ -924,8 +924,11 @@ if(!HtmlElement.prototype.remove) {
 
 //poltfill for add() method of classList property of HtmlElement;
 const DOMTokenList = GLOBAL.DOMTokenList;
-/*
+
 DOMTokenList.prototype.add = function () {
+	
+	console.log(this)
+	
 	let value = this.value;
 	if(!value) { value = ''; }
 	value = value.split(' ');
@@ -944,4 +947,3 @@ DOMTokenList.prototype.add = function () {
 	this.length = value.length;
 	this.value  = value.join(' ');
 }
-*/
