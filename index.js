@@ -926,10 +926,6 @@ if(!HtmlElement.prototype.remove) {
 const DOMTokenList = GLOBAL.DOMTokenList;
 DOMTokenList.prototype.add = function () {
 	
-	console.log(arguments);
-	
-	for(let arg = 0; arg < arguments.length; arg++) {
-		this.add(arguments[arg]);
-	}
+	console.log(this);
 	
 }
