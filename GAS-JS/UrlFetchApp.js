@@ -221,6 +221,7 @@ function makeRequest(url, params) {
       if (status >= 200 && status < 300) {
         resolve(obj);
       } else {
+		console.log(obj)
         reject(obj);
       }
     }; //handle timeout event;
