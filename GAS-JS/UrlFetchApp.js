@@ -213,7 +213,7 @@ function makeRequest(url, params) {
       }); //construct response object;
 
       let obj = {
-        code: 404,//status,
+        code: status,
         content: response,
         headers: map
       }; //resolve or reject according to code;
