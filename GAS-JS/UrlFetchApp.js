@@ -218,12 +218,8 @@ function makeRequest(url, params) {
         headers: map
       }; //resolve or reject according to code;
 
-      if (status >= 200 && status < 300) {
-        resolve(obj);
-      } else {
-		console.log(obj)
-        resolve(obj);
-      }
+      resolve(obj);
+
     }; //handle timeout event;
 
 
