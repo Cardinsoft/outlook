@@ -40,6 +40,7 @@ function Flow() {
   this.icon = globalIconWebhook;
   this.typeName = 'Webhook';
   this.short = globalWebhookShort;
+  this.allowCustomIcons = true;
   this.config = [{
     'header': 'Webhook config',
     'isCollapsible': false,
