@@ -222,7 +222,7 @@ function makeRequest(url, params) {
         resolve(obj);
       } else {
 		console.log(obj)
-        reject(obj);
+        resolve(obj);
       }
     }; //handle timeout event;
 
