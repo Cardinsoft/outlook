@@ -213,7 +213,7 @@ function makeRequest(url, params) {
       }); //construct response object;
 
       let obj = {
-        code: status,
+        code: 404,//status,
         content: response,
         headers: map
       }; //resolve or reject according to code;
@@ -234,7 +234,6 @@ function makeRequest(url, params) {
         content: statusText,
         headers: {}
       };
-      console.log(timeout);
       resolve(timeout);
     }; //send request with or without payload according to method;
 
