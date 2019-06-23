@@ -59,7 +59,9 @@ function getTypes(filter) {
       }
     });
   } //apply filter;
-
+  
+  //sort alphabetically;
+  types.sort(function(a,b){return order(a.typeName,b.typeName,false);});
 
   if (filter) {
     return types.filter(function (type) {
