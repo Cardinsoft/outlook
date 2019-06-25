@@ -615,8 +615,6 @@ function loadMailto(element, input) {
 
         let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
         let recipients = input.match(mailRegEx); //set parameters for Compose Ui;
-		
-		console.log(recipient);
 
         let mailParams = {
           toRecipients: recipients
