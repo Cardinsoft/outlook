@@ -614,12 +614,12 @@ function loadMailto(element, input) {
         event.preventDefault(); //find original recipient;
 
         let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-        let recipient = input.match(mailRegEx)[1]; //set parameters for Compose Ui;
+        let recipients = input.match(mailRegEx); //set parameters for Compose Ui;
 		
 		console.log(recipient);
 
         let mailParams = {
-          toRecipients: recipient
+          toRecipients: recipients
         };
         Office.context.mailbox.displayNewMessageForm(mailParams);
         return false;
