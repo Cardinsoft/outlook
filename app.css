@@ -72,6 +72,27 @@ body {
 	margin-right : 16px;
 }
 
+.row {
+	display     : flex;
+	align-items : center;
+	margin      : 12px 0;
+	width       : 100%;
+	min-height  : 35px;
+}
+
+.column {
+	flex-grow : 1;
+}
+
+.column-icon {
+	margin-right : 1.5em;
+}
+
+.column-text {
+	margin-right : 8px;
+	flex-grow    : 100;
+}
+
 .ButtonSet {
 	margin : 0;
 }
@@ -115,27 +136,6 @@ body {
 .Switch {
 	margin : 0;
 	top    : 4px;
-}
-
-.row {
-	display     : flex;
-	align-items : center;
-	margin      : 12px 0;
-	width       : 100%;
-	min-height  : 35px;
-}
-
-.column {
-	flex-grow : 1;
-}
-
-.column-icon {
-	margin-right : 1.5em;
-}
-
-.column-text {
-	margin-right : 8px;
-	flex-grow    : 100;
 }
 
 .separated, .separated-both {
