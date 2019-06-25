@@ -102,9 +102,11 @@ body {
 }
 
 .TextButton {
-    text-transform : uppercase;
+    display        : block;
+	text-transform : uppercase;
     font-weight    : bold;
     border         : none;
+	margin         : 8px 0;
     padding        : 0;
 	cursor         : pointer;
 }
@@ -114,8 +116,6 @@ body {
 }
 
 .btn-text {
-	display    : block;
-	margin     : 8px 0;
 	text-align : right;
 	background : none;
 	color      : #0078d7;
