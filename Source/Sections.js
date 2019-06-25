@@ -760,12 +760,13 @@ function createSectionConfig(builder, config) {
 
         case 'KeyValue':
           //access KeyValue-specific params;
-          var iconUrl = widget.icon;
+          var iconUrl     = widget.icon;
           var isMultiline = widget.isMultiline;
           var switchValue = widget.switchValue;
-          var buttonText = widget.buttonText;
-          var disabled = widget.disabled;
-          var filled = widget.filled; //default to multiline if nothing is set;
+          var buttonText  = widget.buttonText;
+		  var selected    = widget.selected;
+          var disabled    = widget.disabled;
+          var filled      = widget.filled; //default to multiline if nothing is set;
 
           if (!isMultiline) {
             isMultiline = true;
@@ -778,7 +779,7 @@ function createSectionConfig(builder, config) {
 
 
           if (switchValue) {
-            element = switchWidget(iconUrl, title, content, name, switchValue, switchValue);
+            element = switchWidget(iconUrl, title, content, name, selected, switchValue);
           } else if (buttonText) {
             if (disabled === undefined) {
               disabled = true;
