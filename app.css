@@ -72,6 +72,10 @@ body {
 	margin-right : 16px;
 }
 
+.ButtonSet {
+	margin : 0;
+}
+
 .ButtonSet .TextButton {
 	margin-right : 16px;
 }
@@ -89,6 +93,8 @@ body {
 }
 
 .btn-text {
+	display    : block;
+	margin     : 8px 0;
 	text-align : right;
 	background : none;
 	color      : #0078d7;
