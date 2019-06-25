@@ -98,6 +98,7 @@ body {
 }
 
 .ButtonSet .TextButton {
+	display      : inline;
 	margin-right : 16px;
 }
 
