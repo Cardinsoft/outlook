@@ -1,45 +1,12 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
 /**
  * Configures contact add display;
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-
-
 function configureContactAdd(_x) {
   return _configureContactAdd.apply(this, arguments);
 }
@@ -803,13 +770,14 @@ function _actionManual() {
 
         case 8:
           response = _context13.sent;
-          _context13.next = 16;
+          _context13.next = 17;
           break;
 
         case 11:
           _context13.prev = 11;
-          _context13.t0 = _context13["catch"](5); //set empty response headers and content to error message;
-
+          _context13.t0 = _context13["catch"](5);
+          //set empty response headers and content to error message;
+          console.error('Error during manual action: ' + _context13.t0);
           response = {
             headers: '',
             content: _context13.t0.message
@@ -823,7 +791,7 @@ function _actionManual() {
             response.code = 0;
           }
 
-        case 16:
+        case 17:
           //access response code and content;
           code = response.code;
           content = response.content;
@@ -849,7 +817,7 @@ function _actionManual() {
           builder.setStateChanged(true);
           return _context13.abrupt("return", builder.build());
 
-        case 23:
+        case 24:
         case "end":
           return _context13.stop();
       }
@@ -899,8 +867,8 @@ function _performFullReset() {
 
         case 10:
           _context14.prev = 10;
-          _context14.t0 = _context14["catch"](3); //log error to stackdriver;
-
+          _context14.t0 = _context14["catch"](3);
+          //log error to stackdriver;
           console.log(_context14.t0);
 
         case 13:
