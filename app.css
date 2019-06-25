@@ -107,7 +107,7 @@ body {
 	text-transform : uppercase;
     font-weight    : bold;
     border         : none;
-	margin         : 8px 0;
+	min-height     : 35px;
     padding        : 0;
 	cursor         : pointer;
 }
