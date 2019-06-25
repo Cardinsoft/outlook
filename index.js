@@ -590,6 +590,8 @@ function _actionCallback() {
 function loadMailto(element, input) {
   const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
   const matches = input.match(regexp); //get children that are anchors with mailto;
+  
+  console.log(matches)
 
   let children = Array.from(element.children);
   children = children.filter(function (elem) {
