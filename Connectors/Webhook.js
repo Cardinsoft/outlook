@@ -71,16 +71,17 @@ function Flow() {
             connector.method = 'send'; //set payload in case POST request will be triggered;
 
             trimmed = trimMessage(msg, true, true);
-            payload = {
+			
+            payload = {/*
               'Bcc': msg.getBcc(),
               'Cc': msg.getCc(),
               'date': msg.getDate(),
               'sender': trimmed.name,
               'from': trimmed.email,
               'id': msg.getId(),
-              'subject': msg.getSubject()
+              'subject': msg.getSubject()*/
             };
-
+			
             if (data) {
               payload.data = data;
             } //perform data fetch and return result;
