@@ -284,10 +284,7 @@ function _cardDisplay() {
 
         case 36:
           //parse content;
-
-		  console.log(content)
           content = parseData(content); //try to display content or show unparsed data if error;
-		  console.log(content)
 
           _context.prev = 37;
 
