@@ -952,9 +952,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
                 //access KeyValue-specific params;
                 var isMultiline = widget.isMultiline;
                 var switchValue = widget.switchValue;
-                var buttonText = widget.buttonText;
-                var disabled = widget.disabled;
-                var filled = widget.filled; //default to multiline;
+                var buttonText  = widget.buttonText;
+				var selected    = widget.selected;
+                var disabled    = widget.disabled;
+                var filled      = widget.filled; //default to multiline;
 
                 if (!isMultiline) {
                   isMultiline = true;
