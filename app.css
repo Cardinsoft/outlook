@@ -95,8 +95,10 @@ body {
 }
 
 .btn-text-filled {
+	padding          : 8px;
 	color            : white;
 	background-color : #0078d7;
+	border-radius    : 2px;
 }
 
 .btn-disabled {
