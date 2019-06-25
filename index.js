@@ -591,8 +591,6 @@ function loadMailto(element, input) {
   const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
   const matches = input.match(regexp); //get children that are anchors with mailto;
   
-  console.log(matches)
-
   let children = Array.from(element.children);
   children = children.filter(function (elem) {
     let isAnchor = elem.tagName.toLowerCase() === 'a';
@@ -617,6 +615,8 @@ function loadMailto(element, input) {
 
         let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
         let recipient = input.match(mailRegEx)[1]; //set parameters for Compose Ui;
+		
+		console.log(recipient);
 
         let mailParams = {
           toRecipients: recipient
