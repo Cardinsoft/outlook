@@ -94,6 +94,11 @@ body {
 	color      : #0078d7;
 }
 
+.btn-text-filled {
+	color            : white;
+	background-color : #0078d7;
+}
+
 .btn-disabled {
 	pointer-events : none;
 	color          : #a6a6a6;
