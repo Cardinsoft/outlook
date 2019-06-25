@@ -207,15 +207,16 @@ TextButton.prototype.appendToUi = function (parent) {
   const authAction = this.authorizationAction; //initiate button;
 
   const button = document.createElement('button');
-  button.className = this.className;
-  button.type = 'button';
-  button.disabled = disabled;
-  button.innerHTML = text; //access button style and class list;
+		button.className = this.className;
+		button.type = 'button';
+		button.disabled = disabled;
+		button.innerHTML = text; //access button style and class list;
 
   const st = button.style;
   const cl = button.classList;
 
   if (textButtonStyle === 'FILLED') {
+	cl.add('btn-text-filled');
     st.backgroundColor = backgroundColor;
   } else {
     cl.add('btn-text');
