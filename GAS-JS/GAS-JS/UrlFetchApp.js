@@ -104,7 +104,7 @@ function () {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
-          //throw new Error(_context.t0.content);
+        //throw new Error(_context.t0.content);
 
         case 10:
           _context.next = 15;
@@ -122,8 +122,8 @@ function () {
           checkResp = typeof response === 'object'; //make sure response is parsed;
 
           if (!checkResp) {
-			console.log('RESPONSE')
-			console.log(response)
+            console.log('RESPONSE');
+            console.log(response);
             checkResp = JSON.parse(response);
           } //check if response object has properties;
 
@@ -157,8 +157,8 @@ const UrlFetchApp = new e_UrlFetchApp();
  * @returns {Object} response object {code,content,headers} 
  */
 
-async function makeRequest(url, params) {
-	
+function makeRequest(url, params) {
+  return new Promise(function (resolve, reject) {
     //prefent defaulting to location.href and throw an error message;
     if (url === '') {
       //construct empty URL error;
@@ -167,7 +167,7 @@ async function makeRequest(url, params) {
         content: 'Attribute provided with no value: url',
         headers: {}
       };
-      return emptyUrlErr;
+      reject(emptyUrlErr);
     } //default to GET method if no params provided;
 
 
@@ -220,8 +220,7 @@ async function makeRequest(url, params) {
         headers: map
       }; //resolve or reject according to code;
 
-      return obj;
-
+      resolve(obj);
     }; //handle timeout event;
 
 
@@ -233,14 +232,14 @@ async function makeRequest(url, params) {
         content: statusText,
         headers: {}
       };
-      return timeout;
+      resolve(timeout);
     }; //send request with or without payload according to method;
 
 
     if (params.payload && params.method !== 'get') {
-      await request.send(params.payload);
+      request.send(params.payload);
     } else {
-      await request.send();
+      request.send();
     }
-	
+  });
 }
