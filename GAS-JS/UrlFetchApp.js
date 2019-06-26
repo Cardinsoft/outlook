@@ -247,5 +247,9 @@ function makeRequest(url, params) { /*
       request.send();
     }
   });*/
-  return [];
+  return {
+	  code : 200,
+	  content : '[]',
+	  headers : {}
+  };
 }
