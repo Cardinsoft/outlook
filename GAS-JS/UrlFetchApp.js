@@ -171,6 +171,13 @@ function makeRequest(url, params) {
     } //initiate and open XMLHttpRequest;
 
     let request = new XMLHttpRequest();
+	
+	//check for IE11;
+	const nav = GLOBAL.navigator;
+	const ual = nav.userAgent;
+	console.log(ual)
+	
+	
     //request.timeout = 29000;
 	
 	console.log('managed to timeout');
@@ -241,14 +248,5 @@ function makeRequest(url, params) {
     } else {
       request.send();
     }
-	/*
-	let obj = {
-	  code : 200,
-	  content : '[]',
-	  headers : {}
-	};
-	
-	resolve(obj);
-	*/
   });
 }
