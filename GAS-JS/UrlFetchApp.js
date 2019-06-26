@@ -247,5 +247,5 @@ function makeRequest(url, params) { /*
       request.send();
     }
   });*/
-  return '[\"test\"]';
+  return '\"test\"';
 }
