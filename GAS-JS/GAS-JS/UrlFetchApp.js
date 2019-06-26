@@ -1,3 +1,7 @@
+function _asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator2(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { _asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { _asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -157,89 +161,109 @@ const UrlFetchApp = new e_UrlFetchApp();
  * @returns {Object} response object {code,content,headers} 
  */
 
-function makeRequest(url, params) {
-  return new Promise(function (resolve, reject) {
-    //prefent defaulting to location.href and throw an error message;
-    if (url === '') {
-      //construct empty URL error;
-      let emptyUrlErr = {
-        code: 0,
-        content: 'Attribute provided with no value: url',
-        headers: {}
-      };
-      reject(emptyUrlErr);
-    } //default to GET method if no params provided;
+function makeRequest(_x3, _x4) {
+  return _makeRequest.apply(this, arguments);
+}
+
+function _makeRequest() {
+  _makeRequest = _asyncToGenerator2(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(url, params) {
+    var emptyUrlErr, request, hs, key, value;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          if (!(url === '')) {
+            _context2.next = 3;
+            break;
+          }
+
+          //construct empty URL error;
+          emptyUrlErr = {
+            code: 0,
+            content: 'Attribute provided with no value: url',
+            headers: {}
+          };
+          return _context2.abrupt("return", emptyUrlErr);
+
+        case 3:
+          //default to GET method if no params provided;
+          if (!params) {
+            params = {
+              method: 'get'
+            };
+          } //initiate and open XMLHttpRequest;
 
 
-    if (!params) {
-      params = {
-        method: 'get'
-      };
-    } //initiate and open XMLHttpRequest;
+          request = new XMLHttpRequest();
+          request.timeout = 29000;
+          request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
+
+          if (params.contentType) {
+            request.setRequestHeader('Content-Type', params.contentType);
+          } //add headers if provided;
 
 
-    let request = new XMLHttpRequest();
-    request.timeout = 29000;
-    request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
+          if (params.headers) {
+            //access headers to set with request;
+            hs = params.headers; //set request header for each param header;
 
-    if (params.contentType) {
-      request.setRequestHeader('Content-Type', params.contentType);
-    } //add headers if provided;
+            for (key in hs) {
+              value = hs[key];
+
+              if (value) {
+                request.setRequestHeader(key, value);
+              }
+            }
+          } //handle load event (set headers and resolve objects);
 
 
-    if (params.headers) {
-      //access headers to set with request;
-      const hs = params.headers; //set request header for each param header;
+          request.onload = function () {
+            let status = request.status;
+            let response = request.response;
+            let headers = request.getAllResponseHeaders().trim().split(/[\r\n]+/);
+            let map = {}; //map response headers;
 
-      for (let key in hs) {
-        let value = hs[key];
+            headers.forEach(function (header) {
+              let data = header.split(': ');
+              let name = data.shift();
+              let value = data.join(': ');
+              map[name] = value;
+            }); //construct response object;
 
-        if (value) {
-          request.setRequestHeader(key, value);
-        }
+            let obj = {
+              code: status,
+              content: response,
+              headers: map
+            }; //resolve or reject according to code;
+
+            return obj;
+          }; //handle timeout event;
+
+
+          request.ontimeout = function () {
+            let statusText = request.statusText; //construct timeout response object;
+
+            let timeout = {
+              code: request.status,
+              content: statusText,
+              headers: {}
+            };
+            return timeout;
+          }; //send request with or without payload according to method;
+
+
+          if (params.payload && params.method !== 'get') {
+            request.send(params.payload);
+          } else {
+            request.send();
+          }
+
+        case 12:
+        case "end":
+          return _context2.stop();
       }
-    } //handle load event (set headers and resolve objects);
-
-
-    request.onload = function () {
-      let status = request.status;
-      let response = request.response;
-      let headers = request.getAllResponseHeaders().trim().split(/[\r\n]+/);
-      let map = {}; //map response headers;
-
-      headers.forEach(function (header) {
-        let data = header.split(': ');
-        let name = data.shift();
-        let value = data.join(': ');
-        map[name] = value;
-      }); //construct response object;
-
-      let obj = {
-        code: status,
-        content: response,
-        headers: map
-      }; //resolve or reject according to code;
-
-      resolve(obj);
-    }; //handle timeout event;
-
-
-    request.ontimeout = function () {
-      let statusText = request.statusText; //construct timeout response object;
-
-      let timeout = {
-        code: request.status,
-        content: statusText,
-        headers: {}
-      };
-      resolve(timeout);
-    }; //send request with or without payload according to method;
-
-
-    if (params.payload && params.method !== 'get') {
-      request.send(params.payload);
-    } else {
-      request.send();
-    }
-  });
+    }, _callee2);
+  }));
+  return _makeRequest.apply(this, arguments);
 }
