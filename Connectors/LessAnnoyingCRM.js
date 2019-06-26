@@ -578,9 +578,6 @@ function LessAnnoyingCRM() {
           case 17:
             result = _context3.sent;
 			
-			console.log('RES')
-			console.log(result)
-			
             code = result.code;
 			content = JSON.parse(result.content);
             success = content.Success; //on failure -> process errored response;

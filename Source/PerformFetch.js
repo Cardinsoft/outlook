@@ -71,6 +71,7 @@ function _performFetch() {
 
         case 5:
           response = _context.sent;
+		  console.log(response)
           code = response.getResponseCode();
           headers = response.getHeaders();
           content = response.getContentText();
@@ -79,8 +80,6 @@ function _performFetch() {
           if (!isValid) {
             content = '[]';
           }
-		  
-		  console.log(content)
 
           return _context.abrupt("return", {
             code: code,
