@@ -236,10 +236,15 @@ function makeRequest(url, params) {
     } else {
       request.send();
     }*/
-  });
-  return {
+	
+	let obj = {
 	  code : 200,
 	  content : '[]',
 	  headers : {}
-  };
+	};
+	
+	resolve(obj)
+	
+  });
+  return 
 }
