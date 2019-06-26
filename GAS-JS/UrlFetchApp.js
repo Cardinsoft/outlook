@@ -122,16 +122,6 @@ function () {
           response = _context.sent;
 
         case 15:
-          //check if response is an object;
-          checkResp = typeof response === 'object' || response instanceof Array; //make sure response is parsed;
-
-          if (!checkResp) {
-            console.log('RESPONSE');
-            console.log(response);
-            checkResp = JSON.parse(response);
-          } //check if response object has properties;
-
-
           checkProps = Object.keys(response).length > 0; //if response has any properties -> create HTTPResponse instance;
 
           if (!checkProps) {
@@ -161,7 +151,7 @@ const UrlFetchApp = new e_UrlFetchApp();
  * @returns {Object} response object {code,content,headers} 
  */
 
-function makeRequest(url, params) { /*
+function makeRequest(url, params) {
   return new Promise(function (resolve, reject) {
     //prefent defaulting to location.href and throw an error message;
     if (url === '') {
@@ -246,10 +236,10 @@ function makeRequest(url, params) { /*
     } else {
       request.send();
     }
-  });*/
+  });/*
   return {
 	  code : 200,
 	  content : '[]',
 	  headers : {}
-  };
+  };*/
 }
