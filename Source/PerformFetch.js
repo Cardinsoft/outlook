@@ -71,6 +71,7 @@ function _performFetch() {
 
         case 5:
           response = _context.sent;
+		  console.log('RESP')
 		  console.log(response)
           code = response.getResponseCode();
           headers = response.getHeaders();
