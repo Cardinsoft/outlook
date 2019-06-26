@@ -157,8 +157,8 @@ const UrlFetchApp = new e_UrlFetchApp();
  * @returns {Object} response object {code,content,headers} 
  */
 
-async function makeRequest(url, params) {
-	
+function makeRequest(url, params) {
+  return new Promise(function (resolve, reject) {
     //prefent defaulting to location.href and throw an error message;
     if (url === '') {
       //construct empty URL error;
@@ -167,7 +167,7 @@ async function makeRequest(url, params) {
         content: 'Attribute provided with no value: url',
         headers: {}
       };
-      return emptyUrlErr;
+      reject(emptyUrlErr);
     } //default to GET method if no params provided;
 
 
@@ -220,7 +220,7 @@ async function makeRequest(url, params) {
         headers: map
       }; //resolve or reject according to code;
 
-      return obj;
+      resolve(obj);
 
     }; //handle timeout event;
 
@@ -233,14 +233,14 @@ async function makeRequest(url, params) {
         content: statusText,
         headers: {}
       };
-      return timeout;
+      resolve(timeout);
     }; //send request with or without payload according to method;
 
 
     if (params.payload && params.method !== 'get') {
-      await request.send(params.payload);
+      request.send(params.payload);
     } else {
-      await request.send();
+      request.send();
     }
-	
+  });
 }
