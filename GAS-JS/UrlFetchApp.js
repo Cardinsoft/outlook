@@ -213,6 +213,8 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       }; //resolve or reject according to code;
+	  
+	  console.log(obj)
 
       resolve(obj);
 
