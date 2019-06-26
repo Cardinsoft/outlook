@@ -108,7 +108,7 @@ function () {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
-        //throw new Error(_context.t0.content);
+        throw new Error(_context.t0.content);
 
         case 10:
           _context.next = 15;
