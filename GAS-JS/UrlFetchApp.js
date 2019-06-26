@@ -186,7 +186,7 @@ function makeRequest(url, params) {
       request.setRequestHeader('Content-Type', params.contentType);
     } //add headers if provided;
 
-	console.log('managed to open request');
+	console.log('opened request');
 
     if (params.headers) {
       //access headers to set with request;
@@ -201,7 +201,7 @@ function makeRequest(url, params) {
       }
     } //handle load event (set headers and resolve objects);
 	
-	console.log('managed to set headers');
+	console.log('set headers');
 
     request.onload = function () {
       let status = request.status;
@@ -226,20 +226,23 @@ function makeRequest(url, params) {
 
     }; //handle timeout event;
 
-	console.log('managed to load request');
+	console.log('loaded request');
 
-	/*
-    request.ontimeout = function () {
-      let statusText = request.statusText; //construct timeout response object;
+	try {
+		request.ontimeout = function () {
+		  let statusText = request.statusText; //construct timeout response object;
 
-      let timeout = {
-        code: request.status,
-        content: statusText,
-        headers: {}
-      };
-      resolve(timeout);
-    }; //send request with or without payload according to method;
-	*/
+		  let timeout = {
+			code: request.status,
+			content: statusText,
+			headers: {}
+		  };
+		  resolve(timeout);
+		}; //send request with or without payload according to method;
+	}
+	catch(error) {
+		console.log('Using older browser with poor request timeout event support (expect timeout to differ from 30s)');
+	}
 
     if (params.payload && params.method !== 'get') {
       request.send(params.payload);
