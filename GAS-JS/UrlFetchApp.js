@@ -173,15 +173,13 @@ function makeRequest(url, params) {
     let request = new XMLHttpRequest();
 	
 	//check for IE11;
-	const nav = GLOBAL.navigator;
-	const ual = nav.userAgent;
-	console.log(ual)
+	try {
+		request.timeout = 29000;
+	}
+	catch(error) {
+		console.log('Using older browser with poor request timeout support (expect timeout to differ from 30s)');
+	}
 	
-	
-    //request.timeout = 29000;
-	
-	console.log('managed to timeout');
-
     request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
 
     if (params.contentType) {
