@@ -171,7 +171,7 @@ function makeRequest(url, params) {
     } //initiate and open XMLHttpRequest;
 
     let request = new XMLHttpRequest();
-    request.timeout = 29000;
+    //request.timeout = 29000;
 	
 	console.log('managed to timeout')
 	
