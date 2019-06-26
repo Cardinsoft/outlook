@@ -198,7 +198,6 @@ function makeRequest(url, params) {
 	
 	console.log('managed to set headers');
 
-/*
     request.onload = function () {
       let status = request.status;
       let response = request.response;
@@ -222,7 +221,9 @@ function makeRequest(url, params) {
 
     }; //handle timeout event;
 
+	console.log('managed to load request');
 
+	/*
     request.ontimeout = function () {
       let statusText = request.statusText; //construct timeout response object;
 
