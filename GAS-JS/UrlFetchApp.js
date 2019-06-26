@@ -123,7 +123,7 @@ function () {
 
         case 15:
           //check if response is an object;
-          checkResp = typeof response === 'object'; //make sure response is parsed;
+          checkResp = typeof response === 'object' || response instanceof Array; //make sure response is parsed;
 
           if (!checkResp) {
             console.log('RESPONSE');
