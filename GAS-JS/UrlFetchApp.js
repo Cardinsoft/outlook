@@ -173,6 +173,8 @@ function makeRequest(url, params) {
     let request = new XMLHttpRequest();
     request.timeout = 29000;
 	
+	console.log('managed to timeout')
+	
 	/*
     request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
 
