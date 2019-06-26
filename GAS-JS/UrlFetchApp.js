@@ -104,12 +104,7 @@ function () {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
-		  try {
           throw new Error(_context.t0.content);
-		  }
-		  catch(e) {
-			  console.log(e)
-		  }
 
         case 10:
           _context.next = 15;
@@ -222,6 +217,9 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       }; //resolve or reject according to code;
+
+		console.log('RESOLVED')
+		console.log(obj)
 
       resolve(obj);
 
