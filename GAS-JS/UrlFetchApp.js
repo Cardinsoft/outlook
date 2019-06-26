@@ -122,6 +122,8 @@ function () {
           checkResp = typeof response === 'object'; //make sure response is parsed;
 
           if (!checkResp) {
+			console.log('RESPONSE')
+			console.log(response)
             checkResp = JSON.parse(response);
           } //check if response object has properties;
 
