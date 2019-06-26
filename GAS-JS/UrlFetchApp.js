@@ -183,7 +183,6 @@ function makeRequest(url, params) {
 
 	console.log('managed to open request');
 
-/*
     if (params.headers) {
       //access headers to set with request;
       const hs = params.headers; //set request header for each param header;
@@ -196,8 +195,10 @@ function makeRequest(url, params) {
         }
       }
     } //handle load event (set headers and resolve objects);
+	
+	console.log('managed to set headers');
 
-
+/*
     request.onload = function () {
       let status = request.status;
       let response = request.response;
