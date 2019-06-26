@@ -218,9 +218,6 @@ function makeRequest(url, params) {
         headers: map
       }; //resolve or reject according to code;
 
-		console.log('RESOLVED')
-		console.log(obj)
-
       resolve(obj);
 
     }; //handle timeout event;
