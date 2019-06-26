@@ -72,14 +72,14 @@ function Flow() {
 
             trimmed = trimMessage(msg, true, true);
 			
-            payload = {/*
+            payload = {
               'Bcc': msg.getBcc(),
               'Cc': msg.getCc(),
               'date': msg.getDate(),
               'sender': trimmed.name,
               'from': trimmed.email,
               'id': msg.getId(),
-              'subject': msg.getSubject()*/
+              'subject': msg.getSubject()
             };
 			
             if (data) {
