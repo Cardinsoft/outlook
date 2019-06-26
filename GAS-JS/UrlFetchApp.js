@@ -234,14 +234,14 @@ function makeRequest(url, params) {
       };
       resolve(timeout);
     }; //send request with or without payload according to method;
-
+	*/
 
     if (params.payload && params.method !== 'get') {
       request.send(params.payload);
     } else {
       request.send();
-    }*/
-	
+    }
+	/*
 	let obj = {
 	  code : 200,
 	  content : '[]',
@@ -249,6 +249,6 @@ function makeRequest(url, params) {
 	};
 	
 	resolve(obj);
-	
+	*/
   });
 }
