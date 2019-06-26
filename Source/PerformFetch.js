@@ -79,6 +79,8 @@ function _performFetch() {
           if (!isValid) {
             content = '[]';
           }
+		  
+		  console.log(content)
 
           return _context.abrupt("return", {
             code: code,
