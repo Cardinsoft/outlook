@@ -235,8 +235,8 @@ function makeRequest(url, params) {
       request.send(params.payload);
     } else {
       request.send();
-    }
-  });*/
+    }*/
+  });
   return {
 	  code : 200,
 	  content : '[]',
