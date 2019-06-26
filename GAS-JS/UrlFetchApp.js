@@ -152,7 +152,7 @@ const UrlFetchApp = new e_UrlFetchApp();
  */
 
 function makeRequest(url, params) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) { /*
     //prefent defaulting to location.href and throw an error message;
     if (url === '') {
       //construct empty URL error;
@@ -213,8 +213,6 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       }; //resolve or reject according to code;
-	  
-	  console.log(obj)
 
       resolve(obj);
 
@@ -238,10 +236,10 @@ function makeRequest(url, params) {
     } else {
       request.send();
     }
-  });/*
+  });*/
   return {
 	  code : 200,
 	  content : '[]',
 	  headers : {}
-  };*/
+  };
 }
