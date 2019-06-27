@@ -1,10 +1,10 @@
 //card and section headers;
 var globalAdvancedHeader             = 'Advanced';
-var globalChooseTypeHeader           = 'Available Connector types';
+var globalChooseTypeHeader           = 'Add a new Connector';
 var globalConfigAuthHeader           = 'Authorization config';
 var globalConfigErrorHeader          = 'Configuration error';
 var globalConfigHeader               = 'Connector configuration';
-var globalConfigListHeader           = 'Configured Connectors';
+var globalConfigListHeader           = 'Your Connectors';
 var globalConfirmHeader              = 'Confirm action';
 var globalConnectorListHeader        = 'Other Connectors';
 var globalCustomIconHeader           = 'Connector icon';
@@ -98,7 +98,6 @@ var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
 //URLs;
-var globalBpmIconUrl                 = 'https://cardinsoft.com/wp-content/uploads/2019/06/bpmonline.png';
 var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
@@ -167,7 +166,9 @@ var globalActionCompose              = 'compose';
 var globalActionLink                 = 'link';
 
 //parameters;
-var includeConnectorsInDev           = false;
+var includeConnectorsInDev           = true;
+var globalInfusionsoftApptsCap       = 5;
+var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
 var globalWidgetsCap                 = 50;
@@ -191,7 +192,6 @@ var globalApiTokenAuthType           = 'APItoken';
 var globalOAuth2AuthType             = 'OAuth2';
 
 //connector types specific globals;
-var globalBpmShort                   = 'Fetches sales and marketing info from Bpm\'Online CRM platform';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
 var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
