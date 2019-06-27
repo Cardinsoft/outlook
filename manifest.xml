@@ -19,7 +19,7 @@
 	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
 	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
 
-	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook" />
+	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook/support/" />
 
 	<Hosts>
 		<Host Name="Mailbox" />
@@ -33,7 +33,7 @@
 		<Form xsi:type="ItemRead">
 			<DesktopSettings>
 				<SourceLocation DefaultValue="https://cardinsoft.github.io/outlook/index.html"/>
-				<RequestedHeight>250</RequestedHeight>
+				<RequestedHeight>400</RequestedHeight>
 			</DesktopSettings>
 		</Form>
 	</FormSettings>
@@ -97,7 +97,7 @@
 				<bt:ShortStrings>
 					<bt:String id="groupLabel" DefaultValue="Cardin"/>
 					<bt:String id="customTabLabel"  DefaultValue="Cardin for Outlook"/>
-					<bt:String id="paneReadButtonLabel" DefaultValue="Launch"/>
+					<bt:String id="paneReadButtonLabel" DefaultValue="Open Cardin"/>
 					<bt:String id="paneReadSuperTipTitle" DefaultValue="Show Task Pane"/>
 				</bt:ShortStrings>
 				<bt:LongStrings>
