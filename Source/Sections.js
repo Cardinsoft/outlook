@@ -259,16 +259,15 @@ function _createConnectorListSection() {
               } //handle use cases;
 
 
-              if (length > 0 && matched) {
-                label = text;
-              } else if (length > 0) {
-                label = 'No match';
-              } else {
-                label = globalNoData;
-              } //set button colour if provided, else -> default to secondary colour;
+			if(length>0&&matched || length===0&&!matched) { 
+				label = text; 
+			}else if(length>0) { 
+				label = 'No match'; 
+			}else { 
+				label = globalNoData; 
+			}
 
-
-              if (colour) {
+            if (colour) {
                 label = '<font color="' + colour + '">' + label + '</font>';
               }
             } else {
