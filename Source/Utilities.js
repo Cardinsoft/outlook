@@ -345,38 +345,47 @@ function getBeginMax(content, start) {
   };
   return output;
 }
+
 /**
  * Creates an array of widget caps for each content section;
  * @param {Array} content an array of sections with widgets;
  * @returns {Array}
  */
-
-
 function getLayout(content) {
-  //set maximum widgets in section to include all of them;
-  var max = Math.floor(100 / content.length); //count full number of widgets;
+  
+  try {
 
-  var full = 0,
-      layout = [];
-  content.forEach(function (c) {
-    //access widgets;
-    var widgets = c.widgets; //increment full length;
-
-    for (var widget in widgets) {
-      full += 1;
-    } //add number of widgets to layout;
-
-
-    var length = widgets.length;
-
-    if (length > max) {
-      layout.push(max);
-    } else {
-      layout.push(widgets.length);
-    }
-  });
-  return layout;
+    //set maximum widgets in section to include all of them;
+    var max = Math.floor( 100 / content.length );
+        
+    //count full number of widgets;
+    var full = 0, layout = [];
+    content.forEach(function(c){
+      //access widgets;
+      
+      if(typeof c==='string') { c = JSON.parse(c); }
+      
+      var widgets = c.widgets;
+            
+      //increment full length;
+      for(var widget in widgets) { 
+        full += 1;
+      }
+           
+      //add number of widgets to layout;
+      var length = widgets.length;
+      if(length>max) { layout.push(max); }else { layout.push(widgets.length); }
+    });
+  
+    return layout;
+  
+  }
+  catch(error) {
+    console.error('Encountered an error during widget cap check: '+error);
+  }
+  
 }
+
 /**
  * Creates an object for generating timeframes;
  * @param {Date} start instance of Date (starting);
