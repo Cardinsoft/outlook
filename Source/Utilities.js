@@ -765,130 +765,113 @@ function trimMessage(msg, trimFromToFrom, trimFromToSender) {
 
   return trimmed;
 }
+
 /**
  * Checks if data contains widgets in "editable" state;
  * @param {Array} data an array of objects to check;
  * @returns {Boolean}
  */
-
-
 function checkEditable(data) {
-  if (!(data instanceof Array)) {
-    return false;
+  try {
+    if(!(data instanceof Array)) { return false; }
+    var hasEditable = data.some(function(elem){
+      var widgets = elem.widgets;
+      if(widgets instanceof Array) {
+        var elemHasEditable = widgets.some(function(widget){
+          var state = widget.state;
+          var type  = widget.type;
+          if(state==='editable'||type===globalTextInput) { return widget; }
+        });
+      }else { elemHasEditable = false; }
+      if(elemHasEditable) { return elem; }
+    });
+    return hasEditable;
   }
-
-  var hasEditable = data.some(function (elem) {
-    var widgets = elem.widgets;
-
-    if (widgets instanceof Array) {
-      var elemHasEditable = widgets.some(function (widget) {
-        var state = widget.state;
-        var type = widget.type;
-
-        if (state === 'editable' || type === globalTextInput) {
-          return widget;
-        }
-      });
-    } else {
-      elemHasEditable = false;
-    }
-
-    if (elemHasEditable) {
-      return elem;
-    }
-  });
-  return hasEditable;
+  catch(error) {
+    console.error('Encountered an error while checking for editable widgets: '+error);
+  }
 }
+
 /**
  * Checks if data contains nested objects to determine which Ui to load;
  * @param {Array} data an array of objects to check;
  * @returns {Boolean}
  */
-
-
 function checkNested(data) {
-  if (!(data instanceof Array)) {
+  try {
+    if(!(data instanceof Array)) { return false; }
+    var hasNested = data.some(function(elem){ 
+      var hasSecondLevelObject = false;
+      for(var key in elem) {
+        var val = elem[key];
+        if(typeof val === 'object') { 
+          hasSecondLevelObject = true; break; 
+        }
+      }
+      return hasSecondLevelObject;
+    });
+    return hasNested;
+  }
+  catch(error) {
+    console.error('Encountered an error while checking for nested objects: '+error);
     return false;
   }
-
-  var hasNested = data.some(function (elem) {
-    var hasSecondLevelObject = false;
-
-    for (var key in elem) {
-      var val = elem[key];
-
-      if (typeof val === 'object') {
-        hasSecondLevelObject = true;
-        break;
-      }
-    }
-
-    return hasSecondLevelObject;
-  });
-  return hasNested;
 }
+
 /**
  * Attempts to pre-parse data;
  * @param {String} data data string to be parsed;
  * @returns {Array}
  */
-
-
 function parseData(data) {
+
+  //if data is undefined return empty array;
+  if(!data) { return []; }  
+
   //check for empty and correct objects;
-  var isObj = typeof data === 'object';
+  var isObj = typeof data==='object';
+  if(isObj&&Object.keys(data).length===0) { return []; }else if(isObj) { return data; }
 
-  if (isObj && Object.keys(data).length === 0) {
-    return [];
-  } else if (isObj) {
-    return data;
-  } //if data is undefined return empty array;
-
-
-  if (!data) {
-    return [];
-  } //try to parse content until recieved an array; 
-
-
+  //try to parse content until recieved an array; 
   try {
-    while (!(data instanceof Array)) {
+    while(!(data instanceof Array)) {
       data = JSON.parse(data);
     }
-
     return data;
-  } catch (err) {
-    data = data;
   }
-
+  catch(err) { 
+    console.error('Encountered an error while trying to parse input: %s',err);
+    data = data; 
+  }
+  
   try {
-    if (data === '' || data === '[]' || data === '""') {
-      data = [];
-    } else if (data !== []) {
+    if(data===''||data==='[]'||data==='""') {
+      data = []; 
+    }else if(data!==[]) { 
       data = JSON.parse(data);
     }
-
-    if (!(data instanceof Array) && !(typeof data === 'string')) {
-      data = [data];
-    } else if (typeof data === 'string') {
+    if(!(data instanceof Array)&&!(typeof data==='string')) {
+      data = [data]; 
+    }else if(typeof data==='string') {
       data = JSON.parse(data);
     }
-
-    if (!(data instanceof Array) && typeof data === 'object') {
+    if(!(data instanceof Array)&&(typeof data==='object')) {
       data = [data];
     }
-  } catch (error) {
+  }
+  catch(error) {
+    console.error('Encountered an error while applying conditional parsing after everything else failed (unexpected, check parseData function): %s',error);
     return data;
-  } //if no other choice, return data;
-
-
+  }
+  
+  //if no other choice, return data;
   return data;
 }
+
 /**
  * Creates settings storage;
  * @param {String} content content to pass to JSON file;
  */
-
-
 function createSettings(_x2) {
   return _createSettings.apply(this, arguments);
 }
