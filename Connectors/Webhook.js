@@ -63,11 +63,7 @@ function Flow() {
             returned = {
               code: result.code,
               headers: result.headers,
-              content: content,
-              hasMatch: {
-                value: false,
-                text: 'found'
-              }
+              content: content
             };
 
             try {
