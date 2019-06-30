@@ -952,24 +952,22 @@ function trimSender(input) {
  * @param {*} input any input to convert to boolean;
  * @returns {String}
  */
-
-
 function toBoolean(input) {
   //check if input is a string or boolean;
-  var isString = typeof input === 'string';
-  var isBoolean = typeof input === 'boolean'; //if is boolean -> return unchanged;
-
-  if (isBoolean) {
-    return input;
-  } //if is string -> change to boolean;
-
-
-  if (isString) {
-    if (input === 'true') {
-      return true;
-    }
-  } //if nothing is applicable -> return false;
-
-
+  var isString  = typeof input==='string';
+  var isBoolean = typeof input==='boolean';
+  
+  //if is boolean -> return unchanged;
+  if(isBoolean) { return input; }
+  
+  //if input is undefined -> false;
+  if(!input) { return false; }
+  
+  //if is string -> change to boolean;
+  if(isString) {
+    if(input==='true') { return true; }
+  }
+  
+  //if nothing is applicable -> return false;
   return false;
 }
