@@ -47,9 +47,10 @@ var globalConnectorListErrorContent  = 'An error occured during Connector list g
 var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered an error. Please, see details provided below for troubleshooting';
 
 //custom icons;
-var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png';
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
+var globalIconTab                    = 'https://cardinsoft.com/wp-content/uploads/2019/06/TAB.png';
 var globalIconWebhook                = 'https://cardinsoft.com/wp-content/uploads/2019/06/WEBHOOK.png';
+var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png';
 
 //content;
 var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
