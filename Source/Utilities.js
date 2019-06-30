@@ -33,6 +33,29 @@ function _asyncToGenerator(fn) {
     });
   };
 }
+
+/**
+ * Changes input into a set of "*";
+ * @param {String} input input to convert;
+ */
+function switchPassword(input) {
+  if(!input) { return ''; }
+  if(input==='') { return input; }
+  if(!typeof input==='string') { input = input.toString(); }
+  
+  //can be used since passwords don't use unicode chars;
+  var charr = input.split('');
+  
+  var len = charr.length;
+  
+  var output = [];
+  for(var i=0; i<len; i++) {
+    output.push('*');
+  }
+
+  return output.join('');
+}
+
 /**
  * Gets an Array element by its property;
  * @param {Array} array an Array of objects;
@@ -40,8 +63,6 @@ function _asyncToGenerator(fn) {
  * @param {*} value property value;
  * @returns {Object|Array} element
  */
-
-
 function getByProperty(array, name, value) {
   var output = array.filter(function (element) {
     if (element[name] === value) {
