@@ -37,10 +37,9 @@ function _asyncToGenerator(fn) {
 /**
  * Changes input into a set of "*";
  * @param {String} input input to convert;
- * @param {Boolean} state state of show;
  * @returns {String} password;
  */
-function switchPassword(input,state) {
+function switchPassword(input) {
   if(!input) { return ''; }
   if(input==='') { return input; }
   if(!typeof input==='string') { input = input.toString(); }
