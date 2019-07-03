@@ -400,7 +400,7 @@ function imageWidget(src, alt, funcName, hasSpinner, params) {
 
   if (funcName) {
     var action = actionAction(funcName, hasSpinner, params);
-    widget.setOnChangeAction(action);
+    widget.setOnClickAction(action);
   }
 
   return widget;
