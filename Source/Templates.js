@@ -366,7 +366,16 @@ function textButtonWidgetLinked(text, disabled, isFilled, url, fullsized, needsR
 
 function imageButtonWidget(icon, funcName, params) {
   var widget = CardService.newImageButton();
-  widget.setIcon(icon); //set action on button click;
+
+  //set icon if found or set icon url if not;
+  if(icon&&icon!=='') { 
+    var iconEnum = CardService.Icon[icon];
+    if(iconEnum) {
+      widget.setIcon(iconEnum);
+    }else {
+      widget.setIconUrl(icon);
+    } 
+  }
 
   var action = actionAction(funcName, true, params);
   widget.setOnClickAction(action);
