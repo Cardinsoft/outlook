@@ -514,77 +514,70 @@ function checkAgainstErrorTypes(error) {
   var notTyped = !isEval && !isRange && !isRef && !isSyntax && !isType && !isURI;
   return notTyped;
 }
+
 /**
  * Stringifies every object property that is not of type String;
  * @param {Object} object object to change;
  * @returns {Object}
  */
-
-
 function propertiesToString(object) {
   var length = Object.keys(object).length;
-
-  if (length !== 0) {
-    for (var key in object) {
+  if(length!==0) {
+      
+    for(var key in object) {
       var value = object[key];
 
-      if (value) {
+      if(value) {
+
         //check normal types;
-        var isObject = typeof value === 'object';
-        var isBoolean = typeof value === 'boolean';
-        var isNumber = typeof value === 'number'; //check unique situations;
-
-        var isNull = value === null;
-        var isArray = value instanceof Array;
-        var isNotNum = isNaN(value);
-
-        if (isArray) {
-          value.forEach(function (element, index, array) {
+        var isString  = typeof value==='string';
+        var isObject  = typeof value==='object';
+        var isBoolean = typeof value==='boolean';
+        var isNumber  = typeof value==='number';
+        //check unique situations;
+        var isNull    = value===null;
+        var isArray   = value instanceof Array;
+        var isNotNum  = isNaN(value);
+        
+        if(isArray) {
+          value.forEach(function(element,index,array){ 
             //check normal types;
-            var elemIsObject = typeof element === 'object';
-            var elemIsBoolean = typeof element === 'boolean';
-            var elemIsNumber = typeof element === 'number'; //check unique situations;
-
-            var elemIsNull = element === null;
-            var elemIsArray = element instanceof Array;
-            var elemIsNotNum = isNaN(element); //modify values according to checks;
-
-            if (!elemIsNull && elemIsObject && !elemIsArray) {
-              array[index] = JSON.stringify(element);
-            }
-
-            if (elemIsBoolean) {
-              array[index] = element.toString();
-            }
-
-            if (elemIsNull) {
-              array[index] = JSON.stringify(new Object(element));
-            }
+            var elemIsObject  = typeof element==='object';
+            var elemIsBoolean = typeof element==='boolean';
+            var elemIsNumber  = typeof element==='number';
+            //check unique situations;
+            var elemIsNull    = element===null;
+            var elemIsArray   = element instanceof Array;
+            var elemIsNotNum  = isNaN(element);
+            //modify values according to checks;
+            if(!elemIsNull&&elemIsObject&&!elemIsArray) { array[index] = JSON.stringify(element); }
+            if(elemIsBoolean) { array[index] = element.toString(); }
+            if(elemIsNull) { array[index] = JSON.stringify(new Object(element)); }
           });
           object[key] = value.join(',');
         } //handle arrays (only plain ones);
-
-
-        if (!isNull && isObject && !isArray) {
-          object[key] = JSON.stringify(value);
-        } //handle proper objects;
-
-
-        if (isBoolean || isNumber || isNotNum) {
-          object[key] = value.toString();
-        } //handle booleans, numbers and NaNs (same behaviour);
-
-
-        if (isNull) {
-          object[key] = JSON.stringify(new Object(value));
-        } //handle null;
-
-      } else {
+        
+        //handle proper objects;
+        if(!isNull&&isObject&&!isArray) {
+          for(var k in value) {
+            if(typeof value[k]==='boolean') { value[k] = value[k].toString(); }
+          }
+          object[key] = JSON.stringify(value); 
+        }
+        
+        //handle booleans, numbers and NaNs (same behaviour);
+        if( (isBoolean||isNumber)&& !isNotNum ) { object[key] = value.toString(); }
+       
+        //handle null;
+        if(isNull) { object[key] = JSON.stringify(new Object(value)); }
+      
+      }else {
         object[key] = ''; //undefined props to empty strings;
       }
+      
     }
+    
   }
-
   return object;
 }
 
