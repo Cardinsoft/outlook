@@ -1,38 +1,6 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function LessAnnoyingCRM() {
   Connector.call(this);
@@ -314,9 +282,16 @@ function LessAnnoyingCRM() {
 
           case 10:
             response = _context.sent;
+            //send to analytics and return;
+            sendToAnalytics('event', {
+              ec: 'Connectors',
+              ea: 'Delete',
+              el: 'LACRM',
+              ev: '1'
+            }, false);
             return _context.abrupt("return", this.run(msg, connector));
 
-          case 12:
+          case 13:
           case "end":
             return _context.stop();
         }
@@ -346,8 +321,10 @@ function LessAnnoyingCRM() {
 
             if (method === 'add') {
               funcName = 'CreateContact';
+              eventAction = 'Add'; //analytics;
             } else if (method === 'edit') {
               funcName = 'EditContact';
+              eventAction = 'Edit'; //analytics;
             }
 
             updates = [];
@@ -530,7 +507,7 @@ function LessAnnoyingCRM() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(msg, connector, data) {
-      var usercode, apitoken, endpoint, actionType, funcName, method, headers, query, params, result, code, success, sections, trimmed, content, pipelineIds, pipeError, errDetails, index, pId, fullquery, pipelineResponse, pipelineCode, pipelineHeaders, pipelineContent, pipelineSuccess, pipeline, pipelineSection, pipelineWidgets, c, contact, fullName, status, title, company, salutation, first, middle, last, suffix, emails, phones, lastNote, custom, background, nameWidget, compContent, companyWidget, contactBkg, contactNote, prop, value, contactCustom, separator, info, e, entry, isCompany, contSection, contWidgets, addresses, websites, contactId, companyId, companyName, companyBckg, createdCont, editedCont, birthday, contactName, contactTitle, customIdx, field, customWidget, created, createdDate, createdTime, contactCreated, edited, editedDate, editedTime, contactEdited, num, hiddenId, getCompanyQuery, companyResponse, companyContent, cName, cEmpl, cIndustry, cEmails, cPhones, cWebsites, cAddresses, cCreated, cEdited, cSection, cWidgets, companyInd, cEmplContent, numEmployees, companyCreated, companyEdited, backgroundSection, backgroundWidgets, contactBckLabel, contactBirthday, contactBackground, companyBckLabel, companyBackground, returned;
+      var usercode, apitoken, endpoint, actionType, funcName, method, headers, query, params, result, code, success, sections, trimmed, content, pipelineIds, pipeError, errDetails, index, pId, fullquery, pipelineResponse, pipelineCode, pipelineHeaders, pipelineContent, pipelineSuccess, settingsQuery, settingsResponse, name, isActive, pipelineSettings, pipeline, pipelineSection, pipelineWidgets, c, contact, fullName, isCompany, status, title, company, salutation, first, middle, last, suffix, emails, phones, lastNote, custom, background, nameWidget, compContent, companyWidget, contactBkg, contactNote, prop, value, contactCustom, separator, info, k, entry, contSection, contWidgets, addresses, websites, contactId, companyId, companyName, companyBckg, createdCont, editedCont, birthday, contactName, contactTitle, customIdx, field, customWidget, created, createdDate, createdTime, contactCreated, edited, editedDate, editedTime, contactEdited, num, hiddenId, getCompanyQuery, companyResponse, companyContent, cName, cEmpl, cIndustry, cEmails, cPhones, cWebsites, cAddresses, cCreated, cEdited, cSection, cWidgets, companyInd, cEmplContent, numEmployees, companyCreated, companyEdited, backgroundSection, backgroundWidgets, contactBckLabel, contactBirthday, contactBackground, companyBckLabel, companyBackground, returned;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -557,11 +534,11 @@ function LessAnnoyingCRM() {
             sections = [];
 
             if (!(actionType !== 'pipeline')) {
-              _context3.next = 25;
+              _context3.next = 29;
               break;
-            } //unpack message object with to trimmed data;
+            }
 
-
+            //unpack message object with to trimmed data;
             trimmed = trimMessage(msg, true, true); //initiate request parameters;
 
             params = {
@@ -577,50 +554,76 @@ function LessAnnoyingCRM() {
 
           case 17:
             result = _context3.sent;
-			
             code = result.code;
-			content = JSON.parse(result.content);
+            content = JSON.parse(result.content);
             success = content.Success; //on failure -> process errored response;
 
             if (success) {
-              _context3.next = 23;
+              _context3.next = 27;
+              break;
+            }
+
+            if (!(content.Error === 'Your account is not active')) {
+              _context3.next = 26;
               break;
             }
 
             return _context3.abrupt("return", {
               code: code,
               headers: headers,
+              content: [{
+                header: 'Inactive account',
+                widgets: [{
+                  type: globalKeyValue,
+                  content: 'Unfortunately, we couldn\'t access your account as it is inactive.\r\nPlease, check your subscription status info and update billing if necessary'
+                }, {
+                  type: globalTextButton,
+                  action: globalActionLink,
+                  title: 'Update billing info',
+                  content: 'https://www.lessannoyingcrm.com/app/Settings/Billing'
+                }]
+              }],
+              hasMatch: {
+                value: true,
+                text: 'Inactive'
+              }
+            });
+
+          case 26:
+            return _context3.abrupt("return", {
+              code: code,
+              headers: headers,
               content: content.Error
             });
 
-          case 23:
-            _context3.next = 58;
+          case 27:
+            _context3.next = 78;
             break;
 
-          case 25:
+          case 29:
             //access id list, if not set -> return error message;
             pipelineIds = connector.pipelineIds;
 
             if (!pipelineIds) {
-              _context3.next = 30;
+              _context3.next = 34;
               break;
             }
 
             pipelineIds = pipelineIds.split('\n');
-            _context3.next = 32;
+            _context3.next = 36;
             break;
 
-          case 30:
+          case 34:
             pipeError = {
               descr: 'Pipeline Id list was not provided.\rPlease, set at least one Id or a comma-separated list of Ids. Pipelines info can be obtained from <a href="https://www.lessannoyingcrm.com/app/Settings/Api">CRM settings</a>'
             };
             return _context3.abrupt("return", {
               code: 0,
               headers: {},
-              content: pipeError
+              content: JSON.stringify(pipeError)
             });
 
-          case 32:
+          case 36:
             //initiate result;
             result = {};
             code = 200;
@@ -629,9 +632,9 @@ function LessAnnoyingCRM() {
             errDetails = '';
             index = 0;
 
-          case 38:
+          case 42:
             if (!(index < pipelineIds.length)) {
-              _context3.next = 56;
+              _context3.next = 76;
               break;
             }
 
@@ -642,10 +645,10 @@ function LessAnnoyingCRM() {
             query.push('Parameters=' + encodeURI(JSON.stringify(params)));
             fullquery = query.join('&'); //perform data fetch and process, then reset query;
 
-            _context3.next = 45;
+            _context3.next = 49;
             return performFetch(endpoint + fullquery, method, headers);
 
-          case 45:
+          case 49:
             pipelineResponse = _context3.sent;
             pipelineCode = pipelineResponse.code;
             pipelineHeaders = pipelineResponse.headers;
@@ -655,167 +658,201 @@ function LessAnnoyingCRM() {
 
             success.push(pipelineSuccess);
 
-            if (!pipelineSuccess) {
-              errDetails += index + 1 + '. ' + pipelineContent.Error + '\r';
-            } else {
-              //access content and create section;
-              pipeline = pipelineContent.Result;
-              pipelineSection = {
-                header: 'Pipeline ' + (index + 1),
-                isCollapsible: false,
-                widgets: []
-              }; //if more than one section -> collapse;
-
-              if (pipelineIds.length > 1) {
-                pipelineSection.isCollapsible = true;
-              }
-
-              pipelineWidgets = pipelineSection.widgets;
-
-              for (c = 0; c < pipeline.length; c++) {
-                contact = pipeline[c]; //access contact properties;
-
-                fullName = [];
-                status = contact.StatusName;
-                title = contact.Title;
-                company = contact.EmployerName;
-                salutation = contact.Salutation;
-                first = contact.FirstName;
-                middle = contact.MiddleName;
-                last = contact.LastName;
-                suffix = contact.Suffix;
-                emails = contact.Email;
-                phones = contact.Phone;
-                lastNote = contact.LastNote;
-                custom = contact.ContactCustomFields;
-                background = contact.BackgroundInfo; //create fullName;
-
-                if (salutation && salutation !== null) {
-                  fullName.push(salutation);
-                }
-
-                if (first && first !== null) {
-                  fullName.push(first);
-                }
-
-                if (middle && middle !== null) {
-                  fullName.push(middle);
-                }
-
-                if (last && last !== null) {
-                  fullName.push(last);
-                }
-
-                if (suffix && suffix !== null) {
-                  fullName.push(suffix);
-                }
-
-                fullName = fullName.join(' '); //create contact name + status widget;
-
-                nameWidget = {
-                  icon: 'PERSON',
-                  type: globalKeyValue,
-                  title: 'Contact',
-                  content: fullName,
-                  buttonText: status
-                };
-                pipelineWidgets.push(nameWidget); //if company -> add company widget;
-
-                if (company) {
-                  if (!title) {
-                    compContent = company;
-                  } else {
-                    compContent = title + ' at ' + company;
-                  }
-
-                  companyWidget = {
-                    icon: 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
-                    type: globalKeyValue,
-                    title: 'Title',
-                    content: compContent
-                  };
-                  pipelineWidgets.push(companyWidget);
-                } //create email widgets;
-
-
-                emails.forEach(function (email, index) {
-                  var contactEmail = {
-                    icon: 'EMAIL',
-                    type: globalKeyValue,
-                    title: email.Type + ' email',
-                    content: '<a href="mailto:' + email.Text + '">' + email.Text + '</a>'
-                  };
-                  pipelineWidgets.push(contactEmail);
-                }); //create phone widgets;
-
-                phones.forEach(function (phone, index) {
-                  var contactPhone = {
-                    icon: 'PHONE',
-                    type: globalKeyValue,
-                    title: phone.Type + ' phone',
-                    content: '<a href="tel:' + phone.Text + '">' + phone.Text + '</a>'
-                  };
-                  pipelineWidgets.push(contactPhone);
-                }); //create background widget;
-
-                if (background) {
-                  contactBkg = {
-                    icon: globalIconBackground,
-                    type: globalKeyValue,
-                    //title   : 'Background',
-                    content: background
-                  };
-                  pipelineWidgets.push(contactBkg);
-                } //create last notes widget;
-
-
-                if (lastNote) {
-                  contactNote = {
-                    icon: 'DESCRIPTION',
-                    type: globalKeyValue,
-                    content: lastNote
-                  };
-                  pipelineWidgets.push(contactNote);
-                } //create custom properties widgets;
-
-
-                if (Object.keys(custom).length > 0) {
-                  for (prop in custom) {
-                    value = custom[prop];
-
-                    if (value !== '') {
-                      contactCustom = {
-                        icon: 'https://cardinsoft.com/wp-content/uploads/2019/06/CUSTOM.png',
-                        title: prop,
-                        type: globalKeyValue,
-                        content: value
-                      };
-                      pipelineWidgets.push(contactCustom);
-                    }
-                  }
-                } //create separator widget;
-
-
-                separator = {
-                  type: globalKeyValue,
-                  content: '\r'
-                };
-                pipelineWidgets.push(separator);
-              }
-
-              sections.push(pipelineSection);
+            if (pipelineSuccess) {
+              _context3.next = 60;
+              break;
             }
 
-          case 53:
-            index++;
-            _context3.next = 38;
+            errDetails += index + 1 + '. ' + pipelineContent.Error + '\r';
+            _context3.next = 73;
             break;
 
-          case 56:
+          case 60:
+            //access pipeline settings;
+            settingsQuery = 'UserCode=' + usercode + '&APIToken=' + apitoken + '&Function=GetPipelineSettings';
+            _context3.next = 63;
+            return performFetch(endpoint + settingsQuery, 'get', headers);
+
+          case 63:
+            settingsResponse = _context3.sent;
+            name = '';
+            isActive = true; //on success set pipeline parameters or use default;
+
+            if (settingsResponse.code === 200) {
+              pipelineSettings = JSON.parse(settingsResponse.content)[0];
+              name = pipelineSettings.Name;
+              isActive = pipelineSettings.IsActive; //isn't used for now;
+            } else {
+              name = 'Pipeline ' + (index + 1);
+            } //access content and create section;
+
+
+            pipeline = pipelineContent.Result;
+            pipelineSection = {
+              header: name,
+              isCollapsible: false,
+              widgets: []
+            }; //if more than one section -> collapse;
+
+            if (pipelineIds.length > 1) {
+              pipelineSection.isCollapsible = true;
+            }
+
+            pipelineWidgets = pipelineSection.widgets;
+
+            for (c = 0; c < pipeline.length; c++) {
+              contact = pipeline[c]; //access contact properties;
+
+              fullName = [];
+              isCompany = +contact.IsCompany;
+              status = contact.StatusName;
+              title = contact.Title;
+              company = contact.EmployerName;
+              salutation = contact.Salutation;
+              first = contact.FirstName;
+              middle = contact.MiddleName;
+              last = contact.LastName;
+              suffix = contact.Suffix;
+              emails = contact.Email;
+              phones = contact.Phone;
+              lastNote = contact.LastNote;
+              custom = contact.ContactCustomFields;
+              background = contact.BackgroundInfo; //create fullName;
+
+              if (salutation && salutation !== null) {
+                fullName.push(salutation);
+              }
+
+              if (first && first !== null) {
+                fullName.push(first);
+              }
+
+              if (middle && middle !== null) {
+                fullName.push(middle);
+              }
+
+              if (last && last !== null) {
+                fullName.push(last);
+              }
+
+              if (suffix && suffix !== null) {
+                fullName.push(suffix);
+              }
+
+              fullName = fullName.join(' '); //create contact name + status widget;
+
+              nameWidget = {
+                type: globalKeyValue,
+                content: fullName,
+                buttonText: status
+              };
+
+              if (isCompany > 0) {
+                nameWidget.icon = 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png';
+                nameWidget.title = 'Company';
+                nameWidget.content = contact.CompanyName;
+              } else {
+                nameWidget.icon = 'PERSON';
+                nameWidget.title = 'Contact';
+                nameWidget.content = fullName;
+              }
+
+              pipelineWidgets.push(nameWidget); //if company -> add company widget;
+
+              if (company) {
+                if (!title) {
+                  compContent = company;
+                } else {
+                  compContent = title + ' at ' + company;
+                }
+
+                companyWidget = {
+                  icon: 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
+                  type: globalKeyValue,
+                  title: 'Title',
+                  content: compContent
+                };
+                pipelineWidgets.push(companyWidget);
+              } //create email widgets;
+
+
+              emails.forEach(function (email, index) {
+                var contactEmail = {
+                  icon: 'EMAIL',
+                  type: globalKeyValue,
+                  title: email.Type + ' email',
+                  content: '<a href="mailto:' + email.Text + '">' + email.Text + '</a>'
+                };
+                pipelineWidgets.push(contactEmail);
+              }); //create phone widgets;
+
+              phones.forEach(function (phone, index) {
+                var contactPhone = {
+                  icon: 'PHONE',
+                  type: globalKeyValue,
+                  title: phone.Type + ' phone',
+                  content: '<a href="tel:' + phone.Text + '">' + phone.Text + '</a>'
+                };
+                pipelineWidgets.push(contactPhone);
+              }); //create background widget;
+
+              if (background) {
+                contactBkg = {
+                  icon: globalIconBackground,
+                  type: globalKeyValue,
+                  //title   : 'Background',
+                  content: background
+                };
+                pipelineWidgets.push(contactBkg);
+              } //create last notes widget;
+
+
+              if (lastNote) {
+                contactNote = {
+                  icon: 'DESCRIPTION',
+                  type: globalKeyValue,
+                  content: lastNote
+                };
+                pipelineWidgets.push(contactNote);
+              } //create custom properties widgets;
+
+
+              if (Object.keys(custom).length > 0) {
+                for (prop in custom) {
+                  value = custom[prop];
+
+                  if (value !== '') {
+                    contactCustom = {
+                      icon: 'https://cardinsoft.com/wp-content/uploads/2019/06/CUSTOM.png',
+                      title: prop,
+                      type: globalKeyValue,
+                      content: value
+                    };
+                    pipelineWidgets.push(contactCustom);
+                  }
+                }
+              } //create separator widget;
+
+
+              separator = {
+                type: globalKeyValue,
+                content: '\r'
+              };
+              pipelineWidgets.push(separator);
+            }
+
+            sections.push(pipelineSection);
+
+          case 73:
+            index++;
+            _context3.next = 42;
+            break;
+
+          case 76:
             if (success.some(function (elem) {
               return elem;
             })) {
-              _context3.next = 58;
+              _context3.next = 78;
               break;
             }
 
@@ -823,43 +860,43 @@ function LessAnnoyingCRM() {
               code: 0,
               headers: {},
               content: {
-                descr: 'Every call to LessAnnoyingCRM resulted in error, please, see details below for more information',
+                descr: 'Every call to Less Annoying CRM resulted in error, please, see details below for more information',
                 additional: errDetails
               }
             });
 
-          case 58:
+          case 78:
             if (!(actionType === 'search')) {
-              _context3.next = 131;
+              _context3.next = 151;
               break;
             }
 
             info = content.Result; //create result config;
 
             if (!(info.length > 0)) {
-              _context3.next = 131;
-              break;
-            } //as there is entity, set action to edit;
-
-
-            connector.method = 'edit';
-            e = 0;
-
-          case 63:
-            if (!(e < info.length)) {
-              _context3.next = 131;
+              _context3.next = 151;
               break;
             }
 
-            entry = info[e];
+            //as there is entity, set action to edit;
+            connector.method = 'edit';
+            k = 0;
+
+          case 83:
+            if (!(k < info.length)) {
+              _context3.next = 151;
+              break;
+            }
+
+            entry = info[k];
             isCompany = +entry.IsCompany;
 
             if (!(isCompany === 0)) {
-              _context3.next = 128;
+              _context3.next = 148;
               break;
-            } //create contact section and access widgets;
+            }
 
-
+            //create contact section and access widgets;
             contSection = {
               header: 'Contact info',
               isCollapsible: true,
@@ -880,8 +917,8 @@ function LessAnnoyingCRM() {
             background = entry.BackgroundInfo;
             contactId = entry.ContactId;
             companyId = entry.CompanyId;
-            companyName = entry.CompanyName; //will be needed in company section;
-
+            companyName = entry.CompanyName;
+            //will be needed in company section;
             createdCont = entry.CreationDate;
             editedCont = entry.EditedDate;
             birthday = entry.Birthday;
@@ -940,13 +977,8 @@ function LessAnnoyingCRM() {
             };
             contWidgets.push(contactName); //create title widget;
 
-            if (companyName && companyName !== null) {
-              if (!title) {
-                compContent = companyName;
-              } else {
-                compContent = title + ' at ' + companyName;
-              }
-
+            if (companyName && companyName !== null && title) {
+              compContent = title + ' at ' + companyName;
               contactTitle = {
                 icon: 'https://cardinsoft.com/wp-content/uploads/2019/04/WORK_BLACK.png',
                 type: globalKeyValue,
@@ -1158,6 +1190,7 @@ function LessAnnoyingCRM() {
             };
             contWidgets.push(contactEditIn);
             */
+            //create custom fields widget;
 
             customIdx = 0;
 
@@ -1236,20 +1269,21 @@ function LessAnnoyingCRM() {
             sections.push(contSection);
 
             if (!companyId) {
-              _context3.next = 127;
+              _context3.next = 147;
               break;
-            } //perform company query by company Id;
+            }
 
-
+            //perform company query by company Id;
             getCompanyQuery = ['UserCode=' + usercode, 'APIToken=' + apitoken, 'Function=GetContact', 'Parameters=' + encodeURI(JSON.stringify({
               ContactId: companyId
             }))].join('&');
-            _context3.next = 125;
+            _context3.next = 145;
             return performFetch(endpoint + getCompanyQuery, 'get', {});
 
-          case 125:
-            companyResponse = _context3.sent; //on successful fetch -> create company section;
+          case 145:
+            companyResponse = _context3.sent;
 
+            //on successful fetch -> create company section;
             if (companyResponse.code >= 200 && companyResponse.code < 300) {
               companyContent = JSON.parse(companyResponse.content);
 
@@ -1573,11 +1607,10 @@ function LessAnnoyingCRM() {
                 sections.push(cSection);
               } //end company fetch success;
 
-            }
+            } //end code 200;
 
-          //end code 200;
 
-          case 127:
+          case 147:
             //end company id check;
             //if contact has background -> add;
             if (background) {
@@ -1606,11 +1639,11 @@ function LessAnnoyingCRM() {
                   multiline: false
                 };
                 backgroundWidgets.push(contactBirthday);
-              } //create background widgets;
+              } //create background widget;
 
 
               contactBackground = {
-                icon: 'DESCRIPTION',
+                icon: globalIconBackground,
                 type: globalKeyValue,
                 state: 'editable',
                 name: 'BackgroundInfo&' + contactId,
@@ -1620,6 +1653,7 @@ function LessAnnoyingCRM() {
               backgroundWidgets.push(contactBackground);
 
               if (companyBckg) {
+                backgroundWidgets.push(globalWidgetSeparator);
                 companyBckLabel = {
                   type: globalKeyValue,
                   title: 'Company',
@@ -1640,12 +1674,12 @@ function LessAnnoyingCRM() {
               sections.push(backgroundSection);
             }
 
-          case 128:
-            e++;
-            _context3.next = 63;
+          case 148:
+            k++;
+            _context3.next = 83;
             break;
 
-          case 131:
+          case 151:
             //build return object;
             returned = {
               code: code,
@@ -1658,7 +1692,7 @@ function LessAnnoyingCRM() {
             };
             return _context3.abrupt("return", returned);
 
-          case 133:
+          case 153:
           case "end":
             return _context3.stop();
         }
