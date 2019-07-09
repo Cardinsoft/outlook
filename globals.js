@@ -48,6 +48,8 @@ var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered
 
 //custom icons;
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
+var globalIconGoogle                 = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN-SQ.png';
+var globalIconHide                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/HIDE.png';
 var globalIconShow                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/SHOW.png';
 var globalIconTab                    = 'https://cardinsoft.com/wp-content/uploads/2019/06/TAB.png';
 var globalIconWebhook                = 'https://cardinsoft.com/wp-content/uploads/2019/06/WEBHOOK.png';
