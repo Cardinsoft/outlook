@@ -47,8 +47,10 @@ var globalConnectorListErrorContent  = 'An error occured during Connector list g
 var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered an error. Please, see details provided below for troubleshooting';
 
 //custom icons;
+var globalIconAccount                = 'https://cardinsoft.com/wp-content/uploads/2019/07/ACCOUNT.png';
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
 var globalIconGoogle                 = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN-SQ.png';
+var globalIconGoogleFull             = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN.png';
 var globalIconHide                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/HIDE.png';
 var globalIconShow                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/SHOW.png';
 var globalIconTab                    = 'https://cardinsoft.com/wp-content/uploads/2019/06/TAB.png';
@@ -106,9 +108,11 @@ var globalUpdateShowText             = 'Update';
 //URLs;
 var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
+var globalCloudFuncIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/07/Google-Cloud-Functions.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
 var globalEnterIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/05/enter.png';
 var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
+var globalIftttIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/IFTTT.png';
 var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
 var globalLACRMiconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/04/LACRM.png';
 var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
