@@ -556,41 +556,43 @@ function _actionCallback() {
 }
 
 function loadMailto(element, input) {
-  const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
-  const matches = input.match(regexp); //get children that are anchors with mailto;
+  if (!typeof input === 'string') {
+    const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
+    const matches = input.match(regexp); //get children that are anchors with mailto;
 
-  let children = Array.from(element.children);
-  children = children.filter(function (elem) {
-    let isAnchor = elem.tagName.toLowerCase() === 'a';
+    let children = Array.from(element.children);
+    children = children.filter(function (elem) {
+      let isAnchor = elem.tagName.toLowerCase() === 'a';
 
-    if (isAnchor) {
-      let isMail = elem.href.search('mailto:') !== -1;
-      let isNotPhone = elem.href.search('tel:') === -1;
+      if (isAnchor) {
+        let isMail = elem.href.search('mailto:') !== -1;
+        let isNotPhone = elem.href.search('tel:') === -1;
 
-      if (isMail && isNotPhone) {
-        return elem;
+        if (isMail && isNotPhone) {
+          return elem;
+        }
       }
-    }
-  });
-
-  if (matches !== null && matches.length > 0 && children.length > 0) {
-    matches.forEach(function (result, index) {
-      let anchor = children[index]; //change event listener to open Compose Ui;
-
-      anchor.addEventListener('click', function (event) {
-        event.stopPropagation();
-        event.preventDefault(); //find original recipient;
-
-        let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-        let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
-
-        let mailParams = {
-          toRecipients: recipient
-        };
-        Office.context.mailbox.displayNewMessageForm(mailParams);
-        return false;
-      });
     });
+
+    if (matches !== null && matches.length > 0 && children.length > 0) {
+      matches.forEach(function (result, index) {
+        let anchor = children[index]; //change event listener to open Compose Ui;
+
+        anchor.addEventListener('click', function (event) {
+          event.stopPropagation();
+          event.preventDefault(); //find original recipient;
+
+          let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
+          let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
+
+          let mailParams = {
+            toRecipients: recipient
+          };
+          Office.context.mailbox.displayNewMessageForm(mailParams);
+          return false;
+        });
+      });
+    }
   }
 }
 /**
