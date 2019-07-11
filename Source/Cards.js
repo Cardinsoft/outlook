@@ -139,7 +139,7 @@ function cardUpdate(e) {
       mergeObjects(widgets, c.widgets);
     }); //preserve values for config widgets;
 
-    preserveValues(type, widgets); //create config object and section;
+    preserveValues(connector, widgets); //create config object and section;
 
     var config = {
       header: globalConfigHeader,
