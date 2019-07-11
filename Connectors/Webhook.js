@@ -19,25 +19,6 @@ function Flow() {
       content: '',
       hint: 'e.g. Http get or post URL'
     }]
-  }, {
-    header: 'Available platforms',
-    isCollapsible: true,
-    numUncollapsible: 1,
-    widgets: [{
-      type: globalKeyValue,
-      content: 'Due to security concerns, Add-ons can only query platforms that are whitelisted. Please, refer to the list below or contact us to add one:'
-    }, {
-      type: globalKeyValue,
-      icon: globalCloudFuncIconUrl,
-      content: 'Google Cloud Functions'
-    }, {
-      type: globalKeyValue,
-      icon: globalFlowIconUrl,
-      content: 'Microsoft Flow'
-    }, {
-      type: globalKeyValue,
-      content: '<a href="mailto:support@cardinsoft.com?subject=' + encodeURIComponent('New platform request for Webhook Connector') + '">Request new platform</a>'
-    }]
   }];
   this.auth = {};
 
