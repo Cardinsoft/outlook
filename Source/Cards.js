@@ -720,44 +720,41 @@ function _cardOpen() {
           return _context3.abrupt("return", cardWelcome(e));
 
         case 46:
-          //on check fail load auth Ui;
-          initCheck(); //build section with a list of configured Connectors;
-
-          _context3.prev = 47;
-          _context3.next = 50;
+          _context3.prev = 46;
+          _context3.next = 49;
           return createConnectorListSection(builder, false, '', config, msg);
 
-        case 50:
-          _context3.next = 56;
+        case 49:
+          _context3.next = 55;
           break;
 
-        case 52:
-          _context3.prev = 52;
-          _context3.t1 = _context3["catch"](47);
+        case 51:
+          _context3.prev = 51;
+          _context3.t1 = _context3["catch"](46);
           //log error to stackdriver and build Connectors list error section;
           console.error('An error occured during Connector list generation: %s', _context3.t1);
           createConfigErrorSection(builder, false, globalErrorHeader, '', globalConnectorListErrorContent);
 
-        case 56:
+        case 55:
           return _context3.abrupt("return", menu(builder));
 
-        case 57:
-          _context3.next = 64;
+        case 56:
+          _context3.next = 63;
           break;
 
-        case 59:
-          _context3.prev = 59;
+        case 58:
+          _context3.prev = 58;
           _context3.t2 = _context3["catch"](5);
           //log error to stackdriver and build config error section;
           console.error(_context3.t2);
           createConfigErrorSection(builder, false, globalConfigErrorHeader, globalConfigErrorWidgetTitle, globalConfigErrorWidgetContent);
           return _context3.abrupt("return", menu(builder));
 
-        case 64:
+        case 63:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[5, 59], [22, 28], [47, 52]]);
+    }, _callee3, this, [[5, 58], [22, 28], [46, 51]]);
   }));
   return _cardOpen.apply(this, arguments);
 }
