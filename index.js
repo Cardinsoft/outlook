@@ -1,40 +1,8 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-} // The initialize function must be run each time a new page is loaded;
-
-
+// The initialize function must be run each time a new page is loaded;
 Office.initialize = function (reason) {
   $(document).ready(
   /*#__PURE__*/
@@ -109,7 +77,7 @@ Menu.prototype.create = function (items) {
   const navbar = document.querySelector('.navbar');
   const menu = document.createElement('div');
   menu.classList.add(this.className, 'singulared');
-  navbar.appendChild(menu); //set element reference;
+  navbar.append(menu); //set element reference;
 
   this.id = btoa((menus.length + 1).toString());
   this.element = menu;
@@ -167,11 +135,11 @@ Menu.prototype.addItem = function (item, isCardAction) {
 
   menuItem.classList.add('menuItem'); //add to CardActions or UniversalActions;
 
-  if (isCardAction) {  
-	(menu).insertBefore(menuItem,menu.children.item(0)); 
+  if (isCardAction) {
+    menu.prepend(menuItem);
     items.cardActions.push(item);
   } else {
-    menu.appendChild(menuItem);
+    menu.append(menuItem);
     items.universalActions.push(item);
   } //set item's icon and text;
 
@@ -185,7 +153,7 @@ Menu.prototype.addItem = function (item, isCardAction) {
     cl.add(item.icon);
   }
 
-  menuItem.appendChild(menuText); //set reference;
+  menuItem.append(menuText); //set reference;
 
   setAction(menuItem, action);
   menuItem.addEventListener('click',
@@ -229,7 +197,7 @@ Menu.prototype.removeItem = function (index, isCardAction) {
   items.splice(index, 1); //remove item from HtmlElement;
 
   let menu = menus[0].element;
-  menu.removeChild(menu.children.item(index));
+  menu.children.item(index).remove();
   return this;
 };
 /**
@@ -289,12 +257,12 @@ Selector.prototype.create = function (parent, name) {
   wrap.classList.add(this.className
   /*,'singulared'*/
   );
-  parent.appendChild(wrap); //create select for form input;
+  parent.append(wrap); //create select for form input;
 
   const input = document.createElement('select');
   input.name = name;
   input.hidden = true;
-  wrap.appendChild(input);
+  wrap.append(input);
   this.element = wrap;
   return this;
 };
@@ -317,16 +285,16 @@ Selector.prototype.add = function (items) {
     //create displayed option;
     const optionUi = document.createElement('div');
     optionUi.classList.add('selectItem');
-    elem.appendChild(optionUi); //create displayed text;
+    elem.append(optionUi); //create displayed text;
 
     const text = document.createElement('p');
     text.textContent = o.text;
     text.classList.add('selectText');
-    optionUi.appendChild(text); //create option for form input;
+    optionUi.append(text); //create option for form input;
 
     const option = document.createElement('option');
     option.value = o.value;
-    elem.children.item(0).appendChild(option);
+    elem.children.item(0).append(option);
   });
   return this;
 };
@@ -335,7 +303,7 @@ Selector.prototype.remove = function (index) {
   //remove item from instance;
   const opt = this.options;
   opt.splice(index, 1);
-  this.element.removeChild(this.element.children.item(index + 1));
+  this.element.children.item(index + 1).remove();
   return this;
 };
 
@@ -380,7 +348,7 @@ Overlay.prototype.setTone = function (tone) {
 Overlay.prototype.show = function (selector) {
   let p = document.querySelector(selector);
   let c = document.createElement('div');
-  p.appendChild(c);
+  p.append(c);
 
   if (this.color) {
     let list = c.classList;
@@ -400,7 +368,7 @@ Overlay.prototype.show = function (selector) {
 };
 
 Overlay.prototype.hide = function () {
-  this.overlay.parentNode.removeChild(this.overlay);
+  this.overlay.remove();
   return this;
 };
 /**
@@ -422,7 +390,7 @@ Spinner.prototype.show = function () {
   let d = GLOBAL.document;
   let p = d.querySelector('#app-overlay');
   let c = d.createElement('div');
-  p.appendChild(c);
+  p.append(c);
   let base = this.className;
   let size = this.size;
   c.className = [base, size].join(' ');
@@ -432,7 +400,7 @@ Spinner.prototype.show = function () {
 Spinner.prototype.hide = function () {
   let d = GLOBAL.document;
   let c = d.querySelector('.spinner');
-  c.parentNode.removeChild(c);
+  c.remove();
 }; //=======================================END Ui Classes======================================//
 //========================================START CALLBACKS======================================//
 
@@ -590,7 +558,7 @@ function _actionCallback() {
 function loadMailto(element, input) {
   const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
   const matches = input.match(regexp); //get children that are anchors with mailto;
-  
+
   let children = Array.from(element.children);
   children = children.filter(function (elem) {
     let isAnchor = elem.tagName.toLowerCase() === 'a';
@@ -614,10 +582,10 @@ function loadMailto(element, input) {
         event.preventDefault(); //find original recipient;
 
         let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-        let recipients = input.match(mailRegEx); //set parameters for Compose Ui;
+        let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
 
         let mailParams = {
-          toRecipients: recipients
+          toRecipients: recipient
         };
         Office.context.mailbox.displayNewMessageForm(mailParams);
         return false;
@@ -633,46 +601,48 @@ function loadMailto(element, input) {
 
 
 function loadAnchor(element, input) {
-  const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
-  const matches = input.match(regexp); //get children that are anchors;
+  if (input) {
+    const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
+    const matches = input.match(regexp); //get children that are anchors;
 
-  let children = Array.from(element.children);
-  children = children.filter(function (elem) {
-    //filter out anchors with mailto or phone set;
-    let isAnchor = elem.tagName.toLowerCase() === 'a';
+    let children = Array.from(element.children);
+    children = children.filter(function (elem) {
+      //filter out anchors with mailto or phone set;
+      let isAnchor = elem.tagName.toLowerCase() === 'a';
 
-    if (isAnchor) {
-      let isNotMail = elem.href.search('mailto:') === -1;
+      if (isAnchor) {
+        let isNotMail = elem.href.search('mailto:') === -1;
 
-      if (isNotMail) {
-        return elem;
-      }
-    }
-  });
-
-  if (matches !== null && matches.length > 0 && children.length > 0) {
-    matches.forEach(function (result, index) {
-      let anchor = children[index]; //set event listener to choose 
-
-      if (anchor.href.search('tel:') !== -1) {
-        anchor.addEventListener('click', function (event) {
-          event.stopPropagation();
-          anchor.target = '_self';
-          return false;
-        });
-      } else {
-        //change event listener to open Dialog;
-        anchor.addEventListener('click', function (event) {
-          event.stopPropagation();
-          event.preventDefault();
-          Office.context.ui.displayDialogAsync(this.href, {
-            width: 50,
-            height: 50
-          });
-          return false;
-        });
+        if (isNotMail) {
+          return elem;
+        }
       }
     });
+
+    if (matches !== null && matches.length > 0 && children.length > 0) {
+      matches.forEach(function (result, index) {
+        let anchor = children[index]; //set event listener to choose 
+
+        if (anchor.href.search('tel:') !== -1) {
+          anchor.addEventListener('click', function (event) {
+            event.stopPropagation();
+            anchor.target = '_self';
+            return false;
+          });
+        } else {
+          //change event listener to open Dialog;
+          anchor.addEventListener('click', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            Office.context.ui.displayDialogAsync(this.href, {
+              width: 50,
+              height: 50
+            });
+            return false;
+          });
+        }
+      });
+    }
   }
 }
 /**
@@ -877,6 +847,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
 
+
 function e_EventObject() {
   this.messageMetadata = {
     accessToken: '',
@@ -899,39 +870,51 @@ const GLOBAL = this;
 const e_actions = {};
 let Utilities;
 let PropertiesService;
-let CardService;
+let CardService; //=======================================START POLYFILLS===================================//
 
-//=======================================START POLYFILLS===================================//
-//polyfill for empty() method of HtmlElement;
 const HtmlElement = GLOBAL.HTMLElement;
-if(!HtmlElement.prototype.empty) {
-	HtmlElement.prototype.empty = function () {
-		let chd = this.children;
-		for(let c=0; c<chd.length; c++) {
-			let child = chd.item(c);
-			this.removeChild(child);
-		}
-	}
-}
+const Element = GLOBAL.Element; //polyfill for empty() method of HtmlElement;
 
-//polyfill for empty() method of HtmlElement;
-if(!HtmlElement.prototype.remove) {
-	HtmlElement.prototype.remove = function () {
-		let prt = this.parentElement;
-		prt.removeChild(this);
-	}
-}
+if (!HtmlElement.prototype.empty) {
+  HtmlElement.prototype.empty = function () {
+    let chd = this.children;
 
-//poltfill for add() method of classList property of HtmlElement;
+    for (let c = 0; c < chd.length; c++) {
+      let child = chd.item(c);
+      this.removeChild(child);
+    }
+  };
+} //polyfill for prepend() method of Element;
+
+
+if (!Element.prototype.prepend) {
+  Element.prototype.prepend = function (elem) {
+    this.insertBefore(elem, this.children.item(0));
+  };
+} //polyfill for append() method of Element;
+
+
+if (!Element.prototype.append) {
+  Element.prototype.append = function (elem) {
+    this.appendChild(elem);
+  };
+} //polyfill for remove() method of HtmlElement;
+
+
+if (!HtmlElement.prototype.remove) {
+  HtmlElement.prototype.remove = function () {
+    let prt = this.parentElement;
+    prt.removeChild(this);
+  };
+} //poltfill for add() method of classList property of HtmlElement;
+
+
 const DOMTokenList = GLOBAL.DOMTokenList;
 const addToken = DOMTokenList.prototype.add;
 
-
 DOMTokenList.prototype.add = function () {
-	
-	for(let i=0; i<arguments.length; i++) {
-		let arg = arguments[i];
-		addToken.call(this,arg);
-	}
-
-}
+  for (let i = 0; i < arguments.length; i++) {
+    let arg = arguments[i];
+    addToken.call(this, arg);
+  }
+};
