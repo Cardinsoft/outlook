@@ -556,43 +556,41 @@ function _actionCallback() {
 }
 
 function loadMailto(element, input) {
-  if (!typeof input === 'string') {
-    const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
-    const matches = input.match(regexp); //get children that are anchors with mailto;
+  const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
+  const matches = input.match(regexp); //get children that are anchors with mailto;
 
-    let children = Array.from(element.children);
-    children = children.filter(function (elem) {
-      let isAnchor = elem.tagName.toLowerCase() === 'a';
+  let children = Array.from(element.children);
+  children = children.filter(function (elem) {
+    let isAnchor = elem.tagName.toLowerCase() === 'a';
 
-      if (isAnchor) {
-        let isMail = elem.href.search('mailto:') !== -1;
-        let isNotPhone = elem.href.search('tel:') === -1;
+    if (isAnchor) {
+      let isMail = elem.href.search('mailto:') !== -1;
+      let isNotPhone = elem.href.search('tel:') === -1;
 
-        if (isMail && isNotPhone) {
-          return elem;
-        }
+      if (isMail && isNotPhone) {
+        return elem;
       }
-    });
-
-    if (matches !== null && matches.length > 0 && children.length > 0) {
-      matches.forEach(function (result, index) {
-        let anchor = children[index]; //change event listener to open Compose Ui;
-
-        anchor.addEventListener('click', function (event) {
-          event.stopPropagation();
-          event.preventDefault(); //find original recipient;
-
-          let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-          let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
-
-          let mailParams = {
-            toRecipients: recipient
-          };
-          Office.context.mailbox.displayNewMessageForm(mailParams);
-          return false;
-        });
-      });
     }
+  });
+
+  if (matches !== null && matches.length > 0 && children.length > 0) {
+    matches.forEach(function (result, index) {
+      let anchor = children[index]; //change event listener to open Compose Ui;
+
+      anchor.addEventListener('click', function (event) {
+        event.stopPropagation();
+        event.preventDefault(); //find original recipient;
+
+        let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
+        let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
+
+        let mailParams = {
+          toRecipients: recipient
+        };
+        Office.context.mailbox.displayNewMessageForm(mailParams);
+        return false;
+      });
+    });
   }
 }
 /**
@@ -603,48 +601,46 @@ function loadMailto(element, input) {
 
 
 function loadAnchor(element, input) {
-  if (!typeof input === 'string') {
-    const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
-    const matches = input.match(regexp); //get children that are anchors;
+  const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
+  const matches = input.match(regexp); //get children that are anchors;
 
-    let children = Array.from(element.children);
-    children = children.filter(function (elem) {
-      //filter out anchors with mailto or phone set;
-      let isAnchor = elem.tagName.toLowerCase() === 'a';
+  let children = Array.from(element.children);
+  children = children.filter(function (elem) {
+    //filter out anchors with mailto or phone set;
+    let isAnchor = elem.tagName.toLowerCase() === 'a';
 
-      if (isAnchor) {
-        let isNotMail = elem.href.search('mailto:') === -1;
+    if (isAnchor) {
+      let isNotMail = elem.href.search('mailto:') === -1;
 
-        if (isNotMail) {
-          return elem;
-        }
+      if (isNotMail) {
+        return elem;
+      }
+    }
+  });
+
+  if (matches !== null && matches.length > 0 && children.length > 0) {
+    matches.forEach(function (result, index) {
+      let anchor = children[index]; //set event listener to choose 
+
+      if (anchor.href.search('tel:') !== -1) {
+        anchor.addEventListener('click', function (event) {
+          event.stopPropagation();
+          anchor.target = '_self';
+          return false;
+        });
+      } else {
+        //change event listener to open Dialog;
+        anchor.addEventListener('click', function (event) {
+          event.stopPropagation();
+          event.preventDefault();
+          Office.context.ui.displayDialogAsync(this.href, {
+            width: 50,
+            height: 50
+          });
+          return false;
+        });
       }
     });
-
-    if (matches !== null && matches.length > 0 && children.length > 0) {
-      matches.forEach(function (result, index) {
-        let anchor = children[index]; //set event listener to choose 
-
-        if (anchor.href.search('tel:') !== -1) {
-          anchor.addEventListener('click', function (event) {
-            event.stopPropagation();
-            anchor.target = '_self';
-            return false;
-          });
-        } else {
-          //change event listener to open Dialog;
-          anchor.addEventListener('click', function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-            Office.context.ui.displayDialogAsync(this.href, {
-              width: 50,
-              height: 50
-            });
-            return false;
-          });
-        }
-      });
-    }
   }
 }
 /**
