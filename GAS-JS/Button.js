@@ -179,10 +179,8 @@ TextButton.prototype.appendToUi = function (parent) {
     })));
   } else if (openLink) {
     button.addEventListener('click', function () {
-      const ol = JSON.parse(openLink);
-      console.log(ol.url);
-      console.log(ol);
-      Office.context.ui.displayDialogAsync('https://' + ol.url);
+      const link = JSON.parse(openLink);
+      Office.context.ui.displayDialogAsync(forceHttps(link.url));
     });
   } else {
     button.addEventListener('click', function () {
