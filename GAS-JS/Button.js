@@ -184,8 +184,8 @@ TextButton.prototype.appendToUi = function (parent) {
     });
   } else {
     button.addEventListener('click', function () {
-      console.log(openLink);
-      Office.context.ui.displayDialogAsync(JSON.parse(authAction).url);
+      const auth = JSON.parse(authAction);
+      Office.context.ui.displayDialogAsync(forceHttps(auth.url));
     });
   }
 }; //Emulate Class ImageButton extending base Class Button for CardService service;
