@@ -182,7 +182,7 @@ TextButton.prototype.appendToUi = function (parent) {
       const ol = JSON.parse(openLink);
       console.log(ol.url);
       console.log(ol);
-      Office.context.ui.displayDialogAsync(ol.url);
+      Office.context.ui.displayDialogAsync('https://' + ol.url);
     });
   } else {
     button.addEventListener('click', function () {
