@@ -178,13 +178,41 @@ TextButton.prototype.appendToUi = function (parent) {
       }, _callee, this);
     })));
   } else if (openLink) {
-    button.addEventListener('click', function () {
-      Office.context.ui.displayDialogAsync(JSON.parse(openLink).url);
-    });
+    button.addEventListener('click',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            console.log(openLink);
+            Office.context.ui.displayDialogAsync(JSON.parse(openLink).url);
+
+          case 2:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    })));
   } else {
-    new fabric['Button'](button, function () {
-      Office.context.ui.displayDialogAsync(JSON.parse(authAction).url);
-    });
+    button.addEventListener('click',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee3() {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            console.log(openLink);
+            Office.context.ui.displayDialogAsync(JSON.parse(authAction).url);
+
+          case 2:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    })));
   }
 }; //Emulate Class ImageButton extending base Class Button for CardService service;
 
