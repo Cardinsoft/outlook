@@ -644,6 +644,26 @@ function loadAnchor(element, input) {
   }
 }
 /**
+ * Appends https method to URL if none;
+ * @param {String} input 
+ **/
+
+
+function forceHttps(input) {
+  const https = /^https:\/\//;
+  const http = /^http:\/\//;
+  const isSecure = https.test(input);
+  const isMethod = http.test(input);
+
+  if (!isSecure && !isMethod) {
+    input = 'https://' + input;
+  } else if (isMethod) {
+    input = 'https://' + input.substring(7);
+  }
+
+  return input;
+}
+/**
  * Parses input into Boolean;
  * @param {*=} input input to parse;
  * @returns {Boolean}
