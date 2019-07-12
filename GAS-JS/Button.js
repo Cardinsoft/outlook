@@ -180,6 +180,7 @@ TextButton.prototype.appendToUi = function (parent) {
   } else if (openLink) {
     button.addEventListener('click', function () {
       const ol = JSON.parse(openLink);
+      console.log(ol.url);
       console.log(ol);
       Office.context.ui.displayDialogAsync(ol.url);
     });
