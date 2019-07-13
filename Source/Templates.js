@@ -530,9 +530,13 @@ function simpleKeyValueWidget(top, content, isMultiline, icon, button) {
 
 
 function actionKeyValueWidget(icon, top, content, funcName, params) {
-  //check if content is a Date and format to locale to avoid errors;
+  //modify content to avoid errors;
   if (content instanceof Date) {
     content = content.toLocaleDateString();
+  }
+
+  if (content === null) {
+    content = '';
   } //create widget and set required parameters;
 
 
@@ -573,9 +577,13 @@ function actionKeyValueWidget(icon, top, content, funcName, params) {
 
 
 function actionKeyValueWidgetButton(icon, top, content, button, funcName, params) {
-  //check if content is a Date and format to locale to avoid errors;
+  //modify content to avoid errors;
   if (content instanceof Date) {
     content = content.toLocaleDateString();
+  }
+
+  if (content === null) {
+    content = '';
   } //create widget and set required parameters;
 
 
