@@ -10,7 +10,7 @@ function menu(builder) {
   var actionAdvanced = actionAction('cardAdvanced', true);
   var actionHelp = actionAction('cardHelp', true); //create menu CardActions;
 
-  var cardDashboard = cardAction('Dashboard', globalActionClick, actionDashboard);
+  var cardDashboard = cardAction(globalDashboardHeader, globalActionClick, actionDashboard);
   var cardSettings = cardAction(globalSettingsHeader, globalActionClick, actionSettings);
   var cardAdvanced = cardAction(globalAdvancedHeader, globalActionClick, actionAdvanced);
   var cardHelp = cardAction(globalHelpHeader, globalActionClick, actionHelp); //set actions to builder;
@@ -365,17 +365,18 @@ function textButtonWidgetLinked(text, disabled, isFilled, url, fullsized, needsR
 
 
 function imageButtonWidget(icon, funcName, params) {
-  var widget = CardService.newImageButton();
+  var widget = CardService.newImageButton(); //set icon if found or set icon url if not;
 
-  //set icon if found or set icon url if not;
-  if(icon&&icon!=='') { 
+  if (icon && icon !== '') {
     var iconEnum = CardService.Icon[icon];
-    if(iconEnum) {
+
+    if (iconEnum) {
       widget.setIcon(iconEnum);
-    }else {
+    } else {
       widget.setIconUrl(icon);
-    } 
-  }
+    }
+  } //set action on button click;
+
 
   var action = actionAction(funcName, true, params);
   widget.setOnClickAction(action);
@@ -388,19 +389,28 @@ function imageButtonWidget(icon, funcName, params) {
  * @param {String=} funcName callback function name;
  * @param {Boolean=} hasSpinner set spinner on Ui or not;
  * @param {Object=} params parameters to pass to function;
+ * @param {Boolean=} isAuth authorization action flag;
  * @returns {Image} this Image;
  */
 
 
-function imageWidget(src, alt, funcName, hasSpinner, params) {
+function imageWidget(src, alt, funcName, hasSpinner, params, isAuth) {
   //create Image widget and set required parameters;
   var widget = CardService.newImage();
   widget.setImageUrl(src);
   widget.setAltText(alt); //set action if callback name provided;
 
-  if (funcName) {
+  if (funcName && !isAuth) {
     var action = actionAction(funcName, hasSpinner, params);
     widget.setOnClickAction(action);
+  } else if (funcName) {
+    action = CardService.newAuthorizationAction(); //create service and get auth url;
+
+    var service = authService(params);
+    var url = service.getAuthorizationUrl(params); //set auth url and action;
+
+    action.setAuthorizationUrl(url);
+    widget.setAuthorizationAction(action);
   }
 
   return widget;
@@ -472,9 +482,13 @@ function switchWidget(icon, top, content, name, selected, value, funcName, hasSp
 
 
 function simpleKeyValueWidget(top, content, isMultiline, icon, button) {
-  //check if content is a Date and format to locale to avoid errors;
+  //modify content to avoid errors;
   if (content instanceof Date) {
     content = content.toLocaleDateString();
+  }
+
+  if (content === null) {
+    content = '';
   } //create widget and set required parameters;
 
 
