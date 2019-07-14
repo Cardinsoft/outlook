@@ -550,7 +550,8 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
     } //construct add in CRM widget;
 
 
-    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, '', false, false);
+    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, addInCRM, false, false);
+    section.addWidget(add);
   } //append section and return it;
 
 
