@@ -1,37 +1,14 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
+/**
+ * Saves connector (pure backend);
+ * @param {Object} connector new config to save;
+ * @returns {Object} saved connector;
+ */
+function saveConnector(_x) {
+  return _saveConnector.apply(this, arguments);
 }
 /**
  * Creates new connector and saves it to properties;
@@ -39,7 +16,44 @@ function _asyncToGenerator(fn) {
  */
 
 
-function createConnector(_x) {
+function _saveConnector() {
+  _saveConnector = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(connector) {
+    var config, n, conn;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return getConfig();
+
+        case 2:
+          config = _context.sent;
+
+          for (n = 0; n < config.length; n++) {
+            conn = config[n];
+
+            if (conn.ID === connector.ID) {
+              config[n] = connector;
+            }
+          }
+
+          _context.next = 6;
+          return setProperty('config', config, 'user');
+
+        case 6:
+          return _context.abrupt("return", connector);
+
+        case 7:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return _saveConnector.apply(this, arguments);
+}
+
+function createConnector(_x2) {
   return _createConnector.apply(this, arguments);
 }
 /**
@@ -51,10 +65,10 @@ function createConnector(_x) {
 function _createConnector() {
   _createConnector = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(e) {
+  regeneratorRuntime.mark(function _callee2(e) {
     var builder, data, multi, isDefault, useManual, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, newID;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access form input parameters;
@@ -194,28 +208,29 @@ function _createConnector() {
             }
           }
 
-          _context.prev = 14;
-          _context.next = 17;
+          _context2.prev = 14;
+          _context2.next = 17;
           return getConfig();
 
         case 17:
-          config = _context.sent;
+          config = _context2.sent;
 
           if (!(config === null)) {
-            _context.next = 21;
+            _context2.next = 21;
             break;
           }
 
-          _context.next = 21;
+          _context2.next = 21;
           return createSettings();
 
         case 21:
-          _context.next = 23;
+          _context2.next = 23;
           return getConfig();
 
         case 23:
-          config = _context.sent; //reset default connectors if new one is default;
+          config = _context2.sent;
 
+          //reset default connectors if new one is default;
           if (connector.isDefault) {
             config.forEach(function (conn) {
               if (conn.isDefault || conn.isDefault === undefined) {
@@ -229,37 +244,37 @@ function _createConnector() {
 
           newID = generateId(config);
           connector.ID = newID;
-          _context.next = 30;
+          _context2.next = 30;
           return setProperty('config', config, 'user');
 
         case 30:
           builder.setNotification(notification(globalCreateSuccess));
-          _context.next = 37;
+          _context2.next = 37;
           break;
 
         case 33:
-          _context.prev = 33;
-          _context.t0 = _context["catch"](14); //notify the user that connector creation failed;
-
-          console.error(_context.t0);
+          _context2.prev = 33;
+          _context2.t0 = _context2["catch"](14);
+          //notify the user that connector creation failed;
+          console.error(_context2.t0);
           builder.setNotification(error(globalCreateFailure));
 
         case 37:
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
-          return _context.abrupt("return", builder.build());
+          return _context2.abrupt("return", builder.build());
 
         case 40:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee, this, [[14, 33]]);
+    }, _callee2, this, [[14, 33]]);
   }));
   return _createConnector.apply(this, arguments);
 }
 
-function updateConnector(_x2) {
+function updateConnector(_x3) {
   return _updateConnector.apply(this, arguments);
 }
 /**
@@ -271,10 +286,10 @@ function updateConnector(_x2) {
 function _updateConnector() {
   _updateConnector = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(e) {
+  regeneratorRuntime.mark(function _callee3(e) {
     var builder, data, multi, icon, name, url, isDefault, useManual, ID, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, index;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -423,19 +438,20 @@ function _updateConnector() {
           } //connector index (for ease of flow);
 
 
-          _context2.next = 20;
+          _context3.next = 20;
           return getConfig();
 
         case 20:
-          config = _context2.sent;
+          config = _context3.sent;
           index = getIndex(config, e.parameters);
-          _context2.prev = 22;
-          _context2.next = 25;
+          _context3.prev = 22;
+          _context3.next = 25;
           return getConfig();
 
         case 25:
-          config = _context2.sent; //reset default connectors if updated one is default;
+          config = _context3.sent;
 
+          //reset default connectors if updated one is default;
           if (connector.isDefault) {
             config.forEach(function (conn) {
               if (conn.isDefault || conn.isDefault === undefined) {
@@ -446,55 +462,55 @@ function _updateConnector() {
 
 
           config[index] = connector;
-          _context2.next = 30;
+          _context3.next = 30;
           return setProperty('config', config, 'user');
 
         case 30:
           builder.setNotification(notification(globalUpdateSuccess));
-          _context2.next = 36;
+          _context3.next = 36;
           break;
 
         case 33:
-          _context2.prev = 33;
-          _context2.t0 = _context2["catch"](22); //notify the user that connector update failed;
-
+          _context3.prev = 33;
+          _context3.t0 = _context3["catch"](22);
+          //notify the user that connector update failed;
           builder.setNotification(error(globalUpdateFailure));
 
         case 36:
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
-          return _context2.abrupt("return", builder.build());
+          return _context3.abrupt("return", builder.build());
 
         case 39:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
-    }, _callee2, this, [[22, 33]]);
+    }, _callee3, this, [[22, 33]]);
   }));
   return _updateConnector.apply(this, arguments);
 }
 
-function removeConnector(_x3) {
+function removeConnector(_x4) {
   return _removeConnector.apply(this, arguments);
 }
 
 function _removeConnector() {
   _removeConnector = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(e) {
+  regeneratorRuntime.mark(function _callee4(e) {
     var builder, config, index, params, form, cType, uninstall, src;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //connector index (for ease of flow);
 
-          _context3.next = 3;
+          _context4.next = 3;
           return getConfig();
 
         case 3:
-          config = _context3.sent;
+          config = _context4.sent;
           index = getIndex(config, e.parameters); //access parameters and formInput;
 
           params = e.parameters;
@@ -507,43 +523,43 @@ function _removeConnector() {
             new this[params.type]().uninstall(params);
           }
 
-          _context3.prev = 10;
-          _context3.next = 13;
+          _context4.prev = 10;
+          _context4.next = 13;
           return getConfig();
 
         case 13:
-          src = _context3.sent; //remove connector and notify the user of success;
-
+          src = _context4.sent;
+          //remove connector and notify the user of success;
           src = src.filter(function (connect, idx) {
             if (idx !== index) {
               return connect;
             }
           });
-          _context3.next = 17;
+          _context4.next = 17;
           return setProperty('config', src, 'user');
 
         case 17:
           builder.setNotification(notification(globalRemoveSuccess));
-          _context3.next = 23;
+          _context4.next = 23;
           break;
 
         case 20:
-          _context3.prev = 20;
-          _context3.t0 = _context3["catch"](10); //notify the user that connector removal failed;
-
+          _context4.prev = 20;
+          _context4.t0 = _context4["catch"](10);
+          //notify the user that connector removal failed;
           builder.setNotification(error(globalRemoveFailure));
 
         case 23:
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
-          return _context3.abrupt("return", builder.build());
+          return _context4.abrupt("return", builder.build());
 
         case 26:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3, this, [[10, 20]]);
+    }, _callee4, this, [[10, 20]]);
   }));
   return _removeConnector.apply(this, arguments);
 }
