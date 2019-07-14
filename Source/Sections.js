@@ -1,40 +1,95 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
+/**
+ * Creates section for authorizing Connectors after initial check;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Array} connectors an array of Connectors to authorize;
+ * @returns {CardSection} this CardSection;
+ */
+function authorizeSection(builder, isCollapsed, connectors) {
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+  section.setCollapsible(isCollapsed); //sort connectors alphabetically for simplicity;
 
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+  connectors.sort(function (a, b) {
+    return order(a.name, b.name, false);
+  }); //append authorization buttons and prompts;
+
+  connectors.forEach(function (connector) {
+    var type = new this[connector.type]();
+    var auth = type.auth;
+    auth.name = connector.name;
+    auth.ID = connector.ID;
+
+    if (connector.sandbox) {
+      auth.id = auth.sandbox.id;
+      auth.secret = auth.sandbox.secret;
+    }
+
+    var service = authService(auth);
+    var hasAccess = service.hasAccess();
+
+    if (!hasAccess) {
+      //try access type's login button image and default to global enter;
+      var authIcon = type.iconLogin;
+
+      if (!authIcon) {
+        authIcon = globalEnterIconUrl;
       }
 
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
+      var authButton = imageButtonWidgetAuth(authIcon, globalOpenAuthText, service.getAuthorizationUrl(auth));
+      var authPrompt = simpleKeyValueWidget('', connector.name, true, connector.icon, authButton);
+      section.addWidget(authPrompt);
+    }
+  }); //append section and return it;
 
-      _next(undefined);
-    });
-  };
+  builder.addSection(section);
+  return section;
 }
 /**
- * Creates section promping user to authorize the Connector;
+ * Creates section prompting user to choose to skip auth for Connector types;
+ * @param {CardBuilder} builder card builder to append section to;
+ * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
+ * @param {Array} types an array of types with OAuth2.0 auth flow;
+ * @returns {CardSection} this CardSection;
+ */
+
+
+function skipInitialAuthSection(builder, isCollapsed, types) {
+  //create section and set required parameters;
+  var section = CardService.newCardSection();
+  section.setCollapsible(isCollapsed); //prompt user that they can skip initial auth check;
+
+  var prompt = simpleKeyValueWidget(globalSkipAuthWidgetTitle, globalSkipAuthWidgetContent, true);
+  section.addWidget(prompt); //get skip configuration;
+
+  var skipped = getProperty('skipAuth', 'user');
+
+  if (!skipped) {
+    skipped = {};
+  } //add skip witch for each type passed;
+
+
+  types.forEach(function (type) {
+    //check for skip and default to false;
+    var isOn = false;
+
+    if (skipped[type.name]) {
+      isOn = true;
+    }
+
+    var skipper = switchWidget(type.icon, '', type.typeName, 'skip-' + type.name, isOn, type.name, 'saveSkip', false);
+    section.addWidget(skipper);
+  }); //append section and return it;
+
+  builder.addSection(section);
+  return section;
+}
+/**
+ * Creates section prompting user to authorize the Connector;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Object} connector connector object;
@@ -55,8 +110,10 @@ function createNotAuthorizedSection(builder, isCollapsed, connector, error) {
     //explain that connector requires auth;
     createWidgetNotAuthorized(section, globalNotAuthorizedContent, error); //if auth data not provided by type -> invoke from connector;
 
-    if (Object.keys(cAuth).length !== 0) {
+    if (Object.keys(cAuth).length > 0) {
       cAuth.name = connector.name;
+      cAuth.ID = connector.ID;
+      cAuth.type = connector.type;
       createWidgetOpenAuth(section, globalOpenAuthText, cAuth);
     } else if (authType === globalOAuth2AuthType) {
       createWidgetOpenAuth(section, globalOpenAuthText, connector);
@@ -237,8 +294,8 @@ function _createConnectorListSection() {
           code = response.code;
           content = response.content;
           hasMatch = response.hasMatch; //initialize common varibales;
-          //set response code to connector (display req);
 
+          //set response code to connector (display req);
           connector.code = code; //function name to run;
 
           actionName = 'actionShow';
@@ -259,15 +316,16 @@ function _createConnectorListSection() {
               } //handle use cases;
 
 
-			if(length>0&&matched || length===0&&!matched) { 
-				label = text; 
-			}else if(length>0) { 
-				label = 'No match'; 
-			}else { 
-				label = globalNoData; 
-			}
+              if (length > 0 && matched || length === 0 && !matched) {
+                label = text;
+              } else if (length > 0) {
+                label = 'No match';
+              } else {
+                label = globalNoData;
+              } //set button colour if provided, else -> default to secondary colour;
 
-            if (colour) {
+
+              if (colour) {
                 label = '<font color="' + colour + '">' + label + '</font>';
               }
             } else {
@@ -279,6 +337,8 @@ function _createConnectorListSection() {
             }
 
             connector.content = JSON.stringify(content);
+          } else if (code === 401 || code === 403) {
+            label = globalLoginText;
           } else {
             //handle failed requests;
             label = globalError;
@@ -474,11 +534,23 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
   var noData = simpleKeyValueWidget('', prompt, true);
   section.addWidget(noData); //create TextButton for adding contact if config provides one;
 
-  var addConfig = new this[connector.type]().addConfig;
+  var cType = new this[connector.type]();
+  var addConfig = cType.addConfig;
+  var addInCRM = cType.addInCRM;
 
   if (addConfig) {
-    var add = textButtonWidget('Add contact', false, false, 'configureContactAdd', addConfig(propertiesToString(connector), msg));
+    var add = textButtonWidget(globalAddContactText, false, false, 'configureContactAdd', addConfig(propertiesToString(connector), msg));
     section.addWidget(add);
+  } else if (addInCRM) {
+    //access domain and prepend if required;
+    var domain = connector.account;
+
+    if (domain) {
+      addInCRM = domain + '.' + addInCRM;
+    } //construct add in CRM widget;
+
+
+    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, '', false, false);
   } //append section and return it;
 
 
@@ -552,7 +624,7 @@ function createUnparsedSection(builder, isCollapsed, error, content) {
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Integer} code response status code;
  * @param {String} error error message to show; 
- * @returns {CardSection} this CardSection;  
+ * @returns {CardSection} this CardSection;
  */
 
 
@@ -759,13 +831,13 @@ function createSectionConfig(builder, config) {
 
         case 'KeyValue':
           //access KeyValue-specific params;
-          var iconUrl     = widget.icon;
+          var iconUrl = widget.icon;
           var isMultiline = widget.isMultiline;
           var switchValue = widget.switchValue;
-          var buttonText  = widget.buttonText;
-		  var selected    = widget.selected;
-          var disabled    = widget.disabled;
-          var filled      = widget.filled; //default to multiline if nothing is set;
+          var buttonText = widget.buttonText;
+          var selected = widget.selected;
+          var disabled = widget.disabled;
+          var filled = widget.filled; //default to multiline if nothing is set;
 
           if (!isMultiline) {
             isMultiline = true;
@@ -891,7 +963,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
   } //append widgets if there are any;
 
 
-  if (widgets.length !== 0) {
+  if (widgets.length > 0) {
     widgets.forEach(function (widget, index) {
       if (index <= max) {
         var state = widget.state;
@@ -952,10 +1024,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
                 //access KeyValue-specific params;
                 var isMultiline = widget.isMultiline;
                 var switchValue = widget.switchValue;
-                var buttonText  = widget.buttonText;
-				var selected    = widget.selected;
-                var disabled    = widget.disabled;
-                var filled      = widget.filled; //default to multiline;
+                var buttonText = widget.buttonText;
+                var selected = widget.selected;
+                var disabled = widget.disabled;
+                var filled = widget.filled; //default to multiline;
 
                 if (!isMultiline) {
                   isMultiline = true;
@@ -968,7 +1040,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
 
 
                 if (switchValue) {
-                  element = switchWidget(icon, title, content, name, switchValue, switchValue);
+                  element = switchWidget(icon, title, content, name, selected, switchValue);
                 } else {
                   //set section and widget index and stringify;
                   connector.sectionIdx = sectionIndex;
@@ -1052,12 +1124,8 @@ function createSectionChooseType(builder, isCollapsed, header) {
 
   if (header) {
     section.setHeader(header);
-  } //create class instance to get config data;
+  } //create an array of used types;
 
-
-  var flow = new Flow();
-  var lacrm = new LessAnnoyingCRM();
-  var pipedrive = new Pipedrive(); //create an array of used types;
 
   var types = getTypes(); //create widgets for each type;
 
