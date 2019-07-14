@@ -1,38 +1,6 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function Pipedrive() {
   Connector.call(this);
@@ -119,7 +87,7 @@ function Pipedrive() {
 
           case 20:
             responseDeals = _context.sent;
-            _context.next = 51;
+            _context.next = 54;
             break;
 
           case 23:
@@ -134,47 +102,52 @@ function Pipedrive() {
             contentCD = responseCD.content; //on success -> authorize, on fail return error;
 
             if (!(codeCD === 200)) {
-              _context.next = 44;
+              _context.next = 47;
               break;
             }
 
             contentCD = JSON.parse(contentCD);
             dataCD = contentCD.data;
-            domain = dataCD.company_domain; //initate requests;
+            domain = dataCD.company_domain; //set domain to connector;
 
-            _context.next = 35;
+            connector.account = domain;
+            _context.next = 36;
+            return saveConnector(connector);
+
+          case 36:
+            _context.next = 38;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: personsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 35:
+          case 38:
             responsePersons = _context.sent;
-            _context.next = 38;
+            _context.next = 41;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: activsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 38:
+          case 41:
             responseActivs = _context.sent;
-            _context.next = 41;
+            _context.next = 44;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: dealsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 41:
+          case 44:
             responseDeals = _context.sent;
-            _context.next = 51;
+            _context.next = 54;
             break;
 
-          case 44:
+          case 47:
             if (!(codeCD === 401)) {
-              _context.next = 49;
+              _context.next = 52;
               break;
             }
 
@@ -186,7 +159,7 @@ function Pipedrive() {
               content: authError
             });
 
-          case 49:
+          case 52:
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
@@ -195,7 +168,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 51:
+          case 54:
             //access response codes;
             codePersons = responsePersons.code;
             codeActivs = responseActivs.code;
@@ -657,7 +630,7 @@ function Pipedrive() {
 
             return _context.abrupt("return", returned);
 
-          case 61:
+          case 64:
           case "end":
             return _context.stop();
         }
