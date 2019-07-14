@@ -49,6 +49,9 @@ var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered
 //custom icons;
 var globalIconAccount                = 'https://cardinsoft.com/wp-content/uploads/2019/07/ACCOUNT.png';
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
+var globalIconBirthday               = 'https://cardinsoft.com/wp-content/uploads/2019/07/BIRTHDAY.png';
+var globalIconCompany                = 'https://cardinsoft.com/wp-content/uploads/2019/07/COMPANY.png';
+var globalIconDepartment             = 'https://cardinsoft.com/wp-content/uploads/2019/07/DEPARTMENT.png';
 var globalIconGoogle                 = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN-SQ.png';
 var globalIconGoogleFull             = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN.png';
 var globalIconMobilePhone            = 'https://cardinsoft.com/wp-content/uploads/2019/07/MOBILE-PHONE.png';
