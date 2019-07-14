@@ -97,6 +97,8 @@ var globalNoData                     = 'No data';
 var globalSuccess                    = 'Success';
 
 //button texts;
+var globalAddContactText             = 'Add contact';
+var globalAddContactInCRMText        = 'Add contact in CRM';
 var globalCancelText                 = 'Cancel';
 var globalCardinUrlText              = 'cardinsoft.com';
 var globalClearWidgetSubmitText      = 'Clear';
