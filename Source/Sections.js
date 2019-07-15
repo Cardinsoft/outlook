@@ -535,6 +535,7 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
   section.addWidget(noData); //create TextButton for adding contact if config provides one;
 
   var cType = new this[connector.type]();
+  var addQuery = '';
   var addConfig = cType.addConfig;
   var addInCRM = cType.addInCRM;
 
@@ -546,11 +547,16 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
     var domain = connector.account;
 
     if (domain) {
-      addInCRM = domain + '.' + addInCRM;
+      addQuery = 'https://' + domain + '.' + addInCRM.base;
+    } //put parameters into query string;
+
+
+    if (addInCRM.params) {
+      addQuery += jsonToQuery(addInCRM.params, trimmed);
     } //construct add in CRM widget;
 
 
-    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, addInCRM, false, false);
+    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, addQuery, false, true);
     section.addWidget(add);
   } //append section and return it;
 
