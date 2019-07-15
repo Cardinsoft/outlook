@@ -1,62 +1,89 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/**
+ * Merges objects to form query string;
+ * @param {Object} keys object with key schema;
+ * @param {Object} values object with values schema;
+ * @returns {String} query with params;
+ */
+function jsonToQuery(keys, values) {
+  var params = [];
+
+  for (var key in keys) {
+    var param = keys[key] + '=' + values[key];
+    params.push(param);
   }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
+  return params.join('&');
 }
+/**
+ * Create a timestamp;
+ * @param {String} label log message;
+ * @param {String|Object} content log content;
+ * @param {String} logging type;
+ */
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
 
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
+function timestamp(label, content, type) {
+  //access current date and time;
+  var current = new Date();
+  var date = current.toLocaleDateString();
+  var time = current.toLocaleTimeString(); //construct log;
 
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
+  var log = {
+    message: label,
+    on: date,
+    at: time,
+    happened: content
   };
-}
 
+  switch (type) {
+    case 'log':
+      console.log(log);
+      break;
+
+    case 'warning':
+      console.warn(log);
+      break;
+
+    case 'error':
+      console.error(log);
+      break;
+  }
+}
 /**
  * Changes input into a set of "*";
  * @param {String} input input to convert;
  * @returns {String} password;
  */
+
+
 function switchPassword(input) {
-  if(!input) { return ''; }
-  if(input==='') { return input; }
-  if(!typeof input==='string') { input = input.toString(); }
-  
-  //can be used since passwords don't use unicode chars;
+  if (!input) {
+    return '';
+  }
+
+  if (input === '') {
+    return input;
+  }
+
+  if (!typeof input === 'string') {
+    input = input.toString();
+  } //can be used since passwords don't use unicode chars;
+
+
   var charr = input.split('');
-  
   var len = charr.length;
-  
   var output = [];
-  for(var i=0; i<len; i++) {
+
+  for (var i = 0; i < len; i++) {
     output.push('*');
   }
 
   return output.join('');
 }
-
 /**
  * Gets an Array element by its property;
  * @param {Array} array an Array of objects;
@@ -64,6 +91,8 @@ function switchPassword(input) {
  * @param {*} value property value;
  * @returns {Object|Array} element
  */
+
+
 function getByProperty(array, name, value) {
   var output = array.filter(function (element) {
     if (element[name] === value) {
@@ -127,40 +156,33 @@ function generateId(ids) {
  */
 
 
-function preserveValues(connector,widgets) {
+function preserveValues(connector, widgets) {
   //ensure input values are preserved;
-  if(widgets.length!==0) {
-    widgets.forEach(function(widget){
-      var name      = widget.name;
-      var content   = widget.content;
-      var hasSwitch = widget.switchValue;
-        
-      for(var key in connector) {
+  if (widgets.length !== 0) {
+    widgets.forEach(function (widget) {
+      var name = widget.name;
+      var content = widget.content;
+
+      for (var key in connector) {
         //if field name is found;
-        if(key===name) {
+        if (key === name) {
           //if content is array -> select options;
-          if( (content instanceof Array)&&!hasSwitch ) {
-            content.forEach(function(option){
-              if(connector[key].indexOf(option.value)!==-1) { 
-                option.selected = true; 
-              }else { 
-                option.selected = false; 
+          if (content instanceof Array) {
+            content.forEach(function (option) {
+              if (connector[key].indexOf(option.value) !== -1) {
+                option.selected = true;
+              } else {
+                option.selected = false;
               }
             });
-          }else if(hasSwitch) {
-            
-            if(connector[key]==='true') { widget.selected = true; }
-            
-          }else {
+          } else {
             widget.content = connector[key];
-          } 
-        } 
+          }
+        }
       }
-      
     });
-  }  
+  }
 }
-
 /**
  * Helper function to sort config array;
  * @param {Array} config an array of Connector settings objects;
@@ -367,47 +389,38 @@ function getBeginMax(content, start) {
   };
   return output;
 }
-
 /**
  * Creates an array of widget caps for each content section;
  * @param {Array} content an array of sections with widgets;
  * @returns {Array}
  */
+
+
 function getLayout(content) {
-  
-  try {
+  //set maximum widgets in section to include all of them;
+  var max = Math.floor(100 / content.length); //count full number of widgets;
 
-    //set maximum widgets in section to include all of them;
-    var max = Math.floor( 100 / content.length );
-        
-    //count full number of widgets;
-    var full = 0, layout = [];
-    content.forEach(function(c){
-      //access widgets;
-      
-      if(typeof c==='string') { c = JSON.parse(c); }
-      
-      var widgets = c.widgets;
-            
-      //increment full length;
-      for(var widget in widgets) { 
-        full += 1;
-      }
-           
-      //add number of widgets to layout;
-      var length = widgets.length;
-      if(length>max) { layout.push(max); }else { layout.push(widgets.length); }
-    });
-  
-    return layout;
-  
-  }
-  catch(error) {
-    console.error('Encountered an error during widget cap check: '+error);
-  }
-  
+  var full = 0,
+      layout = [];
+  content.forEach(function (c) {
+    //access widgets;
+    var widgets = c.widgets; //increment full length;
+
+    for (var widget in widgets) {
+      full += 1;
+    } //add number of widgets to layout;
+
+
+    var length = widgets.length;
+
+    if (length > max) {
+      layout.push(max);
+    } else {
+      layout.push(widgets.length);
+    }
+  });
+  return layout;
 }
-
 /**
  * Creates an object for generating timeframes;
  * @param {Date} start instance of Date (starting);
@@ -514,70 +527,77 @@ function checkAgainstErrorTypes(error) {
   var notTyped = !isEval && !isRange && !isRef && !isSyntax && !isType && !isURI;
   return notTyped;
 }
-
 /**
  * Stringifies every object property that is not of type String;
  * @param {Object} object object to change;
  * @returns {Object}
  */
+
+
 function propertiesToString(object) {
   var length = Object.keys(object).length;
-  if(length!==0) {
-      
-    for(var key in object) {
+
+  if (length !== 0) {
+    for (var key in object) {
       var value = object[key];
 
-      if(value) {
-
+      if (value) {
         //check normal types;
-        var isString  = typeof value==='string';
-        var isObject  = typeof value==='object';
-        var isBoolean = typeof value==='boolean';
-        var isNumber  = typeof value==='number';
-        //check unique situations;
-        var isNull    = value===null;
-        var isArray   = value instanceof Array;
-        var isNotNum  = isNaN(value);
-        
-        if(isArray) {
-          value.forEach(function(element,index,array){ 
+        var isObject = typeof value === 'object';
+        var isBoolean = typeof value === 'boolean';
+        var isNumber = typeof value === 'number'; //check unique situations;
+
+        var isNull = value === null;
+        var isArray = value instanceof Array;
+        var isNotNum = isNaN(value);
+
+        if (isArray) {
+          value.forEach(function (element, index, array) {
             //check normal types;
-            var elemIsObject  = typeof element==='object';
-            var elemIsBoolean = typeof element==='boolean';
-            var elemIsNumber  = typeof element==='number';
-            //check unique situations;
-            var elemIsNull    = element===null;
-            var elemIsArray   = element instanceof Array;
-            var elemIsNotNum  = isNaN(element);
-            //modify values according to checks;
-            if(!elemIsNull&&elemIsObject&&!elemIsArray) { array[index] = JSON.stringify(element); }
-            if(elemIsBoolean) { array[index] = element.toString(); }
-            if(elemIsNull) { array[index] = JSON.stringify(new Object(element)); }
+            var elemIsObject = typeof element === 'object';
+            var elemIsBoolean = typeof element === 'boolean';
+            var elemIsNumber = typeof element === 'number'; //check unique situations;
+
+            var elemIsNull = element === null;
+            var elemIsArray = element instanceof Array;
+            var elemIsNotNum = isNaN(element); //modify values according to checks;
+
+            if (!elemIsNull && elemIsObject && !elemIsArray) {
+              array[index] = JSON.stringify(element);
+            }
+
+            if (elemIsBoolean) {
+              array[index] = element.toString();
+            }
+
+            if (elemIsNull) {
+              array[index] = JSON.stringify(new Object(element));
+            }
           });
           object[key] = value.join(',');
         } //handle arrays (only plain ones);
-        
-        //handle proper objects;
-        if(!isNull&&isObject&&!isArray) {
-          for(var k in value) {
-            if(typeof value[k]==='boolean') { value[k] = value[k].toString(); }
-          }
-          object[key] = JSON.stringify(value); 
-        }
-        
-        //handle booleans, numbers and NaNs (same behaviour);
-        if( (isBoolean||isNumber)&& !isNotNum ) { object[key] = value.toString(); }
-       
-        //handle null;
-        if(isNull) { object[key] = JSON.stringify(new Object(value)); }
-      
-      }else {
+
+
+        if (!isNull && isObject && !isArray) {
+          object[key] = JSON.stringify(value);
+        } //handle proper objects;
+
+
+        if (isBoolean || isNumber || isNotNum) {
+          object[key] = value.toString();
+        } //handle booleans, numbers and NaNs (same behaviour);
+
+
+        if (isNull) {
+          object[key] = JSON.stringify(new Object(value));
+        } //handle null;
+
+      } else {
         object[key] = ''; //undefined props to empty strings;
       }
-      
     }
-    
   }
+
   return object;
 }
 
@@ -789,113 +809,130 @@ function trimMessage(msg, trimFromToFrom, trimFromToSender) {
 
   return trimmed;
 }
-
 /**
  * Checks if data contains widgets in "editable" state;
  * @param {Array} data an array of objects to check;
  * @returns {Boolean}
  */
-function checkEditable(data) {
-  try {
-    if(!(data instanceof Array)) { return false; }
-    var hasEditable = data.some(function(elem){
-      var widgets = elem.widgets;
-      if(widgets instanceof Array) {
-        var elemHasEditable = widgets.some(function(widget){
-          var state = widget.state;
-          var type  = widget.type;
-          if(state==='editable'||type===globalTextInput) { return widget; }
-        });
-      }else { elemHasEditable = false; }
-      if(elemHasEditable) { return elem; }
-    });
-    return hasEditable;
-  }
-  catch(error) {
-    console.error('Encountered an error while checking for editable widgets: '+error);
-  }
-}
 
+
+function checkEditable(data) {
+  if (!(data instanceof Array)) {
+    return false;
+  }
+
+  var hasEditable = data.some(function (elem) {
+    var widgets = elem.widgets;
+
+    if (widgets instanceof Array) {
+      var elemHasEditable = widgets.some(function (widget) {
+        var state = widget.state;
+        var type = widget.type;
+
+        if (state === 'editable' || type === globalTextInput) {
+          return widget;
+        }
+      });
+    } else {
+      elemHasEditable = false;
+    }
+
+    if (elemHasEditable) {
+      return elem;
+    }
+  });
+  return hasEditable;
+}
 /**
  * Checks if data contains nested objects to determine which Ui to load;
  * @param {Array} data an array of objects to check;
  * @returns {Boolean}
  */
+
+
 function checkNested(data) {
-  try {
-    if(!(data instanceof Array)) { return false; }
-    var hasNested = data.some(function(elem){ 
-      var hasSecondLevelObject = false;
-      for(var key in elem) {
-        var val = elem[key];
-        if(typeof val === 'object') { 
-          hasSecondLevelObject = true; break; 
-        }
-      }
-      return hasSecondLevelObject;
-    });
-    return hasNested;
-  }
-  catch(error) {
-    console.error('Encountered an error while checking for nested objects: '+error);
+  if (!(data instanceof Array)) {
     return false;
   }
-}
 
+  var hasNested = data.some(function (elem) {
+    var hasSecondLevelObject = false;
+
+    for (var key in elem) {
+      var val = elem[key];
+
+      if (typeof val === 'object') {
+        hasSecondLevelObject = true;
+        break;
+      }
+    }
+
+    return hasSecondLevelObject;
+  });
+  return hasNested;
+}
 /**
  * Attempts to pre-parse data;
  * @param {String} data data string to be parsed;
  * @returns {Array}
  */
+
+
 function parseData(data) {
-
   //if data is undefined return empty array;
-  if(!data) { return []; }  
+  if (!data) {
+    return [];
+  } //check for empty and correct objects;
 
-  //check for empty and correct objects;
-  var isObj = typeof data==='object';
-  if(isObj&&Object.keys(data).length===0) { return []; }else if(isObj) { return data; }
 
-  //try to parse content until recieved an array; 
-  try {
-    while(!(data instanceof Array)) {
-      data = JSON.parse(data);
-    }
+  var isObj = typeof data === 'object';
+
+  if (isObj && Object.keys(data).length === 0) {
+    return [];
+  } else if (isObj) {
     return data;
-  }
-  catch(err) { 
-    console.error('Encountered an error while trying to parse input: %s',err);
-    data = data; 
-  }
-  
+  } //try to parse content until recieved an array; 
+
+
   try {
-    if(data===''||data==='[]'||data==='""') {
-      data = []; 
-    }else if(data!==[]) { 
+    while (!(data instanceof Array)) {
       data = JSON.parse(data);
     }
-    if(!(data instanceof Array)&&!(typeof data==='string')) {
-      data = [data]; 
-    }else if(typeof data==='string') {
+
+    return data;
+  } catch (err) {
+    data = data;
+  }
+
+  try {
+    if (data === '' || data === '[]' || data === '""') {
+      data = [];
+    } else if (data !== []) {
       data = JSON.parse(data);
     }
-    if(!(data instanceof Array)&&(typeof data==='object')) {
+
+    if (!(data instanceof Array) && !(typeof data === 'string')) {
+      data = [data];
+    } else if (typeof data === 'string') {
+      data = JSON.parse(data);
+    }
+
+    if (!(data instanceof Array) && typeof data === 'object') {
       data = [data];
     }
-  }
-  catch(error) {
-    console.error('Encountered an error while applying conditional parsing after everything else failed (unexpected, check parseData function): %s',error);
+  } catch (error) {
     return data;
-  }
-  
-  //if no other choice, return data;
+  } //if no other choice, return data;
+
+
   return data;
 }
-
 /**
  * Creates settings storage;
  * @param {String} content content to pass to JSON file;
  */
+
+
 function createSettings(_x2) {
   return _createSettings.apply(this, arguments);
 }
@@ -967,22 +1004,24 @@ function trimSender(input) {
  * @param {*} input any input to convert to boolean;
  * @returns {String}
  */
+
+
 function toBoolean(input) {
   //check if input is a string or boolean;
-  var isString  = typeof input==='string';
-  var isBoolean = typeof input==='boolean';
-  
-  //if is boolean -> return unchanged;
-  if(isBoolean) { return input; }
-  
-  //if input is undefined -> false;
-  if(!input) { return false; }
-  
-  //if is string -> change to boolean;
-  if(isString) {
-    if(input==='true') { return true; }
-  }
-  
-  //if nothing is applicable -> return false;
+  var isString = typeof input === 'string';
+  var isBoolean = typeof input === 'boolean'; //if is boolean -> return unchanged;
+
+  if (isBoolean) {
+    return input;
+  } //if is string -> change to boolean;
+
+
+  if (isString) {
+    if (input === 'true') {
+      return true;
+    }
+  } //if nothing is applicable -> return false;
+
+
   return false;
 }
