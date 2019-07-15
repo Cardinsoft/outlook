@@ -805,6 +805,10 @@ function trimMessage(msg, trimFromToFrom, trimFromToSender) {
         }
       });
     }
+
+    if (!first && !trimmed.last) {
+      trimmed.first = trimmed.email.split('@')[0];
+    }
   }
 
   return trimmed;
@@ -901,26 +905,24 @@ function parseData(data) {
 
     return data;
   } catch (err) {
+    console.error('Encountered an error while trying to parse input: %s', err);
     data = data;
   }
 
   try {
     if (data === '' || data === '[]' || data === '""') {
       data = [];
-    } else if (data !== []) {
+    } else if (data !== [] && !(typeof data === 'object')) {
       data = JSON.parse(data);
     }
 
-    if (!(data instanceof Array) && !(typeof data === 'string')) {
+    if (!(data instanceof Array) && !(typeof data === 'string') && !(typeof data === 'object')) {
       data = [data];
     } else if (typeof data === 'string') {
       data = JSON.parse(data);
     }
-
-    if (!(data instanceof Array) && typeof data === 'object') {
-      data = [data];
-    }
   } catch (error) {
+    timestamp('unexpected error in parseData function', error, 'warn');
     return data;
   } //if no other choice, return data;
 
