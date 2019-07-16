@@ -556,7 +556,7 @@ function _actionCallback() {
 }
 
 function loadMailto(element, input) {
-  if (!input instanceof Array) {
+  if (!(input instanceof Array)) {
     const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
     const matches = input.match(regexp);
     console.log(matches); //get children that are anchors with mailto;
@@ -580,17 +580,15 @@ function loadMailto(element, input) {
         let anchor = children[index]; //change event listener to open Compose Ui;
 
         anchor.addEventListener('click', function (event) {
-          return function () {
-            //find original recipient;
-            let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-            let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
+          //find original recipient;
+          let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
+          let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
 
-            let mailParams = {
-              toRecipients: recipient
-            };
-            Office.context.mailbox.displayNewMessageForm(mailParams);
-            return false;
-          }();
+          let mailParams = {
+            toRecipients: recipient
+          };
+          Office.context.mailbox.displayNewMessageForm(mailParams);
+          return false;
         });
       });
     }
@@ -604,7 +602,7 @@ function loadMailto(element, input) {
 
 
 function loadAnchor(element, input) {
-  if (!input instanceof Array) {
+  if (!(input instanceof Array)) {
     const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
     const matches = input.match(regexp); //get children that are anchors;
 
