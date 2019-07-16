@@ -557,7 +557,7 @@ function _actionCallback() {
 
 function loadMailto(element, input) {
   console.log(element);
-  console.log(matches);
+  console.log(input);
 
   if (!input instanceof Array) {
     const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
