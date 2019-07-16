@@ -356,22 +356,34 @@ function Pipedrive() {
 
                     sectionPersons.numUncollapsible = widgetsPerson.length; //append separator;
 
-                    widgetsPerson.push(separator); //create creation date widget;
+                    widgetsPerson.push(separator); //modify created date;
+
+                    created = created.split(' ');
+                    var cTime = created[1].split(':');
+                    var cDate = new Date(created[0]);
+                    cDate.setHours(cTime[0]);
+                    cDate.setMinutes(cTime[1]); //create creation date widget;
 
                     var personCreated = {
-                      icon: 'INVITE',
-                      title: 'Created on',
+                      icon: 'CLOCK',
+                      title: 'Created',
                       type: globalKeyValue,
                       content: created
                     };
                     widgetsPerson.push(personCreated); //create update date widget;
 
                     if (updated !== null) {
+                      //modify created date;
+                      updated = updated.split(' ');
+                      var uTime = updated[1].split(':');
+                      var uDate = new Date(updated[0]);
+                      uDate.setHours(uTime[0]);
+                      uDate.setMinutes(uTime[1]);
                       var pesronUpdated = {
-                        icon: 'INVITE',
-                        title: 'Updated on',
+                        icon: 'CLOCK',
+                        title: 'Edited',
                         type: globalKeyValue,
-                        content: updated
+                        content: uDate.toLocaleDateString() + '\r' + uDate.toLocaleTimeString()
                       };
                       widgetsPerson.push(pesronUpdated);
                     } //create deals section and widgets if are or were any;
