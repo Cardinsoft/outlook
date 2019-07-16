@@ -582,6 +582,7 @@ function loadMailto(element, input) {
         let anchor = children[index]; //change event listener to open Compose Ui;
 
         anchor.addEventListener('click', function (event) {
+          event.stopImmediatePropagation();
           event.stopPropagation();
           event.preventDefault(); //find original recipient;
 
