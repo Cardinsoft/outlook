@@ -679,7 +679,7 @@ function LessAnnoyingCRM() {
             isActive = true; //on success set pipeline parameters or use default;
 
             if (settingsResponse.code === 200) {
-              pipelineSettings = JSON.parse(settingsResponse.content)[0];
+              pipelineSettings = JSON.parse(settingsResponse.content)[index];
               name = pipelineSettings.Name;
               isActive = pipelineSettings.IsActive; //isn't used for now;
             } else {
