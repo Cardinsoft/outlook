@@ -582,18 +582,17 @@ function loadMailto(element, input) {
         let anchor = children[index]; //change event listener to open Compose Ui;
 
         anchor.addEventListener('click', function (event) {
-          event.stopImmediatePropagation();
-          event.stopPropagation();
-          event.preventDefault(); //find original recipient;
+          return function () {
+            //find original recipient;
+            let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
+            let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
 
-          let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-          let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
-
-          let mailParams = {
-            toRecipients: recipient
+            let mailParams = {
+              toRecipients: recipient
+            };
+            Office.context.mailbox.displayNewMessageForm(mailParams);
+            return false;
           };
-          Office.context.mailbox.displayNewMessageForm(mailParams);
-          return false;
         });
       });
     }
