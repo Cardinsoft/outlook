@@ -592,7 +592,7 @@ function loadMailto(element, input) {
             };
             Office.context.mailbox.displayNewMessageForm(mailParams);
             return false;
-          };
+          }();
         });
       });
     }
