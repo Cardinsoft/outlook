@@ -633,7 +633,6 @@ function loadAnchor(element, input) {
         } else {
           //change event listener to open Dialog;
           anchor.addEventListener('click', function (event) {
-            event.stopPropagation();
             event.preventDefault();
             Office.context.ui.displayDialogAsync(this.href, {
               width: 50,
