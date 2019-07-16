@@ -214,7 +214,7 @@ function Pipedrive() {
                     }; //create section persons;
 
                     var sectionPersons = {
-                      header: 'Person info',
+                      header: 'Contact info',
                       isCollapsible: true,
                       widgets: []
                     }; //access widgets;
