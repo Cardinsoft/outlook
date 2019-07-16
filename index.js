@@ -596,52 +596,54 @@ function loadMailto(element, input) {
 /**
  * Matches input for being an anchor and sets event listeners;
  * @param {HtmlElement} element element to set listeners to on success;
- * @param {String} input <a> html tag string to check;
+ * @param {String||Array} input <a> html tag string to check (or ignore if of different type);
  */
 
 
 function loadAnchor(element, input) {
   const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
-  console.log(input);
-  const matches = input.match(regexp); //get children that are anchors;
 
-  let children = Array.from(element.children);
-  children = children.filter(function (elem) {
-    //filter out anchors with mailto or phone set;
-    let isAnchor = elem.tagName.toLowerCase() === 'a';
+  if (!input instanceof Array) {
+    const matches = input.match(regexp); //get children that are anchors;
 
-    if (isAnchor) {
-      let isNotMail = elem.href.search('mailto:') === -1;
+    let children = Array.from(element.children);
+    children = children.filter(function (elem) {
+      //filter out anchors with mailto or phone set;
+      let isAnchor = elem.tagName.toLowerCase() === 'a';
 
-      if (isNotMail) {
-        return elem;
+      if (isAnchor) {
+        let isNotMail = elem.href.search('mailto:') === -1;
+
+        if (isNotMail) {
+          return elem;
+        }
       }
-    }
-  });
+    }); //if found anchor and element has child nodes;
 
-  if (matches !== null && matches.length > 0 && children.length > 0) {
-    matches.forEach(function (result, index) {
-      let anchor = children[index]; //set event listener to choose 
+    if (matches !== null && matches.length > 0 && children.length > 0) {
+      matches.forEach(function (result, index) {
+        let anchor = children[index]; //set event listener to choose 
 
-      if (anchor.href.search('tel:') !== -1) {
-        anchor.addEventListener('click', function (event) {
-          event.stopPropagation();
-          anchor.target = '_self';
-          return false;
-        });
-      } else {
-        //change event listener to open Dialog;
-        anchor.addEventListener('click', function (event) {
-          event.stopPropagation();
-          event.preventDefault();
-          Office.context.ui.displayDialogAsync(this.href, {
-            width: 50,
-            height: 50
+        if (anchor.href.search('tel:') !== -1) {
+          anchor.addEventListener('click', function (event) {
+            event.stopPropagation();
+            anchor.target = '_self';
+            return false;
           });
-          return false;
-        });
-      }
-    });
+        } else {
+          //change event listener to open Dialog;
+          anchor.addEventListener('click', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            Office.context.ui.displayDialogAsync(this.href, {
+              width: 50,
+              height: 50
+            });
+            return false;
+          });
+        }
+      });
+    }
   }
 }
 /**
