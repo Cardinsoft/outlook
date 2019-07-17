@@ -95,7 +95,7 @@ function (_Button) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TextButton).call(this));
     _this.className = 'TextButton';
-    _this.backgroundColor;
+    _this.backgroundColor = '#0078d7';
     _this.text;
     _this.disabled;
     _this.textButtonStyle = 'TEXT';
