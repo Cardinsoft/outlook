@@ -160,6 +160,7 @@ TextButton.prototype.appendToUi = function (parent) {
 
   if (textButtonStyle === 'FILLED') {
     st.backgroundColor = backgroundColor;
+    cl.add('btn-filled');
   } else {
     cl.add('btn-text');
   }
