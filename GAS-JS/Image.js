@@ -114,7 +114,7 @@ Image.prototype.appendToUi = function (parent) {
     const image = document.createElement('img');
     image.alt = altText;
     image.src = source;
-    image.width = '268px';
+    image.width = 268;
     widget.append(image);
   } //add event listener chain ( click -> callback );
 
