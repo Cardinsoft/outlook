@@ -117,6 +117,22 @@ TextButton.prototype.setText = function (text) {
   this.text = text;
   return this;
 };
+/**
+ * Sets background color for filled TextButton;
+ * @param {String} backgroundColor color HEX code;
+ * @returns {TextButton} this TextButton;
+ */
+
+
+TextButton.prototype.setBackgroundColor = function (backgroundColor) {
+  if (!backgroundColor) {
+    this.backgroundColor = '#0078d7';
+  } else {
+    this.backgroundColor = backgroundColor;
+  }
+
+  return this;
+};
 
 TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
   this.textButtonStyle = textButtonStyle;
