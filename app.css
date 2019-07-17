@@ -120,6 +120,10 @@ body {
 	outline : none;
 }
 
+.btn-filled {
+	padding : 8px;
+}
+
 .btn-text {
 	text-align : right;
 	background : none;
