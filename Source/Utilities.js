@@ -3,32 +3,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 /**
- * Validates domain name entered;
- * @param {String} domain domain name to check;
- * @returns {Boolean} domain validity flag;
- */
-function validateSubdomain(domain) {
-  var success = false;
-  var regexp = /^(?!\.|www)(?!http)[A-z0-9-_.]+[^\.]$/;
-
-  if (domain && domain !== '' && typeof domain === 'string') {
-    var matches = domain.match(regexp);
-
-    if (matches !== null) {
-      success = true;
-    }
-  }
-
-  return success;
-}
-/**
  * Merges objects to form query string;
  * @param {Object} keys object with key schema;
  * @param {Object} values object with values schema;
  * @returns {String} query with params;
  */
-
-
 function jsonToQuery(keys, values) {
   var params = [];
 
