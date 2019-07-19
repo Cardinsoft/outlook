@@ -1,45 +1,12 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
 /**
  * Creates KeyValue widgets with help info;
  * @param {CardSection} section section to append widget sets;
  * @returns {Array}
  */
-
-
 function createWidgetGetSupport(section) {
   //create widgets with help prompt and email;
   var contactText = simpleKeyValueWidget(globalContactSupportTitle, 'Be sure to contact us if you need any assistance', true);
@@ -524,19 +491,8 @@ function createWidgetChooseAuth(section, isEdit, selected) {
  */
 
 
-function createWidgetSwitchManual(section, isManual) {
-  //parse stringified boolean parameters;
-  if (isManual === undefined || isManual === 'true') {
-    isManual = true;
-  } else if (isManual === 'false') {
-    isManual = false;
-  } //create Switch for manual / auto behaviour choice;
-
-
-  var widget = switchWidget('', '', globalCustomWidgetSwitchText, globalManualFieldName, isManual, true); //append to section and return;
-
-  section.addWidget(widget);
-  return widget;
+function createWidgetSwitchManual(_x2, _x3) {
+  return _createWidgetSwitchManual.apply(this, arguments);
 }
 /**
  * Creates Switch widget for setting connector to be loaded by default;
@@ -546,19 +502,48 @@ function createWidgetSwitchManual(section, isManual) {
  */
 
 
-function createWidgetSwitchDefault(section, isDefault) {
-  //parse stringified boolean parameters;
-  if (isDefault === undefined || isDefault === 'false') {
-    isDefault = false;
-  } else if (isDefault === 'true') {
-    isDefault = true;
-  } //create Switch for default / listed behaviour choice;
+function _createWidgetSwitchManual() {
+  _createWidgetSwitchManual = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(section, isManual) {
+    var config, widget;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return getConfig();
+
+        case 2:
+          config = _context2.sent;
+
+          if (config.length === 0) {
+            isManual = false;
+          } //parse stringified boolean parameters;
 
 
-  var widget = switchWidget('', '', globalIsDefaultWidgetSwitchText, globalDefaultFieldName, isDefault, true); //append to section and return;
+          if (isManual === undefined || isManual === 'true') {
+            isManual = true;
+          } else if (isManual === 'false') {
+            isManual = false;
+          } //create Switch for manual / auto behaviour choice;
 
-  section.addWidget(widget);
-  return widget;
+
+          widget = switchWidget('', '', globalCustomWidgetSwitchText, globalManualFieldName, isManual, true); //append to section and return;
+
+          section.addWidget(widget);
+          return _context2.abrupt("return", widget);
+
+        case 8:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return _createWidgetSwitchManual.apply(this, arguments);
+}
+
+function createWidgetSwitchDefault(_x4, _x5) {
+  return _createWidgetSwitchDefault.apply(this, arguments);
 }
 /**
  * Creates ButtonSet for going to root card;
@@ -567,6 +552,46 @@ function createWidgetSwitchDefault(section, isDefault) {
  * @returns {ButtonSet}
  */
 
+
+function _createWidgetSwitchDefault() {
+  _createWidgetSwitchDefault = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(section, isDefault) {
+    var config, widget;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return getConfig();
+
+        case 2:
+          config = _context3.sent;
+
+          if (config.length === 0) {
+            isDefault = true;
+          } //parse stringified boolean parameters;
+
+
+          if (isDefault === undefined || isDefault === 'false') {
+            isDefault = false;
+          } else if (isDefault === 'true') {
+            isDefault = true;
+          } //create Switch for default / listed behaviour choice;
+
+
+          widget = switchWidget('', '', globalIsDefaultWidgetSwitchText, globalDefaultFieldName, isDefault, true); //append to section and return;
+
+          section.addWidget(widget);
+          return _context3.abrupt("return", widget);
+
+        case 8:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return _createWidgetSwitchDefault.apply(this, arguments);
+}
 
 function createWidgetsBackAndToRoot(section, index) {
   //set action parameters;
