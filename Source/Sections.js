@@ -879,7 +879,9 @@ function createSectionConfig(builder, config) {
           //access TextInput-specific params;
           var hint = widget.hint;
           var multiline = widget.multiline;
-          element = textInputWidget(title, name, hint, content, multiline);
+          var onchange = widget.onchange;
+          var onchangeArgs = widget.parameters;
+          element = textInputWidget(title, name, hint, content, multiline, onchange, false, onchangeArgs);
           break;
 
         case globalEnumRadio:
