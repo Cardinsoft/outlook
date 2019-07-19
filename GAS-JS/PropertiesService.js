@@ -1,43 +1,10 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
 /**
  * PropertiesService constructor function;
  */
-
-
 function e_PropertiesService() {
   this.className = 'PropertiesService';
   this.settings = Office.context.roamingSettings;
@@ -175,14 +142,13 @@ function () {
           return PropertiesService.settings.set(key, value);
 
         case 5:
-          console.log(JSON.parse(PropertiesService.userProperties.get(key)));
-          _context2.next = 8;
+          _context2.next = 7;
           return PropertiesService.settings.saveAsync();
 
-        case 8:
+        case 7:
           return _context2.abrupt("return", settings);
 
-        case 9:
+        case 8:
         case "end":
           return _context2.stop();
       }
@@ -228,14 +194,13 @@ function () {
           return PropertiesService.settings.remove(key);
 
         case 5:
-          console.log(JSON.parse(PropertiesService.userProperties.get(key)));
-          _context3.next = 8;
+          _context3.next = 7;
           return PropertiesService.settings.saveAsync();
 
-        case 8:
+        case 7:
           return _context3.abrupt("return", settings);
 
-        case 9:
+        case 8:
         case "end":
           return _context3.stop();
       }
@@ -335,14 +300,13 @@ regeneratorRuntime.mark(function _callee5() {
         } //access configured keys;
 
 
-        keys = Object.keys(settings['_settingsData$p$0']);
-        console.log(keys); //delete every key found;
+        keys = Object.keys(settings['_settingsData$p$0']); //delete every key found;
 
         _context5.t0 = regeneratorRuntime.keys(keys);
 
-      case 4:
+      case 3:
         if ((_context5.t1 = _context5.t0()).done) {
-          _context5.next = 23;
+          _context5.next = 22;
           break;
         }
 
@@ -352,50 +316,50 @@ regeneratorRuntime.mark(function _callee5() {
         obj = settings.get(key); //remove every setting;
 
         if (!(obj !== null)) {
-          _context5.next = 21;
+          _context5.next = 20;
           break;
         }
 
         props = Object.keys(obj);
 
         if (!(props.length > 0)) {
-          _context5.next = 21;
+          _context5.next = 20;
           break;
         }
 
         _context5.t2 = regeneratorRuntime.keys(props);
 
-      case 12:
+      case 11:
         if ((_context5.t3 = _context5.t2()).done) {
-          _context5.next = 21;
+          _context5.next = 20;
           break;
         }
 
         k = _context5.t3.value;
         prop = props[k];
-        _context5.next = 17;
+        _context5.next = 16;
         return settings.remove(key);
 
-      case 17:
-        _context5.next = 19;
+      case 16:
+        _context5.next = 18;
         return PropertiesService.settings.remove(key);
 
-      case 19:
-        _context5.next = 12;
+      case 18:
+        _context5.next = 11;
         break;
 
-      case 21:
-        _context5.next = 4;
+      case 20:
+        _context5.next = 3;
         break;
 
-      case 23:
-        _context5.next = 25;
+      case 22:
+        _context5.next = 24;
         return PropertiesService.settings.saveAsync();
 
-      case 25:
+      case 24:
         return _context5.abrupt("return", settings);
 
-      case 26:
+      case 25:
       case "end":
         return _context5.stop();
     }
