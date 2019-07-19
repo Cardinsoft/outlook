@@ -7,63 +7,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * @param {Object} e event object; 
  * @returns {Card}
  */
-function cardCreate(e) {
-  var builder = CardService.newCardBuilder();
-  var data = e.formInput;
-  var type = e.parameters; //create and set card header;
-
-  var header = CardService.newCardHeader();
-  header.setTitle(type.name);
-  header.setImageUrl(type.icon);
-  builder.setHeader(header); //access type's basic and advanced config;
-
-  var basic = JSON.parse(type.basic);
-  var widgets = basic.widgets;
-  var advanced = JSON.parse(type.config); //create section with short type description;
-
-  if (type.short) {
-    createDescriptionSection(builder, false, type.short);
-  } //create section with custom icon URL input;
-
-
-  if (type.allowCustomIcons === 'true') {
-    createCustomIconsSection(builder, false);
-  }
-
-  if (advanced.length === 1) {
-    //extend basic with advanced and create config section;
-    advanced.forEach(function (c) {
-      mergeObjects(widgets, c.widgets);
-    }); //preserve values for config widgets;
-
-    preserveValues(type, widgets); //create config object and section;
-
-    var config = {
-      header: globalConfigHeader,
-      widgets: widgets
-    };
-    createSectionConfig(builder, config);
-  } else {
-    //preserve values for config widgets;
-    preserveValues(type, basic.widgets); //create basic config section;
-
-    createSectionConfig(builder, basic); //create advanced config sections;
-
-    advanced.forEach(function (section) {
-      createSectionConfig(builder, section);
-    });
-  } //create API token config section;
-
-
-  var auth = JSON.parse(type.auth);
-
-  if (auth.type === globalApiTokenAuthType) {
-    createSectionConfig(builder, auth.config);
-  } //create config for connector behaviour;
-
-
-  createSectionAddConnector(builder, false, '', type);
-  return menu(builder);
+function cardCreate(_x) {
+  return _cardCreate.apply(this, arguments);
 }
 /**
  * Creates and shows card with Connector update form;
@@ -72,106 +17,85 @@ function cardCreate(e) {
  */
 
 
-function cardUpdate(e) {
-  var builder = CardService.newCardBuilder();
-  var connector = e.parameters;
-  var type = connector.type;
-  var icon = connector.icon;
-  var name = connector.name;
-  var url = connector.url;
-  var manual = connector.manual;
-  var isDefault = connector.isDefault;
-  var authType = connector.authType;
+function _cardCreate() {
+  _cardCreate = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(e) {
+    var builder, data, type, header, basic, widgets, advanced, config, auth;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          builder = CardService.newCardBuilder();
+          data = e.formInput;
+          type = e.parameters; //create and set card header;
 
-  if (authType === globalOAuth2AuthType) {
-    var isReloaded = true;
-  } else {
-    isReloaded = false;
-  } //convert strings to boolean as e.parameters accepts only strings;
+          header = CardService.newCardHeader();
+          header.setTitle(type.name);
+          header.setImageUrl(type.icon);
+          builder.setHeader(header); //access type's basic and advanced config;
+
+          basic = JSON.parse(type.basic);
+          widgets = basic.widgets;
+          advanced = JSON.parse(type.config); //create section with short type description;
+
+          if (type.short) {
+            createDescriptionSection(builder, false, type.short);
+          } //create section with custom icon URL input;
 
 
-  if (manual === 'true') {
-    manual = true;
-  } else {
-    manual = false;
-  }
+          if (type.allowCustomIcons === 'true') {
+            createCustomIconsSection(builder, false);
+          }
 
-  if (isDefault === 'true') {
-    isDefault = true;
-  } else {
-    isDefault = false;
-  }
+          if (advanced.length === 1) {
+            //extend basic with advanced and create config section;
+            advanced.forEach(function (c) {
+              mergeObjects(widgets, c.widgets);
+            }); //preserve values for config widgets;
 
-  connector.manual = manual;
-  connector.isDefault = isDefault; //create and set card header;
+            preserveValues(type, widgets); //create config object and section;
 
-  var header = CardService.newCardHeader();
-  header.setTitle(name);
-  header.setImageUrl(icon);
-  builder.setHeader(header); //access connector type;
+            config = {
+              header: globalConfigHeader,
+              widgets: widgets
+            };
+            createSectionConfig(builder, config);
+          } else {
+            //preserve values for config widgets;
+            preserveValues(type, basic.widgets); //create basic config section;
 
-  var cType = new this[type](); //create section with authorize/revoke for OAuth-based authentication;
+            createSectionConfig(builder, basic); //create advanced config sections;
 
-  var cAuth = cType.auth;
+            advanced.forEach(function (section) {
+              createSectionConfig(builder, section);
+            });
+          } //create API token config section;
 
-  if (Object.keys(cAuth).length !== 0) {
-    if (connector.auth === globalOAuth2AuthType) {
-      if (cType.login) {
-        connector.login = cType.login(connector);
+
+          auth = JSON.parse(type.auth);
+
+          if (auth.type === globalApiTokenAuthType) {
+            createSectionConfig(builder, auth.config);
+          } //create config for connector behaviour;
+
+
+          _context.next = 17;
+          return createSectionAddConnector(builder, false, '', type);
+
+        case 17:
+          return _context.abrupt("return", menu(builder));
+
+        case 18:
+        case "end":
+          return _context.stop();
       }
+    }, _callee);
+  }));
+  return _cardCreate.apply(this, arguments);
+}
 
-      createSectionAuth(builder, connector, cAuth);
-    }
-  } //access type's basic and advanced config;
-
-
-  var basic = new Connector(icon, name, url).basic;
-  var widgets = basic.widgets;
-  var advanced = cType.config; //create section with custom icon URL input;
-
-  if (cType.allowCustomIcons === true) {
-    createCustomIconsSection(builder, false, connector.icon);
-  }
-
-  if (advanced.length === 1) {
-    //extend basic with advanced and create config section;
-    advanced.forEach(function (c) {
-      mergeObjects(widgets, c.widgets);
-    }); //preserve values for config widgets;
-
-    preserveValues(connector, widgets); //create config object and section;
-
-    var config = {
-      header: globalConfigHeader,
-      widgets: widgets
-    };
-    createSectionConfig(builder, config);
-  } else {
-    preserveValues(connector, basic.widgets); //create basic config section;
-
-    createSectionConfig(builder, basic); //create advanced config sections;
-
-    advanced.forEach(function (section) {
-      preserveValues(connector, section.widgets);
-      createSectionConfig(builder, section);
-    });
-  } //create API token config section;
-
-
-  var auth = cType.auth;
-  var authConfig = auth.config;
-
-  if (auth.config) {
-    preserveValues(connector, authConfig.widgets);
-  }
-
-  if (auth.type === globalApiTokenAuthType) {
-    createSectionConfig(builder, authConfig);
-  } //create section with manual and default widgets + update button;
-
-
-  createSectionUpdateConnector(builder, false, connector, true, isReloaded, authType);
-  return menu(builder);
+function cardUpdate(_x2) {
+  return _cardUpdate.apply(this, arguments);
 }
 /**
  * Creates and shows card with connector display according to data passed with event object;
@@ -180,7 +104,127 @@ function cardUpdate(e) {
  */
 
 
-function cardDisplay(_x) {
+function _cardUpdate() {
+  _cardUpdate = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(e) {
+    var builder, connector, type, icon, name, url, manual, isDefault, authType, isReloaded, header, cType, cAuth, basic, widgets, advanced, config, auth, authConfig;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          builder = CardService.newCardBuilder();
+          connector = e.parameters;
+          type = connector.type;
+          icon = connector.icon;
+          name = connector.name;
+          url = connector.url;
+          manual = connector.manual;
+          isDefault = connector.isDefault;
+          authType = connector.authType;
+
+          if (authType === globalOAuth2AuthType) {
+            isReloaded = true;
+          } else {
+            isReloaded = false;
+          } //convert strings to boolean as e.parameters accepts only strings;
+
+
+          if (manual === 'true') {
+            manual = true;
+          } else {
+            manual = false;
+          }
+
+          if (isDefault === 'true') {
+            isDefault = true;
+          } else {
+            isDefault = false;
+          }
+
+          connector.manual = manual;
+          connector.isDefault = isDefault; //create and set card header;
+
+          header = CardService.newCardHeader();
+          header.setTitle(name);
+          header.setImageUrl(icon);
+          builder.setHeader(header); //access connector type;
+
+          cType = new this[type](); //create section with authorize/revoke for OAuth-based authentication;
+
+          cAuth = cType.auth;
+
+          if (Object.keys(cAuth).length !== 0) {
+            if (connector.auth === globalOAuth2AuthType) {
+              if (cType.login) {
+                connector.login = cType.login(connector);
+              }
+
+              createSectionAuth(builder, connector, cAuth);
+            }
+          } //access type's basic and advanced config;
+
+
+          basic = new Connector(icon, name, url).basic;
+          widgets = basic.widgets;
+          advanced = cType.config; //create section with custom icon URL input;
+
+          if (cType.allowCustomIcons === true) {
+            createCustomIconsSection(builder, false, connector.icon);
+          }
+
+          if (advanced.length === 1) {
+            //extend basic with advanced and create config section;
+            advanced.forEach(function (c) {
+              mergeObjects(widgets, c.widgets);
+            }); //preserve values for config widgets;
+
+            preserveValues(connector, widgets); //create config object and section;
+
+            config = {
+              header: globalConfigHeader,
+              widgets: widgets
+            };
+            createSectionConfig(builder, config);
+          } else {
+            preserveValues(connector, basic.widgets); //create basic config section;
+
+            createSectionConfig(builder, basic); //create advanced config sections;
+
+            advanced.forEach(function (section) {
+              preserveValues(connector, section.widgets);
+              createSectionConfig(builder, section);
+            });
+          } //create API token config section;
+
+
+          auth = cType.auth;
+          authConfig = auth.config;
+
+          if (auth.config) {
+            preserveValues(connector, authConfig.widgets);
+          }
+
+          if (auth.type === globalApiTokenAuthType) {
+            createSectionConfig(builder, authConfig);
+          } //create section with manual and default widgets + update button;
+
+
+          _context2.next = 32;
+          return createSectionUpdateConnector(builder, false, connector, true, isReloaded, authType);
+
+        case 32:
+          return _context2.abrupt("return", menu(builder));
+
+        case 33:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, this);
+  }));
+  return _cardUpdate.apply(this, arguments);
+}
+
+function cardDisplay(_x3) {
   return _cardDisplay.apply(this, arguments);
 }
 /**
@@ -193,10 +237,10 @@ function cardDisplay(_x) {
 function _cardDisplay() {
   _cardDisplay = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(e) {
+  regeneratorRuntime.mark(function _callee3(e) {
     var builder, connector, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, index, hasNested, hasEditable, caText, actionsConfig, actionParams, paramsUpdate, paramsRemove, layout, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           builder = CardService.newCardBuilder(); //get required parameters;
 
@@ -232,11 +276,11 @@ function _cardDisplay() {
           header.setTitle(connector.name);
           builder.setHeader(header); //access Connector config and get its index;
 
-          _context.next = 20;
+          _context3.next = 20;
           return getConfig();
 
         case 20:
-          config = _context.sent;
+          config = _context3.sent;
           index = getIndex(config, connector); //filter out current Connector;
 
           config = config.filter(function (c, i) {
@@ -246,20 +290,20 @@ function _cardDisplay() {
           }); //handle failed response codes;
 
           if (!((code < 200 || code >= 300) && code !== 401)) {
-            _context.next = 28;
+            _context3.next = 28;
             break;
           }
 
-          _context.next = 26;
+          _context3.next = 26;
           return createErrorSection(builder, false, code, error);
 
         case 26:
-          _context.next = 88;
+          _context3.next = 88;
           break;
 
         case 28:
           if (!(code === 401)) {
-            _context.next = 36;
+            _context3.next = 36;
             break;
           }
 
@@ -267,24 +311,24 @@ function _cardDisplay() {
           createNotAuthorizedSection(builder, false, connector, code);
 
           if (!(config.length > 0)) {
-            _context.next = 33;
+            _context3.next = 33;
             break;
           }
 
-          _context.next = 33;
+          _context3.next = 33;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
         case 33:
-          return _context.abrupt("return", menu(builder));
+          return _context3.abrupt("return", menu(builder));
 
         case 36:
           //parse content;
           content = parseData(content); //try to display content or show unparsed data if error;
 
-          _context.prev = 37;
+          _context3.prev = 37;
 
           if (!(content.length !== 0)) {
-            _context.next = 81;
+            _context3.next = 81;
             break;
           }
 
@@ -292,7 +336,7 @@ function _cardDisplay() {
           hasNested = checkNested(content);
 
           if (!hasNested) {
-            _context.next = 62;
+            _context3.next = 62;
             break;
           }
 
@@ -348,7 +392,7 @@ function _cardDisplay() {
 
         case 45:
           if (!(j < content.length)) {
-            _context.next = 60;
+            _context3.next = 60;
             break;
           }
 
@@ -358,18 +402,18 @@ function _cardDisplay() {
             section = JSON.parse(section);
           }
 
-          _context.prev = 48;
-          _context.next = 51;
+          _context3.prev = 48;
+          _context3.next = 51;
           return createSectionAdvanced(builder, section, j, connector, layout[j]);
 
         case 51:
-          _context.next = 57;
+          _context3.next = 57;
           break;
 
         case 53:
-          _context.prev = 53;
-          _context.t0 = _context["catch"](48);
-          console.error('Failed to create advanced section: ' + _context.t0); //try to handle nested objects that do not conform to our schema;
+          _context3.prev = 53;
+          _context3.t0 = _context3["catch"](48);
+          console.error('Failed to create advanced section: ' + _context3.t0); //try to handle nested objects that do not conform to our schema;
 
           try {
             createSectionSimple(builder, section, true, j);
@@ -381,11 +425,11 @@ function _cardDisplay() {
 
         case 57:
           j++;
-          _context.next = 45;
+          _context3.next = 45;
           break;
 
         case 60:
-          _context.next = 79;
+          _context3.next = 79;
           break;
 
         case 62:
@@ -400,16 +444,16 @@ function _cardDisplay() {
 
         case 68:
           if (!(j < content.length)) {
-            _context.next = 76;
+            _context3.next = 76;
             break;
           }
 
           if (!(j === max)) {
-            _context.next = 71;
+            _context3.next = 71;
             break;
           }
 
-          return _context.abrupt("break", 76);
+          return _context3.abrupt("break", 76);
 
         case 71:
           result = content[j];
@@ -422,7 +466,7 @@ function _cardDisplay() {
 
         case 73:
           j++;
-          _context.next = 68;
+          _context3.next = 68;
           break;
 
         case 76:
@@ -439,7 +483,7 @@ function _cardDisplay() {
           }
 
         case 79:
-          _context.next = 82;
+          _context3.next = 82;
           break;
 
         case 81:
@@ -448,38 +492,38 @@ function _cardDisplay() {
           }
 
         case 82:
-          _context.next = 88;
+          _context3.next = 88;
           break;
 
         case 84:
-          _context.prev = 84;
-          _context.t1 = _context["catch"](37);
+          _context3.prev = 84;
+          _context3.t1 = _context3["catch"](37);
           //handle data that failed to comply to JSON schema;
-          console.error('Crash during display generation: ' + _context.t1);
-          createUnparsedSection(builder, true, _context.t1.message, JSON.stringify(content));
+          console.error('Crash during display generation: ' + _context3.t1);
+          createUnparsedSection(builder, true, _context3.t1.message, JSON.stringify(content));
 
         case 88:
           if (!(config.length > 0)) {
-            _context.next = 91;
+            _context3.next = 91;
             break;
           }
 
-          _context.next = 91;
+          _context3.next = 91;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
         case 91:
-          return _context.abrupt("return", menu(builder));
+          return _context3.abrupt("return", menu(builder));
 
         case 92:
         case "end":
-          return _context.stop();
+          return _context3.stop();
       }
-    }, _callee, this, [[37, 84], [48, 53]]);
+    }, _callee3, this, [[37, 84], [48, 53]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
 
-function cardHome(_x2) {
+function cardHome(_x4) {
   return _cardHome.apply(this, arguments);
 }
 /**
@@ -492,36 +536,36 @@ function cardHome(_x2) {
 function _cardHome() {
   _cardHome = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(e) {
+  regeneratorRuntime.mark(function _callee4(e) {
     var builder, config;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           builder = CardService.newCardBuilder();
-          _context2.next = 3;
+          _context4.next = 3;
           return getConfig();
 
         case 3:
-          config = _context2.sent;
+          config = _context4.sent;
 
           if (!(config.length > 0)) {
-            _context2.next = 8;
+            _context4.next = 8;
             break;
           }
 
-          return _context2.abrupt("return", cardOpen(e));
+          return _context4.abrupt("return", cardOpen(e));
 
         case 8:
-          return _context2.abrupt("return", cardWelcome(e));
+          return _context4.abrupt("return", cardWelcome(e));
 
         case 9:
-          return _context2.abrupt("return", menu(builder));
+          return _context4.abrupt("return", menu(builder));
 
         case 10:
         case "end":
-          return _context2.stop();
+          return _context4.stop();
       }
-    }, _callee2);
+    }, _callee4);
   }));
   return _cardHome.apply(this, arguments);
 }
@@ -546,7 +590,7 @@ function cardWelcome(e) {
  */
 
 
-function cardOpen(_x3) {
+function cardOpen(_x5) {
   return _cardOpen.apply(this, arguments);
 }
 /**
@@ -558,21 +602,21 @@ function cardOpen(_x3) {
 function _cardOpen() {
   _cardOpen = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(e) {
+  regeneratorRuntime.mark(function _callee5(e) {
     var builder, config, msg, hasDefault, def, type, icon, name, url, manual, isDefault, authType, index, cType, cAuth, params, response, isAuth, code, content, len;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           builder = CardService.newCardBuilder(); //access connector configuration;
 
-          _context3.next = 3;
+          _context5.next = 3;
           return getConfig();
 
         case 3:
-          config = _context3.sent;
+          config = _context5.sent;
           //get message object;
           msg = getToken(e);
-          _context3.prev = 5;
+          _context5.prev = 5;
           hasDefault = config.some(function (conn) {
             if (conn.isDefault === true || conn.isDefault === 'true') {
               return conn;
@@ -580,7 +624,7 @@ function _cardOpen() {
           });
 
           if (!hasDefault) {
-            _context3.next = 42;
+            _context5.next = 42;
             break;
           }
 
@@ -663,25 +707,25 @@ function _cardOpen() {
           } //perform request and parse response if connector is not manual;
 
 
-          _context3.prev = 22;
-          _context3.next = 25;
+          _context5.prev = 22;
+          _context5.next = 25;
           return cType.run(msg, def);
 
         case 25:
-          response = _context3.sent;
-          _context3.next = 34;
+          response = _context5.sent;
+          _context5.next = 34;
           break;
 
         case 28:
-          _context3.prev = 28;
-          _context3.t0 = _context3["catch"](22);
+          _context5.prev = 28;
+          _context5.t0 = _context5["catch"](22);
           //temporary solution for uncaught 401 error;
-          console.log(_context3.t0);
+          console.log(_context5.t0);
           response = {
             headers: '',
-            content: _context3.t0.message
+            content: _context5.t0.message
           };
-          isAuth = checkAgainstErrorTypes(_context3.t0);
+          isAuth = checkAgainstErrorTypes(_context5.t0);
 
           if (!isAuth) {
             response.code = 0;
@@ -709,57 +753,57 @@ function _cardOpen() {
 
 
           e.parameters = params;
-          return _context3.abrupt("return", cardDisplay(e));
+          return _context5.abrupt("return", cardDisplay(e));
 
         case 42:
           if (!(config.length === 0)) {
-            _context3.next = 46;
+            _context5.next = 46;
             break;
           }
 
-          return _context3.abrupt("return", cardWelcome(e));
+          return _context5.abrupt("return", cardWelcome(e));
 
         case 46:
-          _context3.prev = 46;
-          _context3.next = 49;
+          _context5.prev = 46;
+          _context5.next = 49;
           return createConnectorListSection(builder, false, '', config, msg);
 
         case 49:
-          _context3.next = 55;
+          _context5.next = 55;
           break;
 
         case 51:
-          _context3.prev = 51;
-          _context3.t1 = _context3["catch"](46);
+          _context5.prev = 51;
+          _context5.t1 = _context5["catch"](46);
           //log error to stackdriver and build Connectors list error section;
-          console.error('An error occured during Connector list generation: %s', _context3.t1);
+          console.error('An error occured during Connector list generation: %s', _context5.t1);
           createConfigErrorSection(builder, false, globalErrorHeader, '', globalConnectorListErrorContent);
 
         case 55:
-          return _context3.abrupt("return", menu(builder));
+          return _context5.abrupt("return", menu(builder));
 
         case 56:
-          _context3.next = 63;
+          _context5.next = 63;
           break;
 
         case 58:
-          _context3.prev = 58;
-          _context3.t2 = _context3["catch"](5);
+          _context5.prev = 58;
+          _context5.t2 = _context5["catch"](5);
           //log error to stackdriver and build config error section;
-          console.error(_context3.t2);
+          console.error(_context5.t2);
           createConfigErrorSection(builder, false, globalConfigErrorHeader, globalConfigErrorWidgetTitle, globalConfigErrorWidgetContent);
-          return _context3.abrupt("return", menu(builder));
+          return _context5.abrupt("return", menu(builder));
 
         case 63:
         case "end":
-          return _context3.stop();
+          return _context5.stop();
       }
-    }, _callee3, this, [[5, 58], [22, 28], [46, 51]]);
+    }, _callee5, this, [[5, 58], [22, 28], [46, 51]]);
   }));
   return _cardOpen.apply(this, arguments);
 }
 
-function cardSettings(_x4) {
+function cardSettings(_x6) {
   return _cardSettings.apply(this, arguments);
 }
 /**
@@ -771,46 +815,46 @@ function cardSettings(_x4) {
 function _cardSettings() {
   _cardSettings = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(e) {
+  regeneratorRuntime.mark(function _callee6(e) {
     var builder, config, header;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
           builder = CardService.newCardBuilder();
-          _context4.next = 3;
+          _context6.next = 3;
           return getConfig();
 
         case 3:
-          config = _context4.sent;
+          config = _context6.sent;
           //build and set CardHeader;
           header = CardService.newCardHeader();
           header.setTitle(globalSettingsHeader);
           builder.setHeader(header); //create section with configured connectors if any;
 
           if (!(config.length > 0)) {
-            _context4.next = 10;
+            _context6.next = 10;
             break;
           }
 
-          _context4.next = 10;
+          _context6.next = 10;
           return createConfiguredConnectorsSection(builder, false, config);
 
         case 10:
-          _context4.next = 12;
+          _context6.next = 12;
           return createSectionChooseType(builder, false, globalChooseTypeHeader);
 
         case 12:
-          _context4.next = 14;
+          _context6.next = 14;
           return createSectionSettings(builder, false, globalPreferencesHeader);
 
         case 14:
-          return _context4.abrupt("return", menu(builder));
+          return _context6.abrupt("return", menu(builder));
 
         case 15:
         case "end":
-          return _context4.stop();
+          return _context6.stop();
       }
-    }, _callee4);
+    }, _callee6);
   }));
   return _cardSettings.apply(this, arguments);
 }
