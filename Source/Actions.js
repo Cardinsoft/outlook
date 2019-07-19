@@ -3,11 +3,65 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 /**
+ * Validates domain name entered;
+ * @param {Object} e event object;
+ * @returns {ActionResponse} domain check response;
+ */
+function validateSubdomain(_x) {
+  return _validateSubdomain.apply(this, arguments);
+}
+/**
  * Configures contact add display;
  * @param {Object} e event object;
  * @returns {ActionResponse}
  */
-function configureContactAdd(_x) {
+
+
+function _validateSubdomain() {
+  _validateSubdomain = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(e) {
+    var builder, subdomain, domainreg, success, regexp, matches, hasdomain, notify;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          //create action response builder;
+          builder = CardService.newActionResponseBuilder(); //access account name in input;
+
+          subdomain = e.formInput.account;
+          domainreg = new RegExp(e.parameters.domain);
+          success = false;
+          regexp = /^(?!\.|www)(?!http)[A-z0-9-_.]+[^\.|\s|\\|\/]$/;
+
+          if (subdomain && subdomain !== '' && typeof subdomain === 'string') {
+            matches = subdomain.match(regexp);
+            hasdomain = domainreg.test(subdomain);
+
+            if (matches !== null && !hasdomain) {
+              success = true;
+            }
+          }
+
+          if (success) {
+            _context.next = 10;
+            break;
+          }
+
+          notify = notification('Please, enter a valid subdomain (avoid full URLs and hanging dots)'); //set notification and return;
+
+          builder.setNotification(notify);
+          return _context.abrupt("return", builder.build());
+
+        case 10:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return _validateSubdomain.apply(this, arguments);
+}
+
+function configureContactAdd(_x2) {
   return _configureContactAdd.apply(this, arguments);
 }
 /**
@@ -20,10 +74,10 @@ function configureContactAdd(_x) {
 function _configureContactAdd() {
   _configureContactAdd = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(e) {
+  regeneratorRuntime.mark(function _callee2(e) {
     var builder, params;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -33,18 +87,18 @@ function _configureContactAdd() {
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context.abrupt("return", builder.build());
+          return _context2.abrupt("return", builder.build());
 
         case 7:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee);
+    }, _callee2);
   }));
   return _configureContactAdd.apply(this, arguments);
 }
 
-function applySort(_x2) {
+function applySort(_x3) {
   return _applySort.apply(this, arguments);
 }
 /**
@@ -57,10 +111,10 @@ function applySort(_x2) {
 function _applySort() {
   _applySort = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(e) {
+  regeneratorRuntime.mark(function _callee3(e) {
     var builder, data, isReverse;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access settings form;
@@ -74,29 +128,29 @@ function _applySort() {
           } //save ordering preference;
 
 
-          _context2.next = 6;
+          _context3.next = 6;
           return setProperty('order', data.order, 'user');
 
         case 6:
-          _context2.next = 8;
+          _context3.next = 8;
           return setProperty('reverse', isReverse, 'user');
 
         case 8:
           //set data state change and navigate to settings card;
           builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
           builder.setStateChanged(true);
-          return _context2.abrupt("return", builder.build());
+          return _context3.abrupt("return", builder.build());
 
         case 11:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _applySort.apply(this, arguments);
 }
 
-function chooseAuth(_x3) {
+function chooseAuth(_x4) {
   return _chooseAuth.apply(this, arguments);
 }
 /**
@@ -109,10 +163,10 @@ function chooseAuth(_x3) {
 function _chooseAuth() {
   _chooseAuth = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(e) {
+  regeneratorRuntime.mark(function _callee4(e) {
     var builder, data, authType, parameters, isEdit, custom, input, val;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -156,18 +210,18 @@ function _chooseAuth() {
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
           builder.setStateChanged(true);
-          return _context3.abrupt("return", builder.build());
+          return _context4.abrupt("return", builder.build());
 
         case 21:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _chooseAuth.apply(this, arguments);
 }
 
-function editSectionAdvanced(_x4) {
+function editSectionAdvanced(_x5) {
   return _editSectionAdvanced.apply(this, arguments);
 }
 /**
@@ -179,10 +233,10 @@ function editSectionAdvanced(_x4) {
 function _editSectionAdvanced() {
   _editSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(e) {
+  regeneratorRuntime.mark(function _callee5(e) {
     var builder, connector, content, formInput, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access content;
@@ -315,18 +369,18 @@ function _editSectionAdvanced() {
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context4.abrupt("return", builder.build());
+          return _context5.abrupt("return", builder.build());
 
         case 20:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4);
+    }, _callee5);
   }));
   return _editSectionAdvanced.apply(this, arguments);
 }
 
-function updateSectionAdvanced(_x5) {
+function updateSectionAdvanced(_x6) {
   return _updateSectionAdvanced.apply(this, arguments);
 }
 /**
@@ -339,10 +393,10 @@ function updateSectionAdvanced(_x5) {
 function _updateSectionAdvanced() {
   _updateSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(e) {
+  regeneratorRuntime.mark(function _callee6(e) {
     var connector, data, form, forms, msg, cType, resp, method;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
           connector = e.parameters;
           data = connector.content; //parse content; 
@@ -426,70 +480,70 @@ function _updateSectionAdvanced() {
           method = connector.method; //if type only has run() method or connector is simply comm;
 
           if (!(!cType.update && !cType.remove || method === 'send')) {
-            _context5.next = 13;
+            _context6.next = 13;
             break;
           }
 
-          _context5.next = 12;
+          _context6.next = 12;
           return cType.run(msg, connector, data);
 
         case 12:
-          resp = _context5.sent;
+          resp = _context6.sent;
 
         case 13:
           if (!(cType.update && method === 'add')) {
-            _context5.next = 18;
+            _context6.next = 18;
             break;
           }
 
           delete connector.caText;
-          _context5.next = 17;
+          _context6.next = 17;
           return cType.update(msg, connector, forms, data, method);
 
         case 17:
-          resp = _context5.sent;
+          resp = _context6.sent;
 
         case 18:
           if (!(cType.update && method === 'edit')) {
-            _context5.next = 22;
+            _context6.next = 22;
             break;
           }
 
-          _context5.next = 21;
+          _context6.next = 21;
           return cType.update(msg, connector, forms, data, method);
 
         case 21:
-          resp = _context5.sent;
+          resp = _context6.sent;
 
         case 22:
           if (!(cType.remove && method === 'remove')) {
-            _context5.next = 26;
+            _context6.next = 26;
             break;
           }
 
-          _context5.next = 25;
+          _context6.next = 25;
           return cType.remove(msg, connector, data);
 
         case 25:
-          resp = _context5.sent;
+          resp = _context6.sent;
 
         case 26:
           //override event object parameters with response data;
           e.parameters.code = resp.code;
           e.parameters.content = resp.content;
           e.parameters.method = connector.method;
-          return _context5.abrupt("return", actionShow(e));
+          return _context6.abrupt("return", actionShow(e));
 
         case 30:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5, this);
+    }, _callee6, this);
   }));
   return _updateSectionAdvanced.apply(this, arguments);
 }
 
-function checkURL(_x6) {
+function checkURL(_x7) {
   return _checkURL.apply(this, arguments);
 }
 /**
@@ -502,34 +556,34 @@ function checkURL(_x6) {
 function _checkURL() {
   _checkURL = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee6(e) {
+  regeneratorRuntime.mark(function _callee7(e) {
     var regExp, url, test, action;
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
-      while (1) switch (_context6.prev = _context6.next) {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
         case 0:
           regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
           url = e.formInput.connectionURL;
           test = regExp.test(url);
 
           if (test) {
-            _context6.next = 7;
+            _context7.next = 7;
             break;
           }
 
           action = CardService.newActionResponseBuilder();
           action.setNotification(warning(globalInvalidURLnoMethod));
-          return _context6.abrupt("return", action.build());
+          return _context7.abrupt("return", action.build());
 
         case 7:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
-    }, _callee6);
+    }, _callee7);
   }));
   return _checkURL.apply(this, arguments);
 }
 
-function goBack(_x7) {
+function goBack(_x8) {
   return _goBack.apply(this, arguments);
 }
 /**
@@ -542,28 +596,28 @@ function goBack(_x7) {
 function _goBack() {
   _goBack = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee7(e) {
+  regeneratorRuntime.mark(function _callee8(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and pop card from stack;
 
           builder.setNavigation(CardService.newNavigation().popCard());
           builder.setStateChanged(true);
-          return _context7.abrupt("return", builder.build());
+          return _context8.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
-    }, _callee7);
+    }, _callee8);
   }));
   return _goBack.apply(this, arguments);
 }
 
-function goRoot(_x8) {
+function goRoot(_x9) {
   return _goRoot.apply(this, arguments);
 }
 /**
@@ -576,28 +630,28 @@ function goRoot(_x8) {
 function _goRoot() {
   _goRoot = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee8(e) {
+  regeneratorRuntime.mark(function _callee9(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
+    return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to main card;
 
           builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
           builder.setStateChanged(true);
-          return _context8.abrupt("return", builder.build());
+          return _context9.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
-    }, _callee8);
+    }, _callee9);
   }));
   return _goRoot.apply(this, arguments);
 }
 
-function goSettings(_x9) {
+function goSettings(_x10) {
   return _goSettings.apply(this, arguments);
 }
 /**
@@ -610,28 +664,28 @@ function goSettings(_x9) {
 function _goSettings() {
   _goSettings = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee9(e) {
+  regeneratorRuntime.mark(function _callee10(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee9$(_context9) {
-      while (1) switch (_context9.prev = _context9.next) {
+    return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to settings card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
           builder.setStateChanged(true);
-          return _context9.abrupt("return", builder.build());
+          return _context10.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
-    }, _callee9);
+    }, _callee10);
   }));
   return _goSettings.apply(this, arguments);
 }
 
-function actionConfirm(_x10) {
+function actionConfirm(_x11) {
   return _actionConfirm.apply(this, arguments);
 }
 /**
@@ -644,28 +698,28 @@ function actionConfirm(_x10) {
 function _actionConfirm() {
   _actionConfirm = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee10(e) {
+  regeneratorRuntime.mark(function _callee11(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
+    return regeneratorRuntime.wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to confirmation card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardConfirm(e)));
           builder.setStateChanged(false);
-          return _context10.abrupt("return", builder.build());
+          return _context11.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
-    }, _callee10);
+    }, _callee11);
   }));
   return _actionConfirm.apply(this, arguments);
 }
 
-function actionEdit(_x11) {
+function actionEdit(_x12) {
   return _actionEdit.apply(this, arguments);
 }
 /**
@@ -678,28 +732,28 @@ function actionEdit(_x11) {
 function _actionEdit() {
   _actionEdit = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee11(e) {
+  regeneratorRuntime.mark(function _callee12(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
+    return regeneratorRuntime.wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to edit connector card;
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));
           builder.setStateChanged(true);
-          return _context11.abrupt("return", builder.build());
+          return _context12.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
-    }, _callee11);
+    }, _callee12);
   }));
   return _actionEdit.apply(this, arguments);
 }
 
-function actionShow(_x12) {
+function actionShow(_x13) {
   return _actionShow.apply(this, arguments);
 }
 /**
@@ -712,10 +766,10 @@ function actionShow(_x12) {
 function _actionShow() {
   _actionShow = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee12(e) {
+  regeneratorRuntime.mark(function _callee13(e) {
     var builder, code;
-    return regeneratorRuntime.wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
+    return regeneratorRuntime.wrap(function _callee13$(_context13) {
+      while (1) switch (_context13.prev = _context13.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -728,18 +782,18 @@ function _actionShow() {
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context12.abrupt("return", builder.build());
+          return _context13.abrupt("return", builder.build());
 
         case 6:
         case "end":
-          return _context12.stop();
+          return _context13.stop();
       }
-    }, _callee12);
+    }, _callee13);
   }));
   return _actionShow.apply(this, arguments);
 }
 
-function actionManual(_x13) {
+function actionManual(_x14) {
   return _actionManual.apply(this, arguments);
 }
 /**
@@ -752,10 +806,10 @@ function actionManual(_x13) {
 function _actionManual() {
   _actionManual = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee13(e) {
+  regeneratorRuntime.mark(function _callee14(e) {
     var builder, msg, connector, cType, cAuth, response, isAuthError, code, content, len;
-    return regeneratorRuntime.wrap(function _callee13$(_context13) {
-      while (1) switch (_context13.prev = _context13.next) {
+    return regeneratorRuntime.wrap(function _callee14$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -764,26 +818,26 @@ function _actionManual() {
           cType = new this[connector.type]();
           cAuth = cType.auth; //try to perform request;
 
-          _context13.prev = 5;
-          _context13.next = 8;
+          _context14.prev = 5;
+          _context14.next = 8;
           return cType.run(msg, connector);
 
         case 8:
-          response = _context13.sent;
-          _context13.next = 17;
+          response = _context14.sent;
+          _context14.next = 17;
           break;
 
         case 11:
-          _context13.prev = 11;
-          _context13.t0 = _context13["catch"](5);
+          _context14.prev = 11;
+          _context14.t0 = _context14["catch"](5);
           //set empty response headers and content to error message;
-          console.error('Error during manual action: ' + _context13.t0);
+          console.error('Error during manual action: ' + _context14.t0);
           response = {
             headers: '',
-            content: _context13.t0.message
+            content: _context14.t0.message
           }; //check if error is caused by code or fetch fail;
 
-          isAuthError = checkAgainstErrorTypes(_context13.t0);
+          isAuthError = checkAgainstErrorTypes(_context14.t0);
 
           if (isAuthError) {
             response.code = 401;
@@ -815,28 +869,28 @@ function _actionManual() {
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context13.abrupt("return", builder.build());
+          return _context14.abrupt("return", builder.build());
 
         case 24:
         case "end":
-          return _context13.stop();
+          return _context14.stop();
       }
-    }, _callee13, this, [[5, 11]]);
+    }, _callee14, this, [[5, 11]]);
   }));
   return _actionManual.apply(this, arguments);
 }
 
-function performFullReset(_x14) {
+function performFullReset(_x15) {
   return _performFullReset.apply(this, arguments);
 }
 
 function _performFullReset() {
   _performFullReset = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee14(e) {
+  regeneratorRuntime.mark(function _callee15(e) {
     var builder, onSuccessText, onFailureText, config;
-    return regeneratorRuntime.wrap(function _callee14$(_context14) {
-      while (1) switch (_context14.prev = _context14.next) {
+    return regeneratorRuntime.wrap(function _callee15$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //custom text ot pass to notifications;
@@ -844,12 +898,12 @@ function _performFullReset() {
           onSuccessText = e.parameters.success;
           onFailureText = e.parameters.failure; //try to delete all OAuth2.0 specific properties;
 
-          _context14.prev = 3;
-          _context14.next = 6;
+          _context15.prev = 3;
+          _context15.next = 6;
           return getConfig();
 
         case 6:
-          config = _context14.sent;
+          config = _context15.sent;
 
           if (config.length !== 0) {
             config.forEach(function (connector) {
@@ -862,41 +916,41 @@ function _performFullReset() {
             });
           }
 
-          _context14.next = 13;
+          _context15.next = 13;
           break;
 
         case 10:
-          _context14.prev = 10;
-          _context14.t0 = _context14["catch"](3);
+          _context15.prev = 10;
+          _context15.t0 = _context15["catch"](3);
           //log error to stackdriver;
-          console.log(_context14.t0);
+          console.log(_context15.t0);
 
         case 13:
-          _context14.prev = 13;
-          _context14.next = 16;
+          _context15.prev = 13;
+          _context15.next = 16;
           return deleteAllProperties('user');
 
         case 16:
           builder.setNotification(notification(onSuccessText));
-          _context14.next = 22;
+          _context15.next = 22;
           break;
 
         case 19:
-          _context14.prev = 19;
-          _context14.t1 = _context14["catch"](13);
+          _context15.prev = 19;
+          _context15.t1 = _context15["catch"](13);
           builder.setNotification(error(onFailureText));
 
         case 22:
           //set data state change and navigate to main card;
           builder.setNavigation(CardService.newNavigation().updateCard(cardHome(e)));
           builder.setStateChanged(true);
-          return _context14.abrupt("return", builder.build());
+          return _context15.abrupt("return", builder.build());
 
         case 25:
         case "end":
-          return _context14.stop();
+          return _context15.stop();
       }
-    }, _callee14, null, [[3, 10], [13, 19]]);
+    }, _callee15, null, [[3, 10], [13, 19]]);
   }));
   return _performFullReset.apply(this, arguments);
 }
