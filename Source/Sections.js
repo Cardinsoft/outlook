@@ -1155,37 +1155,8 @@ function createSectionChooseType(builder, isCollapsed, header) {
  */
 
 
-function createSectionAddConnector(builder, isCollapsed, header, type) {
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed); //set required parameters;
-
-  if (header && header !== '') {
-    section.setHeader(header);
-  } //create Switch widgets for manual and default behaviour;
-
-
-  createWidgetSwitchManual(section, type.manual);
-  createWidgetSwitchDefault(section, type.isDefault); //create auth type choice if no auth data is provided by type;
-
-  if (Object.keys(JSON.parse(type.auth)).length === 0 && type.type === globalBaseClassName) {
-    if (type.authType === globalOAuth2AuthType) {
-      createWidgetChooseAuth(section, false, type.authType);
-      createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, '');
-      createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, '');
-      createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, '');
-      createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, '');
-      createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, '');
-    } else {
-      createWidgetChooseAuth(section, false);
-    }
-  } //create TextButton with Connector creation action;
-
-
-  createWidgetCreateConnector(section, globalCreateConnectorText, type); //append section and return it;
-
-  builder.addSection(section);
-  return section;
+function createSectionAddConnector(_x9, _x10, _x11, _x12) {
+  return _createSectionAddConnector.apply(this, arguments);
 }
 /**
  * Creates section with manual and default switches + edit connector button and sets input values;
@@ -1198,52 +1169,62 @@ function createSectionAddConnector(builder, isCollapsed, header, type) {
  */
 
 
-function createSectionUpdateConnector(builder, isCollapsed, connector, isReloaded, authType) {
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed); //create Switch widgets for manual and default behaviour;
+function _createSectionAddConnector() {
+  _createSectionAddConnector = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(builder, isCollapsed, header, type) {
+    var section;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          //create section and set required parameters;
+          section = CardService.newCardSection();
+          section.setCollapsible(isCollapsed); //set required parameters;
 
-  createWidgetSwitchManual(section, connector.manual);
-  createWidgetSwitchDefault(section, connector.isDefault); //get auth parameters from type and connector;
+          if (header && header !== '') {
+            section.setHeader(header);
+          } //create Switch widgets for manual and default behaviour;
 
-  var cAuth = new this[connector.type]().auth;
-  var auth = connector.auth; //create auth type choice if no auth data is provided by type;
 
-  if (Object.keys(cAuth).length === 0 && auth !== 'none' && auth !== undefined) {
-    if (auth === globalOAuth2AuthType && !isReloaded) {
-      createWidgetChooseAuth(section, true, auth);
-      createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, connector.urlAuth);
-      createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, connector.urlToken);
-      createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, connector.id);
-      createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, connector.secret);
-      createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, connector.scope);
-    } else if (!isReloaded) {
-      createWidgetChooseAuth(section, true);
-    } else if (auth === globalOAuth2AuthType || authType === globalOAuth2AuthType) {
-      createWidgetChooseAuth(section, true, authType);
+          _context3.next = 5;
+          return createWidgetSwitchManual(section, type.manual);
 
-      if (connector.scope) {
-        createWidgetCustomInput(section, globalScopeFieldName, 'Scope', 'Authorization scope', connector.scope);
-      } else {
-        createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, '');
-        createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, '');
-        createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, '');
-        createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, '');
-        createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, '');
+        case 5:
+          _context3.next = 7;
+          return createWidgetSwitchDefault(section, type.isDefault);
+
+        case 7:
+          //create auth type choice if no auth data is provided by type;
+          if (Object.keys(JSON.parse(type.auth)).length === 0 && type.type === globalBaseClassName) {
+            if (type.authType === globalOAuth2AuthType) {
+              createWidgetChooseAuth(section, false, type.authType);
+              createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, '');
+              createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, '');
+              createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, '');
+              createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, '');
+              createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, '');
+            } else {
+              createWidgetChooseAuth(section, false);
+            }
+          } //create TextButton with Connector creation action;
+
+
+          createWidgetCreateConnector(section, globalCreateConnectorText, type); //append section and return it;
+
+          builder.addSection(section);
+          return _context3.abrupt("return", section);
+
+        case 11:
+        case "end":
+          return _context3.stop();
       }
-    } else {
-      createWidgetChooseAuth(section, true);
-    }
-  } //append update and remove ButtonSet;
+    }, _callee3);
+  }));
+  return _createSectionAddConnector.apply(this, arguments);
+}
 
-
-  var buttonSet = CardService.newButtonSet();
-  createWidgetUpdateConnector(buttonSet, globalUpdateConnectorText, connector);
-  createWidgetRemoveConnector(buttonSet, globalRemoveConnectorText, connector);
-  section.addWidget(buttonSet); //append section and return it;
-
-  builder.addSection(section);
-  return section;
+function createSectionUpdateConnector(_x13, _x14, _x15, _x16, _x17) {
+  return _createSectionUpdateConnector.apply(this, arguments);
 }
 /**
  * Creates section for connector type description;
@@ -1254,6 +1235,75 @@ function createSectionUpdateConnector(builder, isCollapsed, connector, isReloade
  * @returns {CardSection} this CardSection;
  */
 
+
+function _createSectionUpdateConnector() {
+  _createSectionUpdateConnector = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee4(builder, isCollapsed, connector, isReloaded, authType) {
+    var section, cAuth, auth, buttonSet;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          //create section and set required parameters;
+          section = CardService.newCardSection();
+          section.setCollapsible(isCollapsed); //create Switch widgets for manual and default behaviour;
+
+          _context4.next = 4;
+          return createWidgetSwitchManual(section, connector.manual);
+
+        case 4:
+          _context4.next = 6;
+          return createWidgetSwitchDefault(section, connector.isDefault);
+
+        case 6:
+          //get auth parameters from type and connector;
+          cAuth = new this[connector.type]().auth;
+          auth = connector.auth; //create auth type choice if no auth data is provided by type;
+
+          if (Object.keys(cAuth).length === 0 && auth !== 'none' && auth !== undefined) {
+            if (auth === globalOAuth2AuthType && !isReloaded) {
+              createWidgetChooseAuth(section, true, auth);
+              createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, connector.urlAuth);
+              createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, connector.urlToken);
+              createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, connector.id);
+              createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, connector.secret);
+              createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, connector.scope);
+            } else if (!isReloaded) {
+              createWidgetChooseAuth(section, true);
+            } else if (auth === globalOAuth2AuthType || authType === globalOAuth2AuthType) {
+              createWidgetChooseAuth(section, true, authType);
+
+              if (connector.scope) {
+                createWidgetCustomInput(section, globalScopeFieldName, 'Scope', 'Authorization scope', connector.scope);
+              } else {
+                createWidgetCustomInput(section, globalUrlAuthFieldName, 'Auth', globalAuthUrlInputHint, '');
+                createWidgetCustomInput(section, globalUrlTokenFieldName, 'Token', globalTokenUrlInputHint, '');
+                createWidgetCustomInput(section, globalClientIdFieldName, 'Client Id', globalClientIdInputHint, '');
+                createWidgetCustomInput(section, globalSecretFieldName, 'Client Secret', globalSecretInputHint, '');
+                createWidgetCustomInput(section, globalScopeFieldName, 'Scope', globalScopeInputHint, '');
+              }
+            } else {
+              createWidgetChooseAuth(section, true);
+            }
+          } //append update and remove ButtonSet;
+
+
+          buttonSet = CardService.newButtonSet();
+          createWidgetUpdateConnector(buttonSet, globalUpdateConnectorText, connector);
+          createWidgetRemoveConnector(buttonSet, globalRemoveConnectorText, connector);
+          section.addWidget(buttonSet); //append section and return it;
+
+          builder.addSection(section);
+          return _context4.abrupt("return", section);
+
+        case 15:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, this);
+  }));
+  return _createSectionUpdateConnector.apply(this, arguments);
+}
 
 function createDescriptionSection(builder, isCollapsed, short, header) {
   //create section and set required parameters;
@@ -1326,7 +1376,7 @@ function createSectionWelcome(builder, isCollapsed, header) {
  */
 
 
-function createSectionSettings(_x9, _x10, _x11) {
+function createSectionSettings(_x18, _x19, _x20) {
   return _createSectionSettings.apply(this, arguments);
 }
 /**
@@ -1341,10 +1391,10 @@ function createSectionSettings(_x9, _x10, _x11) {
 function _createSectionSettings() {
   _createSectionSettings = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(builder, isCollapsed, header) {
+  regeneratorRuntime.mark(function _callee5(builder, isCollapsed, header) {
     var section;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           //create section and set required parameters;
           section = CardService.newCardSection();
@@ -1355,19 +1405,19 @@ function _createSectionSettings() {
           } //create sorting widgets;
 
 
-          _context3.next = 5;
+          _context5.next = 5;
           return createWidgetSortBy(section);
 
         case 5:
           //append section and return it;
           builder.addSection(section);
-          return _context3.abrupt("return", section);
+          return _context5.abrupt("return", section);
 
         case 7:
         case "end":
-          return _context3.stop();
+          return _context5.stop();
       }
-    }, _callee3);
+    }, _callee5);
   }));
   return _createSectionSettings.apply(this, arguments);
 }
