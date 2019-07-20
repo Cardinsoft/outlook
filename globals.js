@@ -126,6 +126,7 @@ var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/upload
 var globalIftttIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/IFTTT.png';
 var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
 var globalLACRMiconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/04/LACRM.png';
+var globalOneCRMiconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/07/1CRM.png';
 var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
 var globalYouTubeUrl                 = 'https://youtube.com/';
 
@@ -215,5 +216,6 @@ var globalOAuth2AuthType             = 'OAuth2';
 //connector types specific globals;
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
 var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
+var globalOneCRMshort                = 'Fetches contact information from 1CRM platform';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
 var globalWebhookShort               = 'Sends and recieves data from custom webhooks, including Microsoft Flow (supports iterative data updating)';
