@@ -119,6 +119,7 @@ var globalUpdateShowText             = 'Update';
 //URLs;
 var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
+var globalCloseIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/Close.png';
 var globalCloudFuncIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/07/Google-Cloud-Functions.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
 var globalEnterIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/05/enter.png';
@@ -214,6 +215,7 @@ var globalApiTokenAuthType           = 'APItoken';
 var globalOAuth2AuthType             = 'OAuth2';
 
 //connector types specific globals;
+var globalCloseShort                 = 'Fetches contact and activities information from Close CRM';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
 var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
 var globalOneCRMshort                = 'Fetches contact information from 1CRM platform';
