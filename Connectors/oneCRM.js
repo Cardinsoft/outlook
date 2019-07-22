@@ -71,7 +71,7 @@ function oneCRM() {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee(msg, connector, data) {
-      var endpoint, url, cred, headers, message, filters, fields, fieldsMain, fieldsCont, fieldsPaddr, fieldsOaddr, fieldsBckg, params, fullUrl, response, sections, contents, contacts, i, contact, sectionMain, sectionEmpl, sectionBckg, sectionAct, wmain, wempl, wbckg, wact, id, salut, name, company, categ, role, source, title, depart, birth, canCall, phoneW, phoneM, phoneH, phoneO, email1, email2, canEmail, website, descr, partner, pStreet, pCity, pState, pPostal, pCountry, oStreet, oCity, oState, oPostal, oCountry, created, edited, n1, ca, e1, e2, pw, pm, ph, po, address, ad, oAddress, oad, ei, equal, dCreated, dEdited, tCreated, cr, tEdited, up, num, c, d, b, urlEvents, start, end, fullEventsUrl, responseEvents, events, eventPrompt, ek, event, sd, dd, n, t, l, subj, icon, loc, from, due, returned;
+      var endpoint, url, cred, headers, message, filters, fields, fieldsMain, fieldsCont, fieldsPaddr, fieldsOaddr, fieldsBckg, params, fullUrl, response, sections, contents, contacts, i, contact, sectionMain, sectionEmpl, sectionBckg, sectionAct, wmain, wempl, wbckg, wact, id, salut, name, company, categ, role, source, title, depart, birth, canCall, phoneW, phoneM, phoneH, phoneO, email1, email2, canEmail, website, descr, partner, pStreet, pCity, pState, pPostal, pCountry, oStreet, oCity, oState, oPostal, oCountry, created, edited, n1, ca, e1, e2, pw, pm, ph, po, address, ad, oAddress, oad, ei, equal, dCreated, dEdited, tCreated, cr, tEdited, up, num, c, d, b, urlEvents, start, end, fullEventsUrl, responseEvents, events, eventPrompt, ek, event, sd, dd, n, t, l, subj, icon, loc, from, due, dnsErr, returned;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -122,7 +122,7 @@ function oneCRM() {
             response = _context.sent;
             sections = [];
 
-            if (!(response.code <= 300)) {
+            if (!(response.code >= 200 && response.code < 300)) {
               _context.next = 155;
               break;
             }
@@ -647,7 +647,7 @@ function oneCRM() {
             break;
 
           case 153:
-            _context.next = 160;
+            _context.next = 165;
             break;
 
           case 155:
@@ -665,15 +665,33 @@ function oneCRM() {
             });
 
           case 159:
+            if (!(response.content.descr.indexOf('DNS error') !== -1)) {
+              _context.next = 164;
+              break;
+            }
+
+            //build inactive account prompt and action;
+            dnsErr = [{
+              header: 'Inactive acount',
+              widgets: [{
+                type: globalKeyValue,
+                content: 'We couldn\'t access your account, most likely it is inactive (e.g. your trial expired). Please, check if you still have access!'
+              }, {
+                type: globalTextButton,
+                title: 'Open account',
+                content: 'https://' + connector.account + '.' + this.url
+              }]
+            }];
             return _context.abrupt("return", {
-              code: response.code,
+              code: 200,
               headers: {},
-              content: JSON.stringify({
-                descr: response.content
-              })
+              content: JSON.stringify(dnsErr)
             });
 
-          case 160:
+          case 164:
+            return _context.abrupt("return", response);
+
+          case 165:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -690,7 +708,7 @@ function oneCRM() {
 
             return _context.abrupt("return", returned);
 
-          case 163:
+          case 168:
           case "end":
             return _context.stop();
         }
