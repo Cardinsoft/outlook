@@ -1,38 +1,7 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
 /**
  * Performs URL fetch with payload to external service;
  * @param {String} url url to be passed to request;
@@ -40,8 +9,6 @@ function _asyncToGenerator(fn) {
  * @param {Object} payload payload to be passed to request;
  * @returns {Object}
  */
-
-
 function performFetch(_x, _x2, _x3, _x4) {
   return _performFetch.apply(this, arguments);
 }
@@ -71,6 +38,7 @@ function _performFetch() {
 
         case 5:
           response = _context.sent;
+          console.log(response);
           code = response.getResponseCode();
           headers = response.getHeaders();
           content = response.getContentText();
@@ -86,10 +54,10 @@ function _performFetch() {
             content: content
           });
 
-        case 14:
-          _context.prev = 14;
-          _context.t0 = _context["catch"](0); //handles request exceptions not caught by muteHttpExceptions;
-
+        case 15:
+          _context.prev = 15;
+          _context.t0 = _context["catch"](0);
+          //handles request exceptions not caught by muteHttpExceptions;
           console.error(_context.t0);
           return _context.abrupt("return", {
             code: 0,
@@ -101,11 +69,11 @@ function _performFetch() {
             }
           });
 
-        case 18:
+        case 19:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 15]]);
   }));
   return _performFetch.apply(this, arguments);
 }
