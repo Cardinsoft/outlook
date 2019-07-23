@@ -182,16 +182,9 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       };
+      console.log(obj);
       resolve(obj);
-    };
-
-    try {
-      request.onerror = function () {
-        console.log(request);
-      };
-    } catch (error) {
-      console.log('Using IE version with no support of error event');
-    } //handle timeout event;
+    }; //handle timeout event;
 
 
     console.log('loaded request');
