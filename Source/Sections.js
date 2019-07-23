@@ -548,6 +548,8 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
 
     if (domain) {
       addQuery = 'https://' + domain + '.' + addInCRM.base;
+    } else {
+      addQuery = 'https://' + addInCRM.base;
     } //put parameters into query string;
 
 
