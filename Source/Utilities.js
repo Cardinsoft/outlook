@@ -895,11 +895,15 @@ function parseData(data) {
     return [];
   } else if (isObj) {
     return data;
-  } //try to parse content until recieved an array; 
+  } //try to parse content until recieved an array;
 
 
   try {
     while (!(data instanceof Array)) {
+      if (typeof data === 'object') {
+        break;
+      }
+
       data = JSON.parse(data);
     }
 
