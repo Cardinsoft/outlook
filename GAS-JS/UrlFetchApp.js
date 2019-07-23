@@ -71,7 +71,7 @@ function () {
           console.log(_context.t0.content);
 
         case 10:
-          if (!(response.code === 500 && content === 'DNS error')) {
+          if (!(response.code === 500 && response.content === 'DNS error')) {
             _context.next = 12;
             break;
           }
