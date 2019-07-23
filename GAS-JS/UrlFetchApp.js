@@ -83,17 +83,16 @@ function () {
 
         case 15:
           //check if response object has properties;
-          checkProps = Object.keys(response).length > 0;
-          console.log(response); //if response has any properties -> create HTTPResponse instance;
+          checkProps = Object.keys(response).length > 0; //if response has any properties -> create HTTPResponse instance;
 
           if (!checkProps) {
-            _context.next = 19;
+            _context.next = 18;
             break;
           }
 
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 19:
+        case 18:
         case "end":
           return _context.stop();
       }
@@ -183,7 +182,6 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       };
-      console.log(obj);
       resolve(obj);
     }; //handle timeout event;
 
