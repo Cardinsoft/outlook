@@ -1,50 +1,10 @@
-function _asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function _asyncToGenerator2(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { _asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { _asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-} //Emulate HTTPResponse class;
-
-
+//Emulate HTTPResponse class;
 let HTTPResponse = function HTTPResponse(headers, content, code) {
   _classCallCheck(this, HTTPResponse);
 
@@ -87,7 +47,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(url, params) {
-    var response, checkResp, checkProps;
+    var response, checkProps;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -108,7 +68,7 @@ function () {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
-        throw new Error(_context.t0.content);
+          console.log(_context.t0.content);
 
         case 10:
           _context.next = 15;
@@ -122,16 +82,18 @@ function () {
           response = _context.sent;
 
         case 15:
-          checkProps = Object.keys(response).length > 0; //if response has any properties -> create HTTPResponse instance;
+          //check if response object has properties;
+          checkProps = Object.keys(response).length > 0;
+          console.log(response); //if response has any properties -> create HTTPResponse instance;
 
           if (!checkProps) {
-            _context.next = 20;
+            _context.next = 19;
             break;
           }
 
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 20:
+        case 19:
         case "end":
           return _context.stop();
       }
@@ -163,30 +125,30 @@ function makeRequest(url, params) {
       };
       reject(emptyUrlErr);
     } //default to GET method if no params provided;
-		
+
+
     if (!params) {
       params = {
         method: 'get'
       };
     } //initiate and open XMLHttpRequest;
 
-    let request = new XMLHttpRequest();
-	
-	//check for IE11;
-	try {
-		request.timeout = 29000;
-	}
-	catch(error) {
-		console.log('Using older browser with poor request timeout support (expect timeout to differ from 30s)');
-	}
-	
+
+    let request = new XMLHttpRequest(); //check for IE11;
+
+    try {
+      request.timeout = 29000;
+    } catch (error) {
+      console.log('Using older browser with poor request timeout support (expect timeout to differ from 30s)');
+    }
+
     request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
 
     if (params.contentType) {
       request.setRequestHeader('Content-Type', params.contentType);
-    } //add headers if provided;
+    }
 
-	console.log('opened request');
+    console.log('opened request'); //add headers if provided;
 
     if (params.headers) {
       //access headers to set with request;
@@ -199,9 +161,9 @@ function makeRequest(url, params) {
           request.setRequestHeader(key, value);
         }
       }
-    } //handle load event (set headers and resolve objects);
-	
-	console.log('set headers');
+    }
+
+    console.log('set headers'); //handle load event (set headers and resolve objects);
 
     request.onload = function () {
       let status = request.status;
@@ -220,29 +182,29 @@ function makeRequest(url, params) {
         code: status,
         content: response,
         headers: map
-      }; //resolve or reject according to code;
-
+      };
       resolve(obj);
-
     }; //handle timeout event;
 
-	console.log('loaded request');
 
-	try {
-		request.ontimeout = function () {
-		  let statusText = request.statusText; //construct timeout response object;
+    console.log('loaded request');
 
-		  let timeout = {
-			code: request.status,
-			content: statusText,
-			headers: {}
-		  };
-		  resolve(timeout);
-		}; //send request with or without payload according to method;
-	}
-	catch(error) {
-		console.log('Using older browser with poor request timeout event support (expect timeout to differ from 30s)');
-	}
+    try {
+      request.ontimeout = function () {
+        let statusText = request.statusText; //construct timeout response object;
+
+        let timeout = {
+          code: request.status,
+          content: statusText,
+          headers: {}
+        };
+        resolve(timeout);
+      }; //send request with or without payload according to method;
+
+    } catch (error) {
+      console.log('Using older browser with poor request timeout event support (expect timeout to differ from 30s)');
+    } //send request with or without payload according to method;
+
 
     if (params.payload && params.method !== 'get') {
       request.send(params.payload);
