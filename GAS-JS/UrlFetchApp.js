@@ -52,7 +52,7 @@ function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (!(params.muteHttpExceptions === true)) {
-            _context.next = 12;
+            _context.next = 14;
             break;
           }
 
@@ -71,28 +71,36 @@ function () {
           console.log(_context.t0.content);
 
         case 10:
-          _context.next = 15;
-          break;
+          if (!(response.code === 500)) {
+            _context.next = 12;
+            break;
+          }
+
+          throw new Error(error.content);
 
         case 12:
-          _context.next = 14;
-          return makeRequest(url, params);
+          _context.next = 17;
+          break;
 
         case 14:
+          _context.next = 16;
+          return makeRequest(url, params);
+
+        case 16:
           response = _context.sent;
 
-        case 15:
+        case 17:
           //check if response object has properties;
           checkProps = Object.keys(response).length > 0; //if response has any properties -> create HTTPResponse instance;
 
           if (!checkProps) {
-            _context.next = 18;
+            _context.next = 20;
             break;
           }
 
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 18:
+        case 20:
         case "end":
           return _context.stop();
       }
