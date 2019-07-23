@@ -48,22 +48,14 @@ function _performFetch() {
             content = '[]';
           }
 
-          if (!(code === 500 && content !== '')) {
-            _context.next = 14;
-            break;
-          }
-
-          throw new Error(content);
-
-        case 14:
           return _context.abrupt("return", {
             code: code,
             headers: headers,
             content: content
           });
 
-        case 17:
-          _context.prev = 17;
+        case 15:
+          _context.prev = 15;
           _context.t0 = _context["catch"](0);
           //handles request exceptions not caught by muteHttpExceptions;
           console.error(_context.t0);
@@ -77,11 +69,11 @@ function _performFetch() {
             }
           });
 
-        case 21:
+        case 19:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 17]]);
+    }, _callee, null, [[0, 15]]);
   }));
   return _performFetch.apply(this, arguments);
 }
