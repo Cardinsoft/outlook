@@ -38,7 +38,6 @@ function _performFetch() {
 
         case 5:
           response = _context.sent;
-          console.log(response);
           code = response.getResponseCode();
           headers = response.getHeaders();
           content = response.getContentText();
@@ -54,8 +53,8 @@ function _performFetch() {
             content: content
           });
 
-        case 15:
-          _context.prev = 15;
+        case 14:
+          _context.prev = 14;
           _context.t0 = _context["catch"](0);
           //handles request exceptions not caught by muteHttpExceptions;
           console.error(_context.t0);
@@ -69,11 +68,11 @@ function _performFetch() {
             }
           });
 
-        case 19:
+        case 18:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 15]]);
+    }, _callee, null, [[0, 14]]);
   }));
   return _performFetch.apply(this, arguments);
 }
