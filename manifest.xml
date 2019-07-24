@@ -10,11 +10,11 @@
 
 	<!--Version. Updates from the store only get triggered if there is a version change. -->
 	<Version>1.0.0.0</Version>
-	<ProviderName>Cardin</ProviderName>
+	<ProviderName>Cardinsoft</ProviderName>
 	<DefaultLocale>en-US</DefaultLocale>
 
 	<DisplayName DefaultValue="Cardin" />
-	<Description DefaultValue="Cardin for Outlook brings together info from multiple data sources such as CRM systems and workflows without you ever needing to get out of the comfort of your Outlook client"/>
+	<Description DefaultValue="Bring relevant contact info from your favourite CRM platforms or workflow tools directly to Outlook client"/>
 
 	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
 	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
