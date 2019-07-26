@@ -87,7 +87,7 @@ var globalOrderingWidgetContent      = 'Choose how to sort your configured Conne
 var globalResetWidgetContent         = 'Every user preference will be reset, and Connector configurations will be deleted';
 var globalRevokeWidgetContent        = 'If you wish to uninstall Cardin from your account, tick the checkbox below';
 var globalSkipAuthWidgetContent      = 'You can authorize Connectors anytime in Settings. If you wish to skip the check, simply toggle the option below';
-var globalWelcomeWidgetContent       = 'Click on a Connector from the list below to get started';
+var globalWelcomeWidgetContent       = 'Please choose a Connector from the list below to start viewing and editing the associated contact data stored in that app';
 
 //hints;
 var globalCustomWidgetNameHint       = 'Name to display in list of Connectors';
