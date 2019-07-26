@@ -16,8 +16,8 @@
 	<DisplayName DefaultValue="Cardin" />
 	<Description DefaultValue="Bring relevant contact info from your favourite CRM platforms or workflow tools directly to Outlook"/>
 
-	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-16.png" />
-	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png"/>
+	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png" />
+	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-128.png"/>
 
 	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook/support/" />
 
