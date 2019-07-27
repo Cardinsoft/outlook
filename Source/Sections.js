@@ -1065,9 +1065,16 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
 
                     if (!filled) {
                       filled = false;
-                    }
+                    } //create link button or action button;
 
-                    var button = textButtonWidget(buttonText, disabled, filled);
+
+                    var button;
+
+                    if (!buttonLink) {
+                      button = textButtonWidget(buttonText, disabled, filled);
+                    } else {
+                      button = textButtonWidgetLinked(buttonText, disabled, false, buttonLink, fullsized);
+                    }
 
                     if (state !== 'editable') {
                       element = simpleKeyValueWidget(title, content, isMultiline, icon, button);
