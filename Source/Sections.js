@@ -950,8 +950,10 @@ function createSectionSimple(builder, data, isCollapsed, index) {
  */
 
 
-function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
-  //create section;
+function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start) {
+  //access account preferences;
+  var popup; //create section;
+
   var section = CardService.newCardSection(); //access section parameters;
 
   var header = obj.header;
@@ -971,15 +973,38 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
     } else if (numUncollapsible) {
       section.setNumUncollapsibleWidgets(globalNumUncollapsible);
     }
+  } //default start or parse start layout;
+
+
+  if (!start) {
+    start = [];
+  } else {
+    start = JSON.parse(start);
+  }
+
+  var starter = start.filter(function (s) {
+    return s.section === sectionIndex;
+  })[0];
+
+  if (!starter) {
+    starter = {
+      widget: 0,
+      section: sectionIndex
+    };
   } //append widgets if there are any;
 
 
+  var curr = 0;
+
   if (widgets.length > 0) {
-    widgets.forEach(function (widget, index) {
-      if (index <= max) {
+    for (var index = starter.widget; index < widgets.length; index++) {
+      var widget = widgets[index];
+
+      if (index <= starter.widget + max) {
         var state = widget.state;
 
         if (state !== 'hidden') {
+          curr++;
           var element;
           var type = widget.type;
 
@@ -1018,6 +1043,11 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
 
                 if (!parameters) {
                   parameters = connector;
+                } //if account has preferences -> override;
+
+
+                if (popup) {
+                  fullsized = popup;
                 } //build either a clickable or a linked button;
 
 
@@ -1036,6 +1066,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
                 var isMultiline = widget.isMultiline;
                 var switchValue = widget.switchValue;
                 var buttonText = widget.buttonText;
+                var buttonLink = widget.buttonLink;
                 var selected = widget.selected;
                 var disabled = widget.disabled;
                 var filled = widget.filled; //default to multiline;
@@ -1065,6 +1096,11 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
 
                     if (!filled) {
                       filled = false;
+                    } //if account has preferences -> override;
+
+
+                    if (popup) {
+                      fullsized = popup;
                     } //create link button or action button;
 
 
@@ -1119,7 +1155,75 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max) {
 
       } //end cap check;
 
-    }); //append section and return it;
+    } //initiate new starter;
+
+
+    var newStarter = {
+      widget: 0,
+      section: sectionIndex
+    };
+    var sidx;
+    start.forEach(function (o, i) {
+      if (o.section === sectionIndex) {
+        sidx = i;
+      }
+    }); //append back and forward widgets;
+
+    if (widgets.length > max) {
+      //update config to prior widgets and append "back" button;
+      if (starter.widget > 0) {
+        if (widgets.length > max) {
+          newStarter.widget = starter.widget - (max + 1);
+        }
+
+        if (sidx || sidx === 0) {
+          Logger.log('!!');
+        } else {
+          Logger.log('??');
+        }
+
+        if (sidx || sidx === 0) {
+          start[sidx] = newStarter;
+        } else {
+          start.push(newStarter);
+        }
+
+        connector.start = JSON.stringify(start);
+        var back = textButtonWidget('back', false, false, 'cardDisplay', connector);
+      } //update config to next widgets and append "forward" button;
+
+
+      if (starter.widget + curr !== widgets.length) {
+        if (widgets.length > max) {
+          newStarter.widget = starter.widget + (max + 1);
+        }
+
+        if (sidx || sidx === 0) {
+          start[sidx] = newStarter;
+        } else {
+          start.push(newStarter);
+        }
+
+        connector.start = JSON.stringify(start);
+        var next = textButtonWidget('next', false, false, 'cardDisplay', connector);
+      }
+
+      var buttons = [];
+
+      if (back) {
+        buttons.push(back);
+      }
+
+      if (next) {
+        buttons.push(next);
+      }
+
+      if (back || next) {
+        var bset = buttonSet(buttons);
+        section.addWidget(bset);
+      }
+    } //append section and return it;
+
 
     builder.addSection(section);
     return section;
