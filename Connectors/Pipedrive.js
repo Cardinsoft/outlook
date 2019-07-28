@@ -10,6 +10,8 @@ function Pipedrive() {
   this.icon = globalPipedriveIconUrl;
   this.typeName = 'Pipedrive';
   this.url = 'pipedrive.com/v1';
+  this.url2 = 'https://api-proxy.pipedrive.com/'; //disabled {remove suffix 2 to enable} until Gmail add-ons support for Pipedrive Marketplace;
+
   this.addInCRM = {
     base: 'pipedrive.com/persons/list#dialog/person/add'
   };
@@ -33,7 +35,18 @@ function Pipedrive() {
         hint: 'e.g. 744707f029a966b5599780'
       }]
     }
-  }, this.login = function (params) {
+  }, this.auth2 = {
+    //disabled {remove suffix 2 and add any suffix to API token auth to enable} until Gmail add-ons support for Pipedrive Marketplace;
+    type: globalOAuth2AuthType,
+    urlAuth: 'https://oauth.pipedrive.com/oauth/authorize',
+    urlToken: 'https://oauth.pipedrive.com/oauth/token',
+    urlRevoke: 'https://oauth.pipedrive.com/oauth/revoke',
+    id: '12cefab496cfcb98',
+    secret: 'c4842d0956b6188431e300ca311a8d3832def793',
+    scope: 'contacts:read'
+  };
+
+  this.login = function (params) {
     var base = 'https://www.pipedrive.com/en/login';
     var url = base;
     return url;
@@ -44,13 +57,48 @@ function Pipedrive() {
     return url;
   };
 
+  this.uninstall2 = function (params) {
+    //disabled {remove suffix 2 to enable} until Gmail add-ons support for Pipedrive Marketplace;
+    //access auth;
+    var auth = this.auth;
+    var urlRevoke = auth.urlRevoke;
+
+    if (urlRevoke) {
+      //create service with parameters;
+      var service = authService(params); //authorize with basic auth;
+
+      var headers = {
+        Authorization: 'Basic ' + Utilities.base64Encode(auth.id + ':' + auth.secret)
+      }; //access token;
+
+      var token = service.getToken();
+
+      if (token && token !== null) {
+        //set refresh token to payload;
+        token = token.refresh_token;
+        var payload = {
+          token: token
+        }; //set fetch parameters;
+
+        var fetchParams = {
+          method: 'post',
+          headers: headers,
+          payload: payload,
+          muteHttpExceptions: true
+        }; //perform uninstall;
+
+        UrlFetchApp.fetch(urlRevoke, fetchParams);
+      }
+    }
+  };
+
   this.run =
   /*#__PURE__*/
   function () {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee(msg, connector, data) {
-      var method, headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, cdUrl, responseCD, codeCD, contentCD, dataCD, domain, authError, cdError, codePersons, codeActivs, codeDeals, contentPersons, contentActivs, contentDeals, result, persons, matching, returned;
+      var method, headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, authError, cdError, contentPersons, contentActivs, contentDeals, result, persons, matching, returned;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -68,47 +116,54 @@ function Pipedrive() {
             dealsEP = '/deals'; //Auth2.0 currently disabled, checking for API token;
 
             if (!(parameters.type === globalOAuth2AuthType)) {
-              _context.next = 23;
+              _context.next = 24;
               break;
             }
 
-            parameters.name = connector.name; //create service and set authorization header;
+            parameters.name = connector.name;
+            parameters.ID = connector.ID; //create service and set authorization header;
 
             service = authService(parameters);
             bearer = 'Bearer ' + service.getAccessToken();
             headers.Authorization = bearer; //initate requests;
 
-            _context.next = 14;
+            _context.next = 15;
             return performFetch(this.url + personsEP, method, headers);
 
-          case 14:
+          case 15:
             responsePersons = _context.sent;
-            _context.next = 17;
+            _context.next = 18;
             return performFetch(this.url + activsEP, method, headers);
 
-          case 17:
+          case 18:
             responseActivs = _context.sent;
-            _context.next = 20;
+            _context.next = 21;
             return performFetch(this.url + dealsEP, method, headers);
 
-          case 20:
+          case 21:
             responseDeals = _context.sent;
-            _context.next = 54;
+            _context.next = 50;
             break;
 
-          case 23:
+          case 24:
             //fetch company domain;
-            cdUrl = 'https://api.pipedrive.com/v1/users/me?api_token=' + connector.apitoken;
-            _context.next = 26;
-            return performFetch(cdUrl, 'get', {});
+            if (!connector.account) {
+              cdUrl = 'https://api.pipedrive.com/v1/users/me?api_token=' + connector.apitoken;
+              responseCD = performFetch(cdUrl, 'get', {});
+              codeCD = responseCD.code;
+              contentCD = responseCD.content;
+            } else {
+              codeCD = 200;
+              contentCD = JSON.stringify({
+                data: {
+                  company_domain: connector.account
+                }
+              });
+            } //on success -> authorize, on fail return error;
 
-          case 26:
-            responseCD = _context.sent;
-            codeCD = responseCD.code;
-            contentCD = responseCD.content; //on success -> authorize, on fail return error;
 
             if (!(codeCD === 200)) {
-              _context.next = 47;
+              _context.next = 43;
               break;
             }
 
@@ -117,43 +172,43 @@ function Pipedrive() {
             domain = dataCD.company_domain; //set domain to connector;
 
             connector.account = domain;
-            _context.next = 36;
+            _context.next = 32;
             return saveConnector(connector);
 
-          case 36:
-            _context.next = 38;
+          case 32:
+            _context.next = 34;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: personsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 38:
+          case 34:
             responsePersons = _context.sent;
-            _context.next = 41;
+            _context.next = 37;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: activsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 41:
+          case 37:
             responseActivs = _context.sent;
-            _context.next = 44;
+            _context.next = 40;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: dealsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 44:
+          case 40:
             responseDeals = _context.sent;
-            _context.next = 54;
+            _context.next = 50;
             break;
 
-          case 47:
+          case 43:
             if (!(codeCD === 401)) {
-              _context.next = 52;
+              _context.next = 48;
               break;
             }
 
@@ -165,7 +220,7 @@ function Pipedrive() {
               content: authError
             });
 
-          case 52:
+          case 48:
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
@@ -174,17 +229,13 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 54:
-            //access response codes;
-            codePersons = responsePersons.code;
-            codeActivs = responseActivs.code;
-            codeDeals = responseDeals.code; //access and parse response contents;
-
+          case 50:
+            //access and parse response contents;
             contentPersons = JSON.parse(responsePersons.content);
             contentActivs = JSON.parse(responseActivs.content);
             contentDeals = JSON.parse(responseDeals.content); //initialize info parsing on successful fetch;
 
-            if (codePersons >= 200 && codePersons < 300) {
+            if (responsePersons.code >= 200 && responsePersons.code < 300) {
               //initiate result array, sections and set required params;
               result = []; //access content and check if it is not null;
 
@@ -213,12 +264,7 @@ function Pipedrive() {
                   });
 
                   if (hasMatch) {
-                    //create separator;
-                    var separator = {
-                      type: globalKeyValue,
-                      content: '\r'
-                    }; //create section persons;
-
+                    //create section persons;
                     var sectionPersons = {
                       header: 'Contact info',
                       isCollapsible: true,
@@ -297,43 +343,77 @@ function Pipedrive() {
 
 
                     if (emails !== null) {
+                      if (emails.length > 1) {
+                        widgetsPerson.push(globalWidgetSeparator);
+                      }
+
                       emails.forEach(function (email) {
                         var label = email.label;
                         var value = '<a href="mailto:' + email.value + '">' + email.value + '</a>';
                         var isPrimary = email.primary;
-                        var personEmail = {
-                          icon: 'EMAIL',
-                          title: label,
+                        var pem = {
+                          title: toSentenceCase(label) + ' email',
                           type: globalKeyValue,
                           content: value
                         };
 
                         if (isPrimary) {
-                          personEmail.buttonText = 'Primary';
+                          pem.buttonText = 'Primary';
                         }
 
-                        widgetsPerson.push(personEmail);
+                        switch (label) {
+                          case 'work':
+                            pem.icon = globalIconOfficeEmail;
+                            break;
+
+                          case 'home':
+                            pem.icon = globalIconHomeEmail;
+                            break;
+
+                          case 'other':
+                            pem.icon = 'EMAIL';
+                            break;
+                        }
+
+                        widgetsPerson.push(pem);
                       });
                     } //create person phone widgets;
 
 
                     if (phones !== null) {
+                      if (phones.length > 1) {
+                        widgetsPerson.push(globalWidgetSeparator);
+                      }
+
                       phones.forEach(function (phone) {
                         var label = phone.label;
                         var value = phone.value;
                         var isPrimary = phone.primary;
-                        var personPhone = {
-                          icon: 'PHONE',
-                          title: label,
+                        var pph = {
+                          title: toSentenceCase(label) + ' phone',
                           type: globalKeyValue,
                           content: value
                         };
 
                         if (isPrimary) {
-                          personPhone.buttonText = 'Primary';
+                          pph.buttonText = 'Primary';
                         }
 
-                        widgetsPerson.push(personPhone);
+                        switch (label) {
+                          case 'work':
+                            pph.icon = globalIconWorkPhone;
+                            break;
+
+                          case 'home':
+                            pph.icon = globalIconHomePhone;
+                            break;
+
+                          case 'other':
+                            pph.icon = 'PHONE';
+                            break;
+                        }
+
+                        widgetsPerson.push(pph);
                       });
                     } //create is active widget;
 
@@ -356,13 +436,13 @@ function Pipedrive() {
                       type: globalTextButton,
                       action: globalActionLink,
                       title: 'Edit in Pipedrive',
-                      content: domain + '.pipedrive.com/person/' + person.id
+                      content: domain + '.pipedrive.com/person/' + person.id,
+                      reload: true
                     };
                     widgetsPerson.push(personEditIn); //set number of uncollapsible widgets to main info;
 
-                    sectionPersons.numUncollapsible = widgetsPerson.length; //append separator;
-
-                    widgetsPerson.push(separator); //modify created date;
+                    sectionPersons.numUncollapsible = widgetsPerson.length;
+                    widgetsPerson.push(globalWidgetSeparator); //modify created date;
 
                     created = created.split(' ');
                     var cTime = created[1].split(':');
@@ -374,7 +454,7 @@ function Pipedrive() {
                       icon: 'CLOCK',
                       title: 'Created',
                       type: globalKeyValue,
-                      content: created
+                      content: cDate.toLocaleDateString() + '\r' + cDate.toLocaleTimeString()
                     };
                     widgetsPerson.push(personCreated); //create update date widget;
 
@@ -451,7 +531,7 @@ function Pipedrive() {
                         widgets: []
                       }; //access section widgets;
 
-                      var activsWidgets = sectionActivs.widgets; //create number of activities widget;
+                      var aw = sectionActivs.widgets; //create number of activities widget;
 
                       var activsMod = 'ies';
 
@@ -462,9 +542,9 @@ function Pipedrive() {
                       var activs = {
                         icon: 'EVENT_PERFORMER',
                         type: globalKeyValue,
-                        content: numActiv + ' activit' + activsMod
+                        content: numActiv + ' pending activit' + activsMod
                       };
-                      activsWidgets.push(activs); //create next activity date;
+                      aw.push(activs); //create next activity date;
 
                       if (nextDate !== null) {
                         var nextD = {
@@ -473,16 +553,23 @@ function Pipedrive() {
                           type: globalKeyValue,
                           content: nextDate
                         };
-                        activsWidgets.push(nextD);
+                        aw.push(nextD);
                       } //create widgets for activities;
 
 
-                      if (codeActivs >= 200 && codeActivs < 300) {
+                      if (responseActivs.code >= 200 && responseActivs.code < 300) {
                         //access activities info;
-                        var activities = contentActivs.data; //loop through activities;
+                        var activities = contentActivs.data; //sort activities by due date;
 
-                        activities.forEach(function (activity) {
-                          //access properties;
+                        activities.sort(function (a, b) {
+                          return order(a.due_date, b.due_date, false);
+                        }); //loop through activities;
+
+                        for (var a = 0; a < activities.length; a++) {
+                          var activity = activities[a]; //access properties;
+
+                          var astatus = activity.done;
+                          var aperson = activity.person_name;
                           var personId = activity.person_id;
                           var orgId = activity.org_id;
                           var dealName = activity.deal_title;
@@ -491,37 +578,74 @@ function Pipedrive() {
                           var duration = activity.duration;
                           var isDone = activity.done;
                           var note = activity.note;
-                          var dueDate = activity.due_date;
-                          var dueTime = activity.due_time; //create separator widget;
+                          var dueDate = new Date(activity.due_date);
+                          var dueTime = activity.due_time; //empty string;
 
-                          activsWidgets.push(separator); //create subject widget;
+                          if (dueTime !== '') {
+                            dueTime = dueTime.split(':');
+                            dueDate.setHours(dueTime[0]);
+                            dueDate.setMinutes(dueTime[1]);
+                          }
 
-                          var activSubject = {
-                            icon: 'EVENT_PERFORMER',
-                            title: 'Subject',
+                          aw.push(globalWidgetSeparator);
+                          var ac = {
                             type: globalKeyValue,
                             content: subject
                           };
-                          activsWidgets.push(activSubject); //create notes widget;
+
+                          switch (type) {
+                            case 'call':
+                              ac.title = 'Call info';
+
+                              if (astatus) {
+                                ac.icon = globalIconCallEnded;
+                              } else {
+                                ac.icon = 'PHONE';
+                              }
+
+                              break;
+
+                            case 'meeting':
+                              ac.title = 'Meeting info';
+
+                              if (astatus) {
+                                ac.icon = 'EVENT_PERFORMER';
+                              } else {
+                                ac.icon = 'EVENT_PERFORMER';
+                              }
+
+                              break;
+
+                            case 'deadline':
+                              ac.title = 'Deadline';
+                              ac.icon = globalIconFlag;
+                              break;
+
+                            case 'lunch':
+                              ac.title = 'Lunch info';
+                              ac.icon = 'RESTAURANT_ICON';
+                              break;
+                          }
+
+                          aw.push(ac);
 
                           if (note !== null) {
-                            var activNotes = {
-                              icon: 'https://cardinsoft.com/wp-content/uploads/2019/03/baseline_speaker_notes_black_18dp.png',
-                              title: 'Notes',
+                            var acn = {
+                              icon: globalIconBackground,
                               type: globalKeyValue,
+                              title: 'Notes',
                               content: note
                             };
-                            activsWidgets.push(activNotes);
+                            aw.push(acn);
                           } //create due date and time widget;
 
 
                           var activDue = {
                             icon: 'INVITE',
-                            title: 'Due to',
                             type: globalKeyValue,
-                            content: dueDate + ' ' + dueTime
+                            content: dueDate.toLocaleDateString() + ' ' + dueDate.toLocaleTimeString()
                           };
-                          activsWidgets.push(activDue); //create duration widget;
+                          aw.push(activDue); //create duration widget;
 
                           if (duration !== '') {
                             var activDur = {
@@ -530,9 +654,9 @@ function Pipedrive() {
                               type: globalKeyValue,
                               content: duration
                             };
-                            activsWidgets.push(activDur);
+                            aw.push(activDur);
                           }
-                        });
+                        }
                       } //end actives success;
 
                     } //create organization section and widgets;
@@ -541,7 +665,7 @@ function Pipedrive() {
                     if (company !== null) {
                       //create organization section;
                       var sectionCompany = {
-                        header: 'Organization',
+                        header: 'Employment',
                         isCollapsible: false,
                         widgets: []
                       }; //access widgets;
@@ -549,8 +673,8 @@ function Pipedrive() {
                       var widgetsCompany = sectionCompany.widgets; //create organization name widget;
 
                       var companyName = {
-                        icon: 'https://cardinsoft.com/wp-content/uploads/2019/04/BUSINESS.png',
-                        title: 'Name',
+                        icon: globalIconCompany,
+                        title: 'Company',
                         type: globalKeyValue,
                         content: company.name
                       };
@@ -618,12 +742,12 @@ function Pipedrive() {
                       result.push(sectionCompany);
                     }
 
-                    if (sectionDeals) {
-                      result.push(sectionDeals);
-                    }
-
                     if (sectionActivs) {
                       result.push(sectionActivs);
+                    }
+
+                    if (sectionDeals) {
+                      result.push(sectionDeals);
                     }
 
                     if (sectionOwner) {
@@ -639,16 +763,20 @@ function Pipedrive() {
 
 
             returned = {
-              code: codePersons,
+              code: responsePersons.code,
               headers: '',
               content: JSON.stringify(result)
-            }; //print debug info;
+            }; //send to analytics and return;
 
-            console.log(returned); //return parsed info;
-
+            sendToAnalytics('event', {
+              ec: 'Connectors',
+              ea: 'Display-contacts',
+              el: 'Pipedrive',
+              ev: '1'
+            }, false);
             return _context.abrupt("return", returned);
 
-          case 64:
+          case 57:
           case "end":
             return _context.stop();
         }
