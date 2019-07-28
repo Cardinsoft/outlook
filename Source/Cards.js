@@ -399,7 +399,7 @@ function _cardDisplay() {
 
           _context3.prev = 46;
           _context3.next = 49;
-          return createSectionAdvanced(builder, section, j, connector, layout[j]);
+          return createSectionAdvanced(builder, section, j, connector, layout[j], start);
 
         case 49:
           _context3.next = 55;
