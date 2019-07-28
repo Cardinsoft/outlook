@@ -56,18 +56,19 @@ function getTypes(filter) {
 /**
  * Returns Connectors configuration;
  * @param {Object=} filter filter settings;
+ * @param {Boolean=} exclude flag to exclude or include matched Connectors;
  * @returns {Array} array of Connector config objects;
  */
 
 
-function getConfig(_x) {
+function getConfig(_x, _x2) {
   return _getConfig.apply(this, arguments);
 }
 
 function _getConfig() {
   _getConfig = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(filter) {
+  regeneratorRuntime.mark(function _callee(filter, exclude) {
     var connectors;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
