@@ -101,7 +101,7 @@ function _getConfig() {
               }
 
               for (var prop in filter) {
-                if (filter[prop] && connector[prop] === filter[prop] && prop === 'authType') {
+                if (filter[prop] && (connector[prop] === filter[prop] || prop === 'authType')) {
                   compliant = false;
                 }
               }
