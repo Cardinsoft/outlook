@@ -238,13 +238,14 @@ function _cardDisplay() {
   _cardDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, connector, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, actionParams, paramsUpdate, paramsRemove, layout, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
+    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, actionParams, paramsUpdate, paramsRemove, layout, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           builder = CardService.newCardBuilder(); //get required parameters;
 
           connector = e.parameters;
+          id = connector.ID;
           code = +connector.code;
           content = connector.content;
           manual = connector.manual;
@@ -276,29 +277,29 @@ function _cardDisplay() {
           header.setTitle(connector.name);
           builder.setHeader(header); //access Connector config and get its index;
 
-          _context3.next = 20;
+          _context3.next = 21;
           return getConfig({
             ID: id
           }, true);
 
-        case 20:
+        case 21:
           config = _context3.sent;
 
           if (!((code < 200 || code >= 300) && code !== 401)) {
-            _context3.next = 26;
+            _context3.next = 27;
             break;
           }
 
-          _context3.next = 24;
+          _context3.next = 25;
           return createErrorSection(builder, false, code, error);
 
-        case 24:
-          _context3.next = 86;
+        case 25:
+          _context3.next = 87;
           break;
 
-        case 26:
+        case 27:
           if (!(code === 401)) {
-            _context3.next = 34;
+            _context3.next = 35;
             break;
           }
 
@@ -306,24 +307,24 @@ function _cardDisplay() {
           createNotAuthorizedSection(builder, false, connector, code);
 
           if (!(config.length > 0)) {
-            _context3.next = 31;
+            _context3.next = 32;
             break;
           }
 
-          _context3.next = 31;
+          _context3.next = 32;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 31:
+        case 32:
           return _context3.abrupt("return", menu(builder));
 
-        case 34:
+        case 35:
           //parse content;
           content = parseData(content); //try to display content or show unparsed data if error;
 
-          _context3.prev = 35;
+          _context3.prev = 36;
 
           if (!(content.length !== 0)) {
-            _context3.next = 79;
+            _context3.next = 80;
             break;
           }
 
@@ -331,7 +332,7 @@ function _cardDisplay() {
           hasNested = checkNested(content);
 
           if (!hasNested) {
-            _context3.next = 60;
+            _context3.next = 61;
             break;
           }
 
@@ -385,9 +386,9 @@ function _cardDisplay() {
           layout = getLayout(content);
           j = 0;
 
-        case 43:
+        case 44:
           if (!(j < content.length)) {
-            _context3.next = 58;
+            _context3.next = 59;
             break;
           }
 
@@ -397,17 +398,17 @@ function _cardDisplay() {
             section = JSON.parse(section);
           }
 
-          _context3.prev = 46;
-          _context3.next = 49;
+          _context3.prev = 47;
+          _context3.next = 50;
           return createSectionAdvanced(builder, section, j, connector, layout[j], start);
 
-        case 49:
-          _context3.next = 55;
+        case 50:
+          _context3.next = 56;
           break;
 
-        case 51:
-          _context3.prev = 51;
-          _context3.t0 = _context3["catch"](46);
+        case 52:
+          _context3.prev = 52;
+          _context3.t0 = _context3["catch"](47);
           console.error('Failed to create advanced section: ' + _context3.t0); //try to handle nested objects that do not conform to our schema;
 
           try {
@@ -418,16 +419,16 @@ function _cardDisplay() {
             createUnparsedSection(builder, true, err.message, JSON.stringify(section));
           }
 
-        case 55:
+        case 56:
           j++;
-          _context3.next = 43;
+          _context3.next = 44;
           break;
 
-        case 58:
-          _context3.next = 77;
+        case 59:
+          _context3.next = 78;
           break;
 
-        case 60:
+        case 61:
           //get parameters for extra data;
           bm = getBeginMax(content, start);
           full = bm.full;
@@ -437,20 +438,20 @@ function _cardDisplay() {
 
           j = begin;
 
-        case 66:
+        case 67:
           if (!(j < content.length)) {
-            _context3.next = 74;
+            _context3.next = 75;
             break;
           }
 
           if (!(j === max)) {
-            _context3.next = 69;
+            _context3.next = 70;
             break;
           }
 
-          return _context3.abrupt("break", 74);
+          return _context3.abrupt("break", 75);
 
-        case 69:
+        case 70:
           result = content[j];
 
           if (content.length !== 1) {
@@ -459,12 +460,12 @@ function _cardDisplay() {
             createSectionSimple(builder, result, false, j);
           }
 
-        case 71:
+        case 72:
           j++;
-          _context3.next = 66;
+          _context3.next = 67;
           break;
 
-        case 74:
+        case 75:
           length = content.length;
           diff = max - begin; //if length is greater than cap, append extra data section;
 
@@ -477,43 +478,43 @@ function _cardDisplay() {
             }
           }
 
-        case 77:
-          _context3.next = 80;
+        case 78:
+          _context3.next = 81;
           break;
 
-        case 79:
+        case 80:
           if (!error) {
             createNoFieldsSection(builder, false, connector, msg);
           }
 
-        case 80:
-          _context3.next = 86;
+        case 81:
+          _context3.next = 87;
           break;
 
-        case 82:
-          _context3.prev = 82;
-          _context3.t1 = _context3["catch"](35);
+        case 83:
+          _context3.prev = 83;
+          _context3.t1 = _context3["catch"](36);
           //handle data that failed to comply to JSON schema;
           console.error('Crash during display generation: ' + _context3.t1);
           createUnparsedSection(builder, true, _context3.t1.message, JSON.stringify(content));
 
-        case 86:
+        case 87:
           if (!(config.length > 0)) {
-            _context3.next = 89;
+            _context3.next = 90;
             break;
           }
 
-          _context3.next = 89;
+          _context3.next = 90;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 89:
+        case 90:
           return _context3.abrupt("return", menu(builder));
 
-        case 90:
+        case 91:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[35, 82], [46, 51]]);
+    }, _callee3, this, [[36, 83], [47, 52]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
