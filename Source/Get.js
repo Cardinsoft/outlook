@@ -92,16 +92,29 @@ function _getConfig() {
           }
 
           return _context.abrupt("return", connectors.filter(function (connector) {
-            var compliant = true; //apply authorization type filter;
+            var compliant = true;
 
-            if (filter.authType && connector.auth !== filter.authType) {
-              compliant = false;
-            } //apply other filter options;
-
-
-            for (var prop in filter) {
-              if (filter[prop] && connector[prop] !== filter[prop] && prop !== 'authType') {
+            if (exclude) {
+              //apply filters to exclude Connector matching filter;
+              if (filter.authType && connector.auth === filter.authType) {
                 compliant = false;
+              }
+
+              for (var prop in filter) {
+                if (filter[prop] && connector[prop] === filter[prop] && prop === 'authType') {
+                  compliant = false;
+                }
+              }
+            } else {
+              //apply filters to include Connector matching filter;
+              if (filter.authType && connector.auth !== filter.authType) {
+                compliant = false;
+              }
+
+              for (var prop in filter) {
+                if (filter[prop] && connector[prop] !== filter[prop] && prop !== 'authType') {
+                  compliant = false;
+                }
               }
             }
 
