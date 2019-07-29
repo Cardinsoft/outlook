@@ -1177,12 +1177,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
         }
 
         if (sidx || sidx === 0) {
-          Logger.log('!!');
-        } else {
-          Logger.log('??');
-        }
-
-        if (sidx || sidx === 0) {
           start[sidx] = newStarter;
         } else {
           start.push(newStarter);
