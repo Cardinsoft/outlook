@@ -52,52 +52,42 @@ function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (!(params.muteHttpExceptions === true)) {
-            _context.next = 15;
+            _context.next = 8;
             break;
           }
 
-          _context.prev = 1;
-          _context.next = 4;
+          _context.next = 3;
           return makeRequest(url, params);
 
-        case 4:
+        case 3:
           response = _context.sent;
-          _context.next = 11;
-          break;
 
-        case 7:
-          _context.prev = 7;
-          _context.t0 = _context["catch"](1);
-          console.log(_context.t0.content);
-          response = {};
-
-        case 11:
           if (!(response.code === 500 && response.content === 'DNS error')) {
-            _context.next = 13;
+            _context.next = 6;
             break;
           }
 
           throw new Error('DNS error: ' + url);
 
-        case 13:
-          _context.next = 18;
+        case 6:
+          _context.next = 11;
           break;
 
-        case 15:
-          _context.next = 17;
+        case 8:
+          _context.next = 10;
           return makeRequest(url, params);
 
-        case 17:
+        case 10:
           response = _context.sent;
 
-        case 18:
+        case 11:
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 19:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 7]]);
+    }, _callee);
   }));
 
   return function (_x, _x2) {
