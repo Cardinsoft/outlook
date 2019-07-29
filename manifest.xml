@@ -12,12 +12,17 @@
 	<Version>1.0.0.0</Version>
 	<ProviderName>Cardinsoft</ProviderName>
 	<DefaultLocale>en-US</DefaultLocale>
-
+	
 	<DisplayName DefaultValue="Cardin" />
 	<Description DefaultValue="Bring relevant contact info from your favourite CRM platforms or workflow tools directly to Outlook"/>
 
+	<!--Icons (lowres and highres)-->
 	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png" />
 	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-128.png"/>
+	
+	<AppDomains>
+		<AppDomain>https://cardinsoft.github.io</AppDomain>
+	</AppDomains>
 
 	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook/support/" />
 
