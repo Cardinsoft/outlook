@@ -689,12 +689,12 @@ function toStr(obj) {
 
 function getIndex(config, connector) {
   var index = -1;
-  var name = connector.name;
+  var id = connector.ID;
 
   if (config instanceof Array) {
     if (config.length !== 0) {
       config.forEach(function (conn, idx) {
-        if (conn.ID === ID) {
+        if (conn.ID === id) {
           index = idx;
         }
       });
