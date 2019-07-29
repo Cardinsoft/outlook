@@ -47,7 +47,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(url, params) {
-    var response, checkProps;
+    var response;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -90,17 +90,9 @@ function () {
           response = _context.sent;
 
         case 17:
-          //check if response object has properties;
-          checkProps = Object.keys(response).length > 0; //if response has any properties -> create HTTPResponse instance;
-
-          if (!checkProps) {
-            _context.next = 20;
-            break;
-          }
-
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 20:
+        case 18:
         case "end":
           return _context.stop();
       }
