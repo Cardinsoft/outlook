@@ -6,7 +6,7 @@
           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides"
           xsi:type="MailApp">
 
-	<Id>4353e2f8-8dad-497a-87e7-9e2f4d460b15</Id>
+	<Id>4353e2f8-8dad-497a-87e7-9e2f4d460b16</Id>
 
 	<!--Version. Updates from the store only get triggered if there is a version change. -->
 	<Version>1.0.0.0</Version>
@@ -101,8 +101,7 @@
 				</bt:Urls>
 				<bt:ShortStrings>
 					<bt:String id="groupLabel" DefaultValue="Cardin"/>
-					<bt:String id="customTabLabel"  DefaultValue="Cardin for Outlook"/>
-					<bt:String id="paneReadButtonLabel" DefaultValue="Open Cardin"/>
+					<bt:String id="paneReadButtonLabel" DefaultValue="Cardin"/>
 					<bt:String id="paneReadSuperTipTitle" DefaultValue="Show Task Pane"/>
 				</bt:ShortStrings>
 				<bt:LongStrings>
