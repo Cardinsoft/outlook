@@ -19,12 +19,12 @@
 	<!--Icons (lowres and highres)-->
 	<IconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-80.png" />
 	<HighResolutionIconUrl DefaultValue="https://cardinsoft.github.io/outlook/assets/icon-128.png"/>
-	
+
+	<SupportUrl DefaultValue="https://cardinsoft.com/support/" />
+
 	<AppDomains>
 		<AppDomain>https://cardinsoft.github.io</AppDomain>
 	</AppDomains>
-
-	<SupportUrl DefaultValue="https://cardinsoft.com/support/" />
 
 	<Hosts>
 		<Host Name="Mailbox" />
