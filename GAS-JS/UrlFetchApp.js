@@ -52,7 +52,7 @@ function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (!(params.muteHttpExceptions === true)) {
-            _context.next = 14;
+            _context.next = 15;
             break;
           }
 
@@ -62,37 +62,38 @@ function () {
 
         case 4:
           response = _context.sent;
-          _context.next = 10;
+          _context.next = 11;
           break;
 
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
           console.log(_context.t0.content);
+          response = {};
 
-        case 10:
+        case 11:
           if (!(response.code === 500 && response.content === 'DNS error')) {
-            _context.next = 12;
+            _context.next = 13;
             break;
           }
 
           throw new Error('DNS error: ' + url);
 
-        case 12:
-          _context.next = 17;
+        case 13:
+          _context.next = 18;
           break;
 
-        case 14:
-          _context.next = 16;
+        case 15:
+          _context.next = 17;
           return makeRequest(url, params);
 
-        case 16:
+        case 17:
           response = _context.sent;
 
-        case 17:
+        case 18:
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 18:
+        case 19:
         case "end":
           return _context.stop();
       }
@@ -122,7 +123,7 @@ function makeRequest(url, params) {
         content: 'Attribute provided with no value: url',
         headers: {}
       };
-      resolve(emptyUrlErr);
+      reject(emptyUrlErr);
     } //default to GET method if no params provided;
 
 
