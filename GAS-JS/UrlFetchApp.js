@@ -68,8 +68,7 @@ function () {
         case 7:
           _context.prev = 7;
           _context.t0 = _context["catch"](1);
-          //console.log(error.content);
-          response = {};
+          console.log(_context.t0.content);
 
         case 10:
           if (!(response.code === 500 && response.content === 'DNS error')) {
