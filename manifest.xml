@@ -24,7 +24,7 @@
 		<AppDomain>https://cardinsoft.github.io</AppDomain>
 	</AppDomains>
 
-	<SupportUrl DefaultValue="https://cardinsoft.com/cardin-outlook/support/" />
+	<SupportUrl DefaultValue="https://cardinsoft.com/support/" />
 
 	<Hosts>
 		<Host Name="Mailbox" />
