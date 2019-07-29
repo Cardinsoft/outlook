@@ -694,7 +694,7 @@ function getIndex(config, connector) {
   if (config instanceof Array) {
     if (config.length !== 0) {
       config.forEach(function (conn, idx) {
-        if (conn.name === name) {
+        if (conn.ID === ID) {
           index = idx;
         }
       });
