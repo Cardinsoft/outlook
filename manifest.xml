@@ -13,7 +13,7 @@
 	<ProviderName>Cardinsoft</ProviderName>
 	<DefaultLocale>en-US</DefaultLocale>
 	
-	<DisplayName DefaultValue="Cardin" />
+	<DisplayName DefaultValue="Cardin for Outlook" />
 	<Description DefaultValue="Bring relevant contact info from your favourite CRM platforms or workflow tools directly to Outlook"/>
 
 	<!--Icons (lowres and highres)-->
