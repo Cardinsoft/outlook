@@ -6,10 +6,12 @@
 	const l = this.location;
 	const s = l.search.split('&');
 	
-	console.log(s)
-	
-	//this.location.replace('https://cardinsoft.com');
-	
+	let endpoint = s.filter(function(param){
+		if(param.indexOf('endpoint')!==-1) { return param; }
+	})[0];
+	endpoint = endpoint.split('=')[1];
+
+	this.location.replace(endpoint);
 </script>
 </head>
 <body>
