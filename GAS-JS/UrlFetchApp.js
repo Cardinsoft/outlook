@@ -122,7 +122,7 @@ function makeRequest(url, params) {
         content: 'Attribute provided with no value: url',
         headers: {}
       };
-      reject(emptyUrlErr);
+      resolve(emptyUrlErr);
     } //default to GET method if no params provided;
 
 
