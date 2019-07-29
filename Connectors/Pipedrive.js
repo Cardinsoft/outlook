@@ -142,28 +142,37 @@ function Pipedrive() {
 
           case 21:
             responseDeals = _context.sent;
-            _context.next = 50;
+            _context.next = 60;
             break;
 
           case 24:
-            //fetch company domain;
-            if (!connector.account) {
-              cdUrl = 'https://api.pipedrive.com/v1/users/me?api_token=' + connector.apitoken;
-              responseCD = performFetch(cdUrl, 'get', {});
-              codeCD = responseCD.code;
-              contentCD = responseCD.content;
-            } else {
-              codeCD = 200;
-              contentCD = JSON.stringify({
-                data: {
-                  company_domain: connector.account
-                }
-              });
-            } //on success -> authorize, on fail return error;
+            if (connector.account) {
+              _context.next = 33;
+              break;
+            }
 
+            cdUrl = 'https://api.pipedrive.com/v1/users/me?api_token=' + connector.apitoken;
+            _context.next = 28;
+            return performFetch(cdUrl, 'get', {});
 
+          case 28:
+            responseCD = _context.sent;
+            codeCD = responseCD.code;
+            contentCD = responseCD.content;
+            _context.next = 35;
+            break;
+
+          case 33:
+            codeCD = 200;
+            contentCD = JSON.stringify({
+              data: {
+                company_domain: connector.account
+              }
+            });
+
+          case 35:
             if (!(codeCD === 200)) {
-              _context.next = 43;
+              _context.next = 53;
               break;
             }
 
@@ -172,43 +181,43 @@ function Pipedrive() {
             domain = dataCD.company_domain; //set domain to connector;
 
             connector.account = domain;
-            _context.next = 32;
+            _context.next = 42;
             return saveConnector(connector);
 
-          case 32:
-            _context.next = 34;
+          case 42:
+            _context.next = 44;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: personsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 34:
+          case 44:
             responsePersons = _context.sent;
-            _context.next = 37;
+            _context.next = 47;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: activsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 37:
+          case 47:
             responseActivs = _context.sent;
-            _context.next = 40;
+            _context.next = 50;
             return performFetch(this.buildUrl({
               domain: domain,
               endpoint: dealsEP,
               apitoken: connector.apitoken
             }), method, headers);
 
-          case 40:
+          case 50:
             responseDeals = _context.sent;
-            _context.next = 50;
+            _context.next = 60;
             break;
 
-          case 43:
+          case 53:
             if (!(codeCD === 401)) {
-              _context.next = 48;
+              _context.next = 58;
               break;
             }
 
@@ -220,7 +229,7 @@ function Pipedrive() {
               content: authError
             });
 
-          case 48:
+          case 58:
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
@@ -229,7 +238,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 50:
+          case 60:
             //access and parse response contents;
             contentPersons = JSON.parse(responsePersons.content);
             contentActivs = JSON.parse(responseActivs.content);
@@ -776,7 +785,7 @@ function Pipedrive() {
             }, false);
             return _context.abrupt("return", returned);
 
-          case 57:
+          case 67:
           case "end":
             return _context.stop();
         }
