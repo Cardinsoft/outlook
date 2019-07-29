@@ -775,17 +775,10 @@ function Pipedrive() {
               code: responsePersons.code,
               headers: '',
               content: JSON.stringify(result)
-            }; //send to analytics and return;
-
-            sendToAnalytics('event', {
-              ec: 'Connectors',
-              ea: 'Display-contacts',
-              el: 'Pipedrive',
-              ev: '1'
-            }, false);
+            };
             return _context.abrupt("return", returned);
 
-          case 67:
+          case 66:
           case "end":
             return _context.stop();
         }
