@@ -102,7 +102,7 @@
 				<bt:ShortStrings>
 					<bt:String id="groupLabel" DefaultValue="Cardin"/>
 					<bt:String id="paneReadButtonLabel" DefaultValue="Cardin"/>
-					<bt:String id="paneReadSuperTipTitle" DefaultValue="Show Task Pane"/>
+					<bt:String id="paneReadSuperTipTitle" DefaultValue="Open Cardin for Outlook"/>
 				</bt:ShortStrings>
 				<bt:LongStrings>
 					<bt:String id="paneReadSuperTipDescription" DefaultValue="Opens Cardin Add-in"/>
