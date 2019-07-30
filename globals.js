@@ -7,6 +7,7 @@ var globalConfigHeader               = 'Connector configuration';
 var globalConfigListHeader           = 'Your Connectors';
 var globalConfirmHeader              = 'Confirm action';
 var globalConnectorListHeader        = 'Other Connectors';
+var globalContactInfoHeader          = 'Contact info';
 var globalCustomIconHeader           = 'Connector icon';
 var globalDashboardHeader            = 'Dashboard';
 var globalErrorHeader                = 'Config error';
@@ -48,6 +49,8 @@ var globalGeneralErrorContent        = 'Unfortunately, the Connector encountered
 
 //custom icons;
 var globalIconAccount                = 'https://cardinsoft.com/wp-content/uploads/2019/07/ACCOUNT.png';
+var globalIconAddressShip            = 'https://cardinsoft.com/wp-content/uploads/2019/07/ADDRESS-SHIP.png';
+var globalIconAddressBill            = 'https://cardinsoft.com/wp-content/uploads/2019/07/ADDRESS-BILL.png';
 var globalIconBackArrow              = 'https://cardinsoft.com/wp-content/uploads/2019/07/BACKWARD.png';
 var globalIconBackground             = 'https://cardinsoft.com/wp-content/uploads/2019/06/BACKGROUND.png';
 var globalIconBirthday               = 'https://cardinsoft.com/wp-content/uploads/2019/07/BIRTHDAY.png';
@@ -62,6 +65,7 @@ var globalIconFlag                   = 'https://cardinsoft.com/wp-content/upload
 var globalIconForwardArrow           = 'https://cardinsoft.com/wp-content/uploads/2019/07/FORWARD.png';
 var globalIconGoogle                 = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN-SQ.png';
 var globalIconGoogleFull             = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN.png';
+var globalIconIndustry               = 'https://cardinsoft.com/wp-content/uploads/2019/07/INDUSTRY.png';
 var globalIconJobTitle               = 'https://cardinsoft.com/wp-content/uploads/2019/07/JOB-TITLE.png';
 var globalIconList                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/LIST.png';
 var globalIconMissedMeeting          = 'https://cardinsoft.com/wp-content/uploads/2019/07/MEETING-MISSED.png';
@@ -76,7 +80,7 @@ var globalIconTab                    = 'https://cardinsoft.com/wp-content/upload
 var globalIconTask                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/TASK.png';
 var globalIconWebhook                = 'https://cardinsoft.com/wp-content/uploads/2019/06/WEBHOOK.png';
 var globalIconWorkPhone              = 'https://cardinsoft.com/wp-content/uploads/2019/07/WORK-PHONE.png';
-var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/04/web.png';
+var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/07/WEBSITE.png';
 
 //content;
 var globalAuthTextWidgetContent      = 'The Connector requires authorization to an external service. You can revoke authorization any time by clicking "revoke". Note that either action will trigger a refresh';
