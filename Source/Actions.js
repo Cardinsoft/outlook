@@ -672,7 +672,7 @@ function _goSettings() {
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to settings card;
 
-          builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
+          builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
           builder.setStateChanged(true);
           return _context10.abrupt("return", builder.build());
 
