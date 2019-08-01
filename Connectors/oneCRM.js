@@ -71,7 +71,7 @@ function oneCRM() {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee(msg, connector, data) {
-      var endpoint, url, cred, headers, message, filters, fields, fieldsMain, fieldsCont, fieldsPaddr, fieldsOaddr, fieldsBckg, params, fullUrl, response, sections, contents, contacts, i, contact, sectionMain, sectionEmpl, sectionBckg, sectionAct, wmain, wempl, wbckg, wact, id, salut, name, company, categ, role, source, title, depart, birth, canCall, phoneW, phoneM, phoneH, phoneO, email1, email2, canEmail, website, descr, partner, pStreet, pCity, pState, pPostal, pCountry, oStreet, oCity, oState, oPostal, oCountry, created, edited, n1, ca, e1, e2, pw, pm, ph, po, address, ad, oAddress, oad, ei, equal, dCreated, dEdited, tCreated, cr, tEdited, up, num, c, d, b, urlEvents, start, end, fullEventsUrl, responseEvents, events, eventPrompt, ek, event, sd, dd, n, t, l, subj, icon, loc, from, due, dnsErr, returned;
+      var endpoint, url, cred, headers, message, filters, fields, fieldsMain, fieldsCont, fieldsPaddr, fieldsOaddr, fieldsBckg, params, fullUrl, response, sections, contents, contacts, i, contact, sectionMain, sectionEmpl, sectionBckg, sectionAct, wmain, wempl, wbckg, wact, id, salut, name, company, categ, role, source, title, depart, birth, canCall, phoneW, phoneM, phoneH, phoneO, email1, email2, canEmail, website, descr, partner, pStreet, pCity, pState, pPostal, pCountry, oStreet, oCity, oState, oPostal, oCountry, created, edited, n1, ca, e1, e2, pw, pm, ph, po, address, ad, oAddress, oad, ei, equal, dCreated, dEdited, tCreated, cr, tEdited, up, num, c, d, b, urlEvents, start, end, fullEventsUrl, responseEvents, events, eventPrompt, ek, event, sd, dd, n, t, l, subj, icon, loc, from, due, authErr, sslErr, dnsErr, returned;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -428,7 +428,8 @@ function oneCRM() {
               type: globalTextButton,
               action: globalActionLink,
               title: 'Edit in 1CRM',
-              content: 'https://' + connector.account + '.1crmcloud.com?module=Contacts&action=EditView&record=' + id
+              content: 'https://' + connector.account + '.1crmcloud.com?module=Contacts&action=EditView&record=' + id,
+              reload: true
             };
             wmain.push(ei);
             wmain.push(globalWidgetSeparator); //parse dates;
@@ -647,26 +648,82 @@ function oneCRM() {
             break;
 
           case 153:
-            _context.next = 165;
+            _context.next = 172;
             break;
 
           case 155:
             if (!(response.code === 401)) {
-              _context.next = 159;
+              _context.next = 161;
               break;
             }
 
+            propertiesToString(connector);
+            authErr = [{
+              header: 'Invalid credentials',
+              widgets: [{
+                type: globalKeyValue,
+                content: 'We couldn\'t access your account due to invalid credentials. Please, check user name and password and update the Connector!'
+              }, {
+                type: globalTextButton,
+                title: 'Open settings',
+                action: 'click',
+                funcName: 'goSettings',
+                parameters: connector
+              }]
+            }];
             return _context.abrupt("return", {
-              code: 0,
+              code: 200,
               headers: {},
-              content: JSON.stringify({
-                descr: 'We couldn\'t access your account due to invalid credentials. Please, check user name and password and update the Connector!'
-              })
+              content: JSON.stringify(authErr),
+              hasMatch: {
+                value: true,
+                text: 'Reauth'
+              }
             });
 
-          case 159:
+          case 161:
+            if (!(response.code === 403)) {
+              _context.next = 166;
+              break;
+            }
+
+            //build inactive account prompt and action;
+            sslErr = [{
+              header: 'Inactive account',
+              widgets: [{
+                type: globalKeyValue,
+                content: 'We couldn\'t access your account. Please, upgrade to Pro or Enterprise edition.'
+              }, {
+                type: globalKeyValue,
+                title: 'New account',
+                content: 'If you just created an account, please, login before continuing'
+              }, {
+                type: globalButtonSet,
+                content: [{
+                  type: globalTextButton,
+                  title: 'Upgrade',
+                  content: 'https://1crm.com/editions-and-pricing/'
+                }, {
+                  type: globalTextButton,
+                  title: 'Login',
+                  content: 'https://' + connector.account + '.' + this.url.substring(0, 13),
+                  reload: true
+                }]
+              }]
+            }];
+            return _context.abrupt("return", {
+              code: 200,
+              headers: {},
+              content: JSON.stringify(sslErr),
+              hasMatch: {
+                value: true,
+                text: 'Upgrade'
+              }
+            });
+
+          case 166:
             if (!(response.content.descr.indexOf('DNS error') !== -1)) {
-              _context.next = 164;
+              _context.next = 171;
               break;
             }
 
@@ -688,10 +745,10 @@ function oneCRM() {
               content: JSON.stringify(dnsErr)
             });
 
-          case 164:
+          case 171:
             return _context.abrupt("return", response);
 
-          case 165:
+          case 172:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -708,7 +765,7 @@ function oneCRM() {
 
             return _context.abrupt("return", returned);
 
-          case 168:
+          case 175:
           case "end":
             return _context.stop();
         }
