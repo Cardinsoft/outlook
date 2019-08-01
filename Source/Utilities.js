@@ -8,6 +8,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * @returns {} normalized input;
  */
 function toSentenceCase(input) {
+  if (!input) {
+    return '';
+  }
+
   if (input === '') {
     return input;
   }
