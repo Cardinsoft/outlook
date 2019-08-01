@@ -123,7 +123,7 @@ function oneCRM() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context.next = 155;
+              _context.next = 156;
               break;
             }
 
@@ -134,7 +134,7 @@ function oneCRM() {
 
           case 26:
             if (!(i < contacts.length)) {
-              _context.next = 153;
+              _context.next = 154;
               break;
             }
 
@@ -640,20 +640,24 @@ function oneCRM() {
             sectionEmpl.widgets = wempl;
             sectionBckg.widgets = wbckg;
             sectionAct.widgets = wact;
-            sections.push(sectionMain, sectionEmpl, sectionBckg, sectionAct);
+            sections.push(sectionMain, sectionEmpl, sectionBckg);
 
-          case 150:
+            if (wact.length > 2) {
+              sections.push(sectionAct);
+            }
+
+          case 151:
             i++;
             _context.next = 26;
             break;
 
-          case 153:
-            _context.next = 172;
+          case 154:
+            _context.next = 173;
             break;
 
-          case 155:
+          case 156:
             if (!(response.code === 401)) {
-              _context.next = 161;
+              _context.next = 162;
               break;
             }
 
@@ -681,9 +685,9 @@ function oneCRM() {
               }
             });
 
-          case 161:
+          case 162:
             if (!(response.code === 403)) {
-              _context.next = 166;
+              _context.next = 167;
               break;
             }
 
@@ -721,9 +725,9 @@ function oneCRM() {
               }
             });
 
-          case 166:
+          case 167:
             if (!(response.content.descr.indexOf('DNS error') !== -1)) {
-              _context.next = 171;
+              _context.next = 172;
               break;
             }
 
@@ -749,10 +753,10 @@ function oneCRM() {
               }
             });
 
-          case 171:
+          case 172:
             return _context.abrupt("return", response);
 
-          case 172:
+          case 173:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -769,7 +773,7 @@ function oneCRM() {
 
             return _context.abrupt("return", returned);
 
-          case 175:
+          case 176:
           case "end":
             return _context.stop();
         }
