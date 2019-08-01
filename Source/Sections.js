@@ -898,6 +898,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
                 for (var b = 0; b < content.length; b++) {
                   var btn = content[b];
+                  var ic = btn.icon;
+                  var al = btn.alt;
                   var bt = btn.type;
                   var t = btn.title;
                   var co = btn.content;
@@ -932,12 +934,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                       buttons.push(textButtonWidgetLinked(t, d, fi, co, fu, r));
                     }
                   } else {
-                    if (a === globalActionClick) {
-                      buttons.push();
-                    } else if (a === globalActionAction) {
-                      buttons.push();
+                    if (a === globalActionClick) {//buttons.push(); //ADD LATER;
+                    } else if (a === globalActionAction) {//buttons.push(); //ADD LATER;
                     } else {
-                      buttons.push();
+                      buttons.push(imageButtonWidget(ic, al, f, p, globalActionLink, fu, r));
                     }
                   }
                 }
