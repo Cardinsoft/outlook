@@ -59,15 +59,15 @@ function _cardCreate() {
               header: globalConfigHeader,
               widgets: widgets
             };
-            createSectionConfig(builder, config);
+            createSectionAdvanced(builder, config, 0, type, config.widgets.length);
           } else {
             //preserve values for config widgets;
             preserveValues(type, basic.widgets); //create basic config section;
 
-            createSectionConfig(builder, basic); //create advanced config sections;
+            createSectionAdvanced(builder, basic, 0, type, basic.widgets.length); //create advanced config sections;
 
-            advanced.forEach(function (section) {
-              createSectionConfig(builder, section);
+            advanced.forEach(function (section, i) {
+              createSectionAdvanced(builder, section, i, type, section.widgets.length);
             });
           } //create API token config section;
 
@@ -75,7 +75,9 @@ function _cardCreate() {
           auth = JSON.parse(type.auth);
 
           if (auth.type === globalApiTokenAuthType) {
-            createSectionConfig(builder, auth.config);
+            auth.config.isCollapsible = false; //make expanded by default;
+
+            createSectionAdvanced(builder, auth.config, 0, type, auth.config.widgets.length);
           } //create config for connector behaviour;
 
 
@@ -184,15 +186,15 @@ function _cardUpdate() {
               header: globalConfigHeader,
               widgets: widgets
             };
-            createSectionConfig(builder, config);
+            createSectionAdvanced(builder, config, 0, connector, config.widgets.length);
           } else {
             preserveValues(connector, basic.widgets); //create basic config section;
 
-            createSectionConfig(builder, basic); //create advanced config sections;
+            createSectionAdvanced(builder, basic, 0, connector, basic.widgets.length); //create advanced config sections;
 
-            advanced.forEach(function (section) {
+            advanced.forEach(function (section, i) {
               preserveValues(connector, section.widgets);
-              createSectionConfig(builder, section);
+              createSectionAdvanced(builder, section, i, connector, section.widgets.length);
             });
           } //create API token config section;
 
@@ -205,7 +207,7 @@ function _cardUpdate() {
           }
 
           if (auth.type === globalApiTokenAuthType) {
-            createSectionConfig(builder, authConfig);
+            createSectionAdvanced(builder, authConfig, 0, connector, authConfig.widgets.length);
           } //create section with manual and default widgets + update button;
 
 
