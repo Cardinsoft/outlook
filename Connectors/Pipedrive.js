@@ -142,7 +142,7 @@ function Pipedrive() {
 
           case 21:
             responseDeals = _context.sent;
-            _context.next = 60;
+            _context.next = 62;
             break;
 
           case 24:
@@ -212,24 +212,49 @@ function Pipedrive() {
 
           case 50:
             responseDeals = _context.sent;
-            _context.next = 60;
+            _context.next = 62;
             break;
 
           case 53:
             if (!(codeCD === 401)) {
-              _context.next = 58;
+              _context.next = 60;
               break;
             }
 
-            authError = {
-              descr: 'Seems like you are not authorized to Pipedrive. Please, go to Connector settings and check if the API token you provided matches the one <a href="https://app.pipedrive.com/settings/personal/api">currently used</a>.'
-            };
+            timestamp('failed to access Pipedrive account', responseCD, 'warning');
+            propertiesToString(connector);
+            authError = [{
+              header: 'Invalid credentials',
+              widgets: [{
+                type: globalKeyValue,
+                content: 'We couldn\'t access your account due to invalid credentials. Please, check your API token and update the Connector!'
+              }, {
+                type: globalButtonSet,
+                content: [{
+                  type: globalTextButton,
+                  title: 'Get API token',
+                  action: globalActionLink,
+                  content: 'https://app.pipedrive.com/settings/personal/api'
+                }, {
+                  type: globalTextButton,
+                  title: 'Open settings',
+                  action: 'click',
+                  funcName: 'goSettings',
+                  parameters: connector
+                }]
+              }]
+            }];
             return _context.abrupt("return", {
-              code: 0,
-              content: authError
+              code: 200,
+              headers: {},
+              content: JSON.stringify(authError),
+              hasMatch: {
+                value: true,
+                text: 'Reauth'
+              }
             });
 
-          case 58:
+          case 60:
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
@@ -238,7 +263,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 60:
+          case 62:
             //access and parse response contents;
             contentPersons = JSON.parse(responsePersons.content);
             contentActivs = JSON.parse(responseActivs.content);
@@ -778,7 +803,7 @@ function Pipedrive() {
             };
             return _context.abrupt("return", returned);
 
-          case 66:
+          case 68:
           case "end":
             return _context.stop();
         }
