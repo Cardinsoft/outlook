@@ -729,20 +729,24 @@ function oneCRM() {
 
             //build inactive account prompt and action;
             dnsErr = [{
-              header: 'Inactive acount',
+              header: 'Inactive account',
               widgets: [{
                 type: globalKeyValue,
                 content: 'We couldn\'t access your account, most likely it is inactive (e.g. your trial expired). Please, check if you still have access!'
               }, {
                 type: globalTextButton,
                 title: 'Open account',
-                content: 'https://' + connector.account + '.' + this.url
+                content: 'https://' + connector.account + '.' + this.url.substring(0, 13)
               }]
             }];
             return _context.abrupt("return", {
               code: 200,
               headers: {},
-              content: JSON.stringify(dnsErr)
+              content: JSON.stringify(dnsErr),
+              hasMatch: {
+                value: true,
+                text: 'Inactive'
+              }
             });
 
           case 171:
