@@ -776,138 +776,6 @@ function createSectionAuth(builder, connector, auth) {
   return section;
 }
 /**
- * Creates section from widgets config;
- * @param {CardBuilder} builder card builder to append section to;
- * @param {Object} config section config object;
- * @returns {CardSection} this CardSection;
- */
-
-
-function createSectionConfig(builder, config) {
-  //create section and set required parameters;
-  var section = CardService.newCardSection(); //set optional parameters;
-
-  if (config.header) {
-    section.setHeader(config.header);
-  }
-
-  if (config.isCollapsible) {
-    section.setCollapsible(config.isCollapsible);
-  }
-
-  if (config.numUncollapsible) {
-    section.setNumUncollapsibleWidgets(config.numUncollapsible);
-  } //access widgets and build them;
-
-
-  var widgets = config.widgets;
-
-  if (widgets && widgets.length !== 0) {
-    widgets.forEach(function (widget, index) {
-      var element; //access basic parameters;
-
-      var type = widget.type;
-      var title = widget.title;
-      var name = widget.name;
-      var content = widget.content; //access type-specific params and build widget;
-
-      switch (type) {
-        case 'TextParagraph':
-          element = textWidget(content);
-          break;
-
-        case globalTextButton:
-          //access TextButton-specific params;
-          var disabled = widget.disabled;
-          var filled = widget.filled;
-          var fullsized = widget.fullsized;
-          var reload = widget.reload;
-          var action = widget.action;
-          var colour = widget.colour; //if colour is provided -> set button text colour;
-
-          if (colour) {
-            title = '<font colour="' + colour + '">' + title + '</font>';
-          } //build either a clickable or a linked button;
-
-
-          if (action === globalActionClick) {
-            element = textButtonWidget(title, disabled, filled, content);
-          } else {
-            element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload);
-          }
-
-          break;
-
-        case 'KeyValue':
-          //access KeyValue-specific params;
-          var iconUrl = widget.icon;
-          var isMultiline = widget.isMultiline;
-          var switchValue = widget.switchValue;
-          var buttonText = widget.buttonText;
-          var selected = widget.selected;
-          var disabled = widget.disabled;
-          var filled = widget.filled; //default to multiline if nothing is set;
-
-          if (!isMultiline) {
-            isMultiline = true;
-          } //default to no icon if nothing is set;
-
-
-          if (!iconUrl) {
-            iconUrl = '';
-          } //set Switch or TextButton to widget if provided;
-
-
-          if (switchValue) {
-            element = switchWidget(iconUrl, title, content, name, selected, switchValue);
-          } else if (buttonText) {
-            if (disabled === undefined) {
-              disabled = true;
-            }
-
-            if (!filled) {
-              filled = false;
-            }
-
-            var button = textButtonWidget(buttonText, disabled, filled);
-            element = simpleKeyValueWidget(title, content, isMultiline, iconUrl, button);
-          } else {
-            element = simpleKeyValueWidget(title, content, isMultiline, iconUrl);
-          }
-
-          break;
-
-        case 'TextInput':
-          //access TextInput-specific params;
-          var hint = widget.hint;
-          var multiline = widget.multiline;
-          var onchange = widget.onchange;
-          var onchangeArgs = widget.parameters;
-          element = textInputWidget(title, name, hint, content, multiline, onchange, false, onchangeArgs);
-          break;
-
-        case globalEnumRadio:
-          element = selectionInputWidget(title, name, type, content);
-          break;
-
-        case globalEnumCheckbox:
-          element = selectionInputWidget(title, name, type, content);
-          break;
-
-        case globalEnumDropdown:
-          element = selectionInputWidget(title, name, type, content);
-          break;
-      } //add widget to section;
-
-
-      section.addWidget(element);
-    });
-    builder.addSection(section);
-  }
-
-  return section;
-}
-/**
  * Handles sections generation if a simple json schema (an array of objects with key-value pairs) is provided;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Array} data a set of key-value pairs representing widgets; 
@@ -1015,14 +883,66 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var content = widget.content;
 
             switch (type) {
-              case 'TextParagraph':
+              case globalTextParagraph:
                 element = textWidget(content);
                 break;
 
-              case 'Image':
+              case globalImage:
                 var alt = widget.alt;
                 element = imageWidget(content, alt); //expand on future UPD;
 
+                break;
+
+              case globalButtonSet:
+                var buttons = []; //construct buttons;
+
+                for (var b = 0; b < content.length; b++) {
+                  var btn = content[b];
+                  var bt = btn.type;
+                  var t = btn.title;
+                  var co = btn.content;
+                  var d = btn.disabled;
+                  var fi = btn.filled;
+                  var fu = btn.fullsized;
+                  var r = btn.reload;
+                  var a = btn.action;
+                  var f = btn.funcName;
+                  var p = btn.parameters;
+                  var c = btn.colour; //modify parameters;
+
+                  if (c) {
+                    t = '<font color="' + c + '">' + t + '</font>';
+                  }
+
+                  if (!p) {
+                    p = connector;
+                  }
+
+                  if (popup) {
+                    fu = popup;
+                  } //build either a clickable or a linked button;
+
+
+                  if (bt !== globalImageButton) {
+                    if (a === globalActionClick) {
+                      buttons.push(textButtonWidget(t, d, fi, f, p));
+                    } else if (a === globalActionAction) {
+                      buttons.push(textButtonWidgetLinked(t, d, fi, co, fu, r, true, f, p));
+                    } else {
+                      buttons.push(textButtonWidgetLinked(t, d, fi, co, fu, r));
+                    }
+                  } else {
+                    if (a === globalActionClick) {
+                      buttons.push();
+                    } else if (a === globalActionAction) {
+                      buttons.push();
+                    } else {
+                      buttons.push();
+                    }
+                  }
+                }
+
+                element = buttonSet(buttons);
                 break;
 
               case globalTextButton:
