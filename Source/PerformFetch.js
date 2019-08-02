@@ -57,7 +57,7 @@ function _performFetch() {
           _context.prev = 14;
           _context.t0 = _context["catch"](0);
           //handles request exceptions not caught by muteHttpExceptions;
-          console.error(_context.t0);
+          timestamp('error during endpoint fetch (usually harmless and handled)', _context.t0, 'warning');
           return _context.abrupt("return", {
             code: 0,
             //0 signifies custom error;
