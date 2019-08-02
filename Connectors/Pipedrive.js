@@ -142,7 +142,7 @@ function Pipedrive() {
 
           case 21:
             responseDeals = _context.sent;
-            _context.next = 62;
+            _context.next = 63;
             break;
 
           case 24:
@@ -212,7 +212,7 @@ function Pipedrive() {
 
           case 50:
             responseDeals = _context.sent;
-            _context.next = 62;
+            _context.next = 63;
             break;
 
           case 53:
@@ -255,6 +255,7 @@ function Pipedrive() {
             });
 
           case 60:
+            timestamp('failed to get company domain (Pipedrive)', responseCD, 'error');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
@@ -263,7 +264,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 62:
+          case 63:
             //access and parse response contents;
             contentPersons = JSON.parse(responsePersons.content);
             contentActivs = JSON.parse(responseActivs.content);
@@ -659,6 +660,17 @@ function Pipedrive() {
                               ac.title = 'Lunch info';
                               ac.icon = 'RESTAURANT_ICON';
                               break;
+
+                            case 'task':
+                              ac.title = 'Task to do';
+
+                              if (astatus) {
+                                ac.icon = globalIconTaskDone;
+                              } else {
+                                ac.icon = globalIconTask;
+                              }
+
+                              break;
                           }
 
                           aw.push(ac);
@@ -803,7 +815,7 @@ function Pipedrive() {
             };
             return _context.abrupt("return", returned);
 
-          case 68:
+          case 69:
           case "end":
             return _context.stop();
         }
