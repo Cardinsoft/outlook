@@ -426,7 +426,7 @@ function _createConfiguredConnectorsSection() {
 
 
             connector = propertiesToString(connector);
-            var widget = actionKeyValueWidget(icon, '', name, 'actionEdit', connector);
+            var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionEdit', connector);
             section.addWidget(widget);
           });
           builder.addSection(section);
@@ -985,11 +985,15 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 //access KeyValue-specific params;
                 var isMultiline = widget.isMultiline;
                 var switchValue = widget.switchValue;
+                var buttonIcon = widget.buttonIcon;
                 var buttonText = widget.buttonText;
                 var buttonLink = widget.buttonLink;
                 var selected = widget.selected;
                 var disabled = widget.disabled;
-                var filled = widget.filled; //default to multiline;
+                var filled = widget.filled;
+                var funcName = widget.funcName;
+                var params = widget.parameters;
+                var action = widget.action; //default to multiline;
 
                 if (!isMultiline) {
                   isMultiline = true;
@@ -1009,7 +1013,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                   connector.widgetIdx = index;
                   connector = propertiesToString(connector);
 
-                  if (buttonText) {
+                  if (buttonText || buttonLink) {
                     if (disabled === undefined) {
                       disabled = true;
                     }
@@ -1021,6 +1025,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
                     if (popup) {
                       fullsized = popup;
+                    }
+
+                    if (params && popup) {
+                      params.fullsized = popup;
                     } //create link button or action button;
 
 
@@ -1028,27 +1036,33 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
                     if (!buttonLink) {
                       button = textButtonWidget(buttonText, disabled, filled);
+                    } else if (buttonIcon) {
+                      button = imageButtonWidget(buttonIcon, buttonText, buttonLink, connector, 'link', fullsized, reload);
                     } else {
                       button = textButtonWidgetLinked(buttonText, disabled, false, buttonLink, fullsized);
                     }
 
-                    if (state !== 'editable') {
+                    if (state !== 'editable' && !funcName) {
                       element = simpleKeyValueWidget(title, content, isMultiline, icon, button);
+                    } else if (state !== 'editable') {
+                      element = actionKeyValueWidget(icon, title, content, action, funcName, params);
                     } else {
                       element = actionKeyValueWidgetButton(icon, title, content, button, 'editSectionAdvanced', connector);
                     }
                   } else {
-                    if (state !== 'editable') {
+                    if (state !== 'editable' && !funcName) {
                       element = simpleKeyValueWidget(title, content, isMultiline, icon);
+                    } else if (state !== 'editable') {
+                      element = actionKeyValueWidget(icon, title, content, action, funcName, params);
                     } else {
-                      element = actionKeyValueWidget(icon, title, content, 'editSectionAdvanced', connector);
+                      element = actionKeyValueWidget(icon, title, content, 'action', 'editSectionAdvanced', connector);
                     }
                   }
                 }
 
                 break;
 
-              case 'TextInput':
+              case globalTextInput:
                 //access TextInput-specific params;
                 var hint = widget.hint;
                 var multiline = widget.multiline;
