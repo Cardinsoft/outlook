@@ -355,17 +355,22 @@ function textButtonWidgetLinked(text, disabled, isFilled, url, fullsized, needsR
 
   return widget;
 }
-/*
+/**
  * Creates a ImageButton widget with icon content;
  * @param {Icon} icon icon object to appear on the button;
- * @param {String} funcName callback function name;
- * @param {Object} params parameters to pass to function;
+ * @param {String} alt alternative text to show on failure;
+ * @param {String} funcName callback function name or link;
+ * @param {Object=} params parameters to pass to function;
+ * @param {String=} type if provided, overrides action type;
+ * @param {Boolean=} fullsized if provided -> flag to open popup or tab;
+ * @param {Boolean=} reload if provided -> flag to reload Add-on on close or not;
  * @returns {ImageButton} this ImageButton;
  */
 
 
-function imageButtonWidget(icon, funcName, params) {
-  var widget = CardService.newImageButton(); //set icon if found or set icon url if not;
+function imageButtonWidget(icon, alt, funcName, params, type, fullsized, reload) {
+  var widget = CardService.newImageButton();
+  widget.setAltText(alt); //set icon if found or set icon url if not;
 
   if (icon && icon !== '') {
     var iconEnum = CardService.Icon[icon];
@@ -375,11 +380,35 @@ function imageButtonWidget(icon, funcName, params) {
     } else {
       widget.setIconUrl(icon);
     }
-  } //set action on button click;
+  }
 
+  var action;
 
-  var action = actionAction(funcName, true, params);
-  widget.setOnClickAction(action);
+  switch (type) {
+    case globalActionLink:
+      action = CardService.newOpenLink();
+
+      if (fullsized) {
+        action.setOpenAs(CardService.OpenAs.FULL_SIZE);
+      } else {
+        action.setOpenAs(CardService.OpenAs.OVERLAY);
+      }
+
+      if (reload) {
+        action.setOnClose(CardService.OnClose.RELOAD_ADD_ON);
+      } else {
+        action.setOnClose(CardService.OnClose.NOTHING);
+      }
+
+      action.setUrl(funcName);
+      widget.setOpenLink(action);
+      break;
+
+    default:
+      action = actionAction(funcName, true, params);
+      widget.setOnClickAction(action);
+  }
+
   return widget;
 }
 /**
@@ -523,13 +552,14 @@ function simpleKeyValueWidget(top, content, isMultiline, icon, button) {
  * @param {String} icon url or enum of icon to use;
  * @param {String} top label text;
  * @param {String} content content text;
- * @param {String} funcName callback function name;
+ * @param {String} type action type;
+ * @param {String} callback function name or link to open;
  * @param {Object=} params parameters to pass to function;
  * @returns {KeyValue} this KeyValue with action;
  */
 
 
-function actionKeyValueWidget(icon, top, content, funcName, params) {
+function actionKeyValueWidget(icon, top, content, type, callback, params) {
   //modify content to avoid errors;
   if (content instanceof Date) {
     content = content.toLocaleDateString();
@@ -557,11 +587,37 @@ function actionKeyValueWidget(icon, top, content, funcName, params) {
     } else {
       widget.setIconUrl(icon);
     }
-  } //set onclick action;
+  } //set widget action;
 
 
-  var action = actionAction(funcName, true, params);
-  widget.setOnClickAction(action);
+  var action;
+
+  switch (type) {
+    case globalActionAction:
+      action = actionAction(callback, true, params);
+      widget.setOnClickAction(action);
+      break;
+
+    case globalActionLink:
+      action = CardService.newOpenLink();
+      action.setUrl(callback);
+
+      if (params.fullsized) {
+        action.setOpenAs(CardService.OpenAs.FULL_SIZE);
+      } else {
+        action.setOpenAs(CardService.OpenAs.OVERLAY);
+      }
+
+      if (params.reload) {
+        action.setOnClose(CardService.OnClose.RELOAD_ADD_ON);
+      } else {
+        action.setOnClose(CardService.OnClose.NOTHING);
+      }
+
+      widget.setOpenLink(action);
+      break;
+  }
+
   return widget;
 }
 /** 
