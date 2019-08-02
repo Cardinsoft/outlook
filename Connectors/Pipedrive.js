@@ -255,7 +255,7 @@ function Pipedrive() {
             });
 
           case 60:
-            timestamp('failed to get company domain (Pipedrive)', responseCD, 'error');
+            timestamp('failed to get company domain (Pipedrive)', responseCD, 'warning');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
