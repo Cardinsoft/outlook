@@ -231,7 +231,7 @@ function createWidgetCreateType(section, type) {
   } //create KeyValue widget with Connector creation card display action;
 
 
-  var widget = actionKeyValueWidget(type.icon, '', type.typeName, 'cardCreate', params); //append widget to section and return;
+  var widget = actionKeyValueWidget(type.icon, '', type.typeName, 'action', 'cardCreate', params); //append widget to section and return;
 
   section.addWidget(widget);
   return widget;
