@@ -929,7 +929,10 @@ function parseData(data) {
 
     return data;
   } catch (err) {
-    console.error('Encountered an error while trying to parse input: %s', err);
+    timestamp('parseData parse loop encontered an error', {
+      error: err,
+      data: data
+    }, 'warning');
     data = data;
   }
 
