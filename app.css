@@ -112,8 +112,9 @@ body {
 }
 
 .ImageButton {
-	width  : 26px;
-	height : 26px;
+    width  : 26px;
+    height : 26px;
+    margin : 0.75em 1.5em 0 0;
 }
 
 .TextButton {
