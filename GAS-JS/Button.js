@@ -279,8 +279,8 @@ ImageButton.prototype.appendToUi = function (parent) {
   const button = document.createElement('img');
   button.className = this.className;
   button.alt = this.altText;
-  button.width = '25px';
-  button.height = '25px'; //set image source (enum or URL);
+  button.width = 26;
+  button.height = 26; //set image source (enum or URL);
 
   if (this.url) {
     button.src = this.url;
