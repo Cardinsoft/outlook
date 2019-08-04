@@ -143,20 +143,24 @@ var globalRootText                   = 'Go back';
 var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
-//URLs;
-var globalCardinUrl                  = 'https://cardinsoft.com/cardin-outlook/';
+//icon URLs;
+var globalBpmIconUrl                 = 'https://cardinsoft.com/wp-content/uploads/2019/06/bpm.png';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCloseIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/Close.png';
 var globalCloudFuncIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/07/Google-Cloud-Functions.png';
 var globalCustomIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/custom.png';
 var globalEnterIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/05/enter.png';
 var globalFlowIconUrl                = 'https://cardinsoft.com/wp-content/uploads/2019/03/flow.png';
-var globalIftttIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/IFTTT.png';
 var globalGitHubIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/github.png';
+var globalIftttIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/IFTTT.png';
+var globalInfusionIconUrl            = 'https://cardinsoft.com/wp-content/uploads/2019/03/infusionsoft.png';
 var globalLACRMiconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/04/LACRM.png';
 var globalOneCRMiconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/07/1CRM.png';
 var globalPipedriveIconUrl           = 'https://cardinsoft.com/wp-content/uploads/2019/03/pipedrive.png';
+var globalQuickBooksIconUrl          = 'https://cardinsoft.com/wp-content/uploads/2019/02/VqEjTc4a_400x400.jpg';
+var globalSheetsIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/sheets.png';
 var globalYouTubeUrl                 = 'https://youtube.com/';
+var globalZendeskSellIconUrl         = 'https://cardinsoft.com/wp-content/uploads/2019/07/Zendesk.png';
 
 //notifications, warnings and error messages
 var globalClearSuccess               = 'Cache successfully cleared!';
