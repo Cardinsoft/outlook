@@ -1499,7 +1499,70 @@ function createSectionHelp(builder, isCollapsed, header) {
   } //create help prompt widget;
 
 
-  createWidgetHelpText(section); //create help action widgets;
+  createWidgetHelpText(section); //create integrations section;
+
+  var sectionInt = {
+    header: 'Connector help',
+    widgets: [{
+      type: globalKeyValue,
+      content: 'For detailed setup and debug instructions, visit our Connector-specific pages'
+    }, {
+      type: globalButtonSet,
+      content: [{
+        type: globalImageButton,
+        icon: globalOneCRMiconUrl,
+        alt: '1CRM',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/1crm/'
+      }, {
+        type: globalImageButton,
+        icon: globalBpmIconUrl,
+        alt: 'bpm\'online',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/bpmonline/'
+      }, {
+        type: globalImageButton,
+        icon: globalCloseIconUrl,
+        alt: 'Close',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/close/'
+      }, {
+        type: globalImageButton,
+        icon: globalLACRMiconUrl,
+        alt: 'LACRM',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/less-annoying-crm/'
+      }]
+    }, {
+      type: globalButtonSet,
+      content: [{
+        type: globalImageButton,
+        icon: globalPipedriveIconUrl,
+        alt: 'Pipedrive',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/pipedrive/'
+      }, {
+        type: globalImageButton,
+        icon: globalQuickBooksIconUrl,
+        alt: 'QuickBooks',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/quickbooks/'
+      }, {
+        type: globalImageButton,
+        icon: globalIconWebhook,
+        alt: 'Webhook',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/webhook/'
+      }, {
+        type: globalImageButton,
+        icon: globalZendeskSellIconUrl,
+        alt: 'Zendesk Sell',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/zendesk/'
+      }]
+    }]
+  };
+  createSectionAdvanced(builder, sectionInt, 0, {}, sectionInt.widgets.length, 0); //create help action widgets;
 
   var web = simpleKeyValueWidget('', '<a href="https://cardinsoft.com/support/">cardinsoft.com</a>', false, globalIconWebsite);
   var mail = simpleKeyValueWidget('', '<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>', false, 'EMAIL');
