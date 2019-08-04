@@ -106,14 +106,17 @@ body {
     margin : 12px 0;
 }
 
+.ImageButton, .TextButton {
+	min-height : 35px;
+	padding    : 0;
+	cursor     : pointer;
+}
+
 .TextButton {
     display        : block;
 	text-transform : uppercase;
     font-weight    : bold;
     border         : none;
-	min-height     : 35px;
-    padding        : 0;
-	cursor         : pointer;
 }
 
 .TextButton:focus {
