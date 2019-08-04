@@ -273,22 +273,21 @@ ImageButton.prototype.setIconUrl = function (url) {
 ImageButton.prototype.appendToUi = function (parent) {
   //access button properties;
   let action = this.action;
-  const icon = this.icon;
   const openLink = this.openLink;
   const authAction = this.authorizationAction; //initiate button;
 
   const button = document.createElement('img');
   button.className = this.className;
   button.alt = this.altText;
+  button.width = '25px';
+  button.height = '25px'; //set image source (enum or URL);
 
-  if (iconUrl) {
+  if (this.url) {
     button.src = this.url;
   } else {
-    button.src = icon;
+    button.src = this.icon;
   }
 
-  button.width = '25px';
-  button.height = '25px';
   parent.append(button);
 
   if (!openLink && !authAction && action) {
