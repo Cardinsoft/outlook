@@ -219,7 +219,8 @@ function (_Button2) {
     _classCallCheck(this, ImageButton);
 
     _this2 = _possibleConstructorReturn(this, _getPrototypeOf(ImageButton).call(this));
-    _this2.altText;
+    _this2.className = 'ImageButton';
+    _this2.altText = '';
     _this2.icon;
     _this2.url;
     return _this2;
@@ -229,21 +230,101 @@ function (_Button2) {
 }(Button); //chain ImageButton to Button base class;
 
 
-ImageButton.prototype = Object.create(Button.prototype); //add new methods to the class;
+ImageButton.prototype = Object.create(Button.prototype);
+/**
+ * Sets alt text to show if icon or image is unavailable;
+ * @param {String} altText text to display;
+ * @returns {ImageButton} this ImageButton;
+ */
 
 ImageButton.prototype.setAltText = function (altText) {
   this.altText = altText;
   return this;
 };
+/**
+ * Sets icon to display on button;
+ * @param {String} icon icon enumerable name;
+ * @returns {ImageButton} this ImageButton;
+ */
+
 
 ImageButton.prototype.setIcon = function (icon) {
   this.icon = icon;
   return this;
 };
+/**
+ * Sets image to display on button;
+ * @param {String} url image source URL;
+ * @returns {ImageButton} this ImageButton;
+ */
+
 
 ImageButton.prototype.setIconUrl = function (url) {
   this.url = url;
   return this;
+};
+/**
+ *
+ * @param {HtmlElement} parent parent element to append widget to;
+ * @returns {HtmlElement} this widget;
+ */
+
+
+ImageButton.prototype.appendToUi = function (parent) {
+  //access button properties;
+  let action = this.action;
+  const icon = this.icon;
+  const openLink = this.openLink;
+  const authAction = this.authorizationAction; //initiate button;
+
+  const button = document.createElement('img');
+  button.className = this.className;
+  button.alt = this.altText;
+
+  if (iconUrl) {
+    button.src = this.url;
+  } else {
+    button.src = icon;
+  }
+
+  button.width = '25px';
+  button.height = '25px';
+  parent.append(button);
+
+  if (!openLink && !authAction && action) {
+    //set refrence;
+    setAction(button, action); //add event listener to button;
+
+    button.addEventListener('click',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return actionCallback(this);
+
+          case 2:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2, this);
+    })));
+  } else if (openLink) {
+    button.addEventListener('click', function () {
+      const link = JSON.parse(openLink);
+      Office.context.ui.displayDialogAsync(forceHttps(link.url));
+    });
+  } else {
+    button.addEventListener('click', function () {
+      const auth = JSON.parse(authAction);
+      Office.context.ui.displayDialogAsync(forceHttps(auth.url));
+    });
+  }
+
+  return button;
 }; //Emulate Class CardAction extending base Class Button for CardService service;
 
 
