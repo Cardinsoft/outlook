@@ -140,6 +140,10 @@ e_CardService.prototype.newTextButton = function () {
   return new TextButton();
 };
 
+e_CardService.prototype.newImageButton = function () {
+  return new ImageButton();
+};
+
 e_CardService.prototype.newTextInput = function () {
   return new TextInput();
 };
