@@ -4,6 +4,7 @@ var globalChooseTypeHeader           = 'Add a new Connector';
 var globalConfigAuthHeader           = 'Authorization config';
 var globalConfigErrorHeader          = 'Configuration error';
 var globalConfigHeader               = 'Connector configuration';
+var globalConfigAdvancedHeader       = 'Advanced configuration';
 var globalConfigListHeader           = 'Your Connectors';
 var globalConfirmHeader              = 'Confirm action';
 var globalConnectorListHeader        = 'Other Connectors';
