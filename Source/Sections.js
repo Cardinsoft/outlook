@@ -991,6 +991,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var selected = widget.selected;
                 var disabled = widget.disabled;
                 var filled = widget.filled;
+                var reload = widget.reload;
                 var funcName = widget.funcName;
                 var params = widget.parameters;
                 var action = widget.action; //default to multiline;
@@ -1013,7 +1014,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                   connector.widgetIdx = index;
                   connector = propertiesToString(connector);
 
-                  if (buttonText || buttonLink) {
+                  if (buttonText || buttonLink || buttonIcon) {
                     if (disabled === undefined) {
                       disabled = true;
                     }
@@ -1516,37 +1517,16 @@ function createSectionHelp(builder, isCollapsed, header) {
         funcName: 'https://cardinsoft.com/gmail-integrations/1crm/'
       }, {
         type: globalImageButton,
-        icon: globalBpmIconUrl,
-        alt: 'bpm\'online',
-        action: globalActionLink,
-        funcName: 'https://cardinsoft.com/gmail-integrations/bpmonline/'
-      }, {
-        type: globalImageButton,
-        icon: globalCloseIconUrl,
-        alt: 'Close',
-        action: globalActionLink,
-        funcName: 'https://cardinsoft.com/gmail-integrations/close/'
-      }, {
-        type: globalImageButton,
         icon: globalLACRMiconUrl,
         alt: 'LACRM',
         action: globalActionLink,
         funcName: 'https://cardinsoft.com/gmail-integrations/less-annoying-crm/'
-      }]
-    }, {
-      type: globalButtonSet,
-      content: [{
+      }, {
         type: globalImageButton,
         icon: globalPipedriveIconUrl,
         alt: 'Pipedrive',
         action: globalActionLink,
         funcName: 'https://cardinsoft.com/gmail-integrations/pipedrive/'
-      }, {
-        type: globalImageButton,
-        icon: globalQuickBooksIconUrl,
-        alt: 'QuickBooks',
-        action: globalActionLink,
-        funcName: 'https://cardinsoft.com/gmail-integrations/quickbooks/'
       }, {
         type: globalImageButton,
         icon: globalIconWebhook,
