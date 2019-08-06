@@ -382,31 +382,21 @@ function imageButtonWidget(icon, alt, funcName, params, type, fullsized, reload)
     }
   }
 
-  var action;
-
-  switch (type) {
-    case globalActionLink:
-      action = CardService.newOpenLink();
-
-      if (fullsized) {
-        action.setOpenAs(CardService.OpenAs.FULL_SIZE);
-      } else {
-        action.setOpenAs(CardService.OpenAs.OVERLAY);
-      }
-
-      if (reload) {
-        action.setOnClose(CardService.OnClose.RELOAD_ADD_ON);
-      } else {
-        action.setOnClose(CardService.OnClose.NOTHING);
-      }
-
-      action.setUrl(funcName);
-      widget.setOpenLink(action);
-      break;
-
-    default:
-      action = actionAction(funcName, true, params);
-      widget.setOnClickAction(action);
+  //add action if provided;
+  if(funcName) {
+    var action;
+    switch(type) {
+      case globalActionLink:
+        action = CardService.newOpenLink();
+        action.setUrl(funcName);
+        if(fullsized) { action.setOpenAs(CardService.OpenAs.FULL_SIZE); }else { action.setOpenAs(CardService.OpenAs.OVERLAY); }
+        if(reload) { action.setOnClose(CardService.OnClose.RELOAD_ADD_ON); }else { action.setOnClose(CardService.OnClose.NOTHING); }
+        widget.setOpenLink(action);
+        break;
+      default: 
+        action = actionAction(funcName,true,params);
+        widget.setOnClickAction(action);
+    }    
   }
 
   return widget;
