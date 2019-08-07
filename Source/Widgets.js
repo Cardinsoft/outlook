@@ -261,7 +261,7 @@ function createWidgetShortText(section, title, content) {
 
 function createWidgetResetText(section) {
   //create KeyValue widget with reset prompt;
-  var widget = simpleKeyValueWidget(globalResetWidgetTitle, globalResetWidgetContent, true); //append to section and return;
+  var widget = simpleKeyValueWidget('', globalResetWidgetContent, true); //append to section and return;
 
   section.addWidget(widget);
   return widget;
