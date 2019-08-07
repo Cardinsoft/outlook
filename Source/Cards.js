@@ -873,8 +873,12 @@ function cardAdvanced(e) {
 
 
 function cardHelp(e) {
-  var builder = CardService.newCardBuilder();
-  builder.setHeader(CardService.newCardHeader().setTitle(globalHelpHeader));
+  var builder = CardService.newCardBuilder(); //build and set CardHeader;
+
+  var header = CardService.newCardHeader();
+  header.setTitle(globalHelpHeader);
+  builder.setHeader(header); //createSectionAdvancedSettings(builder,false);
+
   createSectionHelp(builder, false);
   return menu(builder);
 }
