@@ -1485,20 +1485,15 @@ function createSectionAdvancedSettings(builder, isCollapsed, header) {
  * Creates section for help info;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {String} header section header text;
  * @returns {CardSection} this CardSection;
  */
 
 
-function createSectionHelp(builder, isCollapsed, header) {
+function createSectionHelp(builder, isCollapsed) {
   //create section and set required parameters;
   var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed); //set optional parameters;
-
-  if (header) {
-    section.setHeader(header);
-  } //create help prompt widget;
-
+  section.setCollapsible(isCollapsed);
+  section.setHeader(globalResourceHeader); //create help prompt widget;
 
   createWidgetHelpText(section); //create integrations section;
 
