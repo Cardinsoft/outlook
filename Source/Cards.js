@@ -402,7 +402,7 @@ function _cardDisplay() {
 
           _context3.prev = 47;
           _context3.next = 50;
-          return createSectionAdvanced(builder, section, j, connector, layout[j], start);
+          return createSectionAdvanced(builder, section, j, connector, globalWidgetsCap, start);
 
         case 50:
           _context3.next = 56;
