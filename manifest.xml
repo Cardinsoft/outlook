@@ -43,6 +43,7 @@
 		</Form>
 	</FormSettings>
 	<Permissions>ReadWriteItem</Permissions>
+	<DisableEntityHighlighting>false</DisableEntityHighlighting>
 	
 	<VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
 		<VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
