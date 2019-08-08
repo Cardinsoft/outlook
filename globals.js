@@ -248,7 +248,7 @@ var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
-var globalWidgetsCap                 = 50;
+var globalWidgetsCap                 = 25;
 
 //OAuth2 flow;
 var globalAlreadyAuthorized          = 'Connector previously authorized!';
