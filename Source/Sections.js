@@ -1425,7 +1425,6 @@ function createSectionSettings(_x13, _x14, _x15) {
  * Creates section for advanced settings;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {String} header section header text;
  * @returns {CardSection} this CardSection;
  */
 
@@ -1464,15 +1463,11 @@ function _createSectionSettings() {
   return _createSectionSettings.apply(this, arguments);
 }
 
-function createSectionAdvancedSettings(builder, isCollapsed, header) {
+function createSectionAdvancedSettings(builder, isCollapsed) {
   //create section and set required parameters;
   var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed); //set optional parameters;
-
-  if (header) {
-    section.setHeader(header);
-  } //create reset prompt;
-
+  section.setCollapsible(isCollapsed);
+  section.setHeader('Reset'); //create reset prompt;
 
   createWidgetResetText(section); //create reset button with reset action;
 
@@ -1528,12 +1523,6 @@ function createSectionHelp(builder, isCollapsed) {
         alt: 'Webhook',
         action: globalActionLink,
         funcName: 'https://cardinsoft.com/gmail-integrations/webhook/'
-      }, {
-        type: globalImageButton,
-        icon: globalZendeskSellIconUrl,
-        alt: 'Zendesk Sell',
-        action: globalActionLink,
-        funcName: 'https://cardinsoft.com/gmail-integrations/zendesk/'
       }]
     }]
   };
