@@ -717,8 +717,9 @@ function _cardOpen() {
         case 28:
           _context5.prev = 28;
           _context5.t0 = _context5["catch"](22);
-          //temporary solution for uncaught 401 error;
-          console.log(_context5.t0);
+          timestamp('error during default connector run', {
+            error: _context5.t0
+          }, 'error');
           response = {
             headers: '',
             content: _context5.t0.message
@@ -773,9 +774,10 @@ function _cardOpen() {
         case 51:
           _context5.prev = 51;
           _context5.t1 = _context5["catch"](46);
-          //log error to stackdriver and build Connectors list error section;
-          console.error('An error occured during Connector list generation: %s', _context5.t1);
-          createConfigErrorSection(builder, false, globalErrorHeader, '', globalConnectorListErrorContent);
+          timestamp('error during Connector list display', {
+            error: _context5.t1
+          }, 'error');
+          createConfigErrorSection(builder, false, globalConfigErrorHeader, '', globalConnectorListErrorContent);
 
         case 55:
           return _context5.abrupt("return", menu(builder));
@@ -787,9 +789,14 @@ function _cardOpen() {
         case 58:
           _context5.prev = 58;
           _context5.t2 = _context5["catch"](5);
-          //log error to stackdriver and build config error section;
-          console.error(_context5.t2);
-          createConfigErrorSection(builder, false, globalConfigErrorHeader, globalConfigErrorWidgetTitle, globalConfigErrorWidgetContent);
+          //handle unexpected config errors;
+          timestamp('configuration error', {
+            error: _context5.t2
+          }, 'error');
+          createErrorSection(builder, false, 0, {
+            descr: globalConfigErrorWidgetContent,
+            additional: _context5.t2.message
+          }, globalConfigErrorHeader);
           return _context5.abrupt("return", menu(builder));
 
         case 63:
