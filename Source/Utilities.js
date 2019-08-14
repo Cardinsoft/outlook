@@ -178,16 +178,17 @@ function generateId(ids) {
 
 function preserveValues(connector, widgets) {
   //ensure input values are preserved;
-  if (widgets.length !== 0) {
+  if (widgets.length > 0) {
     widgets.forEach(function (widget) {
       var name = widget.name;
       var content = widget.content;
+      var hasSwitch = widget.switchValue;
 
       for (var key in connector) {
         //if field name is found;
         if (key === name) {
           //if content is array -> select options;
-          if (content instanceof Array) {
+          if (content instanceof Array && !hasSwitch) {
             content.forEach(function (option) {
               if (connector[key].indexOf(option.value) !== -1) {
                 option.selected = true;
@@ -195,9 +196,16 @@ function preserveValues(connector, widgets) {
                 option.selected = false;
               }
             });
+          } else if (hasSwitch) {
+            if (connector[key] === 'true') {
+              widget.selected = true;
+            }
           } else {
             widget.content = connector[key];
           }
+        } else if (!connector[name] && !connector.short) {
+          //make sure it isn't type;
+          widget.selected = false;
         }
       }
     });
