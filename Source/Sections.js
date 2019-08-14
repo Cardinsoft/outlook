@@ -633,21 +633,29 @@ function createUnparsedSection(builder, isCollapsed, error, content) {
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Integer} code response status code;
  * @param {String} error error message to show; 
+ * @param {String=} header error section header;
  * @returns {CardSection} this CardSection;
  */
 
 
-function createErrorSection(builder, isCollapsed, code, error) {
+function createErrorSection(builder, isCollapsed, code, error, header) {
   var section = CardService.newCardSection();
   section.setCollapsible(isCollapsed); //initiate error title and content;
 
-  var header = 'Connector error',
-      content,
+  if (!header) {
+    header = globalConnectorErrorHeader;
+  }
+
+  var content,
       errorDetails = ''; //create user-friendly prompts for http errors;
 
-  if (code !== 0) {
+  if (code > 0) {
     //set user-friendly messages for response errors; 
     switch (code) {
+      case 400:
+        header = 'Bad request';
+        content = 'The request made by the Connector is malformed. If this is a Webhook Connector, please, check your URLs syntax';
+
       case 404:
         header = 'Not found';
         content = 'Seems like the endpoint resource you want the Connector to access cannot be found or does not exist';
@@ -658,6 +666,10 @@ function createErrorSection(builder, isCollapsed, code, error) {
         content = 'The method the Connector is using is not allowed by endpoint resource.\r';
         content += 'By default, our Add-on makes POST requests to external APIs - please, let us know if you need to be able to choose methods for this Connector type';
         break;
+
+      case 413:
+        header = 'Payload too large';
+        content = 'Payload sent to the endpoint exceeded limits defined by it. Please, advise endpoint documentation if this is a Webhook Connector';
 
       case 500:
         header = 'Internal Server Error';
@@ -1040,7 +1052,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                     } else if (buttonIcon) {
                       button = imageButtonWidget(buttonIcon, buttonText, buttonLink, connector, 'link', fullsized, reload);
                     } else {
-                      button = textButtonWidgetLinked(buttonText, disabled, false, buttonLink, fullsized);
+                      button = textButtonWidgetLinked(buttonText, disabled, false, buttonLink, fullsized, reload);
                     }
 
                     if (state !== 'editable' && !funcName) {
@@ -1219,7 +1231,7 @@ function _createSectionAddConnector() {
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          man = true;
+          man = false;
           def = false; //access config and make first Connector default and auto;
 
           _context3.next = 4;
