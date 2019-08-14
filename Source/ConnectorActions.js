@@ -215,21 +215,6 @@ function _createConnector() {
         case 17:
           config = _context2.sent;
 
-          if (!(config === null)) {
-            _context2.next = 21;
-            break;
-          }
-
-          _context2.next = 21;
-          return createSettings();
-
-        case 21:
-          _context2.next = 23;
-          return getConfig();
-
-        case 23:
-          config = _context2.sent;
-
           //reset default connectors if new one is default;
           if (connector.isDefault) {
             config.forEach(function (conn) {
@@ -244,32 +229,34 @@ function _createConnector() {
 
           newID = generateId(config);
           connector.ID = newID;
-          _context2.next = 30;
+          _context2.next = 24;
           return setProperty('config', config, 'user');
 
-        case 30:
+        case 24:
           builder.setNotification(notification(globalCreateSuccess));
-          _context2.next = 37;
+          _context2.next = 31;
           break;
 
-        case 33:
-          _context2.prev = 33;
+        case 27:
+          _context2.prev = 27;
           _context2.t0 = _context2["catch"](14);
-          //notify the user that connector creation failed;
-          console.error(_context2.t0);
+          //handle creation errors;
+          timestamp('error during connector creation', {
+            error: _context2.t0
+          }, 'error');
           builder.setNotification(error(globalCreateFailure));
 
-        case 37:
+        case 31:
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context2.abrupt("return", builder.build());
 
-        case 40:
+        case 34:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, this, [[14, 33]]);
+    }, _callee2, this, [[14, 27]]);
   }));
   return _createConnector.apply(this, arguments);
 }
@@ -298,21 +285,8 @@ function _updateConnector() {
           icon = data[globalIconFieldName];
           name = data[globalNameFieldName];
           url = data[globalURLfieldName];
-          isDefault = data.isDefault;
-          useManual = data.manual;
-
-          if (isDefault !== undefined) {
-            isDefault = true;
-          } else {
-            isDefault = false;
-          }
-
-          if (useManual !== undefined) {
-            useManual = true;
-          } else {
-            useManual = false;
-          } //initialize connector type and get its ID;
-
+          isDefault = toBoolean(data.isDefault);
+          useManual = toBoolean(data.manual); //initialize connector type and get its ID;
 
           ID = e.parameters.ID;
           type = e.parameters.type;
@@ -438,17 +412,17 @@ function _updateConnector() {
           } //connector index (for ease of flow);
 
 
-          _context3.next = 20;
+          _context3.next = 18;
           return getConfig();
 
-        case 20:
+        case 18:
           config = _context3.sent;
           index = getIndex(config, e.parameters);
-          _context3.prev = 22;
-          _context3.next = 25;
+          _context3.prev = 20;
+          _context3.next = 23;
           return getConfig();
 
-        case 25:
+        case 23:
           config = _context3.sent;
 
           //reset default connectors if updated one is default;
@@ -462,31 +436,31 @@ function _updateConnector() {
 
 
           config[index] = connector;
-          _context3.next = 30;
+          _context3.next = 28;
           return setProperty('config', config, 'user');
 
-        case 30:
+        case 28:
           builder.setNotification(notification(globalUpdateSuccess));
-          _context3.next = 36;
+          _context3.next = 34;
           break;
 
-        case 33:
-          _context3.prev = 33;
-          _context3.t0 = _context3["catch"](22);
+        case 31:
+          _context3.prev = 31;
+          _context3.t0 = _context3["catch"](20);
           //notify the user that connector update failed;
           builder.setNotification(error(globalUpdateFailure));
 
-        case 36:
+        case 34:
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context3.abrupt("return", builder.build());
 
-        case 39:
+        case 37:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[22, 33]]);
+    }, _callee3, this, [[20, 31]]);
   }));
   return _updateConnector.apply(this, arguments);
 }
