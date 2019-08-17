@@ -142,8 +142,8 @@ function _createConnector() {
             } //handle connector name creation;
 
 
-            if (data[globalNameFieldName] === '') {
-              connector[globalNameFieldName] = cType[globalNameFieldName];
+            if (data[globalNameFieldName] === '' || !data[globalNameFieldName]) {
+              connector[globalNameFieldName] = cType.typeName;
             } //handle connector url creation;
 
 
@@ -345,8 +345,8 @@ function _updateConnector() {
             } //handle connector name creation;
 
 
-            if (data[globalNameFieldName] === '') {
-              connector[globalNameFieldName] = cType[globalNameFieldName];
+            if (data[globalNameFieldName] === '' || !data[globalNameFieldName]) {
+              connector[globalNameFieldName] = cType.typeName;
             } //handle connector url creation;
 
 
