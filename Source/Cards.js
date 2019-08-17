@@ -718,7 +718,8 @@ function _cardOpen() {
           _context5.prev = 28;
           _context5.t0 = _context5["catch"](22);
           timestamp('error during default connector run', {
-            error: _context5.t0
+            error: _context5.t0,
+            type: cType.typeName
           }, 'error');
           response = {
             headers: '',
