@@ -151,9 +151,8 @@ function makeRequest(url, params) {
 
     if (params.contentType) {
       request.setRequestHeader('Content-Type', params.contentType);
-    }
+    } //add headers if provided;
 
-    console.log('opened request'); //add headers if provided;
 
     if (params.headers) {
       //access headers to set with request;
@@ -166,9 +165,8 @@ function makeRequest(url, params) {
           request.setRequestHeader(key, value);
         }
       }
-    }
+    } //handle load event (set headers and resolve objects);
 
-    console.log('set headers'); //handle load event (set headers and resolve objects);
 
     request.onload = function () {
       let status = request.status;
@@ -191,8 +189,6 @@ function makeRequest(url, params) {
       resolve(obj);
     }; //handle timeout event;
 
-
-    console.log('loaded request');
 
     try {
       request.ontimeout = function () {
