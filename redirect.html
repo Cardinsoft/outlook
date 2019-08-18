@@ -16,7 +16,8 @@
 		
 		this.close();
 		
-		window.open(endpoint);
+		const newWindow = window.open(endpoint);
+			  newWindow.focus();
 		
 	});
 </script>
