@@ -253,9 +253,9 @@ KeyValue.prototype.appendToUi = function (parent) {
     label.textContent = this.topLabel;
     wrapText.append(label);
   } //check and replace \r \n \t;
+  //content = changeChars(content);
+  //create content text element;
 
-
-  content = changeChars(content); //create content text element;
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
