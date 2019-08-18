@@ -26,6 +26,10 @@ body {
     border-radius : 5px;
 }
 
+.KeyValueText {
+	white-space: pre-wrap;
+}
+
 .KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
 	display       : block;
 	margin-bottom : 5px;
