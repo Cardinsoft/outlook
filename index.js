@@ -442,8 +442,8 @@ function _trigger() {
           return cardOpen(e);
 
         case 9:
-          overlay.hide('#app-overlay');
-          spinner.hide();
+          o.hide('#app-overlay');
+          s.hide();
 
         case 11:
         case "end":
