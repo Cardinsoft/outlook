@@ -11,12 +11,19 @@
 			if(param.indexOf('endpoint')!==-1) { return param; }
 		})[0];
 		endpoint = endpoint.split('=')[1];
-		this.location.replace(endpoint);
-		this.focus();
+		try {
+			this.location.replace(endpoint);
+			this.focus();
+		}
+		catch(e) {
+			var error = document.createElement('p');
+				error.textContent = e.message;
+			document.body.appendChild(error);
+		}
 	});
 </script>
 </head>
 <body>
-	<p>Redirecting to the webpage... Please, enable scripts if disabled</p>
+	<p>Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
 </body>
 </html>
