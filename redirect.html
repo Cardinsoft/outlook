@@ -16,6 +16,7 @@
 		
 		var ifr = document.createElement('iframe');
 			ifr.src = endpoint;
+			ifr.referrerpolicy = 'no-referrer'
 			
 		document.body.appendChild(ifr);
 		
