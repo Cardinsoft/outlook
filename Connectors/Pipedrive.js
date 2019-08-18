@@ -714,7 +714,7 @@ function Pipedrive() {
               ocw = {
                 icon: globalIconDealOpen,
                 type: globalKeyValue,
-                content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r')
+                content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r\n')
               };
               dsw.push(ocw);
               deals = JSON.parse(dealsResp.content).data;
