@@ -11,8 +11,14 @@
 			if(param.indexOf('endpoint')!==-1) { return param; }
 		})[0];
 		endpoint = endpoint.split('=')[1];
-		this.location.replace(endpoint);
-		this.focus();
+		//this.location.replace(endpoint);
+		//this.focus();
+		
+		var ifr = document.createElement('iframe');
+			ifr.src = endpoint;
+			
+		document.body.appendChild(ifr);
+		
 	});
 </script>
 </head>
