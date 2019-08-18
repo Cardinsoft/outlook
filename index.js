@@ -460,9 +460,9 @@ function actionCallback(_x) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Changes \r\n to line breaks;
+ * Changes \r\n to line breaks and \t to HTML entity;
  * @param {String} content text to check;
- * @return {String|*} HtmlString with \r\n changed to <br> or content;
+ * @return {String|*} changed or original content;
  */
 
 
@@ -568,10 +568,12 @@ function _actionCallback() {
   return _actionCallback.apply(this, arguments);
 }
 
-function changeNewlines(content) {
+function changeChars(content) {
   if (typeof content === 'string' && content !== '') {
     var check = /\r\n/g;
     content = content.replace(check, '<br>');
+    var tabcheck = /\t/g;
+    content = content.replace(tabcheck, '&#x2006;');
   }
 
   return content;
