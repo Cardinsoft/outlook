@@ -460,9 +460,9 @@ function actionCallback(_x) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Matches input for being a mailto anchor and sets event listeners;
- * @param {HtmlElement} element element to set listeners to on success;
- * @param {String||Array} input <a> html tag string to check;
+ * Changes \r\n to line breaks;
+ * @param {String} content text to check;
+ * @return {String|*} HtmlString with \r\n changed to <br> or content;
  */
 
 
@@ -567,6 +567,21 @@ function _actionCallback() {
   }));
   return _actionCallback.apply(this, arguments);
 }
+
+function changeNewlines(content) {
+  if (typeof content === 'string' && content !== '') {
+    var check = /\r\n/g;
+    content = content.replace(check, '<br>');
+  }
+
+  return content;
+}
+/**
+ * Matches input for being a mailto anchor and sets event listeners;
+ * @param {HtmlElement} element element to set listeners to on success;
+ * @param {String||Array} input <a> html tag string to check;
+ */
+
 
 function loadMailto(element, input) {
   if (typeof input === 'number') {
