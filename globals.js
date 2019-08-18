@@ -174,7 +174,7 @@ var globalRootText                   = 'Go back';
 var globalUpdateConnectorText        = 'Update';
 var globalUpdateShowText             = 'Update';
 
-//icon URLs;
+//product icon URLs;
 var globalBpmIconUrl                 = 'https://cardinsoft.com/wp-content/uploads/2019/06/bpm.png';
 var globalCardinIconUrl              = 'https://cardinsoft.com/wp-content/uploads/2019/03/cardin-logo.png';
 var globalCloseIconUrl               = 'https://cardinsoft.com/wp-content/uploads/2019/07/Close.png';
@@ -254,11 +254,26 @@ var globalActionLink                 = 'link';
 
 //parameters;
 var includeConnectorsInDev           = true;
+var globalAnalyticsTesting           = true;
 var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
 var globalWidgetsCap                 = 25;
+
+//Sign in flow;
+var globalAccountInfoHeader          = 'Account Info';
+var globalCardinAccountHeader        = 'Cardin account';
+var globalCurrentPasswordHeader      = 'Password';
+var globalGeneralInfoHeader          = 'General Info';
+var globalLinkedSignInHeader         = 'Linked Sign In';
+var globalMyAccountHeader            = 'My Account';
+var globalPasswordHeader             = 'Current password';
+var globalPreferencesHeader          = 'Preferences';
+var globalRemindHeader               = 'Remind password';
+var globalSignInHeader               = 'Sign in';
+var globalSignUpHeader               = 'Sign up';
+var globalSignInGoogleContent        = 'Sign in with Google';
 
 //OAuth2 flow;
 var globalAlreadyAuthorized          = 'Connector previously authorized!';
@@ -279,9 +294,14 @@ var globalApiTokenAuthType           = 'APItoken';
 var globalOAuth2AuthType             = 'OAuth2';
 
 //connector types specific globals;
+var globalBpmShort                   = 'Fetches sales and marketing info from bpm\'online CRM platform';
 var globalCloseShort                 = 'Fetches contact and activities information from Close CRM';
 var globalGitHubShort                = 'Retrieves basic user info from GitHub account if one exists';
+var globalInfusionShort              = 'Fetches sales and marketing information from Infusionsoft by Keap CRM & marketing automation platform';
 var globalLACRMshort                 = 'Fetches contact and pipeline information from Less Annoying CRM';
 var globalOneCRMshort                = 'Fetches contact information from 1CRM platform';
 var globalPipedriveShort             = 'Fetches sales and marketing data from Pipedrive Sales CRM & Pipeline Management';
+var globalSheetsShort                = 'Fetches data from a Google Sheet. Please, make sure that you have access rights to view it';
+var globalQBShortDesc                = 'Fetches customer or supplier invoice or bill detail from connected QuickBooks company. Please authenticate to QuickBooks';
 var globalWebhookShort               = 'Sends and recieves data from custom webhooks, including Microsoft Flow (supports iterative data updating)';
+var globalZendeskSellShort           = 'Fetches contact and company information from Zendesk Sell';
