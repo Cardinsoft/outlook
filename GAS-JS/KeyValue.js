@@ -186,8 +186,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   let action = this.action;
   const iconUrl = this.url;
   const icon = this.icon;
-  let content = this.content;
-  console.log(content); //create row element;
+  let content = this.content; //create row element;
 
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
@@ -253,8 +252,10 @@ KeyValue.prototype.appendToUi = function (parent) {
     label.className = 'ms-fontSize-s KeyValueLabel';
     label.textContent = this.topLabel;
     wrapText.append(label);
-  } //create content text element;
+  } //check and replace \r\n;
 
+
+  content = changeNewlines(content); //create content text element;
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
