@@ -197,12 +197,12 @@ TextButton.prototype.appendToUi = function (parent) {
   } else if (openLink) {
     button.addEventListener('click', function () {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync(forceHttps(link.url));
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url));
     });
   } else {
     button.addEventListener('click', function () {
       const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync(forceHttps(auth.url));
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url));
     });
   }
 }; //Emulate Class ImageButton extending base Class Button for CardService service;
