@@ -197,7 +197,9 @@ TextButton.prototype.appendToUi = function (parent) {
   } else if (openLink) {
     button.addEventListener('click', function () {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url));
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (e) {
+        console.log(e);
+      });
     });
   } else {
     button.addEventListener('click', function () {
