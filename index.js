@@ -36,7 +36,7 @@ Office.initialize = function (reason) {
           s.show(); //trigger Card;
 
           _context.next = 15;
-          return trigger(o, s);
+          return trigger();
 
         case 15:
           o.hide('#app-overlay');
@@ -407,13 +407,11 @@ Spinner.prototype.hide = function () {
 
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
- * @param {Ojbect} overlay Overlay class instance;
- * @param {Object} spinner Spinner class instance;
  * @returns {Function} first Card loader;
  */
 
 
-function trigger(_x, _x2) {
+function trigger() {
   return _trigger.apply(this, arguments);
 }
 /**
@@ -426,7 +424,7 @@ function trigger(_x, _x2) {
 function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(overlay, spinner) {
+  regeneratorRuntime.mark(function _callee4() {
     var e, o, s;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -456,7 +454,7 @@ function _trigger() {
   return _trigger.apply(this, arguments);
 }
 
-function actionCallback(_x3) {
+function actionCallback(_x) {
   return _actionCallback.apply(this, arguments);
 } //==========================================END CALLBACKS=======================================//
 //=========================================START UTILITIES======================================//
