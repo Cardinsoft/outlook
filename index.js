@@ -460,9 +460,9 @@ function actionCallback(_x) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Changes \r\n to line breaks and \t to HTML entity;
- * @param {String} content text to check;
- * @return {String|*} changed or original content;
+ * Matches input for being a mailto anchor and sets event listeners;
+ * @param {HtmlElement} element element to set listeners to on success;
+ * @param {String||Array} input <a> html tag string to check;
  */
 
 
@@ -567,23 +567,6 @@ function _actionCallback() {
   }));
   return _actionCallback.apply(this, arguments);
 }
-
-function changeChars(content) {
-  if (typeof content === 'string' && content !== '') {
-    var check = /\r\n/g;
-    content = content.replace(check, '<br>');
-    var tabcheck = /\t/g;
-    content = content.replace(tabcheck, '&#x2006;');
-  }
-
-  return content;
-}
-/**
- * Matches input for being a mailto anchor and sets event listeners;
- * @param {HtmlElement} element element to set listeners to on success;
- * @param {String||Array} input <a> html tag string to check;
- */
-
 
 function loadMailto(element, input) {
   if (typeof input === 'number') {
