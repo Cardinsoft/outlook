@@ -252,10 +252,10 @@ KeyValue.prototype.appendToUi = function (parent) {
     label.className = 'ms-fontSize-s KeyValueLabel';
     label.textContent = this.topLabel;
     wrapText.append(label);
-  } //check and replace \r\n;
+  } //check and replace \r \n \t;
 
 
-  content = changeNewlines(content); //create content text element;
+  content = changeChars(content); //create content text element;
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
