@@ -33,9 +33,10 @@ Office.initialize = function (reason) {
 
           s = new Spinner();
           s.setSize('large');
-          s.show();
+          s.show(); //trigger Card;
+
           _context.next = 15;
-          return trigger();
+          return trigger(o, s);
 
         case 15:
           o.hide('#app-overlay');
@@ -406,11 +407,13 @@ Spinner.prototype.hide = function () {
 
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
- * @returns {Function}
+ * @param {Ojbect} overlay Overlay class instance;
+ * @param {Object} spinner Spinner class instance;
+ * @returns {Function} first Card loader;
  */
 
 
-function trigger() {
+function trigger(_x, _x2) {
   return _trigger.apply(this, arguments);
 }
 /**
@@ -423,16 +426,28 @@ function trigger() {
 function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4() {
-    var e;
+  regeneratorRuntime.mark(function _callee4(overlay, spinner) {
+    var e, o, s;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          e = new e_EventObject();
-          _context4.next = 3;
+          e = new e_EventObject(); //show app body overlay;
+
+          o = new Overlay();
+          o.setColor('white');
+          o.show('#app-overlay'); //show spinner on overlay;
+
+          s = new Spinner();
+          s.setSize('large');
+          s.show();
+          _context4.next = 9;
           return cardOpen(e);
 
-        case 3:
+        case 9:
+          overlay.hide('#app-overlay');
+          spinner.hide();
+
+        case 11:
         case "end":
           return _context4.stop();
       }
@@ -441,7 +456,7 @@ function _trigger() {
   return _trigger.apply(this, arguments);
 }
 
-function actionCallback(_x) {
+function actionCallback(_x3) {
   return _actionCallback.apply(this, arguments);
 } //==========================================END CALLBACKS=======================================//
 //=========================================START UTILITIES======================================//
