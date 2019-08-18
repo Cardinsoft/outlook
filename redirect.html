@@ -14,11 +14,9 @@
 		//this.location.replace(endpoint);
 		//this.focus();
 		
-		var ifr = document.createElement('iframe');
-			ifr.src = endpoint;
-			ifr.referrerpolicy = 'no-referrer'
-			
-		document.body.appendChild(ifr);
+		this.close();
+		
+		window.open(endpoint);
 		
 	});
 </script>
