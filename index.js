@@ -615,6 +615,10 @@ function loadMailto(element, input) {
 
 
 function loadAnchor(element, input) {
+  if (typeof input === 'number') {
+    input = input.toString();
+  }
+
   console.log(input);
 
   if (!(input instanceof Array)) {
