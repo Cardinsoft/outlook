@@ -1,46 +1,10 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-} //Emulate Class KeyValue for CardService service;
-
-
+//Emulate Class KeyValue for CardService service;
 let KeyValue = function KeyValue() {
   _classCallCheck(this, KeyValue);
 
@@ -222,11 +186,12 @@ KeyValue.prototype.appendToUi = function (parent) {
   let action = this.action;
   const iconUrl = this.url;
   const icon = this.icon;
-  let content = this.content; //create row element;
+  let content = this.content;
+  console.log(content); //create row element;
 
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
-  parent.appendChild(widget); //add event listener chain ( click -> callback );
+  parent.append(widget); //add event listener chain ( click -> callback );
 
   if (action) {
     //set refrence;
@@ -261,7 +226,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   if (iconUrl || icon) {
     const wrapImg = document.createElement('div');
     wrapImg.className = 'column-icon';
-    widget.appendChild(wrapImg);
+    widget.append(wrapImg);
     const img = document.createElement('img');
     img.className = 'KeyValueImage';
 
@@ -275,26 +240,26 @@ KeyValue.prototype.appendToUi = function (parent) {
       img.alt = this.altText;
     }
 
-    wrapImg.appendChild(img);
+    wrapImg.append(img);
   } //handle label and content creation;
 
 
   const wrapText = document.createElement('div');
   wrapText.className = 'column-text';
-  widget.appendChild(wrapText);
+  widget.append(wrapText);
 
   if (this.topLabel) {
     const label = document.createElement('label');
     label.className = 'ms-fontSize-s KeyValueLabel';
     label.textContent = this.topLabel;
-    wrapText.appendChild(label);
+    wrapText.append(label);
   } //create content text element;
 
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
   contentText.innerHTML = content;
-  wrapText.appendChild(contentText);
+  wrapText.append(contentText);
 
   if (content) {
     loadAnchor(contentText, content);
@@ -308,7 +273,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   if (btn || sw) {
     const wrapButton = document.createElement('div');
     wrapButton.className = 'column-label';
-    widget.appendChild(wrapButton);
+    widget.append(wrapButton);
 
     if (btn) {
       btn.appendToUi(wrapButton);
