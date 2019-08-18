@@ -569,6 +569,12 @@ function _actionCallback() {
 }
 
 function loadMailto(element, input) {
+  if (typeof input === 'number') {
+    input = input.toString();
+  }
+
+  console.log(input);
+
   if (!(input instanceof Array)) {
     const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
     const matches = input.match(regexp); //get children that are anchors with mailto;
@@ -618,8 +624,6 @@ function loadAnchor(element, input) {
   if (typeof input === 'number') {
     input = input.toString();
   }
-
-  console.log(input);
 
   if (!(input instanceof Array)) {
     const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
