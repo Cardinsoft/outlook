@@ -12,8 +12,12 @@
 		})[0];
 		endpoint = endpoint.split('=')[1];
 
-		this.location.replace('https://google.com');
-		this.focus();
+		let p = document.createElement('p');
+		P.textContent = endpoint;
+		document.body.appendChild(p);
+
+		//this.location.replace('https://google.com');
+		//this.focus();
 	});
 </script>
 </head>
