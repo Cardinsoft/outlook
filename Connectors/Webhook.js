@@ -13,6 +13,9 @@ function Flow() {
     header: 'Webhook config',
     isCollapsible: false,
     widgets: [{
+      type: globalKeyValue,
+      content: 'We strongly recommend reading the <a href="https://cardinsoft.com/gmail-integrations/webhook/">documentation</a> on how to build responses prior to creating a webhook'
+    }, {
       name: globalURLfieldName,
       type: globalTextInput,
       title: 'Webhook URL',
@@ -65,25 +68,64 @@ function Flow() {
               headers: result.headers,
               content: content
             };
+            _context.prev = 11;
+            content = JSON.parse(content);
 
-            try {
-              content = JSON.parse(content);
-
-              if (content.hasMatch) {
-                returned.content = content.content;
-                returned.hasMatch = content.hasMatch;
-              }
-            } catch (e) {
-              console.log('Webhook Connector tried to parse response and failed - this error is usually harmless');
+            if (content.hasMatch) {
+              returned.content = content.content;
+              returned.hasMatch = content.hasMatch;
             }
 
+            _context.next = 29;
+            break;
+
+          case 16:
+            _context.prev = 16;
+            _context.t0 = _context["catch"](11);
+
+            if (!content.descr) {
+              _context.next = 22;
+              break;
+            }
+
+            timestamp('error during webhook connector run', {
+              error: _context.t0
+            }, 'warning');
+            _context.next = 29;
+            break;
+
+          case 22:
+            _context.t1 = true;
+            _context.next = _context.t1 === _context.t0 instanceof SyntaxError ? 25 : 28;
+            break;
+
+          case 25:
+            timestamp('error during webhook connector run (user misconfig)', {
+              error: _context.t0
+            }, 'warning');
+            returned = {
+              code: 0,
+              headers: {},
+              content: {
+                descr: 'Webhook failed to run due to malformed data. Please, check the failure reason below',
+                additional: _context.t0.message
+              }
+            };
+            return _context.abrupt("break", 29);
+
+          case 28:
+            timestamp('error during webhook connector run (no description) check', {
+              error: _context.t0
+            }, 'warning');
+
+          case 29:
             return _context.abrupt("return", returned);
 
-          case 13:
+          case 30:
           case "end":
             return _context.stop();
         }
-      }, _callee);
+      }, _callee, null, [[11, 16]]);
     }));
 
     return function (_x, _x2, _x3) {
