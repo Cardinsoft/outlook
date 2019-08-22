@@ -98,6 +98,7 @@ var globalIconHot                    = 'https://cardinsoft.com/wp-content/upload
 var globalIconGoogle                 = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN-SQ.png';
 var globalIconGoogleFull             = 'https://cardinsoft.com/wp-content/uploads/2019/07/GOOGLE-SIGNIN.png';
 var globalIconIndustry               = 'https://cardinsoft.com/wp-content/uploads/2019/07/INDUSTRY.png';
+var globalIconInviteRecurrent        = 'https://cardinsoft.com/wp-content/uploads/2019/08/INVITE-RECURR.png';
 var globalIconJobTitle               = 'https://cardinsoft.com/wp-content/uploads/2019/07/JOB-TITLE.png';
 var globalIconLink                   = 'https://cardinsoft.com/wp-content/uploads/2019/08/LINK.png';
 var globalIconList                   = 'https://cardinsoft.com/wp-content/uploads/2019/07/LIST.png';
