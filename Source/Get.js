@@ -9,17 +9,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  */
 function getTypes(filter) {
   //create class instance to get config data;
+  var close = new Close();
   var flow = new Flow();
   var lacrm = new LessAnnoyingCRM();
   var onecrm = new oneCRM();
   var pipedrive = new Pipedrive(); //set type names to function name;
 
   onecrm.name = oneCRM.name;
+  close.name = Close.name;
   flow.name = Flow.name;
   lacrm.name = LessAnnoyingCRM.name;
   pipedrive.name = Pipedrive.name; //create an array of used types;
 
-  var types = [flow, lacrm, pipedrive, onecrm]; //include dev-status connectors;
+  var types = [close, flow, lacrm, pipedrive, onecrm]; //include dev-status connectors;
 
   if (!includeConnectorsInDev) {
     types = types.filter(function (type) {
