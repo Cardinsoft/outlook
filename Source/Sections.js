@@ -276,13 +276,24 @@ function _createConnectorListSection() {
         case 27:
           _context.prev = 27;
           _context.t2 = _context["catch"](21);
-          console.error('Encountered an error while trying to run Connector type: %s', _context.t2); //temporary solution for uncaught 401 error;
-
+          //temporary solution for uncaught 401 error;
           response = {
             headers: '',
             content: _context.t2.message
           };
           isAuth = checkAgainstErrorTypes(_context.t2);
+
+          if (isAuth) {
+            timestamp('not authorized to user account', {
+              error: _context.t2,
+              type: cType.typeName
+            }, 'warning');
+          } else {
+            timestamp('error during dashboard display', {
+              error: _context.t2,
+              type: cType.typeName
+            }, 'error');
+          }
 
           if (!isAuth) {
             response.code = 0;
