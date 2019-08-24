@@ -95,6 +95,7 @@ body {
 .column-text {
 	margin-right : 8px;
 	flex-grow    : 100;
+	word-break   : break-word;
 }
 
 .ButtonSet {
