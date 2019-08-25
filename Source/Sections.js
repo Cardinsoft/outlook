@@ -1090,7 +1090,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 //access TextInput-specific params;
                 var hint = widget.hint;
                 var multiline = widget.multiline;
-                element = textInputWidget(title, name, hint, content, multiline);
+                element = textInputWidget(title, name, hint, content, multiline, callback, spin, connector);
                 break;
 
               case globalEnumRadio:
