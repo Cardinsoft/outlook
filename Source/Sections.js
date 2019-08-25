@@ -731,9 +731,13 @@ function createErrorSection(builder, isCollapsed, code, error, header) {
 
 
   if (errorDetails) {
-    try {
-      errorDetails = JSON.parse(errorDetails).descr;
-    } catch (e) {//do nothing;
+    if (typeof errorDetails === 'string') {
+      try {
+        errorDetails = JSON.parse(errorDetails).descr;
+      } catch (e) {//do nothing;
+      }
+    } else {
+      errorDetails = errorDetails.descr;
     }
 
     var additional = simpleKeyValueWidget(globalErrorWidgetTitle, errorDetails, true);
