@@ -731,11 +731,11 @@ function trimWhitespace(input, removeTabs) {
     return '';
   }
 
-  input = input.trimStart();
-  input = input.trimEnd();
+  input = input.replace(/^\s+/, '');
+  input = input.replace(/$\s+/, '');
 
   if (removeTabs) {
-    input.replace(/\t/, '');
+    input = input.replace(/\t/, '');
   }
 
   return input;
