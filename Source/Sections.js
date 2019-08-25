@@ -740,8 +740,10 @@ function createErrorSection(builder, isCollapsed, code, error, header) {
       errorDetails = errorDetails.descr;
     }
 
-    var additional = simpleKeyValueWidget(globalErrorWidgetTitle, errorDetails, true);
-    section.addWidget(additional);
+    if (errorDetails) {
+      var additional = simpleKeyValueWidget(globalErrorWidgetTitle, errorDetails, true);
+      section.addWidget(additional);
+    }
   } //create contact us widget;
 
 
