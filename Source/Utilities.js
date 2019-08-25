@@ -719,6 +719,22 @@ function extendCustom(object, inputs) {
   return object;
 }
 /**
+ * Trims input of whitespaces on both start and end;
+ * @param {String|undefined} input input to trim;
+ * @return {String} trimmed string;
+ */
+
+
+function trimWhitespace(input) {
+  if (!input) {
+    return '';
+  }
+
+  input = input.trimStart();
+  input = input.trimEnd();
+  return input;
+}
+/**
  * Trims message properties that can be trimmed and returns modified object;
  * @param {GmailMessage} msg Apps Script class representing current message;
  * @param {Boolean} trimFromToFrom truthy value to determine whether to trim from property to email address;
