@@ -731,6 +731,11 @@ function createErrorSection(builder, isCollapsed, code, error, header) {
 
 
   if (errorDetails) {
+    try {
+      errorDetails = JSON.parse(errorDetails).descr;
+    } catch (e) {//do nothing;
+    }
+
     var additional = simpleKeyValueWidget(globalErrorWidgetTitle, errorDetails, true);
     section.addWidget(additional);
   } //create contact us widget;
