@@ -719,19 +719,25 @@ function extendCustom(object, inputs) {
   return object;
 }
 /**
- * Trims input of whitespaces on both start and end;
+ * Trims input of whitespaces on both start and end and of tabs;
  * @param {String|undefined} input input to trim;
+ * @param {Boolean} removeTabs remove tabulation (\t);
  * @return {String} trimmed string;
  */
 
 
-function trimWhitespace(input) {
+function trimWhitespace(input, removeTabs) {
   if (!input) {
     return '';
   }
 
   input = input.trimStart();
   input = input.trimEnd();
+
+  if (removeTabs) {
+    input.replace(/\t/, '');
+  }
+
   return input;
 }
 /**
