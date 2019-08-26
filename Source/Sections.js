@@ -915,6 +915,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var title = widget.title;
             var name = widget.name;
             var content = widget.content;
+            var callback = widget.callback;
+            var spin = widget.hasSpinner;
 
             switch (type) {
               case globalTextParagraph:
