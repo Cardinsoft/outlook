@@ -152,7 +152,7 @@ function Pipedrive() {
     var _ref2 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee2(msg, connector, data) {
-      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, bkw, notesResp, notes, sectionDeals, dsw, dealsResp, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
+      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, bkw, notesResp, notes, sectionDeals, dsw, dealsResp, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, now, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -194,7 +194,7 @@ function Pipedrive() {
 
           case 20:
             responseDeals = _context2.sent;
-            _context2.next = 209;
+            _context2.next = 217;
             break;
 
           case 23:
@@ -224,7 +224,7 @@ function Pipedrive() {
 
           case 34:
             if (!(codeCD === 200)) {
-              _context2.next = 199;
+              _context2.next = 207;
               break;
             }
 
@@ -248,7 +248,7 @@ function Pipedrive() {
             persReq = _context2.sent;
 
             if (!(persReq.code >= 200 && persReq.code < 300)) {
-              _context2.next = 197;
+              _context2.next = 205;
               break;
             }
 
@@ -262,7 +262,7 @@ function Pipedrive() {
 
           case 50:
             if (!(idx < ids.length)) {
-              _context2.next = 197;
+              _context2.next = 205;
               break;
             }
 
@@ -275,7 +275,7 @@ function Pipedrive() {
             personsResp = _context2.sent;
 
             if (!(personsResp.code >= 200 && personsResp.code < 300)) {
-              _context2.next = 194;
+              _context2.next = 202;
               break;
             }
 
@@ -837,7 +837,7 @@ function Pipedrive() {
             asw = sectionActivs.widgets;
 
             if (!connector.activities) {
-              _context2.next = 189;
+              _context2.next = 197;
               break;
             }
 
@@ -848,7 +848,7 @@ function Pipedrive() {
             responseActivs = _context2.sent;
 
             if (!(responseActivs.code >= 200 && responseActivs.code < 300)) {
-              _context2.next = 189;
+              _context2.next = 197;
               break;
             }
 
@@ -905,7 +905,7 @@ function Pipedrive() {
 
           case 140:
             if (!(act < activities.length)) {
-              _context2.next = 189;
+              _context2.next = 197;
               break;
             }
 
@@ -935,63 +935,104 @@ function Pipedrive() {
             }
 
             asw.push(globalWidgetSeparator);
+            now = new Date();
             ac = {
               type: globalKeyValue,
               content: subject
             };
             _context2.t1 = type;
-            _context2.next = _context2.t1 === 'email' ? 162 : _context2.t1 === 'call' ? 165 : _context2.t1 === 'meeting' ? 168 : _context2.t1 === 'deadline' ? 171 : _context2.t1 === 'lunch' ? 174 : _context2.t1 === 'task' ? 177 : 180;
+            _context2.next = _context2.t1 === 'email' ? 163 : _context2.t1 === 'call' ? 167 : _context2.t1 === 'meeting' ? 171 : _context2.t1 === 'deadline' ? 175 : _context2.t1 === 'lunch' ? 179 : _context2.t1 === 'task' ? 183 : 187;
             break;
 
-          case 162:
+          case 163:
             ac.title = 'Email info';
             ac.icon = 'EMAIL';
-            return _context2.abrupt("break", 180);
 
-          case 165:
+            if (astatus) {
+              ac.buttonIcon = globalIconSend;
+              ac.buttonText = 'Sent';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconOverdue;
+              ac.buttonText = 'Unsent';
+            }
+
+            return _context2.abrupt("break", 187);
+
+          case 167:
             ac.title = 'Call info';
+            ac.icon = 'PHONE';
 
             if (astatus) {
-              ac.icon = globalIconCallEnded;
-            } else {
-              ac.icon = 'PHONE';
+              ac.buttonIcon = globalIconCallEnded;
+              ac.buttonText = 'Ended';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconCallMissed;
+              ac.buttonText = 'Missed';
             }
 
-            return _context2.abrupt("break", 180);
-
-          case 168:
-            ac.title = 'Meeting info';
-
-            if (astatus) {
-              ac.icon = 'EVENT_PERFORMER';
-            } else {
-              ac.icon = 'EVENT_PERFORMER';
-            }
-
-            return _context2.abrupt("break", 180);
+            return _context2.abrupt("break", 187);
 
           case 171:
-            ac.title = 'Deadline';
-            ac.icon = globalIconFlag;
-            return _context2.abrupt("break", 180);
-
-          case 174:
-            ac.title = 'Lunch info';
-            ac.icon = 'RESTAURANT_ICON';
-            return _context2.abrupt("break", 180);
-
-          case 177:
-            ac.title = 'Task to do';
+            ac.title = 'Meeting info';
+            ac.icon = 'EVENT_PERFORMER';
 
             if (astatus) {
-              ac.icon = globalIconTaskDone;
-            } else {
-              ac.icon = globalIconTask;
+              ac.buttonIcon = globalIconTaskDone;
+              ac.buttonText = 'Attended';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconMissedMeeting;
+              ac.buttonText = 'Missed';
             }
 
-            return _context2.abrupt("break", 180);
+            return _context2.abrupt("break", 187);
 
-          case 180:
+          case 175:
+            ac.title = 'Deadline';
+            ac.icon = globalIconFlag;
+
+            if (astatus) {
+              ac.buttonIcon = globalIconTaskDone;
+              ac.buttonText = 'Met';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconOverdue;
+              ac.buttonText = 'Missed';
+            }
+
+            return _context2.abrupt("break", 187);
+
+          case 179:
+            ac.title = 'Lunch info';
+            ac.icon = 'RESTAURANT_ICON';
+
+            if (astatus) {
+              ac.buttonIcon = 'RESTAURANT_ICON';
+              ac.buttonText = 'Attended';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconOverdue;
+              ac.buttonText = 'Skipped';
+            }
+
+            return _context2.abrupt("break", 187);
+
+          case 183:
+            ac.title = 'Task to do';
+            ac.icon = globalIconTask;
+
+            if (astatus) {
+              ac.buttonIcon = globalIconTaskDone;
+              ac.buttonText = 'Done';
+            } else if (now > dueDate) {
+              ac.buttonIcon = globalIconTaskFailed;
+              ac.buttonText = 'Failed';
+            }
+
+            return _context2.abrupt("break", 187);
+
+          case 187:
+            if (now > dueDate && !astatus || astatus) {
+              ac.buttonLink = domain + '.pipedrive.com/activities/list';
+            }
+
             asw.push(ac);
 
             if (aDealId !== null && aDealTitle !== null) {
@@ -1036,12 +1077,12 @@ function Pipedrive() {
               asw.push(activDur);
             }
 
-          case 186:
+          case 194:
             act++;
             _context2.next = 140;
             break;
 
-          case 189:
+          case 197:
             //end activities check;
             //access person properties;
             owner = contact.owner_id; //create person owner section and widgets;
@@ -1088,18 +1129,18 @@ function Pipedrive() {
 
             sections.push(sectionInfo, sectionEmpl, sectionBckg, sectionDeals, sectionActivs, sectionOwner);
 
-          case 194:
+          case 202:
             idx++;
             _context2.next = 50;
             break;
 
-          case 197:
-            _context2.next = 209;
+          case 205:
+            _context2.next = 217;
             break;
 
-          case 199:
+          case 207:
             if (!(codeCD === 401)) {
-              _context2.next = 206;
+              _context2.next = 214;
               break;
             }
 
@@ -1136,7 +1177,7 @@ function Pipedrive() {
               }
             });
 
-          case 206:
+          case 214:
             timestamp('failed to get company domain (Pipedrive)', responseCD, 'warning');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
@@ -1146,7 +1187,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 209:
+          case 217:
             //set content to return;
             returned = {
               code: persReq.code,
@@ -1155,7 +1196,7 @@ function Pipedrive() {
             };
             return _context2.abrupt("return", returned);
 
-          case 211:
+          case 219:
           case "end":
             return _context2.stop();
         }
