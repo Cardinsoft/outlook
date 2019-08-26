@@ -92,6 +92,10 @@ body {
 	margin-right : 1.5em;
 }
 
+.column-label > .ImageButton {
+	margin-right : 0;
+}
+
 .column-text {
 	margin-right : 8px;
 	flex-grow    : 100;
