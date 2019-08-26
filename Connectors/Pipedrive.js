@@ -848,6 +848,18 @@ function Pipedrive() {
                       };
                       dsw.push(dvcw);
 
+                      if (dl.notes_count > 0) {
+                        var dealNotes = this.fetchNotes_(domain, connector.apitoken, headers, 'deal', dl.id);
+                        dealNotes.forEach(function (dn) {
+                          dsw.push({
+                            icon: globalIconBackground,
+                            title: 'Note',
+                            type: globalKeyValue,
+                            content: dn.content
+                          });
+                        });
+                      }
+
                       if (expClose !== null && lostDate === null && wonDate === null) {
                         var dclw = {
                           icon: 'INVITE',
