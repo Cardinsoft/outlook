@@ -163,6 +163,12 @@ function Pipedrive() {
       var notes = JSON.parse(response.content).data;
 
       if (notes !== null) {
+        if (type === 'person') {
+          notes = notes.filter(function (n) {
+            return n.deal === null;
+          });
+        }
+
         ns = notes;
       }
     }
@@ -179,19 +185,17 @@ function Pipedrive() {
   this.displayNotes = function (notes) {
     var ns = [];
     notes.forEach(function (note) {
-      if (note.deal === null) {
-        note = note.content;
-        note = note.replace(/<ul>|<ol>/, '');
-        note = note.replace(/<li>+/g, '');
-        note = note.replace(/<\/li>+/g, '\r');
-        note = note.replace(/<\/ul><\/ol>/, '');
-        var ntw = {
-          icon: globalIconBackground,
-          type: globalKeyValue,
-          content: note
-        };
-        ns.push(ntw);
-      }
+      note = note.content;
+      note = note.replace(/<ul>|<ol>/, '');
+      note = note.replace(/<li>+/g, '');
+      note = note.replace(/<\/li>+/g, '\r');
+      note = note.replace(/<\/ul><\/ol>/, '');
+      var ntw = {
+        icon: globalIconBackground,
+        type: globalKeyValue,
+        content: note
+      };
+      ns.push(ntw);
     });
     return ns;
   };
