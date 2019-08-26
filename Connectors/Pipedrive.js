@@ -713,7 +713,7 @@ function Pipedrive() {
               isCollapsible: true,
               widgets: []
             };
-            personNotes = this.fetchNotes_(this.fetchNotes_domain, connector.apitoken, headers, 'person', personId.id);
+            personNotes = this.fetchNotes_(domain, connector.apitoken, headers, 'person', personId.id);
             sectionBckg.widgets = this.displayNotes(personNotes); //get person's deals if enabled;
 
             sectionDeals = {
