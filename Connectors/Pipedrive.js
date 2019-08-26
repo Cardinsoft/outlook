@@ -771,16 +771,20 @@ function Pipedrive() {
               numPartC = contact.participant_closed_deals_count;
               numRelO = contact.related_open_deals_count;
               numRelC = contact.related_closed_deals_count;
-              overviewPr = '<b>primary</b>\t' + numClosed + ' closed, ' + numOpen + ' open';
-              overviewPc = '<b>part of</b>\t' + numPartC + ' closed, ' + numPartO + ' open';
-              overviewRl = '<b>related</b>\t' + numRelC + ' closed, ' + numRelO + ' open';
-              overviewSt = '<b>status</b>\t' + numWon + ' won, ' + numLost + ' lost';
-              ocw = {
-                icon: globalIconDealOpen,
-                type: globalKeyValue,
-                content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r\n')
-              };
-              dsw.push(ocw);
+
+              if (numOpen > 0 || numClosed > 0 || numWon > 0 || numLost > 0 || numPartO > 0 || numPartC > 0 || numRelO > 0 || numRelC > 0) {
+                overviewPr = '<b>primary</b>\t' + numClosed + ' closed, ' + numOpen + ' open';
+                overviewPc = '<b>part of</b>\t' + numPartC + ' closed, ' + numPartO + ' open';
+                overviewRl = '<b>related</b>\t' + numRelC + ' closed, ' + numRelO + ' open';
+                overviewSt = '<b>status</b>\t' + numWon + ' won, ' + numLost + ' lost';
+                ocw = {
+                  icon: globalIconDealOpen,
+                  type: globalKeyValue,
+                  content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r\n')
+                };
+                dsw.push(ocw);
+              }
+
               deals = JSON.parse(dealsResp.content).data;
 
               if (deals !== null) {
