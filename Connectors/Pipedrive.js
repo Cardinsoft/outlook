@@ -319,7 +319,7 @@ function Pipedrive() {
     var _ref4 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee4(msg, connector, data) {
-      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, personNotes, sectionDeals, dsw, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, now, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
+      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, personNotes, sectionDeals, dsw, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, dls, dl, dlName, title, value, curr, status, dealOrg, expClose, wonDate, lostDate, lostReas, dtw, dow, dvcw, dealNotes, dclw, drw, dww, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, now, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) switch (_context4.prev = _context4.next) {
           case 0:
@@ -361,7 +361,7 @@ function Pipedrive() {
 
           case 20:
             responseDeals = _context4.sent;
-            _context4.next = 225;
+            _context4.next = 257;
             break;
 
           case 23:
@@ -391,7 +391,7 @@ function Pipedrive() {
 
           case 34:
             if (!(codeCD === 200)) {
-              _context4.next = 215;
+              _context4.next = 247;
               break;
             }
 
@@ -415,7 +415,7 @@ function Pipedrive() {
             persReq = _context4.sent;
 
             if (!(persReq.code >= 200 && persReq.code < 300)) {
-              _context4.next = 213;
+              _context4.next = 245;
               break;
             }
 
@@ -429,7 +429,7 @@ function Pipedrive() {
 
           case 50:
             if (!(idx < ids.length)) {
-              _context4.next = 213;
+              _context4.next = 245;
               break;
             }
 
@@ -442,7 +442,7 @@ function Pipedrive() {
             personsResp = _context4.sent;
 
             if (!(personsResp.code >= 200 && personsResp.code < 300)) {
-              _context4.next = 210;
+              _context4.next = 242;
               break;
             }
 
@@ -833,7 +833,7 @@ function Pipedrive() {
             dsw = sectionDeals.widgets;
 
             if (!connector.deals) {
-              _context4.next = 137;
+              _context4.next = 169;
               break;
             }
 
@@ -864,122 +864,147 @@ function Pipedrive() {
 
           case 135:
             deals = _context4.sent;
-            deals.forEach(function (dl, idl) {
-              if (dl.person_id !== null) {
-                var dlName = dl.person_id.name;
-
-                if (contact.name === dlName) {
-                  if (dsw.length > 0) {
-                    dsw.push(globalWidgetSeparator);
-                  } //access deal property;
-
-
-                  var title = dl.title;
-                  var value = dl.value; //0;
-
-                  var curr = dl.currency;
-                  var status = dl.status;
-                  var dealOrg = dl.org_id;
-                  var expClose = dl.expected_close_date; //null;
-
-                  var wonDate = dl.won_time; //null;
-
-                  var lostDate = dl.lost_time; //null;
-
-                  var lostReas = dl.lost_reason; //null;
-
-                  var dtw = {
-                    icon: globalIconDeal,
-                    type: globalKeyValue,
-                    title: 'Deal info',
-                    content: title
-                  };
-
-                  if (status === 'won') {
-                    dtw.buttonIcon = globalIconDealWon;
-                    dtw.buttonText = 'Won';
-                  } else if (status === 'lost') {
-                    dtw.buttonIcon = globalIconDealLost;
-                    dtw.buttonText = 'Lost';
-                  } else {
-                    dtw.buttonText = 'Edit';
-                    dtw.disabled = false;
-                  }
-
-                  dtw.buttonLink = domain + '.pipedrive.com/deal/' + dl.id;
-                  dtw.reload = true;
-                  dsw.push(dtw);
-
-                  if (dealOrg !== null) {
-                    var dow = {
-                      icon: globalIconCompany,
-                      type: globalKeyValue,
-                      title: 'Company',
-                      content: dealOrg.name
-                    };
-                    dsw.push(dow);
-                  }
-
-                  var dvcw = {
-                    icon: 'DOLLAR',
-                    type: globalKeyValue,
-                    title: 'Value',
-                    content: value + ' ' + curr
-                  };
-                  dsw.push(dvcw);
-
-                  if (dl.notes_count > 0) {
-                    var dealNotes = this.fetchNotes_(domain, connector.apitoken, headers, 'deal', dl.id);
-                    dealNotes.forEach(function (dn) {
-                      dsw.push({
-                        icon: globalIconBackground,
-                        title: 'Note',
-                        type: globalKeyValue,
-                        content: dn.content
-                      });
-                    });
-                  }
-
-                  if (expClose !== null && lostDate === null && wonDate === null) {
-                    var dclw = {
-                      icon: 'INVITE',
-                      type: globalKeyValue,
-                      title: 'Expected close',
-                      content: new Date(expClose).toLocaleDateString()
-                    };
-                    dsw.push(dclw);
-                  } else if (lostDate !== null) {
-                    var drw = {
-                      icon: globalIconLostInfo,
-                      type: globalKeyValue,
-                      title: 'Lost reason',
-                      content: lostReas
-                    };
-                    lostDate = new Date(lostDate.replace(' ', 'T'));
-                    dclw = {
-                      icon: 'INVITE',
-                      type: globalKeyValue,
-                      title: 'Lost date',
-                      content: lostDate.toLocaleDateString() + '\r' + lostDate.toLocaleTimeString()
-                    };
-                    dsw.push(drw, dclw);
-                  } else if (wonDate !== null) {
-                    wonDate = new Date(wonDate.replace(' ', 'T'));
-                    var dww = {
-                      icon: 'INVITE',
-                      type: globalKeyValue,
-                      title: 'Won date',
-                      content: wonDate.toLocaleDateString() + '\r' + wonDate.toLocaleTimeString()
-                    };
-                    dsw.push(dww);
-                  }
-                } //end contact name eq check;
-
-              } //end unassigned deals check;
-
-            }, this); //end deals loop;
+            dls = 0;
 
           case 137:
+            if (!(dls < deals.length)) {
+              _context4.next = 169;
+              break;
+            }
+
+            dl = deals[dls];
+
+            if (!(dl.person_id !== null)) {
+              _context4.next = 166;
+              break;
+            }
+
+            dlName = dl.person_id.name;
+
+            if (!(contact.name === dlName)) {
+              _context4.next = 166;
+              break;
+            }
+
+            if (dsw.length > 0) {
+              dsw.push(globalWidgetSeparator);
+            } //access deal property;
+
+
+            title = dl.title;
+            value = dl.value; //0;
+
+            curr = dl.currency;
+            status = dl.status;
+            dealOrg = dl.org_id;
+            expClose = dl.expected_close_date; //null;
+
+            wonDate = dl.won_time; //null;
+
+            lostDate = dl.lost_time; //null;
+
+            lostReas = dl.lost_reason; //null;
+
+            dtw = {
+              icon: globalIconDeal,
+              type: globalKeyValue,
+              title: 'Deal info',
+              content: title
+            };
+
+            if (status === 'won') {
+              dtw.buttonIcon = globalIconDealWon;
+              dtw.buttonText = 'Won';
+            } else if (status === 'lost') {
+              dtw.buttonIcon = globalIconDealLost;
+              dtw.buttonText = 'Lost';
+            } else {
+              dtw.buttonText = 'Edit';
+              dtw.disabled = false;
+            }
+
+            dtw.buttonLink = domain + '.pipedrive.com/deal/' + dl.id;
+            dtw.reload = true;
+            dsw.push(dtw);
+
+            if (dealOrg !== null) {
+              dow = {
+                icon: globalIconCompany,
+                type: globalKeyValue,
+                title: 'Company',
+                content: dealOrg.name
+              };
+              dsw.push(dow);
+            }
+
+            dvcw = {
+              icon: 'DOLLAR',
+              type: globalKeyValue,
+              title: 'Value',
+              content: value + ' ' + curr
+            };
+            dsw.push(dvcw);
+
+            if (!(dl.notes_count > 0)) {
+              _context4.next = 165;
+              break;
+            }
+
+            _context4.next = 163;
+            return this.fetchNotes_(domain, connector.apitoken, headers, 'deal', dl.id);
+
+          case 163:
+            dealNotes = _context4.sent;
+            dealNotes.forEach(function (dn) {
+              dsw.push({
+                icon: globalIconBackground,
+                title: 'Note',
+                type: globalKeyValue,
+                content: dn.content
+              });
+            });
+
+          case 165:
+            if (expClose !== null && lostDate === null && wonDate === null) {
+              dclw = {
+                icon: 'INVITE',
+                type: globalKeyValue,
+                title: 'Expected close',
+                content: new Date(expClose).toLocaleDateString()
+              };
+              dsw.push(dclw);
+            } else if (lostDate !== null) {
+              drw = {
+                icon: globalIconLostInfo,
+                type: globalKeyValue,
+                title: 'Lost reason',
+                content: lostReas
+              };
+              lostDate = new Date(lostDate.replace(' ', 'T'));
+              dclw = {
+                icon: 'INVITE',
+                type: globalKeyValue,
+                title: 'Lost date',
+                content: lostDate.toLocaleDateString() + '\r' + lostDate.toLocaleTimeString()
+              };
+              dsw.push(drw, dclw);
+            } else if (wonDate !== null) {
+              wonDate = new Date(wonDate.replace(' ', 'T'));
+              dww = {
+                icon: 'INVITE',
+                type: globalKeyValue,
+                title: 'Won date',
+                content: wonDate.toLocaleDateString() + '\r' + wonDate.toLocaleTimeString()
+              };
+              dsw.push(dww);
+            }
+
+          case 166:
+            dls++;
+            _context4.next = 137;
+            break;
+
+          case 169:
             //end deals check;
             //get person's deals if enabled;
             sectionActivs = {
@@ -990,18 +1015,18 @@ function Pipedrive() {
             asw = sectionActivs.widgets;
 
             if (!connector.activities) {
-              _context4.next = 205;
+              _context4.next = 237;
               break;
             }
 
-            _context4.next = 142;
+            _context4.next = 174;
             return performFetch(fullUrl + activsEP + '?api_token=' + connector.apitoken, 'get', headers);
 
-          case 142:
+          case 174:
             responseActivs = _context4.sent;
 
             if (!(responseActivs.code >= 200 && responseActivs.code < 300)) {
-              _context4.next = 205;
+              _context4.next = 237;
               break;
             }
 
@@ -1056,9 +1081,9 @@ function Pipedrive() {
 
             act = 0;
 
-          case 148:
+          case 180:
             if (!(act < activities.length)) {
-              _context4.next = 205;
+              _context4.next = 237;
               break;
             }
 
@@ -1094,10 +1119,10 @@ function Pipedrive() {
               content: subject
             };
             _context4.t1 = type;
-            _context4.next = _context4.t1 === 'email' ? 171 : _context4.t1 === 'call' ? 175 : _context4.t1 === 'meeting' ? 179 : _context4.t1 === 'deadline' ? 183 : _context4.t1 === 'lunch' ? 187 : _context4.t1 === 'task' ? 191 : 195;
+            _context4.next = _context4.t1 === 'email' ? 203 : _context4.t1 === 'call' ? 207 : _context4.t1 === 'meeting' ? 211 : _context4.t1 === 'deadline' ? 215 : _context4.t1 === 'lunch' ? 219 : _context4.t1 === 'task' ? 223 : 227;
             break;
 
-          case 171:
+          case 203:
             ac.title = 'Email info';
             ac.icon = 'EMAIL';
 
@@ -1109,9 +1134,9 @@ function Pipedrive() {
               ac.buttonText = 'Unsent';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 175:
+          case 207:
             ac.title = 'Call info';
             ac.icon = 'PHONE';
 
@@ -1123,9 +1148,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 179:
+          case 211:
             ac.title = 'Meeting info';
             ac.icon = 'EVENT_PERFORMER';
 
@@ -1137,9 +1162,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 183:
+          case 215:
             ac.title = 'Deadline';
             ac.icon = globalIconFlag;
 
@@ -1151,9 +1176,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 187:
+          case 219:
             ac.title = 'Lunch info';
             ac.icon = 'RESTAURANT_ICON';
 
@@ -1165,9 +1190,9 @@ function Pipedrive() {
               ac.buttonText = 'Skipped';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 191:
+          case 223:
             ac.title = 'Task to do';
             ac.icon = globalIconTask;
 
@@ -1179,9 +1204,9 @@ function Pipedrive() {
               ac.buttonText = 'Failed';
             }
 
-            return _context4.abrupt("break", 195);
+            return _context4.abrupt("break", 227);
 
-          case 195:
+          case 227:
             if (now > dueDate && !astatus || astatus) {
               ac.buttonLink = domain + '.pipedrive.com/activities/list';
             }
@@ -1230,12 +1255,12 @@ function Pipedrive() {
               asw.push(activDur);
             }
 
-          case 202:
+          case 234:
             act++;
-            _context4.next = 148;
+            _context4.next = 180;
             break;
 
-          case 205:
+          case 237:
             //end activities check;
             //access person properties;
             owner = contact.owner_id; //create person owner section and widgets;
@@ -1282,18 +1307,18 @@ function Pipedrive() {
 
             sections.push(sectionInfo, sectionEmpl, sectionBckg, sectionDeals, sectionActivs, sectionOwner);
 
-          case 210:
+          case 242:
             idx++;
             _context4.next = 50;
             break;
 
-          case 213:
-            _context4.next = 225;
+          case 245:
+            _context4.next = 257;
             break;
 
-          case 215:
+          case 247:
             if (!(codeCD === 401)) {
-              _context4.next = 222;
+              _context4.next = 254;
               break;
             }
 
@@ -1330,7 +1355,7 @@ function Pipedrive() {
               }
             });
 
-          case 222:
+          case 254:
             timestamp('failed to get company domain (Pipedrive)', responseCD, 'warning');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
@@ -1340,7 +1365,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 225:
+          case 257:
             //set content to return;
             returned = {
               code: persReq.code,
@@ -1349,7 +1374,7 @@ function Pipedrive() {
             };
             return _context4.abrupt("return", returned);
 
-          case 227:
+          case 259:
           case "end":
             return _context4.stop();
         }
