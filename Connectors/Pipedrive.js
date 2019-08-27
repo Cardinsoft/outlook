@@ -138,6 +138,88 @@ function Pipedrive() {
     };
   }();
   /**
+   * Fetches deals from API;
+   * @param {String} domain company domain;
+   * @param {String} token authorization token;
+   * @param {Object} headers request headers;
+   * @param {Integer} start deals fetch start (for paged responses);
+   * @return {Array<Object>} deals objects;
+   */
+
+
+  this.fetchDeals_ =
+  /*#__PURE__*/
+  function () {
+    var _ref2 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2(domain, token, headers, start) {
+      var ds, url, query, response, content, deals, ad, pages, page, limit, hasMore;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            ds = [];
+            url = 'https://' + domain + '.' + this.url + '/';
+            query = ['api_token=' + token];
+
+            if (start > 0) {
+              query.push('start=' + start);
+            }
+
+            _context2.next = 6;
+            return performFetch(encodeURI(url + 'deals?' + query.join('&')), 'get', headers);
+
+          case 6:
+            response = _context2.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context2.next = 24;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            deals = content.data;
+            ad = content.additional_data; //access pagination params;
+
+            pages = ad.pagination;
+            page = pages.start;
+            limit = pages.limit;
+            ;
+            hasMore = pages.more_items_in_collection;
+
+            if (!hasMore) {
+              _context2.next = 23;
+              break;
+            }
+
+            start = page + limit;
+            _context2.t0 = deals;
+            _context2.next = 21;
+            return this.fetchDeals_(domain, token, headers, start);
+
+          case 21:
+            _context2.t1 = _context2.sent;
+            deals = _context2.t0.concat.call(_context2.t0, _context2.t1);
+
+          case 23:
+            if (deals !== null) {
+              ds = deals;
+            }
+
+          case 24:
+            return _context2.abrupt("return", ds);
+
+          case 25:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2, this);
+    }));
+
+    return function (_x2, _x3, _x4, _x5) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  /**
    * Fetches notes from API;
    * @param {String} domain company domain;
    * @param {String} token authorization token;
@@ -151,12 +233,12 @@ function Pipedrive() {
   this.fetchNotes_ =
   /*#__PURE__*/
   function () {
-    var _ref2 = _asyncToGenerator(
+    var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(domain, token, headers, type, id) {
+    regeneratorRuntime.mark(function _callee3(domain, token, headers, type, id) {
       var ns, url, query, response, notes;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
           case 0:
             ns = [];
             url = 'https://' + domain + '.' + this.url + '/';
@@ -166,11 +248,11 @@ function Pipedrive() {
               query.push(type + '_id=' + id);
             }
 
-            _context2.next = 6;
+            _context3.next = 6;
             return performFetch(encodeURI(url + 'notes?' + query.join('&')), 'get', headers);
 
           case 6:
-            response = _context2.sent;
+            response = _context3.sent;
 
             if (response.code >= 200 && response.code < 300) {
               notes = JSON.parse(response.content).data;
@@ -186,17 +268,17 @@ function Pipedrive() {
               }
             }
 
-            return _context2.abrupt("return", ns);
+            return _context3.abrupt("return", ns);
 
           case 9:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
-      }, _callee2, this);
+      }, _callee3, this);
     }));
 
-    return function (_x2, _x3, _x4, _x5, _x6) {
-      return _ref2.apply(this, arguments);
+    return function (_x6, _x7, _x8, _x9, _x10) {
+      return _ref3.apply(this, arguments);
     };
   }();
   /**
@@ -235,12 +317,12 @@ function Pipedrive() {
   this.run =
   /*#__PURE__*/
   function () {
-    var _ref3 = _asyncToGenerator(
+    var _ref4 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3(msg, connector, data) {
-      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, personNotes, sectionDeals, dsw, dealsResp, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, now, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+    regeneratorRuntime.mark(function _callee4(msg, connector, data) {
+      var headers, trimmed, parameters, personsEP, activsEP, dealsEP, service, bearer, responsePersons, responseActivs, responseDeals, codeCD, contentCD, cdUrl, responseCD, dataCD, domain, fullUrl, sections, persReq, ids, idx, personId, personsResp, contact, sectionInfo, wci, name, label, emails, phones, created, updated, company, ciw, color, lw, responsePF, pfields, active, pa, eiw, pcw, puw, num, sectionEmpl, emw, cnw, caw, sectionBckg, personNotes, sectionDeals, dsw, numOpen, numClosed, numWon, numLost, numPartO, numPartC, numRelO, numRelC, overviewPr, overviewPc, overviewRl, overviewSt, ocw, deals, sectionActivs, asw, activities, numActiv, numDone, numUndone, numRefed, nextDate, nextTime, overallActivs, statusActivs, ovActivsContent, oacw, nadw, act, activity, astatus, aperson, orgId, dealName, subject, type, duration, isDone, note, aDealTitle, aDealId, dueDate, dueTime, now, ac, aadw, acn, activDue, activDur, owner, sectionOwner, widgetsOwner, ownerName, ownerEmail, ownerActive, authError, cdError, returned;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
           case 0:
             //set headers for url fetch;
             headers = {}; //set payload in case POST request will be triggered;
@@ -254,7 +336,7 @@ function Pipedrive() {
             dealsEP = '/deals'; //Auth2.0 currently disabled, checking for API token;
 
             if (!(parameters.type === globalOAuth2AuthType)) {
-              _context3.next = 23;
+              _context4.next = 23;
               break;
             }
 
@@ -265,39 +347,39 @@ function Pipedrive() {
             bearer = 'Bearer ' + service.getAccessToken();
             headers.Authorization = bearer; //initate requests;
 
-            _context3.next = 14;
+            _context4.next = 14;
             return performFetch(this.url + personsEP, method, headers);
 
           case 14:
-            responsePersons = _context3.sent;
-            _context3.next = 17;
+            responsePersons = _context4.sent;
+            _context4.next = 17;
             return performFetch(this.url + activsEP, method, headers);
 
           case 17:
-            responseActivs = _context3.sent;
-            _context3.next = 20;
+            responseActivs = _context4.sent;
+            _context4.next = 20;
             return performFetch(this.url + dealsEP, method, headers);
 
           case 20:
-            responseDeals = _context3.sent;
-            _context3.next = 216;
+            responseDeals = _context4.sent;
+            _context4.next = 225;
             break;
 
           case 23:
             if (connector.account) {
-              _context3.next = 32;
+              _context4.next = 32;
               break;
             }
 
             cdUrl = 'https://api.pipedrive.com/v1/users/me?api_token=' + connector.apitoken;
-            _context3.next = 27;
+            _context4.next = 27;
             return performFetch(cdUrl, 'get', {});
 
           case 27:
-            responseCD = _context3.sent;
+            responseCD = _context4.sent;
             codeCD = responseCD.code;
             contentCD = responseCD.content;
-            _context3.next = 34;
+            _context4.next = 34;
             break;
 
           case 32:
@@ -310,7 +392,7 @@ function Pipedrive() {
 
           case 34:
             if (!(codeCD === 200)) {
-              _context3.next = 206;
+              _context4.next = 215;
               break;
             }
 
@@ -319,7 +401,7 @@ function Pipedrive() {
             domain = dataCD.company_domain; //set domain to connector;
 
             connector.account = domain;
-            _context3.next = 41;
+            _context4.next = 41;
             return saveConnector(connector);
 
           case 41:
@@ -327,14 +409,14 @@ function Pipedrive() {
             fullUrl = 'https://' + domain + '.' + this.url; //initiate sections and get filtered persons;
 
             sections = [];
-            _context3.next = 45;
+            _context4.next = 45;
             return performFetch(fullUrl + personsEP + '/find?search_by_email=1&term=' + trimmed.email + '&api_token=' + connector.apitoken, 'get', headers);
 
           case 45:
-            persReq = _context3.sent;
+            persReq = _context4.sent;
 
             if (!(persReq.code >= 200 && persReq.code < 300)) {
-              _context3.next = 204;
+              _context4.next = 213;
               break;
             }
 
@@ -348,20 +430,20 @@ function Pipedrive() {
 
           case 50:
             if (!(idx < ids.length)) {
-              _context3.next = 204;
+              _context4.next = 213;
               break;
             }
 
             personId = ids[idx]; //get person by previously fetched id;
 
-            _context3.next = 54;
+            _context4.next = 54;
             return performFetch(fullUrl + personsEP + '/' + personId.id + '?api_token=' + connector.apitoken, 'get', headers);
 
           case 54:
-            personsResp = _context3.sent;
+            personsResp = _context4.sent;
 
             if (!(personsResp.code >= 200 && personsResp.code < 300)) {
-              _context3.next = 201;
+              _context4.next = 210;
               break;
             }
 
@@ -395,34 +477,34 @@ function Pipedrive() {
             wci.push(ciw); //create person label widget;
 
             if (!(label !== null)) {
-              _context3.next = 88;
+              _context4.next = 88;
               break;
             }
 
             color = '#000000';
-            _context3.t0 = label;
-            _context3.next = _context3.t0 === 1 ? 73 : _context3.t0 === 2 ? 76 : _context3.t0 === 3 ? 79 : _context3.t0 === 4 ? 82 : 85;
+            _context4.t0 = label;
+            _context4.next = _context4.t0 === 1 ? 73 : _context4.t0 === 2 ? 76 : _context4.t0 === 3 ? 79 : _context4.t0 === 4 ? 82 : 85;
             break;
 
           case 73:
             label = 'Customer';
             color = '#007A00';
-            return _context3.abrupt("break", 86);
+            return _context4.abrupt("break", 86);
 
           case 76:
             label = 'Hot lead';
             color = '#ff0000';
-            return _context3.abrupt("break", 86);
+            return _context4.abrupt("break", 86);
 
           case 79:
             label = 'Warm lead';
             color = '#FFCE00';
-            return _context3.abrupt("break", 86);
+            return _context4.abrupt("break", 86);
 
           case 82:
             label = 'Cold lead';
             color = '#4285F4';
-            return _context3.abrupt("break", 86);
+            return _context4.abrupt("break", 86);
 
           case 85:
             label = 'Custom label';
@@ -437,15 +519,15 @@ function Pipedrive() {
 
           case 88:
             if (!connector.fields) {
-              _context3.next = 93;
+              _context4.next = 93;
               break;
             }
 
-            _context3.next = 91;
+            _context4.next = 91;
             return performFetch(fullUrl + '/personFields' + '?api_token=' + connector.apitoken, 'get', headers);
 
           case 91:
-            responsePF = _context3.sent;
+            responsePF = _context4.sent;
 
             if (responsePF.code >= 200 && responsePF.code < 300) {
               pfields = JSON.parse(responsePF.content).data;
@@ -737,11 +819,11 @@ function Pipedrive() {
               isCollapsible: true,
               widgets: []
             };
-            _context3.next = 119;
+            _context4.next = 119;
             return this.fetchNotes_(domain, connector.apitoken, headers, 'person', personId.id);
 
           case 119:
-            personNotes = _context3.sent;
+            personNotes = _context4.sent;
             sectionBckg.widgets = this.displayNotes(personNotes); //get person's deals if enabled;
 
             sectionDeals = {
@@ -752,161 +834,153 @@ function Pipedrive() {
             dsw = sectionDeals.widgets;
 
             if (!connector.deals) {
-              _context3.next = 128;
+              _context4.next = 137;
               break;
             }
 
-            _context3.next = 126;
-            return performFetch(fullUrl + dealsEP + '?api_token=' + connector.apitoken, 'get', headers);
+            numOpen = contact.open_deals_count;
+            numClosed = contact.closed_deals_count;
+            numWon = contact.won_deals_count;
+            numLost = contact.lost_deals_count;
+            numPartO = contact.participant_open_deals_count;
+            numPartC = contact.participant_closed_deals_count;
+            numRelO = contact.related_open_deals_count;
+            numRelC = contact.related_closed_deals_count;
 
-          case 126:
-            dealsResp = _context3.sent;
+            if (numOpen > 0 || numClosed > 0 || numWon > 0 || numLost > 0 || numPartO > 0 || numPartC > 0 || numRelO > 0 || numRelC > 0) {
+              overviewPr = '<b>primary</b>\t' + numClosed + ' closed, ' + numOpen + ' open';
+              overviewPc = '<b>part of</b>\t' + numPartC + ' closed, ' + numPartO + ' open';
+              overviewRl = '<b>related</b>\t' + numRelC + ' closed, ' + numRelO + ' open';
+              overviewSt = '<b>status</b>\t' + numWon + ' won, ' + numLost + ' lost';
+              ocw = {
+                icon: globalIconDealOpen,
+                type: globalKeyValue,
+                content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r\n')
+              };
+              dsw.push(ocw);
+            }
 
-            if (dealsResp.code >= 200 && dealsResp.code < 300) {
-              numOpen = contact.open_deals_count;
-              numClosed = contact.closed_deals_count;
-              numWon = contact.won_deals_count;
-              numLost = contact.lost_deals_count;
-              numPartO = contact.participant_open_deals_count;
-              numPartC = contact.participant_closed_deals_count;
-              numRelO = contact.related_open_deals_count;
-              numRelC = contact.related_closed_deals_count;
+            _context4.next = 135;
+            return this.fetchDeals_(domain, connector.apitoken, headers, 0);
 
-              if (numOpen > 0 || numClosed > 0 || numWon > 0 || numLost > 0 || numPartO > 0 || numPartC > 0 || numRelO > 0 || numRelC > 0) {
-                overviewPr = '<b>primary</b>\t' + numClosed + ' closed, ' + numOpen + ' open';
-                overviewPc = '<b>part of</b>\t' + numPartC + ' closed, ' + numPartO + ' open';
-                overviewRl = '<b>related</b>\t' + numRelC + ' closed, ' + numRelO + ' open';
-                overviewSt = '<b>status</b>\t' + numWon + ' won, ' + numLost + ' lost';
-                ocw = {
-                  icon: globalIconDealOpen,
-                  type: globalKeyValue,
-                  content: [overviewPr, overviewPc, overviewRl, overviewSt].join('\r\n')
-                };
-                dsw.push(ocw);
-              }
+          case 135:
+            deals = _context4.sent;
+            deals.forEach(function (dl, idl) {
+              if (dl.person_id !== null) {
+                var dlName = dl.person_id.name;
 
-              deals = JSON.parse(dealsResp.content).data;
-
-              if (deals !== null) {
-                deals.forEach(function (dl, idl) {
-                  if (dl.person_id !== null) {
-                    var dlName = dl.person_id.name;
-
-                    if (contact.name === dlName) {
-                      if (dsw.length > 0) {
-                        dsw.push(globalWidgetSeparator);
-                      } //access deal property;
+                if (contact.name === dlName) {
+                  if (dsw.length > 0) {
+                    dsw.push(globalWidgetSeparator);
+                  } //access deal property;
 
 
-                      var title = dl.title;
-                      var value = dl.value; //0;
+                  var title = dl.title;
+                  var value = dl.value; //0;
 
-                      var curr = dl.currency;
-                      var status = dl.status;
-                      var dealOrg = dl.org_id;
-                      var expClose = dl.expected_close_date; //null;
+                  var curr = dl.currency;
+                  var status = dl.status;
+                  var dealOrg = dl.org_id;
+                  var expClose = dl.expected_close_date; //null;
 
-                      var wonDate = dl.won_time; //null;
+                  var wonDate = dl.won_time; //null;
 
-                      var lostDate = dl.lost_time; //null;
+                  var lostDate = dl.lost_time; //null;
 
-                      var lostReas = dl.lost_reason; //null;
+                  var lostReas = dl.lost_reason; //null;
 
-                      var dtw = {
-                        icon: globalIconDeal,
+                  var dtw = {
+                    icon: globalIconDeal,
+                    type: globalKeyValue,
+                    title: 'Deal info',
+                    content: title
+                  };
+
+                  if (status === 'won') {
+                    dtw.buttonIcon = globalIconDealWon;
+                    dtw.buttonText = 'Won';
+                  } else if (status === 'lost') {
+                    dtw.buttonIcon = globalIconDealLost;
+                    dtw.buttonText = 'Lost';
+                  } else {
+                    dtw.buttonText = 'Edit';
+                    dtw.disabled = false;
+                  }
+
+                  dtw.buttonLink = domain + '.pipedrive.com/deal/' + dl.id;
+                  dtw.reload = true;
+                  dsw.push(dtw);
+
+                  if (dealOrg !== null) {
+                    var dow = {
+                      icon: globalIconCompany,
+                      type: globalKeyValue,
+                      title: 'Company',
+                      content: dealOrg.name
+                    };
+                    dsw.push(dow);
+                  }
+
+                  var dvcw = {
+                    icon: 'DOLLAR',
+                    type: globalKeyValue,
+                    title: 'Value',
+                    content: value + ' ' + curr
+                  };
+                  dsw.push(dvcw);
+
+                  if (dl.notes_count > 0) {
+                    var dealNotes = this.fetchNotes_(domain, connector.apitoken, headers, 'deal', dl.id);
+                    dealNotes.forEach(function (dn) {
+                      dsw.push({
+                        icon: globalIconBackground,
+                        title: 'Note',
                         type: globalKeyValue,
-                        title: 'Deal info',
-                        content: title
-                      };
+                        content: dn.content
+                      });
+                    });
+                  }
 
-                      if (status === 'won') {
-                        dtw.buttonIcon = globalIconDealWon;
-                        dtw.buttonText = 'Won';
-                      } else if (status === 'lost') {
-                        dtw.buttonIcon = globalIconDealLost;
-                        dtw.buttonText = 'Lost';
-                      } else {
-                        dtw.buttonText = 'Edit';
-                        dtw.disabled = false;
-                      }
+                  if (expClose !== null && lostDate === null && wonDate === null) {
+                    var dclw = {
+                      icon: 'INVITE',
+                      type: globalKeyValue,
+                      title: 'Expected close',
+                      content: new Date(expClose).toLocaleDateString()
+                    };
+                    dsw.push(dclw);
+                  } else if (lostDate !== null) {
+                    var drw = {
+                      icon: globalIconLostInfo,
+                      type: globalKeyValue,
+                      title: 'Lost reason',
+                      content: lostReas
+                    };
+                    lostDate = new Date(lostDate.replace(' ', 'T'));
+                    dclw = {
+                      icon: 'INVITE',
+                      type: globalKeyValue,
+                      title: 'Lost date',
+                      content: lostDate.toLocaleDateString() + '\r' + lostDate.toLocaleTimeString()
+                    };
+                    dsw.push(drw, dclw);
+                  } else if (wonDate !== null) {
+                    wonDate = new Date(wonDate.replace(' ', 'T'));
+                    var dww = {
+                      icon: 'INVITE',
+                      type: globalKeyValue,
+                      title: 'Won date',
+                      content: wonDate.toLocaleDateString() + '\r' + wonDate.toLocaleTimeString()
+                    };
+                    dsw.push(dww);
+                  }
+                } //end contact name eq check;
 
-                      dtw.buttonLink = domain + '.pipedrive.com/deal/' + dl.id;
-                      dtw.reload = true;
-                      dsw.push(dtw);
+              } //end unassigned deals check;
 
-                      if (dealOrg !== null) {
-                        var dow = {
-                          icon: globalIconCompany,
-                          type: globalKeyValue,
-                          title: 'Company',
-                          content: dealOrg.name
-                        };
-                        dsw.push(dow);
-                      }
+            }, this); //end deals loop;
 
-                      var dvcw = {
-                        icon: 'DOLLAR',
-                        type: globalKeyValue,
-                        title: 'Value',
-                        content: value + ' ' + curr
-                      };
-                      dsw.push(dvcw);
-
-                      if (dl.notes_count > 0) {
-                        var dealNotes = this.fetchNotes_(domain, connector.apitoken, headers, 'deal', dl.id);
-                        dealNotes.forEach(function (dn) {
-                          dsw.push({
-                            icon: globalIconBackground,
-                            title: 'Note',
-                            type: globalKeyValue,
-                            content: dn.content
-                          });
-                        });
-                      }
-
-                      if (expClose !== null && lostDate === null && wonDate === null) {
-                        var dclw = {
-                          icon: 'INVITE',
-                          type: globalKeyValue,
-                          title: 'Expected close',
-                          content: new Date(expClose).toLocaleDateString()
-                        };
-                        dsw.push(dclw);
-                      } else if (lostDate !== null) {
-                        var drw = {
-                          icon: globalIconLostInfo,
-                          type: globalKeyValue,
-                          title: 'Lost reason',
-                          content: lostReas
-                        };
-                        lostDate = new Date(lostDate.replace(' ', 'T'));
-                        dclw = {
-                          icon: 'INVITE',
-                          type: globalKeyValue,
-                          title: 'Lost date',
-                          content: lostDate.toLocaleDateString() + '\r' + lostDate.toLocaleTimeString()
-                        };
-                        dsw.push(drw, dclw);
-                      } else if (wonDate !== null) {
-                        wonDate = new Date(wonDate.replace(' ', 'T'));
-                        var dww = {
-                          icon: 'INVITE',
-                          type: globalKeyValue,
-                          title: 'Won date',
-                          content: wonDate.toLocaleDateString() + '\r' + wonDate.toLocaleTimeString()
-                        };
-                        dsw.push(dww);
-                      }
-                    }
-                  } //end unassigned deals check;
-
-                });
-              } //end deals not null;
-
-            } //end deals success;
-
-
-          case 128:
+          case 137:
             //end deals check;
             //get person's deals if enabled;
             sectionActivs = {
@@ -917,18 +991,18 @@ function Pipedrive() {
             asw = sectionActivs.widgets;
 
             if (!connector.activities) {
-              _context3.next = 196;
+              _context4.next = 205;
               break;
             }
 
-            _context3.next = 133;
+            _context4.next = 142;
             return performFetch(fullUrl + activsEP + '?api_token=' + connector.apitoken, 'get', headers);
 
-          case 133:
-            responseActivs = _context3.sent;
+          case 142:
+            responseActivs = _context4.sent;
 
             if (!(responseActivs.code >= 200 && responseActivs.code < 300)) {
-              _context3.next = 196;
+              _context4.next = 205;
               break;
             }
 
@@ -983,9 +1057,9 @@ function Pipedrive() {
 
             act = 0;
 
-          case 139:
+          case 148:
             if (!(act < activities.length)) {
-              _context3.next = 196;
+              _context4.next = 205;
               break;
             }
 
@@ -1020,11 +1094,11 @@ function Pipedrive() {
               type: globalKeyValue,
               content: subject
             };
-            _context3.t1 = type;
-            _context3.next = _context3.t1 === 'email' ? 162 : _context3.t1 === 'call' ? 166 : _context3.t1 === 'meeting' ? 170 : _context3.t1 === 'deadline' ? 174 : _context3.t1 === 'lunch' ? 178 : _context3.t1 === 'task' ? 182 : 186;
+            _context4.t1 = type;
+            _context4.next = _context4.t1 === 'email' ? 171 : _context4.t1 === 'call' ? 175 : _context4.t1 === 'meeting' ? 179 : _context4.t1 === 'deadline' ? 183 : _context4.t1 === 'lunch' ? 187 : _context4.t1 === 'task' ? 191 : 195;
             break;
 
-          case 162:
+          case 171:
             ac.title = 'Email info';
             ac.icon = 'EMAIL';
 
@@ -1036,9 +1110,9 @@ function Pipedrive() {
               ac.buttonText = 'Unsent';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 166:
+          case 175:
             ac.title = 'Call info';
             ac.icon = 'PHONE';
 
@@ -1050,9 +1124,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 170:
+          case 179:
             ac.title = 'Meeting info';
             ac.icon = 'EVENT_PERFORMER';
 
@@ -1064,9 +1138,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 174:
+          case 183:
             ac.title = 'Deadline';
             ac.icon = globalIconFlag;
 
@@ -1078,9 +1152,9 @@ function Pipedrive() {
               ac.buttonText = 'Missed';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 178:
+          case 187:
             ac.title = 'Lunch info';
             ac.icon = 'RESTAURANT_ICON';
 
@@ -1092,9 +1166,9 @@ function Pipedrive() {
               ac.buttonText = 'Skipped';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 182:
+          case 191:
             ac.title = 'Task to do';
             ac.icon = globalIconTask;
 
@@ -1106,9 +1180,9 @@ function Pipedrive() {
               ac.buttonText = 'Failed';
             }
 
-            return _context3.abrupt("break", 186);
+            return _context4.abrupt("break", 195);
 
-          case 186:
+          case 195:
             if (now > dueDate && !astatus || astatus) {
               ac.buttonLink = domain + '.pipedrive.com/activities/list';
             }
@@ -1157,12 +1231,12 @@ function Pipedrive() {
               asw.push(activDur);
             }
 
-          case 193:
+          case 202:
             act++;
-            _context3.next = 139;
+            _context4.next = 148;
             break;
 
-          case 196:
+          case 205:
             //end activities check;
             //access person properties;
             owner = contact.owner_id; //create person owner section and widgets;
@@ -1209,18 +1283,18 @@ function Pipedrive() {
 
             sections.push(sectionInfo, sectionEmpl, sectionBckg, sectionDeals, sectionActivs, sectionOwner);
 
-          case 201:
+          case 210:
             idx++;
-            _context3.next = 50;
+            _context4.next = 50;
             break;
 
-          case 204:
-            _context3.next = 216;
+          case 213:
+            _context4.next = 225;
             break;
 
-          case 206:
+          case 215:
             if (!(codeCD === 401)) {
-              _context3.next = 213;
+              _context4.next = 222;
               break;
             }
 
@@ -1247,7 +1321,7 @@ function Pipedrive() {
                 }]
               }]
             }];
-            return _context3.abrupt("return", {
+            return _context4.abrupt("return", {
               code: 200,
               headers: {},
               content: JSON.stringify(authError),
@@ -1257,34 +1331,34 @@ function Pipedrive() {
               }
             });
 
-          case 213:
+          case 222:
             timestamp('failed to get company domain (Pipedrive)', responseCD, 'warning');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
             };
-            return _context3.abrupt("return", {
+            return _context4.abrupt("return", {
               code: 0,
               content: cdError
             });
 
-          case 216:
+          case 225:
             //set content to return;
             returned = {
               code: persReq.code,
               headers: persReq.headers,
               content: JSON.stringify(sections)
             };
-            return _context3.abrupt("return", returned);
+            return _context4.abrupt("return", returned);
 
-          case 218:
+          case 227:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
-      }, _callee3, this);
+      }, _callee4, this);
     }));
 
-    return function (_x7, _x8, _x9) {
-      return _ref3.apply(this, arguments);
+    return function (_x11, _x12, _x13) {
+      return _ref4.apply(this, arguments);
     };
   }();
 }
