@@ -172,7 +172,7 @@ function Pipedrive() {
             response = _context2.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 24;
+              _context2.next = 23;
               break;
             }
 
@@ -183,32 +183,31 @@ function Pipedrive() {
             pages = ad.pagination;
             page = pages.start;
             limit = pages.limit;
-            ;
             hasMore = pages.more_items_in_collection;
 
             if (!hasMore) {
-              _context2.next = 23;
+              _context2.next = 22;
               break;
             }
 
             start = page + limit;
             _context2.t0 = deals;
-            _context2.next = 21;
+            _context2.next = 20;
             return this.fetchDeals_(domain, token, headers, start);
 
-          case 21:
+          case 20:
             _context2.t1 = _context2.sent;
             deals = _context2.t0.concat.call(_context2.t0, _context2.t1);
 
-          case 23:
+          case 22:
             if (deals !== null) {
               ds = deals;
             }
 
-          case 24:
+          case 23:
             return _context2.abrupt("return", ds);
 
-          case 25:
+          case 24:
           case "end":
             return _context2.stop();
         }
