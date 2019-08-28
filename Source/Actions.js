@@ -830,11 +830,15 @@ function _actionManual() {
         case 11:
           _context14.prev = 11;
           _context14.t0 = _context14["catch"](5);
-          //set empty response headers and content to error message;
-          console.error('Error during manual action: ' + _context14.t0);
+          timestamp('failed to run manual action (' + connector.type + ')', {
+            error: _context14.t0,
+            data: response
+          }, 'error');
           response = {
             headers: '',
-            content: _context14.t0.message
+            content: {
+              descr: 'Something went wrong during manual Connector run.'
+            }
           }; //check if error is caused by code or fetch fail;
 
           isAuthError = checkAgainstErrorTypes(_context14.t0);
@@ -922,8 +926,10 @@ function _performFullReset() {
         case 10:
           _context15.prev = 10;
           _context15.t0 = _context15["catch"](3);
-          //log error to stackdriver;
-          console.log(_context15.t0);
+          timestamp('error during Add-in reset', {
+            error: _context15.t0,
+            action: 'full reset'
+          }, 'error');
 
         case 13:
           _context15.prev = 13;
