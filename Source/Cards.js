@@ -496,8 +496,10 @@ function _cardDisplay() {
         case 83:
           _context3.prev = 83;
           _context3.t1 = _context3["catch"](36);
-          //handle data that failed to comply to JSON schema;
-          console.error('Crash during display generation: ' + _context3.t1);
+          timestamp('error during display Card build', {
+            error: _context3.t1,
+            type: 'display'
+          }, 'error');
           createUnparsedSection(builder, true, _context3.t1.message, JSON.stringify(content));
 
         case 87:
@@ -747,6 +749,10 @@ function _cardOpen() {
               params.method = def.method;
             }
           } else {
+            if (typeof content !== 'string') {
+              content = JSON.stringify(content);
+            }
+
             params.content = '[]';
             params.error = content;
           } //assign parameters to event object;
