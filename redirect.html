@@ -2,22 +2,58 @@
 <html>
 <head>
 <title>Redirecting</title>
+
+<style>
+	button {
+		min-height: 35px;
+		min-width: 65px;
+		border: none;
+		background-color: #0078d7;
+		color: white;
+	}
+</style>
+
 <script type="text/javascript">
-	this.addEventListener('load',function(event) {
+	this.addEventListener('load',function (event) {
 		const l = this.location;
 		const s = l.search.split('&');
-	
+
 		let endpoint = s.filter(function(param){
 			if(param.indexOf('endpoint')!==-1) { return param; }
 		})[0];
-		endpoint = endpoint.split('=')[1];
+		endpoint = (endpoint||'').split('=')[1];
 		
-		this.location.replace(endpoint);
-		this.focus();
+		if(this.msCrypto) {
+			let prompt = document.getElementById('prompt');
+			let notice  = '<p>You are seeing this message because you are using IE11 or clicked on a link in Outlook for PC.<br>';
+				notice += 'Unfortunately, we cannot guarantee that the document or application will be displayed.</p>';
+				prompt.innerHTML = notice;
+				
+			let openInDef = document.createElement('button');
+				openInDef.type = 'button';
+				openInDef.textContent = 'Open link in your default browser';
+				openInDef.addEventListener('click',function (event) {
+					window.open(endpoint);
+				});
+			
+			var proceedWrap = document.createElement('p');
+			let proceed = document.createElement('a');
+				proceed.href = endpoint;
+				proceed.textContent = 'Click here to proceed regardless';
+			
+			prompt.parentElement.appendChild(openInDef);
+			prompt.parentElement.appendChild(proceedWrap);
+			proceedWrap.appendChild(proceed);
+			
+		}else {
+			this.location.replace(endpoint);
+			this.focus();
+		}
+		
 	});
 </script>
 </head>
 <body>
-	<p>Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
+	<p id="prompt">Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
 </body>
 </html>
