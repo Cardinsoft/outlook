@@ -26,6 +26,7 @@
 	<!-- Authorized domains -->
 	<AppDomains>
 		<AppDomain>https://cardinsoft.github.io</AppDomain>
+		<AppDomain>https://cardinsoft.com</AppDomain>
 	</AppDomains>
 
 	<!-- Host application -->
