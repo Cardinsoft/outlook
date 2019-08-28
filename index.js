@@ -431,9 +431,6 @@ function dialogCallback(event) {
     event: log,
     type: 'dialog'
   }, 'log');
-  var n = document.createElement('p');
-  n.textContent = log;
-  document.body.appendChild(n); //return trigger();
 }
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
