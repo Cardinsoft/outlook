@@ -175,7 +175,7 @@ function createConnectorListSection(_x, _x2, _x3, _x4, _x5) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Array} config an array of Connector settings objects;
- * @returns {CardSection} this CardSection;
+ * @return {CardSection} this CardSection;
  */
 
 
@@ -417,44 +417,47 @@ function _createConfiguredConnectorsSection() {
 
           if (isCollapsed) {
             section.setNumUncollapsibleWidgets(globalNumUncollapsible);
-          }
+          } //sort configuration;
 
-          _context2.prev = 4;
-          _context2.next = 7;
+
+          _context2.next = 6;
           return sortConfig(config);
 
-        case 7:
-          config.forEach(function (connector) {
+        case 6:
+          config.forEach(function (connector, c) {
             var icon = connector.icon;
             var name = connector.name;
             var url = connector.url;
-            var type = connector.type; //default to empty url if nothing is in source;
+            var type = connector.type;
 
-            if (url === undefined) {
-              url = '';
-              connector.url === '';
-            } //stringify connector parameters;
+            try {
+              //default to empty url if nothing is in source;
+              if (url === undefined) {
+                url = '';
+                connector.url === '';
+              } //stringify connector parameters;
 
 
-            connector = propertiesToString(connector);
-            var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionEdit', connector);
-            section.addWidget(widget);
+              connector = propertiesToString(connector);
+              var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionEdit', connector);
+              section.addWidget(widget);
+            } catch (error) {
+              timestamp('error in settings due to misconfig', {
+                error: error,
+                type: 'settings'
+              }, 'error');
+              var errorWidget = actionKeyValueWidget(icon, '', 'Configuration issue.\rClick here to remove', globalActionAction, 'removeConnector', propertiesToString(connector));
+              section.addWidget(errorWidget);
+            }
           });
           builder.addSection(section);
           return _context2.abrupt("return", section);
 
-        case 12:
-          _context2.prev = 12;
-          _context2.t0 = _context2["catch"](4);
-          console.error(_context2.t0); //catch configuration error and create erro info section instead;
-
-          createConfigErrorSection(builder, false, globalConfigErrorHeader, globalConfigErrorWidgetTitle, globalConfigErrorWidgetContent, globalResetWidgetSubmitText);
-
-        case 16:
+        case 9:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[4, 12]]);
+    }, _callee2);
   }));
   return _createConfiguredConnectorsSection.apply(this, arguments);
 }
