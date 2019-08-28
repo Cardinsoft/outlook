@@ -578,24 +578,6 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
   return section;
 }
 /**
- * Creates section containing buttons for going back and/or to root card;
- * @param {CardBuilder} builder card builder to append section to;
- * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
- * @param {Integer} index connector index;
- * @returns {CardSection} this CardSection;
- */
-
-
-function createSectionBack(builder, isCollapsed, index) {
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed);
-  createWidgetsBackAndToRoot(section, index); //append section and return it;
-
-  builder.addSection(section);
-  return section;
-}
-/**
  * Creates section containing promp to confirm action and set of buttons to proceed;
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
@@ -1176,6 +1158,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
       var buttons = [];
 
       if (back) {
+        section.setCollapsible(false);
         buttons.push(back);
       }
 
