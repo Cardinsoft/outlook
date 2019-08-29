@@ -315,7 +315,7 @@ ImageButton.prototype.appendToUi = function (parent) {
   } else if (openLink) {
     button.addEventListener('click', function () {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (result) {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.com/redirect?endpoint=' + forceHttps(link.url), function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
