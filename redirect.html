@@ -6,13 +6,17 @@
 	this.addEventListener('load',function(event) {
 		const l = this.location;
 		const s = l.search.split('&');
-	
+
 		let endpoint = s.filter(function(param){
 			if(param.indexOf('endpoint')!==-1) { return param; }
 		})[0];
 		endpoint = endpoint.split('=')[1];
 		
-		this.location.replace(endpoint);
+		var a = document.createElement('p');
+		a.textContent = l;
+		document.body.appendChild(a);
+		
+		//this.location.replace(endpoint);
 		this.focus();
 	});
 </script>
