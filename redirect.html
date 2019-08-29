@@ -3,7 +3,7 @@
 <head>
 <title>Redirecting</title>
 <script type="text/javascript">
-	this.addEventListener('click',function(event) {
+	document.body.addEventListener('load',function(event) {
 		const l = this.location;
 		const s = l.search.split('&');
 	
@@ -12,12 +12,16 @@
 		})[0];
 		endpoint = endpoint.split('=')[1];
 		
-		this.location.replace(endpoint);
+		var a = document.getElementById('test');
+			a.href = endpoint;
+		
+		//this.location.replace(endpoint);
 		this.focus();
 	});
 </script>
 </head>
 <body>
+	<a id="test">click here</a>
 	<p>Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
 </body>
 </html>
