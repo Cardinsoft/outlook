@@ -14,7 +14,13 @@
 		
 		if(this.msCrypto) {
 			let prompt = document.getElementById('prompt');
-				prompt.textContent = '<a href="'+endpoint+'">'+'</a>';
+			
+			let notice  = '<p>You are seeing this message because you are using IE11 or clicked a link in Outlook.';
+				notice += 'Unfortunately, we cannot guarantee that the document or application will be displayed.</p>';
+				notice += '<a href="'+endpoint+'">Click here to open in your default browser</a>';
+			
+			prompt.innerHTML = notice;
+			
 		}else {
 			this.location.replace(endpoint);
 			this.focus();
