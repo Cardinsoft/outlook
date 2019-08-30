@@ -5,8 +5,9 @@
 
 <style>
 	button {
-		min-height: 20px;
-		min-width: 60px;
+		min-height: 35px;
+		min-width: 65px;
+		border: none;
 		background-color: #0078d7;
 		color: white;
 	}
@@ -20,14 +21,13 @@
 		let endpoint = s.filter(function(param){
 			if(param.indexOf('endpoint')!==-1) { return param; }
 		})[0];
-		endpoint = endpoint.split('=')[1];
+		endpoint = (endpoint||'').split('=')[1];
 		
 		if(this.msCrypto) {
 			let prompt = document.getElementById('prompt');
-			
 			let notice  = '<p>You are seeing this message because you are using IE11 or clicked on a link in Outlook for PC.<br>';
 				notice += 'Unfortunately, we cannot guarantee that the document or application will be displayed.</p>';
-				notice += '<a href="'+endpoint+'">Click here to proceed regrdless</a>';
+				prompt.innerHTML = notice;
 				
 			let openInDef = document.createElement('button');
 				openInDef.type = 'button';
@@ -35,10 +35,15 @@
 				openInDef.addEventListener('click',function (event) {
 					window.open(endpoint);
 				});
-				
-				prompt.parentElement.appendChild(openInDef);
 			
-			prompt.innerHTML = notice;
+			var proceedWrap = document.createElement('p');
+			let proceed = document.createElement('a');
+				proceed.href = endpoint;
+				proceed.textContent = 'Click here to proceed regardless';
+			
+			prompt.parentElement.appendChild(openInDef);
+			prompt.parentElement.appendChild(proceedWrap);
+			proceedWrap.appendChild(proceed);
 			
 		}else {
 			this.location.replace(endpoint);
