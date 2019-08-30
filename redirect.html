@@ -12,12 +12,18 @@
 		})[0];
 		endpoint = endpoint.split('=')[1];
 		
-		this.location.replace(endpoint);
-		this.focus();
+		if(this.msCrypto) {
+			let prompt = document.getElementById('prompt');
+				prompt.textContent = '<a href="'+endpoint+'">'+'</a>';
+		}else {
+			this.location.replace(endpoint);
+			this.focus();
+		}
+		
 	});
 </script>
 </head>
 <body>
-	<p>Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
+	<p id="prompt">Redirecting to the webpage...<br>Please, enable scripts if disabled</p>
 </body>
 </html>
