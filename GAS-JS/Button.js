@@ -315,7 +315,7 @@ ImageButton.prototype.appendToUi = function (parent) {
   } else if (openLink) {
     button.addEventListener('click', function () {
       const link = JSON.parse(openLink);
-      window.open(link.url);
+      window.open('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url));
       /*
       Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint='+forceHttps(link.url),function(result){
       	result.value.addEventHandler(Office.EventType.DialogEventReceived,dialogCallback);
@@ -324,9 +324,7 @@ ImageButton.prototype.appendToUi = function (parent) {
   } else {
     button.addEventListener('click', function () {
       const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), function (result) {
-        result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
-      });
+      window.open('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url));
     });
   }
 
