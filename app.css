@@ -182,7 +182,8 @@ body {
 }
 
 .collapsible {
-	overflow : hidden;
+	overflow-x : hidden;
+	overflow-y : hidden;
 }
 
 .centered {
@@ -230,11 +231,12 @@ span.menu:before {
 }
 
 .Menu {
-	z-index  : 999;
-	overflow : hidden;
-	position : absolute;
-    top      : 16px;
-    left     : auto;
+	z-index    : 999;
+	overflow-x : hidden;
+	overflow-y : hidden;
+	position   : absolute;
+    top        : 16px;
+    left       : auto;
 }
 
 .Select {
