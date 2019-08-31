@@ -27,15 +27,15 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
     let nameFrom = item.sender.displayName;
     let emailFrom = item.sender.emailAddress;
     let msgFrom = "".concat(nameFrom, " <").concat(emailFrom, ">");
-    let msgTo = item.to;
+    let msgTo = item.to || [];
     msgTo = msgTo.map(function (r) {
       return "".concat(r.displayName, " <").concat(r.emailAddress, ">");
     });
-    let msgBcc = item.bcc;
+    let msgBcc = item.bcc || [];
     msgBcc = msgBcc.map(function (bcc) {
       return "".concat(bcc.displayName, " <").concat(bcc.emailAddress, ">");
     });
-    let msgCc = item.cc;
+    let msgCc = item.cc || [];
     msgCc = msgCc.map(function (cc) {
       return "".concat(cc.displayName, " <").concat(cc.emailAddress, ">");
     });
