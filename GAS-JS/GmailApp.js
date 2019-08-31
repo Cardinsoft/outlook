@@ -33,7 +33,7 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
     const config = {
       id: item.itemId,
       from: msgFrom,
-      to: msgTo,
+      to: item.to,
       subject: item.normalizedSubject,
       bcc: item.bcc,
       cc: item.cc,
