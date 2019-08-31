@@ -753,6 +753,9 @@ function trimMessage(msg, trimFromToFrom, trimFromToSender) {
   var from = msg.getFrom();
   var to = msg.getTo();
   var me = Session.getEffectiveUser().getEmail();
+  console.log(from);
+  console.log(to);
+  console.log(me);
   var toTrim = from;
 
   if (trimFrom(to) !== me && trimFrom(from) === me) {
