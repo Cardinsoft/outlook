@@ -17,7 +17,7 @@ function () {
 
     this.id = msg.id;
     this.from = msg.from;
-    this.to = msg.to;
+    this.to = msg.to || [];
     this.subject = msg.subject || '';
     this.bcc = msg.bcc || [];
     this.cc = msg.cc || [];
