@@ -31,13 +31,21 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
     msgTo = msgTo.map(function (r) {
       return "".concat(r.displayName, " <").concat(r.emailAddress, ">");
     });
+    let msgBcc = item.bcc;
+    msgBcc = msgBcc.map(function (bcc) {
+      return "".concat(bcc.displayName, " <").concat(bcc.emailAddress, ">");
+    });
+    let msgCc = item.cc;
+    msgCc = msgCc.map(function (cc) {
+      return "".concat(cc.displayName, " <").concat(cc.emailAddress, ">");
+    });
     const config = {
       id: item.itemId,
       from: msgFrom,
       to: msgTo,
       subject: item.normalizedSubject,
-      bcc: item.bcc,
-      cc: item.cc,
+      bcc: msgBcc,
+      cc: msgCc,
       date: item.dateTimeCreated.toUTCString(),
       plain: item.body,
       thread: item.conversationId
