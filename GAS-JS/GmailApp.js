@@ -24,16 +24,17 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
   const item = Office.context.mailbox.item;
 
   if (item !== null) {
-    let nameTo = item.to.displayName;
-    let emailTo = item.to.emailAddress;
     let nameFrom = item.sender.displayName;
     let emailFrom = item.sender.emailAddress;
     let msgFrom = "".concat(nameFrom, " <").concat(emailFrom, ">");
-    let msgTo = "".concat(nameTo, " <").concat(emailTo, ">");
+    let msgTo = item.to;
+    msgTo = msgTo.map(function (r) {
+      return "".concat(r.displayName, " <").concat(r.emailAddress, ">");
+    });
     const config = {
       id: item.itemId,
       from: msgFrom,
-      to: item.to,
+      to: msgTo,
       subject: item.normalizedSubject,
       bcc: item.bcc,
       cc: item.cc,
