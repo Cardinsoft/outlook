@@ -13,23 +13,51 @@ function () {
   function e_Session() {
     _classCallCheck(this, e_Session);
 
-    this.user;
-    this.locale;
+    this.user = new User();
     this.timezone;
   }
+  /**
+   * Gets active Add-in user;
+   * @return {Object} active user;
+   */
+
 
   _createClass(e_Session, [{
     key: "getActiveUser",
-    value: function getActiveUser() {}
-  }, {
-    key: "getActiveUserLocale",
-    value: function getActiveUserLocale() {}
+    value: function getActiveUser() {
+      return this.user.setActive_();
+    }
   }, {
     key: "getEffectiveUser",
-    value: function getEffectiveUser() {}
+
+    /**
+     * Gets user under whose authority Add-in is running;
+     * @return {Object} effective user;
+     */
+    value: function getEffectiveUser() {
+      return this.user.setEffective_();
+    }
+  }, {
+    key: "getActiveUserLocale",
+
+    /**
+     * Gets user locale preferences;
+     * @return {String} user locale code;
+     */
+    value: function getActiveUserLocale() {
+      let user = this.user.setActive_();
+      return user.locale;
+    }
   }, {
     key: "getScriptTimeZone",
-    value: function getScriptTimeZone() {}
+
+    /**
+     * Gets script timezone;
+     * @return {String} timezone code;
+     */
+    value: function getScriptTimeZone() {
+      return this.timezone;
+    }
   }]);
 
   return e_Session;
@@ -46,17 +74,35 @@ function () {
     _classCallCheck(this, User);
 
     this.email;
+    this.user;
+    this.locale;
   }
-  /**
-   * Gets user email (either active or effective);
-   * @return {String} this user email;
-   */
-
 
   _createClass(User, [{
+    key: "setActive_",
+    value: function setActive_() {
+      //this.user = Office.context.mailbox.userProfile;
+      //this.locale = Office.context.displayLanguage;
+      //this.email = this.user.emailAddress;
+      return this;
+    }
+  }, {
+    key: "setEffective_",
+    value: function setEffective_() {
+      this.user = Office.context.mailbox.userProfile;
+      this.locale = Office.context.displayLanguage;
+      this.email = this.user.emailAddress;
+      return this;
+    }
+  }, {
     key: "getEmail",
+
+    /**
+     * Gets user email (either active or effective);
+     * @return {String} this user email;
+     */
     value: function getEmail() {
-      return this.email;
+      return this.user.email;
     }
   }]);
 
