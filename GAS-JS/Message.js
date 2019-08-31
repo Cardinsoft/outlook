@@ -39,7 +39,7 @@ function () {
   }, {
     key: "getTo",
     value: function getTo() {
-      return this.to.join(',');
+      return this.to.join(', ');
     }
   }, {
     key: "getSubject",
@@ -49,12 +49,12 @@ function () {
   }, {
     key: "getCc",
     value: function getCc() {
-      return this.cc.join(',');
+      return this.cc.join(', ');
     }
   }, {
     key: "getBcc",
     value: function getBcc() {
-      return this.bcc.join(',');
+      return this.bcc.join(', ');
     }
   }, {
     key: "getDate",
