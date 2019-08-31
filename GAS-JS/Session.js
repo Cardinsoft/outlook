@@ -102,7 +102,7 @@ function () {
      * @return {String} this user email;
      */
     value: function getEmail() {
-      return this.user.email;
+      return this.email;
     }
   }]);
 
