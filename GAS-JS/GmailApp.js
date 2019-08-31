@@ -24,10 +24,21 @@ e_GmailApp.prototype.getMessageById = function (messageId) {
   const item = Office.context.mailbox.item;
 
   if (item !== null) {
-    const name = Office.context.mailbox.item.sender.displayName;
-    const email = Office.context.mailbox.item.sender.emailAddress;
+    const name = item.sender.displayName;
+    const email = item.sender.emailAddress;
     const msgFrom = "".concat(name, " <").concat(email, ">");
-    const msg = new Message(msgFrom, '', item.cc, item.dateTimeCreated.toUTCString(), item.body, item.normalizedSubject, item.itemId, item);
+    const config = {
+      id: item.itemId,
+      from: msgFrom,
+      to: item.to,
+      subject: item.normalizedSubject,
+      bcc: item.bcc,
+      cc: item.cc,
+      date: item.dateTimeCreated.toUTCString(),
+      plain: item.body,
+      thread: item.conversationId
+    };
+    const msg = new Message(config);
     return msg;
   }
 }; //initiate GmailApp service;
