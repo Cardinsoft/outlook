@@ -1040,7 +1040,7 @@ function Pipedrive() {
               return order(a.due_date, b.due_date, false);
             });
             activities = activities.filter(function (a) {
-              if (a.participants !== null) {
+              if (a.participants !== null && a.participants !== undefined) {
                 if (a.participants.some(function (p) {
                   return p.person_id === contact.id;
                 })) {
