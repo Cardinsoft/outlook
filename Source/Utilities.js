@@ -750,18 +750,23 @@ function trimWhitespace(input, removeTabs) {
 
 
 function trimMessage(msg, trimFromToFrom, trimFromToSender) {
-  if (trimFromToFrom || trimFromToSender) {
-    var from = msg.getFrom();
+  var from = msg.getFrom();
+  var to = msg.getTo();
+  var me = Session.getEffectiveUser().getEmail();
+  var toTrim = from;
+
+  if (trimFrom(to) !== me && trimFrom(from) === me) {
+    toTrim = to;
   }
 
   var trimmed = {};
 
   if (trimFromToFrom) {
-    trimmed.email = trimFrom(from);
+    trimmed.email = trimFrom(toTrim);
   }
 
   if (trimFromToSender) {
-    trimmed.name = trimSender(from); //split sender's name by spaces (rudimental guessing);
+    trimmed.name = trimSender(toTrim); //split sender's name by spaces (rudimental guessing);
 
     var split = trimmed.name.split(' '); //access possible first name, lowercase it and set default first name index;
 
