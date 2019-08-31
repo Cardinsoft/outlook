@@ -8,7 +8,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//Emulate Message class that is obtained from current message auth flow;
+//Message class;
 let Message =
 /*#__PURE__*/
 function () {
@@ -39,7 +39,7 @@ function () {
   }, {
     key: "getTo",
     value: function getTo() {
-      return this.to;
+      return this.to.join(',');
     }
   }, {
     key: "getSubject",
@@ -78,7 +78,7 @@ function () {
 
 Message.prototype.getThread = function () {
   return new Thread(this.msgThread);
-}; //Emulate GmailThread class (partially);
+}; //Thread class;
 
 
 let Thread = function Thread(msgThread) {
