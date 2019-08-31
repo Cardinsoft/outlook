@@ -25,6 +25,7 @@ Office.initialize = function (reason) {
           CardService = new e_CardService();
           Utilities = new e_Utilities();
           PropertiesService = new e_PropertiesService();
+          Session = new e_Session();
           $('#app-body').show(); //show app body overlay;
 
           o = new Overlay();
@@ -35,15 +36,15 @@ Office.initialize = function (reason) {
           s.setSize('large');
           s.show(); //trigger Card;
 
-          _context.next = 15;
+          _context.next = 16;
           return trigger();
 
-        case 15:
+        case 16:
           o.hide('#app-overlay');
           s.hide();
           Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
 
-        case 18:
+        case 19:
         case "end":
           return _context.stop();
       }
@@ -434,7 +435,6 @@ function dialogCallback(event) {
 }
 /**
  * Triggers cardOpen with global event object preserved (panel change issue);
- * @returns {Function} first Card loader;
  */
 
 
@@ -938,6 +938,7 @@ const GLOBAL = this;
 const e_actions = {};
 let Utilities;
 let PropertiesService;
+let Session;
 let CardService; //=======================================START POLYFILLS===================================//
 
 const HtmlElement = GLOBAL.HTMLElement;
