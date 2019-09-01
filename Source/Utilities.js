@@ -746,7 +746,7 @@ function trimWhitespace(input, removeTabs) {
  * @param {Boolean=} trimFromToFrom truthy value to determine whether to trim from property to email address;
  * @param {Boolean=} trimFromToSender truthy value to determine whether to trim from property to sender info;
  * @param {Integer=} idx recipient index (for "sent" context);
- * @returns {Object}
+ * @return {Object} trimmed and formatted message;
  */
 
 
