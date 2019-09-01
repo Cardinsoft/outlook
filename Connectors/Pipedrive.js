@@ -187,7 +187,7 @@ function Pipedrive() {
             response = _context2.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 28;
+              _context2.next = 29;
               break;
             }
 
@@ -206,7 +206,7 @@ function Pipedrive() {
             console.log(limit);
 
             if (!hasMore) {
-              _context2.next = 26;
+              _context2.next = 27;
               break;
             }
 
@@ -216,19 +216,20 @@ function Pipedrive() {
 
           case 24:
             nextActivities = _context2.sent;
+            console.log(nextActivities);
             acts = acts.concat(nextActivities);
 
-          case 26:
-            _context2.next = 29;
+          case 27:
+            _context2.next = 30;
             break;
 
-          case 28:
+          case 29:
             console.log(response);
 
-          case 29:
+          case 30:
             return _context2.abrupt("return", acts);
 
-          case 30:
+          case 31:
           case "end":
             return _context2.stop();
         }
