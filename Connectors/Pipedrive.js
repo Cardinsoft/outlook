@@ -213,7 +213,7 @@ function Pipedrive() {
             start = page + limit;
             console.log(start);
             _context2.next = 25;
-            return this.fetchDeals_(domain, token, headers, start);
+            return this.fetchActivities_(domain, token, headers, start);
 
           case 25:
             nextActivities = _context2.sent;
