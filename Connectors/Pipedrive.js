@@ -187,50 +187,37 @@ function Pipedrive() {
             response = _context2.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 30;
+              _context2.next = 22;
               break;
             }
 
             content = JSON.parse(response.content);
             activities = content.data || [];
-            acts = acts.concat(activities);
-            console.log(acts.length); //access pagination params;
+            acts = acts.concat(activities); //access pagination params;
 
             ad = content.additional_data;
             pages = ad.pagination;
             page = pages.start;
             limit = pages.limit;
             hasMore = pages.more_items_in_collection;
-            console.log(hasMore);
-            console.log(page);
-            console.log(limit);
 
             if (!hasMore) {
-              _context2.next = 28;
+              _context2.next = 22;
               break;
             }
 
             start = page + limit;
-            console.log(start);
-            _context2.next = 25;
+            _context2.next = 20;
             return this.fetchActivities_(domain, token, headers, start);
 
-          case 25:
+          case 20:
             nextActivities = _context2.sent;
-            console.log(nextActivities);
             acts = acts.concat(nextActivities);
 
-          case 28:
-            _context2.next = 31;
-            break;
-
-          case 30:
-            console.log(response);
-
-          case 31:
+          case 22:
             return _context2.abrupt("return", acts);
 
-          case 32:
+          case 23:
           case "end":
             return _context2.stop();
         }
