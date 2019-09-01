@@ -282,16 +282,9 @@ function LessAnnoyingCRM() {
 
           case 10:
             response = _context.sent;
-            //send to analytics and return;
-            sendToAnalytics('event', {
-              ec: 'Connectors',
-              ea: 'Delete',
-              el: 'LACRM',
-              ev: '1'
-            }, false);
             return _context.abrupt("return", this.run(msg, connector));
 
-          case 13:
+          case 12:
           case "end":
             return _context.stop();
         }
