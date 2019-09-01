@@ -743,15 +743,17 @@ function trimWhitespace(input, removeTabs) {
 /**
  * Trims message properties that can be trimmed and returns modified object;
  * @param {GmailMessage} msg Apps Script class representing current message;
- * @param {Boolean} trimFromToFrom truthy value to determine whether to trim from property to email address;
- * @param {Boolean} trimFromToSender truthy value to determine whether to trim from property to sender info;
+ * @param {Boolean=} trimFromToFrom truthy value to determine whether to trim from property to email address;
+ * @param {Boolean=} trimFromToSender truthy value to determine whether to trim from property to sender info;
+ * @param {Integer=} idx recipient index (for "sent" context);
  * @returns {Object}
  */
 
 
-function trimMessage(msg, trimFromToFrom, trimFromToSender) {
+function trimMessage(msg, trimFromToFrom, trimFromToSender, idx) {
+  idx = idx || 0;
   var from = msg.getFrom();
-  var to = msg.getTo();
+  var to = msg.getTo().split(', ')[idx];
   var me = Session.getEffectiveUser().getEmail();
   console.log(from);
   console.log(to);
