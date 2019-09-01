@@ -168,7 +168,7 @@ function Pipedrive() {
     var _ref2 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee2(domain, token, headers, start) {
-      var acts, url, query, response, content, activities, ad, pages, page, limit, hasMore;
+      var acts, url, query, response, content, activities, ad, pages, page, limit, hasMore, nextActivities;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -187,7 +187,7 @@ function Pipedrive() {
             response = _context2.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 23;
+              _context2.next = 22;
               break;
             }
 
@@ -202,23 +202,22 @@ function Pipedrive() {
             hasMore = pages.more_items_in_collection;
 
             if (!hasMore) {
-              _context2.next = 23;
+              _context2.next = 22;
               break;
             }
 
             start = page + limit;
-            _context2.t0 = acts;
-            _context2.next = 21;
+            _context2.next = 20;
             return this.fetchDeals_(domain, token, headers, start);
 
-          case 21:
-            _context2.t1 = _context2.sent;
-            acts = _context2.t0.concat.call(_context2.t0, _context2.t1);
+          case 20:
+            nextActivities = _context2.sent;
+            acts = acts.concat(nextActivities);
 
-          case 23:
+          case 22:
             return _context2.abrupt("return", acts);
 
-          case 24:
+          case 23:
           case "end":
             return _context2.stop();
         }
