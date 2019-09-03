@@ -561,9 +561,9 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
     var domain = connector.account;
 
     if (domain) {
-      addQuery = 'https://' + domain + '.' + addInCRM.base;
+      addQuery = 'https://' + domain + '.' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
     } else {
-      addQuery = 'https://' + addInCRM.base;
+      addQuery = 'https://' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
     } //put parameters into query string;
 
 
