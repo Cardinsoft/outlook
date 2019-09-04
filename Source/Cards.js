@@ -624,7 +624,7 @@ function _cardOpen() {
           });
 
           if (!hasDefault) {
-            _context5.next = 42;
+            _context5.next = 41;
             break;
           }
 
@@ -638,18 +638,12 @@ function _cardOpen() {
           type = def.type;
           icon = def.icon;
           name = def.name || def.type;
-          url = def.url;
+          url = def.url || '';
           manual = def.manual;
           isDefault = def.isDefault;
           authType = def.auth; //find connector's index in config;
 
-          index = getIndex(config, def); //default to empty url if nothing is in source;
-
-          if (!url) {
-            url = '';
-            def.url === '';
-          } //load connector type and get authorization config;
-
+          index = getIndex(config, def); //load connector type and get authorization config;
 
           cType = new this[type]();
           cAuth = cType.auth; //set parameters to default connector;
@@ -707,18 +701,18 @@ function _cardOpen() {
           } //perform request and parse response if connector is not manual;
 
 
-          _context5.prev = 22;
-          _context5.next = 25;
+          _context5.prev = 21;
+          _context5.next = 24;
           return cType.run(msg, def);
 
-        case 25:
+        case 24:
           response = _context5.sent;
-          _context5.next = 34;
+          _context5.next = 33;
           break;
 
-        case 28:
-          _context5.prev = 28;
-          _context5.t0 = _context5["catch"](22);
+        case 27:
+          _context5.prev = 27;
+          _context5.t0 = _context5["catch"](21);
           timestamp('error during default connector run', {
             error: _context5.t0,
             type: cType.typeName
@@ -735,7 +729,7 @@ function _cardOpen() {
             response.code = 401;
           }
 
-        case 34:
+        case 33:
           code = response.code;
           content = response.content; //set response code to parameters;
 
@@ -761,40 +755,40 @@ function _cardOpen() {
           e.parameters = params;
           return _context5.abrupt("return", cardDisplay(e));
 
-        case 42:
+        case 41:
           if (!(config.length === 0)) {
-            _context5.next = 46;
+            _context5.next = 45;
             break;
           }
 
           return _context5.abrupt("return", cardWelcome(e));
 
-        case 46:
-          _context5.prev = 46;
-          _context5.next = 49;
+        case 45:
+          _context5.prev = 45;
+          _context5.next = 48;
           return createConnectorListSection(builder, false, '', config, msg);
 
-        case 49:
-          _context5.next = 55;
+        case 48:
+          _context5.next = 54;
           break;
 
-        case 51:
-          _context5.prev = 51;
-          _context5.t1 = _context5["catch"](46);
+        case 50:
+          _context5.prev = 50;
+          _context5.t1 = _context5["catch"](45);
           timestamp('error during Connector list display', {
             error: _context5.t1
           }, 'error');
           createConfigErrorSection(builder, false, globalConfigErrorHeader, '', globalConnectorListErrorContent);
 
-        case 55:
+        case 54:
           return _context5.abrupt("return", menu(builder));
 
-        case 56:
-          _context5.next = 63;
+        case 55:
+          _context5.next = 62;
           break;
 
-        case 58:
-          _context5.prev = 58;
+        case 57:
+          _context5.prev = 57;
           _context5.t2 = _context5["catch"](5);
           //handle unexpected config errors;
           timestamp('configuration error', {
@@ -806,11 +800,11 @@ function _cardOpen() {
           }, globalConfigErrorHeader);
           return _context5.abrupt("return", menu(builder));
 
-        case 63:
+        case 62:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, this, [[5, 58], [22, 28], [46, 51]]);
+    }, _callee5, this, [[5, 57], [21, 27], [45, 50]]);
   }));
   return _cardOpen.apply(this, arguments);
 }
