@@ -525,7 +525,7 @@ function Pipedrive() {
 
           case 20:
             responseDeals = _context6.sent;
-            _context6.next = 292;
+            _context6.next = 297;
             break;
 
           case 23:
@@ -1570,7 +1570,7 @@ function Pipedrive() {
             break;
 
           case 280:
-            _context6.next = 292;
+            _context6.next = 297;
             break;
 
           case 282:
@@ -1613,6 +1613,37 @@ function Pipedrive() {
             });
 
           case 289:
+            if (!(codeCD === 402)) {
+              _context6.next = 294;
+              break;
+            }
+
+            timestamp('failed to access Pipedrive account', responseCD, 'log');
+            return _context6.abrupt("return", {
+              code: 200,
+              headers: {},
+              content: JSON.stringify([{
+                header: 'Inactive account',
+                widgets: [{
+                  type: globalKeyValue,
+                  content: 'We couldn\'t access your account: either your trial expired or payment details not entered.'
+                }, {
+                  type: globalButtonSet,
+                  content: [{
+                    type: globalTextButton,
+                    title: 'Subscribe',
+                    action: globalActionLink,
+                    content: 'https://app.pipedrive.com/auth/subscribe'
+                  }]
+                }]
+              }]),
+              hasMatch: {
+                value: true,
+                text: 'Inactive'
+              }
+            });
+
+          case 294:
             timestamp('failed to get company domain (Pipedrive)', responseCD, 'warning');
             cdError = {
               descr: 'We could not get your company domain to authorize request to Pipedrive. Please, see error details below for more information.'
@@ -1622,7 +1653,7 @@ function Pipedrive() {
               content: cdError
             });
 
-          case 292:
+          case 297:
             //set content to return;
             returned = {
               code: persReq.code,
@@ -1632,7 +1663,7 @@ function Pipedrive() {
 
             return _context6.abrupt("return", returned);
 
-          case 294:
+          case 299:
           case "end":
             return _context6.stop();
         }
