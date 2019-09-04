@@ -689,7 +689,7 @@ function _cardOpen() {
           } else if (authType === globalOAuth2AuthType) {
             params.urlAuth = def.urlAuth;
             params.urlToken = def.urlToken;
-            params.id = def.id;
+            params.id = def.id || def.ID;
             params.secret = def.secret;
             params.scope = def.scope;
 
