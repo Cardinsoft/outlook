@@ -637,7 +637,7 @@ function _cardOpen() {
 
           type = def.type;
           icon = def.icon;
-          name = def.name;
+          name = def.name || def.type;
           url = def.url;
           manual = def.manual;
           isDefault = def.isDefault;
