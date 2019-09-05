@@ -12,7 +12,8 @@ function Close() {
   this.short = globalCloseShort;
   this.url = 'https://api.close.com/api/v1';
   this.addInCRM = {
-    base: 'app.close.com/search'
+    domain: 'app.close.com',
+    base: '/search'
   };
   this.config = [{
     widgets: [{
@@ -675,7 +676,7 @@ function Close() {
         icon: globalIconLink,
         type: globalKeyValue,
         title: 'Link',
-        content: '<a href="' + leadURL + '">' + leadURL.replace('https://', '') + '</a>'
+        content: leadURL.replace('https://', '')
       };
       wempl.push(urlw);
     } //create address widgets;
@@ -1009,15 +1010,87 @@ function Close() {
   this.displayActivities = function (activities, leadId, contactId) {
     var wact = [];
     activities.forEach(function (activity, a) {
-      if (a > 0) {
-        wact.push(globalWidgetSeparator);
-      } //access activity params;
-
-
+      //access activity params;
       var type = activity._type;
       var organization = activity.organization_id;
 
+      if (a > 0 && type !== 'Created') {
+        wact.push(globalWidgetSeparator);
+      }
+
       switch (type) {
+        case 'TaskCompleted':
+          var titleTC = activity.task_text;
+          var userTC = activity.task_assigned_to_name;
+          var dateTC = new Date(activity.date_updated.split('.')[0]);
+          var atcw = {
+            icon: globalIconTaskDone,
+            type: globalKeyValue,
+            title: 'Task completed',
+            content: titleTC
+          };
+          var utcw = {
+            icon: globalIconAccount,
+            type: globalKeyValue,
+            title: 'Assigned user',
+            content: userTC
+          };
+          var oscuw = {
+            icon: 'INVITE',
+            type: globalKeyValue,
+            content: dateTC.toLocaleDateString() + ' ' + dateTC.toLocaleTimeString()
+          };
+          wact.push(atcw, utcw, oscuw);
+          break;
+
+        case 'OpportunityStatusChange':
+          var oldOpptStatus = activity.old_status_label;
+          var newOpptStatus = activity.new_status_label;
+          var dateOpptChanged = new Date(activity.date_updated.split('.')[0]);
+          var oscw = {
+            icon: globalIconSwitch,
+            type: globalKeyValue,
+            title: 'Opportunity status change',
+            content: oldOpptStatus + ' &rarr; ' + newOpptStatus
+          };
+          var oscuw = {
+            icon: 'INVITE',
+            type: globalKeyValue,
+            content: dateOpptChanged.toLocaleDateString() + ' ' + dateOpptChanged.toLocaleTimeString()
+          };
+          wact.push(oscw, oscuw);
+          break;
+
+        case 'LeadStatusChange':
+          var newStatus = activity.new_status_label;
+          var oldStatus = activity.old_status_label;
+          var dateChanged = new Date(activity.date_updated.split('.')[0]);
+          var lscw = {
+            icon: globalIconSwitch,
+            type: globalKeyValue,
+            title: 'Lead status change',
+            content: oldStatus + ' &rarr; ' + newStatus
+          };
+          var lscuw = {
+            icon: 'INVITE',
+            type: globalKeyValue,
+            content: dateChanged.toLocaleDateString() + ' ' + dateChanged.toLocaleTimeString()
+          };
+          wact.push(lscw, lscuw);
+          break;
+
+        case 'Note':
+          var noteText = activity.note;
+          var noteTitle = new Date(activity.date_updated.split('.')[0]);
+          var antw = {
+            icon: globalIconNotes,
+            type: globalKeyValue,
+            title: 'Noted on ' + noteTitle.toLocaleDateString(),
+            content: noteText
+          };
+          wact.push(antw);
+          break;
+
         case 'Email':
           var sentdate = activity.date_sent;
           var emailDirect = activity.direction;
@@ -1128,6 +1201,206 @@ function Close() {
     return wact;
   };
   /**
+   * Utility method for fetching lead statuses;
+   * @param {Object} headers request headers;
+   * @param {Integer=} start start for pagination;
+   * @param {String=} id status id filter;
+   * @return {Array<Object>} lead statuses;
+   */
+
+
+  this.fetchLeadStatuses_ =
+  /*#__PURE__*/
+  function () {
+    var _ref2 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2(headers, start, id) {
+      var lsts, url, response, content, statuses, hasMore;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            start = start || 0;
+            lsts = [];
+            url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
+            _context2.next = 5;
+            return performFetch(url, 'get', headers);
+
+          case 5:
+            response = _context2.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context2.next = 17;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            statuses = content.data;
+            lsts = lsts.concat(statuses); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!hasMore) {
+              _context2.next = 17;
+              break;
+            }
+
+            _context2.t0 = lsts;
+            _context2.next = 15;
+            return this.fetchFields_(headers, start + 100, id);
+
+          case 15:
+            _context2.t1 = _context2.sent;
+            lsts = _context2.t0.concat.call(_context2.t0, _context2.t1);
+
+          case 17:
+            return _context2.abrupt("return", lsts);
+
+          case 18:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2, this);
+    }));
+
+    return function (_x6, _x7, _x8) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching activities;
+   * @param {Object} request headers;
+   * @param {Integer=} start start for pagination;
+   * @param {String=} lid lead id filter;
+   * @param {String=} cid contact id filter;
+   * @return {Array<Object>} activities;
+   */
+
+
+  this.fetchActivities_ =
+  /*#__PURE__*/
+  function () {
+    var _ref3 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee3(headers, start, lid, cid) {
+      var acts, query, url, response, content, activities, hasMore;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            start = start || 0;
+            acts = [];
+            query = [lid ? 'lead_id=' + lid : '', cid ? 'contact_id=' + cid : ''];
+            url = encodeURI(this.url + '/activity?' + (query.length > 0 ? query.join('&') : ''));
+            _context3.next = 6;
+            return performFetch(url, 'get', headers);
+
+          case 6:
+            response = _context3.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context3.next = 18;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            activities = content.data;
+            acts = acts.concat(activities); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!hasMore) {
+              _context3.next = 18;
+              break;
+            }
+
+            _context3.t0 = acts;
+            _context3.next = 16;
+            return this.fetchActivities_(headers, start + 100, lid, cid);
+
+          case 16:
+            _context3.t1 = _context3.sent;
+            acts = _context3.t0.concat.call(_context3.t0, _context3.t1);
+
+          case 18:
+            return _context3.abrupt("return", acts);
+
+          case 19:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3, this);
+    }));
+
+    return function (_x9, _x10, _x11, _x12) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching custom fields;
+   * @param {Object} headers request headers;
+   * @param {Integer=} start start for pagination;
+   * @param {String=} id if provided -> fetch single lead;
+   * @return {Array<Object>} custom fields;
+   */
+
+
+  this.fetchFields_ =
+  /*#__PURE__*/
+  function () {
+    var _ref4 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee4(headers, start, id) {
+      var fds, url, response, content, fields, hasMore;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            start = start || 0;
+            fds = [];
+            url = this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (start === 0 ? '?_skip=' + start : '');
+            _context4.next = 5;
+            return performFetch(url, 'get', headers);
+
+          case 5:
+            response = _context4.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context4.next = 17;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            fields = content.data;
+            fds = fds.concat(fields); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!hasMore) {
+              _context4.next = 17;
+              break;
+            }
+
+            _context4.t0 = fds;
+            _context4.next = 15;
+            return this.fetchFields_(headers, start + 100, id);
+
+          case 15:
+            _context4.t1 = _context4.sent;
+            fds = _context4.t0.concat.call(_context4.t0, _context4.t1);
+
+          case 17:
+            return _context4.abrupt("return", fds);
+
+          case 18:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4, this);
+    }));
+
+    return function (_x13, _x14, _x15) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+  /**
    * General method for retrieving info;
    * @param {Object} msg object with current message info;
    * @param {Object} connector Connector configuration;
@@ -1139,30 +1412,27 @@ function Close() {
   this.run =
   /*#__PURE__*/
   function () {
-    var _ref2 = _asyncToGenerator(
+    var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(msg, connector, data) {
-      var message, endpointL, endpointC, endpointA, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, leadStEndpoint, leadStResp, fields, fieldsURL, fieldsResp, l, lead, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, paramsA, queryA, urlA, responseA, sectionFields, authErr, returned;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
+    regeneratorRuntime.mark(function _callee5(msg, connector, data) {
+      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             //modify message;
             message = trimMessage(msg, true, true);
-            endpointL = '/lead';
-            endpointC = '/custom_fields/lead';
-            endpointA = '/activity';
             queryL = encodeURI('?query=email_address:' + message.email);
-            url = this.url + endpointL + queryL; //construct headers;
+            url = this.url + '/lead' + queryL; //construct headers;
 
             headers = {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
             }; //fetch endpoint and return response;
 
-            _context2.next = 9;
+            _context5.next = 6;
             return performFetch(url, 'get', headers);
 
-          case 9:
-            response = _context2.sent;
+          case 6:
+            response = _context5.sent;
             //access view type;
             view = connector.view;
 
@@ -1173,7 +1443,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 95;
+              _context5.next = 88;
               break;
             }
 
@@ -1188,11 +1458,11 @@ function Close() {
 
             users = [];
             usersURL = this.url + '/user';
-            _context2.next = 21;
+            _context5.next = 18;
             return performFetch(usersURL, 'get', headers);
 
-          case 21:
-            usersResp = _context2.sent;
+          case 18:
+            usersResp = _context5.sent;
 
             if (usersResp.code >= 200 && usersResp.code < 300) {
               users = JSON.parse(usersResp.content).data;
@@ -1200,44 +1470,21 @@ function Close() {
             //access lead statuses;
 
 
-            leadStatuses = [];
-            leadStEndpoint = '/status/lead';
-            _context2.next = 27;
-            return performFetch(this.url + leadStEndpoint, 'get', headers);
+            _context5.next = 22;
+            return this.fetchLeadStatuses_(headers);
 
-          case 27:
-            leadStResp = _context2.sent;
+          case 22:
+            leadStatuses = _context5.sent;
+            _context5.next = 25;
+            return this.fetchFields_(headers);
 
-            if (leadStResp.code >= 200 && leadStResp.code < 300) {
-              leadStatuses = JSON.parse(leadStResp.content).data;
-            } //access fields;
-
-
-            fields = [];
-
-            if (!connector.fields) {
-              _context2.next = 36;
-              break;
-            }
-
-            fieldsURL = this.url + '/custom_fields/lead';
-            _context2.next = 34;
-            return performFetch(fieldsURL, 'get', headers);
-
-          case 34:
-            fieldsResp = _context2.sent;
-
-            if (fieldsResp.code >= 200 && fieldsResp.code < 300) {
-              fields = JSON.parse(fieldsResp.content).data;
-            } //end fields success;
-
-
-          case 36:
+          case 25:
+            fields = _context5.sent;
             l = 0;
 
-          case 37:
+          case 27:
             if (!(l < leads.length)) {
-              _context2.next = 93;
+              _context5.next = 86;
               break;
             }
 
@@ -1301,14 +1548,14 @@ function Close() {
 
             c = 0;
 
-          case 61:
+          case 51:
             if (!(c < contacts.length)) {
-              _context2.next = 89;
+              _context5.next = 82;
               break;
             }
 
-            //access contact properties;
-            contact = contacts[c];
+            contact = contacts[c]; //access contact properties;
+
             contId = contact.id;
             name = contact.name; //empty String;
 
@@ -1323,7 +1570,7 @@ function Close() {
             socials = contact.integration_links; //Array 1 length;
 
             created = contact.date_created;
-            edited = contact.date_updated; //equal to created;       
+            edited = contact.date_updated; //equal to created;
             //skip contact if does not comply to email query;
 
             hasQueryEmail = emails.filter(function (email) {
@@ -1333,13 +1580,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context2.next = 75;
+              _context5.next = 65;
               break;
             }
 
-            return _context2.abrupt("continue", 86);
+            return _context5.abrupt("continue", 79);
 
-          case 75:
+          case 65:
             if (view === 'contact') {
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
               sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
@@ -1349,28 +1596,40 @@ function Close() {
               }
 
               sectionCont.widgets = sectionCont.widgets.concat(this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view));
-            } //access activities;
-
-
-            activities = [];
-            paramsA = ['lead_id=' + leadId, 'contact_id=' + contId];
-            queryA = encodeURI('?' + paramsA.join('&'));
-            urlA = this.url + endpointA + queryA;
-            _context2.next = 82;
-            return performFetch(urlA, 'get', headers);
-
-          case 82:
-            responseA = _context2.sent;
-
-            if (responseA.code >= 200 && responseA.code < 300) {
-              activities = JSON.parse(responseA.content).data;
             } //if activities enabled -> show;
 
 
-            if (connector.activities) {
-              sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
+            if (!connector.activities) {
+              _context5.next = 78;
+              break;
             }
 
+            activities = [];
+
+            if (!(view === 'contact')) {
+              _context5.next = 74;
+              break;
+            }
+
+            _context5.next = 71;
+            return this.fetchActivities_(headers, 0, leadId, contId);
+
+          case 71:
+            activities = _context5.sent;
+            _context5.next = 77;
+            break;
+
+          case 74:
+            _context5.next = 76;
+            return this.fetchActivities_(headers, 0, leadId);
+
+          case 76:
+            activities = _context5.sent;
+
+          case 77:
+            sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
+
+          case 78:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
@@ -1385,12 +1644,12 @@ function Close() {
               }
             }
 
-          case 86:
+          case 79:
             c++;
-            _context2.next = 61;
+            _context5.next = 51;
             break;
 
-          case 89:
+          case 82:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1408,18 +1667,18 @@ function Close() {
               }
             }
 
-          case 90:
+          case 83:
             l++;
-            _context2.next = 37;
+            _context5.next = 27;
             break;
 
-          case 93:
-            _context2.next = 102;
+          case 86:
+            _context5.next = 95;
             break;
 
-          case 95:
+          case 88:
             if (!(response.code === 401)) {
-              _context2.next = 101;
+              _context5.next = 94;
               break;
             }
 
@@ -1445,7 +1704,7 @@ function Close() {
                 }]
               }]
             }];
-            return _context2.abrupt("return", {
+            return _context5.abrupt("return", {
               code: 200,
               headers: {},
               content: JSON.stringify(authErr),
@@ -1455,10 +1714,10 @@ function Close() {
               }
             });
 
-          case 101:
-            return _context2.abrupt("return", response);
+          case 94:
+            return _context5.abrupt("return", response);
 
-          case 102:
+          case 95:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1473,17 +1732,17 @@ function Close() {
               };
             }
 
-            return _context2.abrupt("return", returned);
+            return _context5.abrupt("return", returned);
 
-          case 105:
+          case 98:
           case "end":
-            return _context2.stop();
+            return _context5.stop();
         }
-      }, _callee2, this);
+      }, _callee5, this);
     }));
 
-    return function (_x6, _x7, _x8) {
-      return _ref2.apply(this, arguments);
+    return function (_x16, _x17, _x18) {
+      return _ref5.apply(this, arguments);
     };
   }();
 }
