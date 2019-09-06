@@ -108,7 +108,7 @@ body {
 
 .ButtonSet .TextButton, .ButtonSet .ImageButton {
 	display      : inline;
-	margin-right : 16px;
+	margin-right : 0 16px 0 0;
 }
 
 .row + .TextButton {
