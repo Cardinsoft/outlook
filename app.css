@@ -111,6 +111,10 @@ body {
 	margin-right : 0 16px 0 0;
 }
 
+.ButtonSet .ImageButton {
+	transform: translate(0,6px);
+}
+
 .row + .TextButton {
     margin : 12px 0;
 }
