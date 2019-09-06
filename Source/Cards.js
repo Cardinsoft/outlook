@@ -384,12 +384,15 @@ function _cardDisplay() {
 
               if (cType.remove && connector.method !== 'add') {
                 paramsRemove = copyObject(connector, {
-                  method: 'remove'
+                  method: 'remove',
+                  prompt: 'You are about to remove a record in ' + cType.typeName + '. Are you sure?',
+                  confirmAction: 'updateSectionAdvanced',
+                  cancelAction: 'cardDisplay'
                 }, false);
                 actionsConfig.push({
                   icon: globalIconRemove,
                   text: globalRemoveConnectorText,
-                  funcName: 'updateSectionAdvanced',
+                  funcName: 'actionConfirm',
                   params: paramsRemove
                 });
               }
