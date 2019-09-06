@@ -21,8 +21,8 @@ body {
 .KeyValueImage {
     position      : relative;
     top           : 2px;
-	width         : 26px;
-    height        : 26px;
+	width         : 24px;
+    height        : 24px;
     border-radius : 5px;
 }
 
@@ -106,7 +106,7 @@ body {
 	margin : 0;
 }
 
-.ButtonSet .TextButton {
+.ButtonSet .TextButton, .ButtonSet .ImageButton {
 	display      : inline;
 	margin-right : 16px;
 }
@@ -121,8 +121,8 @@ body {
 }
 
 .ImageButton {
-    width  : 26px;
-    height : 26px;
+    width  : 24px;
+    height : 24px;
     margin : 0.75em 1.5em 0.75em 0;
 }
 
