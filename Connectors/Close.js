@@ -1497,7 +1497,7 @@ function Close() {
     var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee7(msg, connector, data) {
-      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
       return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) switch (_context7.prev = _context7.next) {
           case 0:
@@ -1570,33 +1570,7 @@ function Close() {
               break;
             }
 
-            lead = leads[l]; //initiate contact sections;
-
-            sectionCont = {
-              header: globalContactInfoHeader,
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionEmpl = {
-              header: globalEmploymentContactHeader,
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionTask = {
-              header: 'Tasks',
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionOppt = {
-              header: 'Opportunities',
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionAct = {
-              header: globalActivitiesHeader,
-              isCollapsible: true,
-              widgets: []
-            }; //access lead properties;
+            lead = leads[l]; //access lead properties;
 
             leadId = lead.id;
             leadName = lead.name;
@@ -1612,7 +1586,34 @@ function Close() {
             opportunities = lead.opportunities;
             tasks = lead.tasks;
             leadCreated = lead.date_created;
-            leadEdited = lead.date_updated;
+            leadEdited = lead.date_updated; //initiate contact sections;
+
+            sectionCont = {
+              header: globalContactInfoHeader,
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionEmpl = {
+              header: globalEmploymentContactHeader,
+              isCollapsible: true,
+              widgets: [],
+              entity: leadId
+            };
+            sectionTask = {
+              header: 'Tasks',
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionOppt = {
+              header: 'Opportunities',
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionAct = {
+              header: globalActivitiesHeader,
+              isCollapsible: true,
+              widgets: []
+            };
 
             if (view === 'lead') {
               sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
@@ -1670,6 +1671,7 @@ function Close() {
 
           case 65:
             if (view === 'contact') {
+              sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
               sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
             } else {
