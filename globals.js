@@ -128,6 +128,7 @@ var globalIconTaskFailed             = 'https://cardinsoft.com/wp-content/upload
 var globalIconText                   = 'https://cardinsoft.com/wp-content/uploads/2019/08/TEXT.png';
 var globalIconTwitter                = 'https://cardinsoft.com/wp-content/uploads/2019/06/TWITTER.png';
 var globalIconTwitterCircle          = 'https://cardinsoft.com/wp-content/uploads/2019/08/TWITTER-CIRCLE.png';
+var globalIconWarning                = 'https://cardinsoft.com/wp-content/uploads/2019/09/WARNING.png';
 var globalIconWebhook                = 'https://cardinsoft.com/wp-content/uploads/2019/06/WEBHOOK.png';
 var globalIconWorkPhone              = 'https://cardinsoft.com/wp-content/uploads/2019/07/WORK-PHONE.png';
 var globalIconWebsite                = 'https://cardinsoft.com/wp-content/uploads/2019/07/WEBSITE.png';
