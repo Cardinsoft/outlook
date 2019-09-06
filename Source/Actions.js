@@ -479,7 +479,7 @@ function _updateSectionAdvanced() {
 
           method = connector.method; //if type only has run() method or connector is simply comm;
 
-          if (!(!cType.update && !cType.remove || method === 'send')) {
+          if (!(!cType.update && !cType.remove || method === 'send' || method === 'refresh')) {
             _context6.next = 13;
             break;
           }
