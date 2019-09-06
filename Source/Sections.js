@@ -143,7 +143,14 @@ function createActionsSection(builder, isCollapsed, actionsConfig) {
   var buttons = []; //createTextButtons;
 
   actionsConfig.forEach(function (action) {
-    var button = textButtonWidget(action.text, false, false, action.funcName, action.params);
+    var button;
+
+    if (action.icon) {
+      button = imageButtonWidget(action.icon, action.text, action.funcName, action.params);
+    } else {
+      button = textButtonWidget(action.text, false, false, action.funcName, action.params);
+    }
+
     buttons.push(button);
   });
 
