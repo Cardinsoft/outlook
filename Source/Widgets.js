@@ -550,7 +550,7 @@ function createWidgetsConfirm(section, e) {
   //access parameters;
   var params = e.parameters; //create KeyValue widget to prompt user of action;
 
-  var userPrompt = simpleKeyValueWidget(globalConfirmWidgetTitle, params.prompt, true);
+  var userPrompt = simpleKeyValueWidget(globalConfirmWidgetTitle, params.prompt, true, globalIconWarning);
   section.addWidget(userPrompt); //create TextButton widgets to confirm or cancel;
 
   var btnConfirm = textButtonWidget(globalConfirmText, false, false, params.confirmAction, params);
