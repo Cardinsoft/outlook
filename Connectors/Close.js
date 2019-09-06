@@ -81,6 +81,36 @@ function Close() {
       }]
     }
   };
+  /**
+   * General method for refreshng info;
+   * @param {Object} msg object with current message info;
+   * @param {Object} connector Connector configuration;
+   * @param {Object} data optional object for display modification (pass an empty object otherwise);
+   * @return {Function} this run() method call;
+   */
+
+  this.refresh =
+  /*#__PURE__*/
+  function () {
+    var _ref = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee(msg, connector, data) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", this.run(msg, connector));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this);
+    }));
+
+    return function (_x, _x2, _x3) {
+      return _ref.apply(this, arguments);
+    };
+  }();
   /*
   this.remove = function(msg,connector,data) {
     
@@ -98,15 +128,16 @@ function Close() {
    * @return {Function} this run() method call;
    */
 
+
   this.update =
   /*#__PURE__*/
   function () {
-    var _ref = _asyncToGenerator(
+    var _ref2 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(msg, connector, forms, data, method) {
+    regeneratorRuntime.mark(function _callee2(msg, connector, forms, data, method) {
       var headers, idContact, idLead, payloadContact, payloadLead, key, input, k, kName, kId, kType, respLeadUpdate, respContactUpdate;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
           case 0:
             //construct headers;
             headers = {
@@ -117,15 +148,15 @@ function Close() {
             payloadContact = {};
             payloadLead = {}; //create payload;
 
-            _context.t0 = regeneratorRuntime.keys(forms);
+            _context2.t0 = regeneratorRuntime.keys(forms);
 
           case 4:
-            if ((_context.t1 = _context.t0()).done) {
-              _context.next = 39;
+            if ((_context2.t1 = _context2.t0()).done) {
+              _context2.next = 39;
               break;
             }
 
-            key = _context.t1.value;
+            key = _context2.t1.value;
             input = forms[key];
             k = key.split('&');
             kName = k[0]; //field name;
@@ -134,93 +165,93 @@ function Close() {
 
             kType = k[2]; //type for custom field;
 
-            _context.t2 = true;
-            _context.next = _context.t2 === (kName === 'status_id') ? 14 : _context.t2 === (kName.indexOf('lcf_') !== -1) ? 17 : _context.t2 === (kName === 'phones') ? 34 : 35;
+            _context2.t2 = true;
+            _context2.next = _context2.t2 === (kName === 'status_id') ? 14 : _context2.t2 === (kName.indexOf('lcf_') !== -1) ? 17 : _context2.t2 === (kName === 'phones') ? 34 : 35;
             break;
 
           case 14:
             payloadLead[kName] = input[0];
             idLead = kId;
-            return _context.abrupt("break", 37);
+            return _context2.abrupt("break", 37);
 
           case 17:
-            _context.t3 = true;
-            _context.next = _context.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 20 : _context.t3 === (kType === 'date' || kType === 'datetime') ? 22 : 31;
+            _context2.t3 = true;
+            _context2.next = _context2.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 20 : _context2.t3 === (kType === 'date' || kType === 'datetime') ? 22 : 31;
             break;
 
           case 20:
             payloadLead['custom.' + kName] = input;
-            return _context.abrupt("break", 32);
+            return _context2.abrupt("break", 32);
 
           case 22:
-            _context.prev = 22;
+            _context2.prev = 22;
             input = new Date(input[0]).toISOString();
-            _context.next = 29;
+            _context2.next = 29;
             break;
 
           case 26:
-            _context.prev = 26;
-            _context.t4 = _context["catch"](22);
-            return _context.abrupt("break", 32);
+            _context2.prev = 26;
+            _context2.t4 = _context2["catch"](22);
+            return _context2.abrupt("break", 32);
 
           case 29:
             payloadLead['custom.' + kName] = input;
-            return _context.abrupt("break", 32);
+            return _context2.abrupt("break", 32);
 
           case 31:
             payloadLead['custom.' + kName] = input[0];
 
           case 32:
             idLead = kId;
-            return _context.abrupt("break", 37);
+            return _context2.abrupt("break", 37);
 
           case 34:
-            return _context.abrupt("break", 37);
+            return _context2.abrupt("break", 37);
 
           case 35:
             payloadContact[kName] = input[0];
             idContact = kId;
 
           case 37:
-            _context.next = 4;
+            _context2.next = 4;
             break;
 
           case 39:
             if (!(Object.keys(payloadLead).length > 0)) {
-              _context.next = 43;
+              _context2.next = 43;
               break;
             }
 
-            _context.next = 42;
+            _context2.next = 42;
             return performFetch(this.url + '/lead/' + idLead + '/', 'put', headers, payloadLead);
 
           case 42:
-            respLeadUpdate = _context.sent;
+            respLeadUpdate = _context2.sent;
 
           case 43:
             if (!(Object.keys(payloadContact).length > 0)) {
-              _context.next = 47;
+              _context2.next = 47;
               break;
             }
 
-            _context.next = 46;
+            _context2.next = 46;
             return performFetch(this.url + '/contact/' + idContact + '/', 'put', headers, payloadContact);
 
           case 46:
-            respContactUpdate = _context.sent;
+            respContactUpdate = _context2.sent;
 
           case 47:
-            return _context.abrupt("return", this.run(msg, connector, data));
+            return _context2.abrupt("return", this.run(msg, connector, data));
 
           case 48:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
-      }, _callee, this, [[22, 26]]);
+      }, _callee2, this, [[22, 26]]);
     }));
 
-    return function (_x, _x2, _x3, _x4, _x5) {
-      return _ref.apply(this, arguments);
+    return function (_x4, _x5, _x6, _x7, _x8) {
+      return _ref2.apply(this, arguments);
     };
   }();
   /**
@@ -1212,24 +1243,24 @@ function Close() {
   this.fetchLeadStatuses_ =
   /*#__PURE__*/
   function () {
-    var _ref2 = _asyncToGenerator(
+    var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(headers, start, id) {
+    regeneratorRuntime.mark(function _callee3(headers, start, id) {
       var lsts, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
           case 0:
             start = start || 0;
             lsts = [];
             url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
-            _context2.next = 5;
+            _context3.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context2.sent;
+            response = _context3.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context2.next = 17;
+              _context3.next = 17;
               break;
             }
 
@@ -1240,30 +1271,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context2.next = 17;
+              _context3.next = 17;
               break;
             }
 
-            _context2.t0 = lsts;
-            _context2.next = 15;
+            _context3.t0 = lsts;
+            _context3.next = 15;
             return this.fetchFields_(headers, start + 100, id);
 
           case 15:
-            _context2.t1 = _context2.sent;
-            lsts = _context2.t0.concat.call(_context2.t0, _context2.t1);
+            _context3.t1 = _context3.sent;
+            lsts = _context3.t0.concat.call(_context3.t0, _context3.t1);
 
           case 17:
-            return _context2.abrupt("return", lsts);
+            return _context3.abrupt("return", lsts);
 
           case 18:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
-      }, _callee2, this);
+      }, _callee3, this);
     }));
 
-    return function (_x6, _x7, _x8) {
-      return _ref2.apply(this, arguments);
+    return function (_x9, _x10, _x11) {
+      return _ref3.apply(this, arguments);
     };
   }();
   /**
@@ -1279,25 +1310,25 @@ function Close() {
   this.fetchActivities_ =
   /*#__PURE__*/
   function () {
-    var _ref3 = _asyncToGenerator(
+    var _ref4 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3(headers, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee4(headers, start, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
           case 0:
             start = start || 0;
             acts = [];
             query = [lid ? 'lead_id=' + lid : '', cid ? 'contact_id=' + cid : ''];
             url = encodeURI(this.url + '/activity?' + (query.length > 0 ? query.join('&') : ''));
-            _context3.next = 6;
+            _context4.next = 6;
             return performFetch(url, 'get', headers);
 
           case 6:
-            response = _context3.sent;
+            response = _context4.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context3.next = 18;
+              _context4.next = 18;
               break;
             }
 
@@ -1308,30 +1339,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context3.next = 18;
+              _context4.next = 18;
               break;
             }
 
-            _context3.t0 = acts;
-            _context3.next = 16;
+            _context4.t0 = acts;
+            _context4.next = 16;
             return this.fetchActivities_(headers, start + 100, lid, cid);
 
           case 16:
-            _context3.t1 = _context3.sent;
-            acts = _context3.t0.concat.call(_context3.t0, _context3.t1);
+            _context4.t1 = _context4.sent;
+            acts = _context4.t0.concat.call(_context4.t0, _context4.t1);
 
           case 18:
-            return _context3.abrupt("return", acts);
+            return _context4.abrupt("return", acts);
 
           case 19:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
-      }, _callee3, this);
+      }, _callee4, this);
     }));
 
-    return function (_x9, _x10, _x11, _x12) {
-      return _ref3.apply(this, arguments);
+    return function (_x12, _x13, _x14, _x15) {
+      return _ref4.apply(this, arguments);
     };
   }();
   /**
@@ -1346,24 +1377,24 @@ function Close() {
   this.fetchFields_ =
   /*#__PURE__*/
   function () {
-    var _ref4 = _asyncToGenerator(
+    var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4(headers, start, id) {
+    regeneratorRuntime.mark(function _callee5(headers, start, id) {
       var fds, url, response, content, fields, hasMore;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             start = start || 0;
             fds = [];
             url = this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (start === 0 ? '?_skip=' + start : '');
-            _context4.next = 5;
+            _context5.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context4.sent;
+            response = _context5.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context4.next = 17;
+              _context5.next = 17;
               break;
             }
 
@@ -1374,30 +1405,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context4.next = 17;
+              _context5.next = 17;
               break;
             }
 
-            _context4.t0 = fds;
-            _context4.next = 15;
+            _context5.t0 = fds;
+            _context5.next = 15;
             return this.fetchFields_(headers, start + 100, id);
 
           case 15:
-            _context4.t1 = _context4.sent;
-            fds = _context4.t0.concat.call(_context4.t0, _context4.t1);
+            _context5.t1 = _context5.sent;
+            fds = _context5.t0.concat.call(_context5.t0, _context5.t1);
 
           case 17:
-            return _context4.abrupt("return", fds);
+            return _context5.abrupt("return", fds);
 
           case 18:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
-      }, _callee4, this);
+      }, _callee5, this);
     }));
 
-    return function (_x13, _x14, _x15) {
-      return _ref4.apply(this, arguments);
+    return function (_x16, _x17, _x18) {
+      return _ref5.apply(this, arguments);
     };
   }();
   /**
@@ -1412,12 +1443,12 @@ function Close() {
   this.run =
   /*#__PURE__*/
   function () {
-    var _ref5 = _asyncToGenerator(
+    var _ref6 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(msg, connector, data) {
+    regeneratorRuntime.mark(function _callee6(msg, connector, data) {
       var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) switch (_context5.prev = _context5.next) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
             //modify message;
             message = trimMessage(msg, true, true);
@@ -1428,11 +1459,11 @@ function Close() {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
             }; //fetch endpoint and return response;
 
-            _context5.next = 6;
+            _context6.next = 6;
             return performFetch(url, 'get', headers);
 
           case 6:
-            response = _context5.sent;
+            response = _context6.sent;
             //access view type;
             view = connector.view;
 
@@ -1443,7 +1474,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 88;
+              _context6.next = 88;
               break;
             }
 
@@ -1458,11 +1489,11 @@ function Close() {
 
             users = [];
             usersURL = this.url + '/user';
-            _context5.next = 18;
+            _context6.next = 18;
             return performFetch(usersURL, 'get', headers);
 
           case 18:
-            usersResp = _context5.sent;
+            usersResp = _context6.sent;
 
             if (usersResp.code >= 200 && usersResp.code < 300) {
               users = JSON.parse(usersResp.content).data;
@@ -1470,21 +1501,21 @@ function Close() {
             //access lead statuses;
 
 
-            _context5.next = 22;
+            _context6.next = 22;
             return this.fetchLeadStatuses_(headers);
 
           case 22:
-            leadStatuses = _context5.sent;
-            _context5.next = 25;
+            leadStatuses = _context6.sent;
+            _context6.next = 25;
             return this.fetchFields_(headers);
 
           case 25:
-            fields = _context5.sent;
+            fields = _context6.sent;
             l = 0;
 
           case 27:
             if (!(l < leads.length)) {
-              _context5.next = 86;
+              _context6.next = 86;
               break;
             }
 
@@ -1550,7 +1581,7 @@ function Close() {
 
           case 51:
             if (!(c < contacts.length)) {
-              _context5.next = 82;
+              _context6.next = 82;
               break;
             }
 
@@ -1580,11 +1611,11 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 65;
+              _context6.next = 65;
               break;
             }
 
-            return _context5.abrupt("continue", 79);
+            return _context6.abrupt("continue", 79);
 
           case 65:
             if (view === 'contact') {
@@ -1600,31 +1631,31 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context5.next = 78;
+              _context6.next = 78;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context5.next = 74;
+              _context6.next = 74;
               break;
             }
 
-            _context5.next = 71;
+            _context6.next = 71;
             return this.fetchActivities_(headers, 0, leadId, contId);
 
           case 71:
-            activities = _context5.sent;
-            _context5.next = 77;
+            activities = _context6.sent;
+            _context6.next = 77;
             break;
 
           case 74:
-            _context5.next = 76;
+            _context6.next = 76;
             return this.fetchActivities_(headers, 0, leadId);
 
           case 76:
-            activities = _context5.sent;
+            activities = _context6.sent;
 
           case 77:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
@@ -1646,7 +1677,7 @@ function Close() {
 
           case 79:
             c++;
-            _context5.next = 51;
+            _context6.next = 51;
             break;
 
           case 82:
@@ -1669,16 +1700,16 @@ function Close() {
 
           case 83:
             l++;
-            _context5.next = 27;
+            _context6.next = 27;
             break;
 
           case 86:
-            _context5.next = 95;
+            _context6.next = 95;
             break;
 
           case 88:
             if (!(response.code === 401)) {
-              _context5.next = 94;
+              _context6.next = 94;
               break;
             }
 
@@ -1704,7 +1735,7 @@ function Close() {
                 }]
               }]
             }];
-            return _context5.abrupt("return", {
+            return _context6.abrupt("return", {
               code: 200,
               headers: {},
               content: JSON.stringify(authErr),
@@ -1715,7 +1746,7 @@ function Close() {
             });
 
           case 94:
-            return _context5.abrupt("return", response);
+            return _context6.abrupt("return", response);
 
           case 95:
             //contruct resulting object;
@@ -1732,17 +1763,17 @@ function Close() {
               };
             }
 
-            return _context5.abrupt("return", returned);
+            return _context6.abrupt("return", returned);
 
           case 98:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
-      }, _callee5, this);
+      }, _callee6, this);
     }));
 
-    return function (_x16, _x17, _x18) {
-      return _ref5.apply(this, arguments);
+    return function (_x19, _x20, _x21) {
+      return _ref6.apply(this, arguments);
     };
   }();
 }
