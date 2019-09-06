@@ -240,7 +240,7 @@ function _cardDisplay() {
   _cardDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, actionParams, paramsUpdate, paramsRemove, layout, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
+    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, actionParams, paramsRefresh, paramsUpdate, paramsRemove, layout, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -355,7 +355,20 @@ function _cardDisplay() {
 
 
               actionsConfig = [];
-              actionParams = {}; //if has update() method, add action;
+              actionParams = {}; //if has refresh() method, add action;
+
+              if (cType.refresh) {
+                paramsRefresh = copyObject(connector, {
+                  method: 'refresh'
+                }, false);
+                actionsConfig.push({
+                  icon: globalIconRefresh,
+                  text: 'Refresh',
+                  funcName: 'updateSectionAdvanced',
+                  params: paramsRefresh
+                });
+              } //if has update() method, add action;
+
 
               if (cType.update || connector.method === 'send') {
                 paramsUpdate = copyObject(connector, {
@@ -374,6 +387,7 @@ function _cardDisplay() {
                   method: 'remove'
                 }, false);
                 actionsConfig.push({
+                  icon: globalIconRemove,
                   text: globalRemoveConnectorText,
                   funcName: 'updateSectionAdvanced',
                   params: paramsRemove
