@@ -170,6 +170,78 @@ function Close() {
     };
   }();
   /**
+   * General method for adding info;
+   * @param {Object} connector Connector configuration;
+   * @param {Object} msg object with current message info;
+   * @return {Object} adder config;
+   */
+
+
+  this.addConfig = function (connector, msg) {
+    var message = trimMessage(msg, true, true);
+    var prompt = '';
+    var config = [];
+
+    switch (connector.view) {
+      case 'lead':
+        prompt = 'Create lead';
+        config.push({
+          widgets: [{
+            type: globalTextInput,
+            title: 'Company Name',
+            name: 'name',
+            hint: 'e.g. Close'
+          }, {
+            type: globalTextInput,
+            title: 'Contact Name',
+            content: message.name,
+            name: 'contacts-name',
+            hint: 'e.g. Steli Efti'
+          }, {
+            type: globalTextInput,
+            title: 'Contact Email',
+            content: message.email,
+            name: 'contacts-emails-email'
+          }, {
+            type: globalEnumDropdown,
+            content: [{
+              value: 'office',
+              text: 'Office',
+              selected: false
+            }, {
+              value: 'mobile',
+              text: 'Mobile',
+              selected: false
+            }, {
+              value: 'direct',
+              text: 'Direct',
+              selected: false
+            }, {
+              value: 'home',
+              text: 'Home',
+              selected: false
+            }, {
+              value: 'other',
+              text: 'Other',
+              selected: true
+            }],
+            name: 'contacts-emails-type'
+          }]
+        });
+        break;
+
+      default:
+        prompt = 'Create contact';
+    }
+
+    var adder = mergeObjects({
+      config: JSON.stringify(config),
+      method: 'add',
+      caText: prompt
+    }, connector);
+    return adder;
+  };
+  /**
    * General method for updating info;
    * @param {Object} msg object with current message info;
    * @param {Object} connector Connector configuration;
