@@ -810,8 +810,17 @@ function Close() {
         icon: globalIconLink,
         type: globalKeyValue,
         title: 'Link',
-        content: leadURL.replace('https://', '')
+        content: leadURL.replace('https://', ''),
+        state: 'editable',
+        name: 'url&' + leadId
       };
+      urlw.editMap = [{
+        title: urlw.title,
+        type: globalTextInput,
+        name: urlw.name,
+        content: leadURL,
+        state: urlw.state
+      }];
       wempl.push(urlw);
     } //create address widgets;
 
