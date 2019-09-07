@@ -106,15 +106,16 @@ function switchPassword(input) {
 }
 /**
  * Gets an Array element by its property;
- * @param {Array} array an Array of objects;
+ * @param {Array|null} input collection to traverse;
  * @param {String} name property name;
  * @param {*} value property value;
  * @returns {Object|Array} element
  */
 
 
-function getByProperty(array, name, value) {
-  var output = array.filter(function (element) {
+function getByProperty(input, name, value) {
+  input = input || [];
+  var output = input.filter(function (element) {
     if (element[name] === value) {
       return element;
     }
