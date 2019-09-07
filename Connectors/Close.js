@@ -376,6 +376,353 @@ function Close() {
     };
   }();
   /**
+   * General method for retrieving info;
+   * @param {Object} msg object with current message info;
+   * @param {Object} connector Connector configuration;
+   * @param {Object} data data to pass to endpoint;
+   * @returns {Object} Display configuration;
+   */
+
+
+  this.run =
+  /*#__PURE__*/
+  function () {
+    var _ref4 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee4(msg, connector, data) {
+      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            //modify message;
+            message = trimMessage(msg, true, true);
+            queryL = encodeURI('?query=email_address:' + message.email.toLowerCase());
+            url = this.url + '/lead' + queryL; //construct headers;
+
+            headers = {
+              Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
+            }; //fetch endpoint and return response;
+
+            _context4.next = 6;
+            return performFetch(url, 'get', headers);
+
+          case 6:
+            response = _context4.sent;
+            //access view type;
+            view = connector.view;
+
+            if (!view) {
+              view = 'contact';
+            }
+
+            sections = [];
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context4.next = 88;
+              break;
+            }
+
+            //access contacts and create sections for each contact;
+            contents = JSON.parse(response.content);
+            leads = contents.data; //initiate actions if has result;
+
+            if (leads.length > 0) {
+              connector.method = 'edit';
+            } //access users;
+
+
+            users = [];
+            usersURL = this.url + '/user';
+            _context4.next = 18;
+            return performFetch(usersURL, 'get', headers);
+
+          case 18:
+            usersResp = _context4.sent;
+
+            if (usersResp.code >= 200 && usersResp.code < 300) {
+              users = JSON.parse(usersResp.content).data;
+            } //end user success;
+            //access lead statuses;
+
+
+            _context4.next = 22;
+            return this.fetchLeadStatuses_(headers);
+
+          case 22:
+            leadStatuses = _context4.sent;
+            _context4.next = 25;
+            return this.fetchFields_(headers);
+
+          case 25:
+            fields = _context4.sent;
+            l = 0;
+
+          case 27:
+            if (!(l < leads.length)) {
+              _context4.next = 86;
+              break;
+            }
+
+            lead = leads[l]; //access lead properties;
+
+            leadId = lead.id;
+            leadName = lead.name;
+            contacts = lead.contacts;
+            orgId = lead.organization_id;
+            custom = lead.custom;
+            leadStatus = lead.status_label;
+            leadDescr = lead.description; //empty string;
+
+            leadURL = lead.url; //null;
+
+            addresses = lead.addresses;
+            opportunities = lead.opportunities;
+            tasks = lead.tasks;
+            leadCreated = lead.date_created;
+            leadEdited = lead.date_updated; //initiate contact sections;
+
+            sectionCont = {
+              header: globalContactInfoHeader,
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionEmpl = {
+              header: globalEmploymentContactHeader,
+              isCollapsible: true,
+              widgets: [],
+              entity: leadId
+            };
+            sectionTask = {
+              header: 'Tasks',
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionOppt = {
+              header: 'Opportunities',
+              isCollapsible: true,
+              widgets: []
+            };
+            sectionAct = {
+              header: globalActivitiesHeader,
+              isCollapsible: true,
+              widgets: []
+            };
+
+            if (view === 'lead') {
+              sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
+            } //if tasks enabled -> show;
+
+
+            if (connector.tasks) {
+              sectionTask.widgets = this.displayTasks(tasks, leadId);
+            } //if opportunities enabled -> show;
+
+
+            if (connector.opportunities) {
+              sectionOppt.widgets = this.displayOpportunities(opportunities);
+            }
+
+            c = 0;
+
+          case 51:
+            if (!(c < contacts.length)) {
+              _context4.next = 82;
+              break;
+            }
+
+            contact = contacts[c]; //access contact properties;
+
+            contId = contact.id;
+            name = contact.name; //empty String;
+
+            title = contact.title; //empty String;
+
+            emails = contact.emails; //Array 1 length;
+
+            phones = contact.phones; //empty Array;
+
+            urls = contact.urls; //empty Array;
+
+            socials = contact.integration_links; //Array 1 length;
+
+            created = contact.date_created;
+            edited = contact.date_updated; //equal to created;
+            //skip contact if does not comply to email query;
+
+            hasQueryEmail = emails.filter(function (email) {
+              if (email.email === message.email) {
+                return email;
+              }
+            }).length > 0;
+
+            if (!(!hasQueryEmail && view === 'contact')) {
+              _context4.next = 65;
+              break;
+            }
+
+            return _context4.abrupt("continue", 79);
+
+          case 65:
+            if (view === 'contact') {
+              sectionCont.entity = contId;
+              sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
+              sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
+            } else {
+              if (c !== 0) {
+                sectionCont.widgets = sectionCont.widgets.concat([globalWidgetSeparator]);
+              }
+
+              sectionCont.widgets = sectionCont.widgets.concat(this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view));
+            } //if activities enabled -> show;
+
+
+            if (!connector.activities) {
+              _context4.next = 78;
+              break;
+            }
+
+            activities = [];
+
+            if (!(view === 'contact')) {
+              _context4.next = 74;
+              break;
+            }
+
+            _context4.next = 71;
+            return this.fetchActivities_(headers, 0, leadId, contId);
+
+          case 71:
+            activities = _context4.sent;
+            _context4.next = 77;
+            break;
+
+          case 74:
+            _context4.next = 76;
+            return this.fetchActivities_(headers, 0, leadId);
+
+          case 76:
+            activities = _context4.sent;
+
+          case 77:
+            sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
+
+          case 78:
+            if (view === 'contact') {
+              sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
+
+              if (connector.fields) {
+                sectionFields = {
+                  header: 'Custom fields',
+                  isCollapsible: true,
+                  widgets: []
+                };
+                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
+                sections.push(sectionFields);
+              }
+            }
+
+          case 79:
+            c++;
+            _context4.next = 51;
+            break;
+
+          case 82:
+            //end contacts loop;
+            if (view === 'lead') {
+              sectionEmpl.header = 'Lead';
+              sectionCont.header = 'Contacts';
+              sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct);
+
+              if (connector.fields) {
+                sectionFields = {
+                  header: 'Custom fields',
+                  isCollapsible: true,
+                  widgets: []
+                };
+                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
+                sections.push(sectionFields);
+              }
+            }
+
+          case 83:
+            l++;
+            _context4.next = 27;
+            break;
+
+          case 86:
+            _context4.next = 95;
+            break;
+
+          case 88:
+            if (!(response.code === 401)) {
+              _context4.next = 94;
+              break;
+            }
+
+            propertiesToString(connector);
+            authErr = [{
+              header: 'Invalid credentials',
+              widgets: [{
+                type: globalKeyValue,
+                content: 'We couldn\'t access your account due to invalid credentials. Please, check your API key and update the Connector!'
+              }, {
+                type: globalButtonSet,
+                content: [{
+                  type: globalTextButton,
+                  title: 'Get API key',
+                  action: globalActionLink,
+                  content: 'https://app.close.com/settings'
+                }, {
+                  type: globalTextButton,
+                  title: 'Open settings',
+                  action: 'click',
+                  funcName: 'goSettings',
+                  parameters: connector
+                }]
+              }]
+            }];
+            return _context4.abrupt("return", {
+              code: 200,
+              headers: {},
+              content: JSON.stringify(authErr),
+              hasMatch: {
+                value: true,
+                text: 'Reauth'
+              }
+            });
+
+          case 94:
+            return _context4.abrupt("return", response);
+
+          case 95:
+            //contruct resulting object;
+            returned = {
+              code: response.code,
+              headers: response.headers,
+              content: JSON.stringify(sections)
+            };
+
+            if (sections.length > 0) {
+              returned.hasMatch = {
+                value: true,
+                text: 'found'
+              };
+            }
+
+            return _context4.abrupt("return", returned);
+
+          case 98:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4, this);
+    }));
+
+    return function (_x12, _x13, _x14) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+  /**
    * Utility method for building contact display; 
    * @param {Object} sectionCont contact section;
    * @param {String} leadId lead id;
@@ -1400,24 +1747,24 @@ function Close() {
   this.fetchLeadStatuses_ =
   /*#__PURE__*/
   function () {
-    var _ref4 = _asyncToGenerator(
+    var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4(headers, start, id) {
+    regeneratorRuntime.mark(function _callee5(headers, start, id) {
       var lsts, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             start = start || 0;
             lsts = [];
             url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
-            _context4.next = 5;
+            _context5.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context4.sent;
+            response = _context5.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context4.next = 17;
+              _context5.next = 17;
               break;
             }
 
@@ -1428,30 +1775,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context4.next = 17;
+              _context5.next = 17;
               break;
             }
 
-            _context4.t0 = lsts;
-            _context4.next = 15;
+            _context5.t0 = lsts;
+            _context5.next = 15;
             return this.fetchFields_(headers, start + 100, id);
 
           case 15:
-            _context4.t1 = _context4.sent;
-            lsts = _context4.t0.concat.call(_context4.t0, _context4.t1);
+            _context5.t1 = _context5.sent;
+            lsts = _context5.t0.concat.call(_context5.t0, _context5.t1);
 
           case 17:
-            return _context4.abrupt("return", lsts);
+            return _context5.abrupt("return", lsts);
 
           case 18:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
-      }, _callee4, this);
+      }, _callee5, this);
     }));
 
-    return function (_x12, _x13, _x14) {
-      return _ref4.apply(this, arguments);
+    return function (_x15, _x16, _x17) {
+      return _ref5.apply(this, arguments);
     };
   }();
   /**
@@ -1467,25 +1814,25 @@ function Close() {
   this.fetchActivities_ =
   /*#__PURE__*/
   function () {
-    var _ref5 = _asyncToGenerator(
+    var _ref6 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(headers, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee6(headers, start, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) switch (_context5.prev = _context5.next) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
             start = start || 0;
             acts = [];
             query = [lid ? 'lead_id=' + lid : '', cid ? 'contact_id=' + cid : ''];
             url = encodeURI(this.url + '/activity?' + (query.length > 0 ? query.join('&') : ''));
-            _context5.next = 6;
+            _context6.next = 6;
             return performFetch(url, 'get', headers);
 
           case 6:
-            response = _context5.sent;
+            response = _context6.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 18;
+              _context6.next = 18;
               break;
             }
 
@@ -1496,30 +1843,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context5.next = 18;
+              _context6.next = 18;
               break;
             }
 
-            _context5.t0 = acts;
-            _context5.next = 16;
+            _context6.t0 = acts;
+            _context6.next = 16;
             return this.fetchActivities_(headers, start + 100, lid, cid);
 
           case 16:
-            _context5.t1 = _context5.sent;
-            acts = _context5.t0.concat.call(_context5.t0, _context5.t1);
+            _context6.t1 = _context6.sent;
+            acts = _context6.t0.concat.call(_context6.t0, _context6.t1);
 
           case 18:
-            return _context5.abrupt("return", acts);
+            return _context6.abrupt("return", acts);
 
           case 19:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
-      }, _callee5, this);
+      }, _callee6, this);
     }));
 
-    return function (_x15, _x16, _x17, _x18) {
-      return _ref5.apply(this, arguments);
+    return function (_x18, _x19, _x20, _x21) {
+      return _ref6.apply(this, arguments);
     };
   }();
   /**
@@ -1534,24 +1881,24 @@ function Close() {
   this.fetchFields_ =
   /*#__PURE__*/
   function () {
-    var _ref6 = _asyncToGenerator(
+    var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(headers, start, id) {
+    regeneratorRuntime.mark(function _callee7(headers, start, id) {
       var fds, url, response, content, fields, hasMore;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
             start = start || 0;
             fds = [];
             url = this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (start === 0 ? '?_skip=' + start : '');
-            _context6.next = 5;
+            _context7.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context6.sent;
+            response = _context7.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context6.next = 17;
+              _context7.next = 17;
               break;
             }
 
@@ -1562,369 +1909,22 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context6.next = 17;
+              _context7.next = 17;
               break;
             }
 
-            _context6.t0 = fds;
-            _context6.next = 15;
+            _context7.t0 = fds;
+            _context7.next = 15;
             return this.fetchFields_(headers, start + 100, id);
 
           case 15:
-            _context6.t1 = _context6.sent;
-            fds = _context6.t0.concat.call(_context6.t0, _context6.t1);
+            _context7.t1 = _context7.sent;
+            fds = _context7.t0.concat.call(_context7.t0, _context7.t1);
 
           case 17:
-            return _context6.abrupt("return", fds);
+            return _context7.abrupt("return", fds);
 
           case 18:
-          case "end":
-            return _context6.stop();
-        }
-      }, _callee6, this);
-    }));
-
-    return function (_x19, _x20, _x21) {
-      return _ref6.apply(this, arguments);
-    };
-  }();
-  /**
-   * General method for retrieving info;
-   * @param {Object} msg object with current message info;
-   * @param {Object} connector Connector configuration;
-   * @param {Object} data data to pass to endpoint;
-   * @returns {Object} Display configuration;
-   */
-
-
-  this.run =
-  /*#__PURE__*/
-  function () {
-    var _ref7 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(msg, connector, data) {
-      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
-          case 0:
-            //modify message;
-            message = trimMessage(msg, true, true);
-            queryL = encodeURI('?query=email_address:' + message.email.toLowerCase());
-            url = this.url + '/lead' + queryL; //construct headers;
-
-            headers = {
-              Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
-            }; //fetch endpoint and return response;
-
-            _context7.next = 6;
-            return performFetch(url, 'get', headers);
-
-          case 6:
-            response = _context7.sent;
-            //access view type;
-            view = connector.view;
-
-            if (!view) {
-              view = 'contact';
-            }
-
-            sections = [];
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 88;
-              break;
-            }
-
-            //access contacts and create sections for each contact;
-            contents = JSON.parse(response.content);
-            leads = contents.data; //initiate actions if has result;
-
-            if (leads.length > 0) {
-              connector.method = 'edit';
-            } //access users;
-
-
-            users = [];
-            usersURL = this.url + '/user';
-            _context7.next = 18;
-            return performFetch(usersURL, 'get', headers);
-
-          case 18:
-            usersResp = _context7.sent;
-
-            if (usersResp.code >= 200 && usersResp.code < 300) {
-              users = JSON.parse(usersResp.content).data;
-            } //end user success;
-            //access lead statuses;
-
-
-            _context7.next = 22;
-            return this.fetchLeadStatuses_(headers);
-
-          case 22:
-            leadStatuses = _context7.sent;
-            _context7.next = 25;
-            return this.fetchFields_(headers);
-
-          case 25:
-            fields = _context7.sent;
-            l = 0;
-
-          case 27:
-            if (!(l < leads.length)) {
-              _context7.next = 86;
-              break;
-            }
-
-            lead = leads[l]; //access lead properties;
-
-            leadId = lead.id;
-            leadName = lead.name;
-            contacts = lead.contacts;
-            orgId = lead.organization_id;
-            custom = lead.custom;
-            leadStatus = lead.status_label;
-            leadDescr = lead.description; //empty string;
-
-            leadURL = lead.url; //null;
-
-            addresses = lead.addresses;
-            opportunities = lead.opportunities;
-            tasks = lead.tasks;
-            leadCreated = lead.date_created;
-            leadEdited = lead.date_updated; //initiate contact sections;
-
-            sectionCont = {
-              header: globalContactInfoHeader,
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionEmpl = {
-              header: globalEmploymentContactHeader,
-              isCollapsible: true,
-              widgets: [],
-              entity: leadId
-            };
-            sectionTask = {
-              header: 'Tasks',
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionOppt = {
-              header: 'Opportunities',
-              isCollapsible: true,
-              widgets: []
-            };
-            sectionAct = {
-              header: globalActivitiesHeader,
-              isCollapsible: true,
-              widgets: []
-            };
-
-            if (view === 'lead') {
-              sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
-            } //if tasks enabled -> show;
-
-
-            if (connector.tasks) {
-              sectionTask.widgets = this.displayTasks(tasks, leadId);
-            } //if opportunities enabled -> show;
-
-
-            if (connector.opportunities) {
-              sectionOppt.widgets = this.displayOpportunities(opportunities);
-            }
-
-            c = 0;
-
-          case 51:
-            if (!(c < contacts.length)) {
-              _context7.next = 82;
-              break;
-            }
-
-            contact = contacts[c]; //access contact properties;
-
-            contId = contact.id;
-            name = contact.name; //empty String;
-
-            title = contact.title; //empty String;
-
-            emails = contact.emails; //Array 1 length;
-
-            phones = contact.phones; //empty Array;
-
-            urls = contact.urls; //empty Array;
-
-            socials = contact.integration_links; //Array 1 length;
-
-            created = contact.date_created;
-            edited = contact.date_updated; //equal to created;
-            //skip contact if does not comply to email query;
-
-            hasQueryEmail = emails.filter(function (email) {
-              if (email.email === message.email) {
-                return email;
-              }
-            }).length > 0;
-
-            if (!(!hasQueryEmail && view === 'contact')) {
-              _context7.next = 65;
-              break;
-            }
-
-            return _context7.abrupt("continue", 79);
-
-          case 65:
-            if (view === 'contact') {
-              sectionCont.entity = contId;
-              sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
-              sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
-            } else {
-              if (c !== 0) {
-                sectionCont.widgets = sectionCont.widgets.concat([globalWidgetSeparator]);
-              }
-
-              sectionCont.widgets = sectionCont.widgets.concat(this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view));
-            } //if activities enabled -> show;
-
-
-            if (!connector.activities) {
-              _context7.next = 78;
-              break;
-            }
-
-            activities = [];
-
-            if (!(view === 'contact')) {
-              _context7.next = 74;
-              break;
-            }
-
-            _context7.next = 71;
-            return this.fetchActivities_(headers, 0, leadId, contId);
-
-          case 71:
-            activities = _context7.sent;
-            _context7.next = 77;
-            break;
-
-          case 74:
-            _context7.next = 76;
-            return this.fetchActivities_(headers, 0, leadId);
-
-          case 76:
-            activities = _context7.sent;
-
-          case 77:
-            sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
-
-          case 78:
-            if (view === 'contact') {
-              sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
-
-              if (connector.fields) {
-                sectionFields = {
-                  header: 'Custom fields',
-                  isCollapsible: true,
-                  widgets: []
-                };
-                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
-                sections.push(sectionFields);
-              }
-            }
-
-          case 79:
-            c++;
-            _context7.next = 51;
-            break;
-
-          case 82:
-            //end contacts loop;
-            if (view === 'lead') {
-              sectionEmpl.header = 'Lead';
-              sectionCont.header = 'Contacts';
-              sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct);
-
-              if (connector.fields) {
-                sectionFields = {
-                  header: 'Custom fields',
-                  isCollapsible: true,
-                  widgets: []
-                };
-                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
-                sections.push(sectionFields);
-              }
-            }
-
-          case 83:
-            l++;
-            _context7.next = 27;
-            break;
-
-          case 86:
-            _context7.next = 95;
-            break;
-
-          case 88:
-            if (!(response.code === 401)) {
-              _context7.next = 94;
-              break;
-            }
-
-            propertiesToString(connector);
-            authErr = [{
-              header: 'Invalid credentials',
-              widgets: [{
-                type: globalKeyValue,
-                content: 'We couldn\'t access your account due to invalid credentials. Please, check your API key and update the Connector!'
-              }, {
-                type: globalButtonSet,
-                content: [{
-                  type: globalTextButton,
-                  title: 'Get API key',
-                  action: globalActionLink,
-                  content: 'https://app.close.com/settings'
-                }, {
-                  type: globalTextButton,
-                  title: 'Open settings',
-                  action: 'click',
-                  funcName: 'goSettings',
-                  parameters: connector
-                }]
-              }]
-            }];
-            return _context7.abrupt("return", {
-              code: 200,
-              headers: {},
-              content: JSON.stringify(authErr),
-              hasMatch: {
-                value: true,
-                text: 'Reauth'
-              }
-            });
-
-          case 94:
-            return _context7.abrupt("return", response);
-
-          case 95:
-            //contruct resulting object;
-            returned = {
-              code: response.code,
-              headers: response.headers,
-              content: JSON.stringify(sections)
-            };
-
-            if (sections.length > 0) {
-              returned.hasMatch = {
-                value: true,
-                text: 'found'
-              };
-            }
-
-            return _context7.abrupt("return", returned);
-
-          case 98:
           case "end":
             return _context7.stop();
         }
