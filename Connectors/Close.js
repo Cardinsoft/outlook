@@ -1503,7 +1503,7 @@ function Close() {
           case 0:
             //modify message;
             message = trimMessage(msg, true, true);
-            queryL = encodeURI('?query=email_address:' + message.email);
+            queryL = encodeURI('?query=email_address:' + message.email.toLowerCase());
             url = this.url + '/lead' + queryL; //construct headers;
 
             headers = {
