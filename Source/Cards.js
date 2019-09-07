@@ -375,6 +375,7 @@ function _cardDisplay() {
                   method: connector.method
                 }, false);
                 actionsConfig.push({
+                  icon: globalIconUpload,
                   text: caText,
                   funcName: 'updateSectionAdvanced',
                   params: paramsUpdate
