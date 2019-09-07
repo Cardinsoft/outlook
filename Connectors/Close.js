@@ -186,7 +186,7 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(msg, connector, forms, data, method) {
-      var headers, contacts, leads, key, input, k, kName, kSub, kId, kType, update, l, lead, responseL, c, contact, responseC;
+      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, l, lead, responseL, c, contact, responseC;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -202,7 +202,7 @@ function Close() {
 
           case 4:
             if ((_context3.t1 = _context3.t0()).done) {
-              _context3.next = 37;
+              _context3.next = 49;
               break;
             }
 
@@ -211,7 +211,12 @@ function Close() {
             k = key.split('&');
             kName = k[0]; //field name;
 
-            kSub = kName.split('-')[1]; //field subprop;
+            kSubs = kName.split('-');
+            kNameSub = kSubs[0]; //field naem with subprops;
+
+            kSub = kSubs[1]; //field subprop;
+
+            kSubSub = kSubs[2]; //field subprop subprop;
 
             kId = k[1]; //contact or lead Id;
 
@@ -236,103 +241,134 @@ function Close() {
                 };
                 contacts.push(update);
               }
+            } else if (method === 'add') {
+              if (connector.view === 'lead') {
+                update = leads[0];
+                update = update || (leads[0] = {});
+              } else {
+                update = contacts[0];
+                update = update || (contacts[0] = {});
+              }
             }
 
             _context3.t2 = true;
-            _context3.next = _context3.t2 === (kName === 'status_id') ? 16 : _context3.t2 === (kName.indexOf('lcf_') !== -1) ? 18 : 34;
+            _context3.next = _context3.t2 === (kName === 'status_id') ? 19 : _context3.t2 === (kName.indexOf('lcf_') !== -1) ? 21 : _context3.t2 === (kNameSub === 'contacts') ? 37 : 46;
             break;
 
-          case 16:
+          case 19:
             update[kName] = input[0];
-            return _context3.abrupt("break", 35);
-
-          case 18:
-            _context3.t3 = true;
-            _context3.next = _context3.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 21 : _context3.t3 === (kType === 'date' || kType === 'datetime') ? 23 : 32;
-            break;
+            return _context3.abrupt("break", 47);
 
           case 21:
-            update['custom.' + kName] = input;
-            return _context3.abrupt("break", 33);
-
-          case 23:
-            _context3.prev = 23;
-            input = new Date(input[0]).toISOString();
-            _context3.next = 30;
+            _context3.t3 = true;
+            _context3.next = _context3.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 24 : _context3.t3 === (kType === 'date' || kType === 'datetime') ? 26 : 35;
             break;
 
-          case 27:
-            _context3.prev = 27;
-            _context3.t4 = _context3["catch"](23);
-            return _context3.abrupt("break", 33);
+          case 24:
+            update['custom.' + kName] = input;
+            return _context3.abrupt("break", 36);
+
+          case 26:
+            _context3.prev = 26;
+            input = new Date(input[0]).toISOString();
+            _context3.next = 33;
+            break;
 
           case 30:
-            update['custom.' + kName] = input;
-            return _context3.abrupt("break", 33);
-
-          case 32:
-            update['custom.' + kName] = input[0];
+            _context3.prev = 30;
+            _context3.t4 = _context3["catch"](26);
+            return _context3.abrupt("break", 36);
 
           case 33:
-            return _context3.abrupt("break", 35);
-
-          case 34:
-            update[kName] = input[0];
+            update['custom.' + kName] = input;
+            return _context3.abrupt("break", 36);
 
           case 35:
+            update['custom.' + kName] = input[0];
+
+          case 36:
+            return _context3.abrupt("break", 47);
+
+          case 37:
+            if (!update[kNameSub]) {
+              update[kNameSub] = [{}];
+            }
+
+            _context3.t5 = kSub;
+            _context3.next = _context3.t5 === 'emails' ? 41 : 44;
+            break;
+
+          case 41:
+            if (!update[kNameSub][0][kSub]) {
+              update[kNameSub][0][kSub] = [{}];
+            }
+
+            update[kNameSub][0][kSub][0][kSubSub] = input[0];
+            return _context3.abrupt("break", 45);
+
+          case 44:
+            update[kNameSub][0][kSub] = input[0];
+
+          case 45:
+            return _context3.abrupt("break", 47);
+
+          case 46:
+            update[kName] = input[0];
+
+          case 47:
             _context3.next = 4;
             break;
 
-          case 37:
+          case 49:
             l = 0;
 
-          case 38:
+          case 50:
             if (!(l < leads.length)) {
-              _context3.next = 46;
+              _context3.next = 58;
               break;
             }
 
             lead = leads[l];
-            _context3.next = 42;
+            _context3.next = 54;
             return performFetch(this.url + '/lead/' + (method === 'add' ? '' : lead.id + '/'), method === 'add' ? 'post' : 'put', headers, lead);
 
-          case 42:
+          case 54:
             responseL = _context3.sent;
 
-          case 43:
+          case 55:
             l++;
-            _context3.next = 38;
+            _context3.next = 50;
             break;
 
-          case 46:
+          case 58:
             c = 0;
 
-          case 47:
+          case 59:
             if (!(c < contacts.length)) {
-              _context3.next = 55;
+              _context3.next = 67;
               break;
             }
 
             contact = contacts[c];
-            _context3.next = 51;
+            _context3.next = 63;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 51:
+          case 63:
             responseC = _context3.sent;
 
-          case 52:
+          case 64:
             c++;
-            _context3.next = 47;
+            _context3.next = 59;
             break;
 
-          case 55:
-            return _context3.abrupt("return", this.run(msg, connector, data));
+          case 67:
+            return _context3.abrupt("return", this.run(msg, connector));
 
-          case 56:
+          case 68:
           case "end":
             return _context3.stop();
         }
-      }, _callee3, this, [[23, 27]]);
+      }, _callee3, this, [[26, 30]]);
     }));
 
     return function (_x7, _x8, _x9, _x10, _x11) {
