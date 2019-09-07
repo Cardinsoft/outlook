@@ -995,7 +995,9 @@ function trimSender(input) {
     if (index === -1) {
       return '';
     } else {
-      return input.replace(input.slice(index), '');
+      input = input.replace(input.slice(index), '');
+      input = input.replace(/^\"|$\"/, '');
+      return input;
     }
   } catch (e) {
     return '';
