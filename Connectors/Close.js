@@ -736,8 +736,17 @@ function Close() {
       icon: globalIconCompany,
       type: globalKeyValue,
       title: 'Company',
-      content: leadName
+      content: leadName,
+      state: 'editable',
+      name: 'name&' + leadId
     };
+    lw.editMap = [{
+      title: lw.title,
+      type: globalTextInput,
+      name: lw.name,
+      content: lw.content,
+      state: lw.state
+    }];
     wempl.push(lw); //create description widget;
 
     if (leadDescr && leadDescr !== '') {
