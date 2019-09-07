@@ -754,8 +754,17 @@ function Close() {
         icon: globalIconBackground,
         type: globalKeyValue,
         title: 'Description',
-        content: leadDescr
+        content: leadDescr,
+        state: 'editable',
+        name: 'description&' + leadId
       };
+      ldw.editMap = [{
+        title: ldw.title,
+        type: globalTextInput,
+        name: ldw.name,
+        content: ldw.content,
+        state: ldw.state
+      }];
       wempl.push(ldw);
     } //create lead status options;
 
