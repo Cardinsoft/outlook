@@ -126,7 +126,7 @@ function Close() {
     var _ref2 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee2(msg, connector, data) {
-      var view, headers, id, removeResponse;
+      var view, headers, id, removeResponse, content;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -156,9 +156,21 @@ function Close() {
 
           case 11:
             removeResponse = _context2.sent;
+
+            if (!(removeResponse.code >= 200 && removeResponse.code < 300)) {
+              _context2.next = 19;
+              break;
+            }
+
+            content = JSON.parse(removeResponse.content);
+            content.data = [];
+            removeResponse.content = JSON.stringify(content);
+            return _context2.abrupt("return", this.run(msg, connector, removeResponse));
+
+          case 19:
             return _context2.abrupt("return", this.run(msg, connector));
 
-          case 13:
+          case 20:
           case "end":
             return _context2.stop();
         }
@@ -475,11 +487,23 @@ function Close() {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
             }; //fetch endpoint and return response;
 
-            _context4.next = 6;
+            if (data) {
+              _context4.next = 10;
+              break;
+            }
+
+            _context4.next = 7;
             return performFetch(url, 'get', headers);
 
-          case 6:
+          case 7:
             response = _context4.sent;
+            _context4.next = 11;
+            break;
+
+          case 10:
+            response = data;
+
+          case 11:
             //access view type;
             view = connector.view;
 
@@ -490,7 +514,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context4.next = 88;
+              _context4.next = 92;
               break;
             }
 
@@ -505,10 +529,10 @@ function Close() {
 
             users = [];
             usersURL = this.url + '/user';
-            _context4.next = 18;
+            _context4.next = 22;
             return performFetch(usersURL, 'get', headers);
 
-          case 18:
+          case 22:
             usersResp = _context4.sent;
 
             if (usersResp.code >= 200 && usersResp.code < 300) {
@@ -517,21 +541,21 @@ function Close() {
             //access lead statuses;
 
 
-            _context4.next = 22;
+            _context4.next = 26;
             return this.fetchLeadStatuses_(headers);
 
-          case 22:
+          case 26:
             leadStatuses = _context4.sent;
-            _context4.next = 25;
+            _context4.next = 29;
             return this.fetchFields_(headers);
 
-          case 25:
+          case 29:
             fields = _context4.sent;
             l = 0;
 
-          case 27:
+          case 31:
             if (!(l < leads.length)) {
-              _context4.next = 86;
+              _context4.next = 90;
               break;
             }
 
@@ -596,9 +620,9 @@ function Close() {
 
             c = 0;
 
-          case 51:
+          case 55:
             if (!(c < contacts.length)) {
-              _context4.next = 82;
+              _context4.next = 86;
               break;
             }
 
@@ -628,13 +652,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context4.next = 65;
+              _context4.next = 69;
               break;
             }
 
-            return _context4.abrupt("continue", 79);
+            return _context4.abrupt("continue", 83);
 
-          case 65:
+          case 69:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -649,36 +673,36 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context4.next = 78;
+              _context4.next = 82;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context4.next = 74;
+              _context4.next = 78;
               break;
             }
 
-            _context4.next = 71;
+            _context4.next = 75;
             return this.fetchActivities_(headers, 0, leadId, contId);
 
-          case 71:
+          case 75:
             activities = _context4.sent;
-            _context4.next = 77;
+            _context4.next = 81;
             break;
 
-          case 74:
-            _context4.next = 76;
+          case 78:
+            _context4.next = 80;
             return this.fetchActivities_(headers, 0, leadId);
 
-          case 76:
+          case 80:
             activities = _context4.sent;
 
-          case 77:
+          case 81:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
-          case 78:
+          case 82:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
@@ -693,12 +717,12 @@ function Close() {
               }
             }
 
-          case 79:
+          case 83:
             c++;
-            _context4.next = 51;
+            _context4.next = 55;
             break;
 
-          case 82:
+          case 86:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -716,18 +740,18 @@ function Close() {
               }
             }
 
-          case 83:
+          case 87:
             l++;
-            _context4.next = 27;
+            _context4.next = 31;
             break;
 
-          case 86:
-            _context4.next = 95;
+          case 90:
+            _context4.next = 99;
             break;
 
-          case 88:
+          case 92:
             if (!(response.code === 401)) {
-              _context4.next = 94;
+              _context4.next = 98;
               break;
             }
 
@@ -763,10 +787,10 @@ function Close() {
               }
             });
 
-          case 94:
+          case 98:
             return _context4.abrupt("return", response);
 
-          case 95:
+          case 99:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -783,7 +807,7 @@ function Close() {
 
             return _context4.abrupt("return", returned);
 
-          case 98:
+          case 102:
           case "end":
             return _context4.stop();
         }
