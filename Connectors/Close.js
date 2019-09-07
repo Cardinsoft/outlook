@@ -383,8 +383,17 @@ function Close() {
         icon: globalIconJobTitle,
         type: globalKeyValue,
         title: 'Job title',
-        content: title
+        content: title,
+        state: 'editable',
+        name: 'title&' + contId
       };
+      tt.editMap = [{
+        type: globalTextInput,
+        title: tt.title,
+        content: tt.content,
+        state: tt.state,
+        name: tt.name
+      }];
       wmain.push(tt);
     } //create email widgets;
 
