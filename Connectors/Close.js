@@ -1904,7 +1904,7 @@ function Close() {
 
             _context5.t0 = lsts;
             _context5.next = 15;
-            return this.fetchFields_(headers, start + 100, id);
+            return this.fetchLeadStatuses_(headers, start + 100, id);
 
           case 15:
             _context5.t1 = _context5.sent;
