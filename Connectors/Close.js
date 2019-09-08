@@ -1946,16 +1946,29 @@ function Close() {
           case 0:
             start = start || 0;
             acts = [];
-            query = [lid ? 'lead_id=' + lid : '', cid ? 'contact_id=' + cid : ''];
-            url = encodeURI(this.url + '/activity?' + (query.length > 0 ? query.join('&') : ''));
-            _context6.next = 6;
+            query = [];
+
+            if (lid) {
+              query.push('lead_id=' + lid);
+            }
+
+            if (cid) {
+              query.push('contact_id=' + cid);
+            }
+
+            if (start > 0) {
+              query.push('_skip=' + start);
+            }
+
+            url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context6.next = 9;
             return performFetch(url, 'get', headers);
 
-          case 6:
+          case 9:
             response = _context6.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context6.next = 18;
+              _context6.next = 21;
               break;
             }
 
@@ -1966,22 +1979,22 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context6.next = 18;
+              _context6.next = 21;
               break;
             }
 
             _context6.t0 = acts;
-            _context6.next = 16;
+            _context6.next = 19;
             return this.fetchActivities_(headers, start + 100, lid, cid);
 
-          case 16:
+          case 19:
             _context6.t1 = _context6.sent;
             acts = _context6.t0.concat.call(_context6.t0, _context6.t1);
 
-          case 18:
+          case 21:
             return _context6.abrupt("return", acts);
 
-          case 19:
+          case 22:
           case "end":
             return _context6.stop();
         }
@@ -2007,21 +2020,27 @@ function Close() {
     var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee7(headers, start, id) {
-      var fds, url, response, content, fields, hasMore;
+      var fds, query, url, response, content, fields, hasMore;
       return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) switch (_context7.prev = _context7.next) {
           case 0:
             start = start || 0;
             fds = [];
-            url = this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (start === 0 ? '?_skip=' + start : '');
-            _context7.next = 5;
+            query = [];
+
+            if (start > 0) {
+              query.push('_skip=' + start);
+            }
+
+            url = encodeURI(this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context7.next = 7;
             return performFetch(url, 'get', headers);
 
-          case 5:
+          case 7:
             response = _context7.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 17;
+              _context7.next = 19;
               break;
             }
 
@@ -2032,22 +2051,22 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context7.next = 17;
+              _context7.next = 19;
               break;
             }
 
             _context7.t0 = fds;
-            _context7.next = 15;
+            _context7.next = 17;
             return this.fetchFields_(headers, start + 100, id);
 
-          case 15:
+          case 17:
             _context7.t1 = _context7.sent;
             fds = _context7.t0.concat.call(_context7.t0, _context7.t1);
 
-          case 17:
+          case 19:
             return _context7.abrupt("return", fds);
 
-          case 18:
+          case 20:
           case "end":
             return _context7.stop();
         }
