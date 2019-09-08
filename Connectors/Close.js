@@ -644,9 +644,7 @@ function Close() {
             break;
 
           case 12:
-            if (view === 'lead') {
-              response = data;
-            }
+            response = data;
 
           case 13:
             sections = [];
