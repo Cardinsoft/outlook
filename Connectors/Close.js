@@ -610,7 +610,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -621,32 +621,34 @@ function Close() {
 
             headers = {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
-            }; //fetch endpoint and return response;
+            }; //access view type;
 
-            if (data) {
-              _context5.next = 10;
-              break;
-            }
-
-            _context5.next = 7;
-            return performFetch(url, 'get', headers);
-
-          case 7:
-            response = _context5.sent;
-            _context5.next = 11;
-            break;
-
-          case 10:
-            response = data;
-
-          case 11:
-            //access view type;
             view = connector.view;
 
             if (!view) {
               view = 'contact';
+            } //fetch endpoint and return response;
+
+
+            if (data) {
+              _context5.next = 12;
+              break;
             }
 
+            _context5.next = 9;
+            return performFetch(url, 'get', headers);
+
+          case 9:
+            response = _context5.sent;
+            _context5.next = 13;
+            break;
+
+          case 12:
+            if (view === 'lead') {
+              response = data;
+            }
+
+          case 13:
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
