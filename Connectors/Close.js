@@ -361,7 +361,7 @@ function Close() {
     var _ref4 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee4(msg, connector, forms, data, method) {
-      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, c, contact, responseC, contentC;
+      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, updatedContacts, c, contact, responseC, contentC;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) switch (_context4.prev = _context4.next) {
           case 0:
@@ -524,19 +524,20 @@ function Close() {
             break;
 
           case 60:
+            updatedContacts = [];
             c = 0;
 
-          case 61:
+          case 62:
             if (!(c < contacts.length)) {
-              _context4.next = 70;
+              _context4.next = 71;
               break;
             }
 
             contact = contacts[c];
-            _context4.next = 65;
+            _context4.next = 66;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 65:
+          case 66:
             responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
@@ -544,14 +545,14 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-          case 67:
+          case 68:
             c++;
-            _context4.next = 61;
+            _context4.next = 62;
             break;
 
-          case 70:
+          case 71:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context4.next = 74;
+              _context4.next = 75;
               break;
             }
 
@@ -563,10 +564,10 @@ function Close() {
               })
             }));
 
-          case 74:
+          case 75:
             return _context4.abrupt("return", this.run(msg, connector));
 
-          case 75:
+          case 76:
           case "end":
             return _context4.stop();
         }
