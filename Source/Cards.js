@@ -296,7 +296,7 @@ function _cardDisplay() {
           return createErrorSection(builder, false, code, error);
 
         case 25:
-          _context3.next = 87;
+          _context3.next = 89;
           break;
 
         case 27:
@@ -499,20 +499,24 @@ function _cardDisplay() {
           }
 
         case 78:
-          _context3.next = 81;
+          _context3.next = 83;
           break;
 
         case 80:
-          if (!error) {
-            createNoFieldsSection(builder, false, connector, msg);
+          if (error) {
+            _context3.next = 83;
+            break;
           }
 
-        case 81:
-          _context3.next = 87;
-          break;
+          _context3.next = 83;
+          return createNoFieldsSection(builder, false, connector, msg);
 
         case 83:
-          _context3.prev = 83;
+          _context3.next = 89;
+          break;
+
+        case 85:
+          _context3.prev = 85;
           _context3.t1 = _context3["catch"](36);
           timestamp('error during display Card build', {
             error: _context3.t1,
@@ -520,23 +524,23 @@ function _cardDisplay() {
           }, 'error');
           createUnparsedSection(builder, true, _context3.t1.message, JSON.stringify(content));
 
-        case 87:
+        case 89:
           if (!(config.length > 0)) {
-            _context3.next = 90;
+            _context3.next = 92;
             break;
           }
 
-          _context3.next = 90;
+          _context3.next = 92;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 90:
+        case 92:
           return _context3.abrupt("return", menu(builder));
 
-        case 91:
+        case 93:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[36, 83], [47, 52]]);
+    }, _callee3, this, [[36, 85], [47, 52]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
