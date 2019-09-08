@@ -1859,6 +1859,78 @@ function Close() {
     return wact;
   };
   /**
+   * Utility method for fetching leads;
+   * @param {Object} headers request headers;
+   * @param {Array<String>} fields fileds to return;
+   * @param {Integer=} start start for pagination;
+   * @return {Array<Object>} leads;   
+   */
+
+
+  this.fetchLeads_ =
+  /*#__PURE__*/
+  function () {
+    var _ref5 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee5(headers, fields, start) {
+      var lds, query, url, response, content, statuses, hasMore;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
+          case 0:
+            start = start || 0;
+            lds = [];
+            query = ['_fields=' + fields.join(',')];
+
+            if (start > 0) {
+              query.push('_skip=' + start);
+            }
+
+            url = encodeURI(this.url + '/lead/' + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context5.next = 7;
+            return performFetch(url, 'get', headers);
+
+          case 7:
+            response = _context5.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context5.next = 19;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            statuses = content.data;
+            lds = lds.concat(statuses); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!hasMore) {
+              _context5.next = 19;
+              break;
+            }
+
+            _context5.t0 = lds;
+            _context5.next = 17;
+            return this.fetchLeads_(headers, fields, start + 100);
+
+          case 17:
+            _context5.t1 = _context5.sent;
+            lds = _context5.t0.concat.call(_context5.t0, _context5.t1);
+
+          case 19:
+            return _context5.abrupt("return", lds);
+
+          case 20:
+          case "end":
+            return _context5.stop();
+        }
+      }, _callee5, this);
+    }));
+
+    return function (_x15, _x16, _x17) {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+  /**
    * Utility method for fetching lead statuses;
    * @param {Object} headers request headers;
    * @param {Integer=} start start for pagination;
@@ -1870,24 +1942,24 @@ function Close() {
   this.fetchLeadStatuses_ =
   /*#__PURE__*/
   function () {
-    var _ref5 = _asyncToGenerator(
+    var _ref6 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(headers, start, id) {
+    regeneratorRuntime.mark(function _callee6(headers, start, id) {
       var lsts, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) switch (_context5.prev = _context5.next) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
             start = start || 0;
             lsts = [];
             url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
-            _context5.next = 5;
+            _context6.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context5.sent;
+            response = _context6.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 17;
+              _context6.next = 17;
               break;
             }
 
@@ -1898,30 +1970,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context5.next = 17;
+              _context6.next = 17;
               break;
             }
 
-            _context5.t0 = lsts;
-            _context5.next = 15;
+            _context6.t0 = lsts;
+            _context6.next = 15;
             return this.fetchLeadStatuses_(headers, start + 100, id);
 
           case 15:
-            _context5.t1 = _context5.sent;
-            lsts = _context5.t0.concat.call(_context5.t0, _context5.t1);
+            _context6.t1 = _context6.sent;
+            lsts = _context6.t0.concat.call(_context6.t0, _context6.t1);
 
           case 17:
-            return _context5.abrupt("return", lsts);
+            return _context6.abrupt("return", lsts);
 
           case 18:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
-      }, _callee5, this);
+      }, _callee6, this);
     }));
 
-    return function (_x15, _x16, _x17) {
-      return _ref5.apply(this, arguments);
+    return function (_x18, _x19, _x20) {
+      return _ref6.apply(this, arguments);
     };
   }();
   /**
@@ -1937,12 +2009,12 @@ function Close() {
   this.fetchActivities_ =
   /*#__PURE__*/
   function () {
-    var _ref6 = _asyncToGenerator(
+    var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(headers, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee7(headers, start, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
             start = start || 0;
             acts = [];
@@ -1961,14 +2033,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context6.next = 9;
+            _context7.next = 9;
             return performFetch(url, 'get', headers);
 
           case 9:
-            response = _context6.sent;
+            response = _context7.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context6.next = 21;
+              _context7.next = 21;
               break;
             }
 
@@ -1979,30 +2051,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context6.next = 21;
+              _context7.next = 21;
               break;
             }
 
-            _context6.t0 = acts;
-            _context6.next = 19;
+            _context7.t0 = acts;
+            _context7.next = 19;
             return this.fetchActivities_(headers, start + 100, lid, cid);
 
           case 19:
-            _context6.t1 = _context6.sent;
-            acts = _context6.t0.concat.call(_context6.t0, _context6.t1);
+            _context7.t1 = _context7.sent;
+            acts = _context7.t0.concat.call(_context7.t0, _context7.t1);
 
           case 21:
-            return _context6.abrupt("return", acts);
+            return _context7.abrupt("return", acts);
 
           case 22:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
-      }, _callee6, this);
+      }, _callee7, this);
     }));
 
-    return function (_x18, _x19, _x20, _x21) {
-      return _ref6.apply(this, arguments);
+    return function (_x21, _x22, _x23, _x24) {
+      return _ref7.apply(this, arguments);
     };
   }();
   /**
@@ -2017,12 +2089,12 @@ function Close() {
   this.fetchFields_ =
   /*#__PURE__*/
   function () {
-    var _ref7 = _asyncToGenerator(
+    var _ref8 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(headers, start, id) {
+    regeneratorRuntime.mark(function _callee8(headers, start, id) {
       var fds, query, url, response, content, fields, hasMore;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
           case 0:
             start = start || 0;
             fds = [];
@@ -2033,14 +2105,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context7.next = 7;
+            _context8.next = 7;
             return performFetch(url, 'get', headers);
 
           case 7:
-            response = _context7.sent;
+            response = _context8.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 19;
+              _context8.next = 19;
               break;
             }
 
@@ -2051,30 +2123,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context7.next = 19;
+              _context8.next = 19;
               break;
             }
 
-            _context7.t0 = fds;
-            _context7.next = 17;
+            _context8.t0 = fds;
+            _context8.next = 17;
             return this.fetchFields_(headers, start + 100, id);
 
           case 17:
-            _context7.t1 = _context7.sent;
-            fds = _context7.t0.concat.call(_context7.t0, _context7.t1);
+            _context8.t1 = _context8.sent;
+            fds = _context8.t0.concat.call(_context8.t0, _context8.t1);
 
           case 19:
-            return _context7.abrupt("return", fds);
+            return _context8.abrupt("return", fds);
 
           case 20:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
-      }, _callee7, this);
+      }, _callee8, this);
     }));
 
-    return function (_x22, _x23, _x24) {
-      return _ref7.apply(this, arguments);
+    return function (_x25, _x26, _x27) {
+      return _ref8.apply(this, arguments);
     };
   }();
 }
