@@ -211,7 +211,7 @@ function Close() {
             prompt = '';
             config = [];
             _context3.t0 = connector.view;
-            _context3.next = _context3.t0 === 'lead' ? 10 : 14;
+            _context3.next = _context3.t0 === 'lead' ? 10 : _context3.t0 === 'contact' ? 13 : 17;
             break;
 
           case 10:
@@ -259,6 +259,54 @@ function Close() {
                 name: 'contacts-emails-type'
               }]
             });
+            return _context3.abrupt("break", 17);
+
+          case 13:
+            prompt = 'Create contact';
+            config.push({
+              widgets: [{
+                type: globalTextInput,
+                title: 'Name',
+                name: 'name',
+                content: message.name,
+                hint: 'e.g. Steli Efti'
+              }, {
+                type: globalTextInput,
+                title: 'Title',
+                name: 'title',
+                content: '',
+                hint: 'Job title'
+              }, {
+                type: globalTextInput,
+                title: 'Contact Email',
+                content: message.email,
+                name: 'emails-email'
+              }, {
+                type: globalEnumDropdown,
+                content: [{
+                  value: 'office',
+                  text: 'Office',
+                  selected: false
+                }, {
+                  value: 'mobile',
+                  text: 'Mobile',
+                  selected: false
+                }, {
+                  value: 'direct',
+                  text: 'Direct',
+                  selected: false
+                }, {
+                  value: 'home',
+                  text: 'Home',
+                  selected: false
+                }, {
+                  value: 'other',
+                  text: 'Other',
+                  selected: true
+                }],
+                name: 'emails-type'
+              }]
+            });
 
             if (leads.length > 0) {
               config[0].widgets.push({
@@ -275,9 +323,9 @@ function Close() {
               });
             }
 
-            return _context3.abrupt("break", 14);
+            return _context3.abrupt("break", 17);
 
-          case 14:
+          case 17:
             adder = mergeObjects({
               config: JSON.stringify(config),
               method: 'add',
@@ -285,7 +333,7 @@ function Close() {
             }, connector);
             return _context3.abrupt("return", adder);
 
-          case 16:
+          case 19:
           case "end":
             return _context3.stop();
         }
