@@ -377,12 +377,21 @@ function Close() {
 
           case 4:
             if ((_context4.t1 = _context4.t0()).done) {
-              _context4.next = 52;
+              _context4.next = 54;
               break;
             }
 
             key = _context4.t1.value;
             input = forms[key];
+
+            if (!(input.length === 0)) {
+              _context4.next = 9;
+              break;
+            }
+
+            return _context4.abrupt("continue", 4);
+
+          case 9:
             k = key.split('&');
             kName = k[0]; //field name;
 
@@ -427,98 +436,98 @@ function Close() {
             }
 
             _context4.t2 = true;
-            _context4.next = _context4.t2 === (kName === 'status_id') ? 19 : _context4.t2 === (kNameSub === 'emails') ? 21 : _context4.t2 === (kName.indexOf('lcf_') !== -1) ? 24 : _context4.t2 === (kNameSub === 'contacts') ? 40 : 49;
+            _context4.next = _context4.t2 === (kName === 'status_id') ? 21 : _context4.t2 === (kNameSub === 'emails') ? 23 : _context4.t2 === (kName.indexOf('lcf_') !== -1) ? 26 : _context4.t2 === (kNameSub === 'contacts') ? 42 : 51;
             break;
 
-          case 19:
-            update[kName] = input[0];
-            return _context4.abrupt("break", 50);
-
           case 21:
+            update[kName] = input[0];
+            return _context4.abrupt("break", 52);
+
+          case 23:
             if (!update[kNameSub]) {
               update[kNameSub] = [{}];
             }
 
             update[kNameSub][0][kSub] = input[0];
-            return _context4.abrupt("break", 50);
+            return _context4.abrupt("break", 52);
 
-          case 24:
+          case 26:
             _context4.t3 = true;
-            _context4.next = _context4.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 27 : _context4.t3 === (kType === 'date' || kType === 'datetime') ? 29 : 38;
+            _context4.next = _context4.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 29 : _context4.t3 === (kType === 'date' || kType === 'datetime') ? 31 : 40;
             break;
-
-          case 27:
-            update['custom.' + kName] = input;
-            return _context4.abrupt("break", 39);
 
           case 29:
-            _context4.prev = 29;
+            update['custom.' + kName] = input;
+            return _context4.abrupt("break", 41);
+
+          case 31:
+            _context4.prev = 31;
             input = new Date(input[0]).toISOString();
-            _context4.next = 36;
+            _context4.next = 38;
             break;
 
-          case 33:
-            _context4.prev = 33;
-            _context4.t4 = _context4["catch"](29);
-            return _context4.abrupt("break", 39);
-
-          case 36:
-            update['custom.' + kName] = input;
-            return _context4.abrupt("break", 39);
+          case 35:
+            _context4.prev = 35;
+            _context4.t4 = _context4["catch"](31);
+            return _context4.abrupt("break", 41);
 
           case 38:
-            update['custom.' + kName] = input[0];
-
-          case 39:
-            return _context4.abrupt("break", 50);
+            update['custom.' + kName] = input;
+            return _context4.abrupt("break", 41);
 
           case 40:
+            update['custom.' + kName] = input[0];
+
+          case 41:
+            return _context4.abrupt("break", 52);
+
+          case 42:
             if (!update[kNameSub]) {
               update[kNameSub] = [{}];
             }
 
             _context4.t5 = kSub;
-            _context4.next = _context4.t5 === 'emails' ? 44 : 47;
+            _context4.next = _context4.t5 === 'emails' ? 46 : 49;
             break;
 
-          case 44:
+          case 46:
             if (!update[kNameSub][0][kSub]) {
               update[kNameSub][0][kSub] = [{}];
             }
 
             update[kNameSub][0][kSub][0][kSubSub] = input[0];
-            return _context4.abrupt("break", 48);
-
-          case 47:
-            update[kNameSub][0][kSub] = input[0];
-
-          case 48:
             return _context4.abrupt("break", 50);
 
           case 49:
-            update[kName] = input[0];
+            update[kNameSub][0][kSub] = input[0];
 
           case 50:
+            return _context4.abrupt("break", 52);
+
+          case 51:
+            update[kName] = input[0];
+
+          case 52:
             _context4.next = 4;
             break;
 
-          case 52:
+          case 54:
             //end form handler;
             //send lead updates;
             updatedLeads = [];
             l = 0;
 
-          case 54:
+          case 56:
             if (!(l < leads.length)) {
-              _context4.next = 63;
+              _context4.next = 65;
               break;
             }
 
             lead = leads[l];
-            _context4.next = 58;
+            _context4.next = 60;
             return performFetch(this.url + '/lead/' + (method === 'add' ? '' : lead.id + '/'), method === 'add' ? 'post' : 'put', headers, lead);
 
-          case 58:
+          case 60:
             responseL = _context4.sent;
 
             if (responseL.code >= 200 && responseL.code < 300) {
@@ -526,26 +535,26 @@ function Close() {
               updatedLeads.push(contentL);
             }
 
-          case 60:
+          case 62:
             l++;
-            _context4.next = 54;
+            _context4.next = 56;
             break;
 
-          case 63:
+          case 65:
             updatedContacts = [];
             c = 0;
 
-          case 65:
+          case 67:
             if (!(c < contacts.length)) {
-              _context4.next = 74;
+              _context4.next = 76;
               break;
             }
 
             contact = contacts[c];
-            _context4.next = 69;
+            _context4.next = 71;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 69:
+          case 71:
             responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
@@ -553,14 +562,14 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-          case 71:
+          case 73:
             c++;
-            _context4.next = 65;
+            _context4.next = 67;
             break;
 
-          case 74:
+          case 76:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context4.next = 78;
+              _context4.next = 80;
               break;
             }
 
@@ -572,14 +581,14 @@ function Close() {
               })
             }));
 
-          case 78:
+          case 80:
             return _context4.abrupt("return", this.run(msg, connector));
 
-          case 79:
+          case 81:
           case "end":
             return _context4.stop();
         }
-      }, _callee4, this, [[29, 33]]);
+      }, _callee4, this, [[31, 35]]);
     }));
 
     return function (_x9, _x10, _x11, _x12, _x13) {
