@@ -479,7 +479,7 @@ function _updateSectionAdvanced() {
 
           method = connector.method; //if type only has run() method or connector is simply comm;
 
-          if (!(!cType.update && !cType.remove || method === 'send' || method === 'refresh')) {
+          if (!(!cType.update && !cType.remove || method === 'send')) {
             _context6.next = 13;
             break;
           }
@@ -491,50 +491,76 @@ function _updateSectionAdvanced() {
           resp = _context6.sent;
 
         case 13:
+          if (!(method === 'refresh' && cType.refresh)) {
+            _context6.next = 19;
+            break;
+          }
+
+          _context6.next = 16;
+          return cType.refresh(msg, connector, data);
+
+        case 16:
+          resp = _context6.sent;
+          _context6.next = 23;
+          break;
+
+        case 19:
+          if (!(method === 'refresh')) {
+            _context6.next = 23;
+            break;
+          }
+
+          _context6.next = 22;
+          return cType.run(msg, connector);
+
+        case 22:
+          resp = _context6.sent;
+
+        case 23:
           if (!(cType.update && method === 'add')) {
-            _context6.next = 18;
+            _context6.next = 28;
             break;
           }
 
           delete connector.caText;
-          _context6.next = 17;
+          _context6.next = 27;
           return cType.update(msg, connector, forms, data, method);
 
-        case 17:
+        case 27:
           resp = _context6.sent;
 
-        case 18:
+        case 28:
           if (!(cType.update && method === 'edit')) {
-            _context6.next = 22;
+            _context6.next = 32;
             break;
           }
 
-          _context6.next = 21;
+          _context6.next = 31;
           return cType.update(msg, connector, forms, data, method);
 
-        case 21:
+        case 31:
           resp = _context6.sent;
 
-        case 22:
+        case 32:
           if (!(cType.remove && method === 'remove')) {
-            _context6.next = 26;
+            _context6.next = 36;
             break;
           }
 
-          _context6.next = 25;
+          _context6.next = 35;
           return cType.remove(msg, connector, data);
 
-        case 25:
+        case 35:
           resp = _context6.sent;
 
-        case 26:
+        case 36:
           //override event object parameters with response data;
           e.parameters.code = resp.code;
           e.parameters.content = resp.content;
           e.parameters.method = connector.method;
           return _context6.abrupt("return", actionShow(e));
 
-        case 30:
+        case 40:
         case "end":
           return _context6.stop();
       }
