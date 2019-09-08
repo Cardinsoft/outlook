@@ -544,48 +544,8 @@ function createExtraDataSection(builder, isCollapsed, end, begin, max, data, con
  */
 
 
-function createNoFieldsSection(builder, isCollapsed, connector, msg) {
-  //create section and set required parameters;
-  var section = CardService.newCardSection();
-  section.setCollapsible(isCollapsed);
-  section.setHeader(globalNoDataWidgetTitle); //create KeyValue widget prompting user that no data is available;
-
-  var trimmed = trimMessage(msg, true, true);
-  var prompt = globalNoDataWidgetContent + ' ' + trimmed.first + ' ' + trimmed.last + '\r<b>' + trimmed.email + '</b>';
-  var noData = simpleKeyValueWidget('', prompt, true);
-  section.addWidget(noData); //create TextButton for adding contact if config provides one;
-
-  var cType = new this[connector.type]();
-  var addQuery = '';
-  var addConfig = cType.addConfig;
-  var addInCRM = cType.addInCRM;
-
-  if (addConfig) {
-    var add = textButtonWidget(globalAddContactText, false, false, 'configureContactAdd', addConfig(propertiesToString(connector), msg));
-    section.addWidget(add);
-  } else if (addInCRM) {
-    //access domain and prepend if required;
-    var domain = connector.account;
-
-    if (domain) {
-      addQuery = 'https://' + domain + '.' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
-    } else {
-      addQuery = 'https://' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
-    } //put parameters into query string;
-
-
-    if (addInCRM.params) {
-      addQuery += jsonToQuery(addInCRM.params, trimmed);
-    } //construct add in CRM widget;
-
-
-    add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, addQuery, false, true);
-    section.addWidget(add);
-  } //append section and return it;
-
-
-  builder.addSection(section);
-  return section;
+function createNoFieldsSection(_x9, _x10, _x11, _x12) {
+  return _createNoFieldsSection.apply(this, arguments);
 }
 /**
  * Creates section containing promp to confirm action and set of buttons to proceed;
@@ -595,6 +555,81 @@ function createNoFieldsSection(builder, isCollapsed, connector, msg) {
  * @returns {CardSection} this CardSection;
  */
 
+
+function _createNoFieldsSection() {
+  _createNoFieldsSection = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(builder, isCollapsed, connector, msg) {
+    var section, trimmed, prompt, noData, cType, addQuery, addConfig, addInCRM, add, domain;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          //create section and set required parameters;
+          section = CardService.newCardSection();
+          section.setCollapsible(isCollapsed);
+          section.setHeader(globalNoDataWidgetTitle); //create KeyValue widget prompting user that no data is available;
+
+          trimmed = trimMessage(msg, true, true);
+          prompt = globalNoDataWidgetContent + ' ' + trimmed.first + ' ' + trimmed.last + '\r<b>' + trimmed.email + '</b>';
+          noData = simpleKeyValueWidget('', prompt, true);
+          section.addWidget(noData); //create TextButton for adding contact if config provides one;
+
+          cType = new this[connector.type]();
+          addQuery = '';
+          addConfig = cType.addConfig;
+          addInCRM = cType.addInCRM;
+
+          if (!addConfig) {
+            _context3.next = 21;
+            break;
+          }
+
+          _context3.t0 = textButtonWidget;
+          _context3.t1 = globalAddContactText;
+          _context3.next = 16;
+          return addConfig(propertiesToString(connector), msg);
+
+        case 16:
+          _context3.t2 = _context3.sent;
+          add = (0, _context3.t0)(_context3.t1, false, false, 'configureContactAdd', _context3.t2);
+          section.addWidget(add);
+          _context3.next = 22;
+          break;
+
+        case 21:
+          if (addInCRM) {
+            //access domain and prepend if required;
+            domain = connector.account;
+
+            if (domain) {
+              addQuery = 'https://' + domain + '.' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
+            } else {
+              addQuery = 'https://' + (connector.domain ? connector.domain : addInCRM.domain) + addInCRM.base;
+            } //put parameters into query string;
+
+
+            if (addInCRM.params) {
+              addQuery += jsonToQuery(addInCRM.params, trimmed);
+            } //construct add in CRM widget;
+
+
+            add = textButtonWidgetLinked(globalAddContactInCRMText, false, false, addQuery, false, true);
+            section.addWidget(add);
+          }
+
+        case 22:
+          //append section and return it;
+          builder.addSection(section);
+          return _context3.abrupt("return", section);
+
+        case 24:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, this);
+  }));
+  return _createNoFieldsSection.apply(this, arguments);
+}
 
 function createSectionConfirm(builder, isCollapsed, e) {
   //create section and set required parameters;
@@ -1226,7 +1261,7 @@ function createSectionChooseType(builder, isCollapsed, header) {
  */
 
 
-function createSectionAddConnector(_x9, _x10, _x11, _x12) {
+function createSectionAddConnector(_x13, _x14, _x15, _x16) {
   return _createSectionAddConnector.apply(this, arguments);
 }
 /**
@@ -1243,19 +1278,19 @@ function createSectionAddConnector(_x9, _x10, _x11, _x12) {
 function _createSectionAddConnector() {
   _createSectionAddConnector = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(builder, isCollapsed, header, type) {
+  regeneratorRuntime.mark(function _callee4(builder, isCollapsed, header, type) {
     var man, def, config, section, actionSection;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           man = false;
           def = false; //access config and make first Connector default and auto;
 
-          _context3.next = 4;
+          _context4.next = 4;
           return getConfig();
 
         case 4:
-          config = _context3.sent;
+          config = _context4.sent;
 
           if (config.length === 0) {
             man = false;
@@ -1301,13 +1336,13 @@ function _createSectionAddConnector() {
             }]
           };
           createSectionAdvanced(builder, actionSection, 0, type, actionSection.widgets.length, 0);
-          return _context3.abrupt("return", [section, actionSection]);
+          return _context4.abrupt("return", [section, actionSection]);
 
         case 11:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _createSectionAddConnector.apply(this, arguments);
 }
@@ -1447,7 +1482,7 @@ function createSectionWelcome(builder, isCollapsed, header) {
  */
 
 
-function createSectionSettings(_x13, _x14, _x15) {
+function createSectionSettings(_x17, _x18, _x19) {
   return _createSectionSettings.apply(this, arguments);
 }
 /**
@@ -1461,10 +1496,10 @@ function createSectionSettings(_x13, _x14, _x15) {
 function _createSectionSettings() {
   _createSectionSettings = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(builder, isCollapsed, header) {
+  regeneratorRuntime.mark(function _callee5(builder, isCollapsed, header) {
     var section;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           //create section and set required parameters;
           section = CardService.newCardSection();
@@ -1475,19 +1510,19 @@ function _createSectionSettings() {
           } //create sorting widgets;
 
 
-          _context4.next = 5;
+          _context5.next = 5;
           return createWidgetSortBy(section);
 
         case 5:
           //append section and return it;
           builder.addSection(section);
-          return _context4.abrupt("return", section);
+          return _context5.abrupt("return", section);
 
         case 7:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4);
+    }, _callee5);
   }));
   return _createSectionSettings.apply(this, arguments);
 }
