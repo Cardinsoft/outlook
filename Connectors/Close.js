@@ -270,7 +270,7 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(msg, connector, forms, data, method) {
-      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, c, contact, responseC;
+      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, c, contact, responseC, contentC;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -437,7 +437,7 @@ function Close() {
 
           case 61:
             if (!(c < contacts.length)) {
-              _context3.next = 69;
+              _context3.next = 70;
               break;
             }
 
@@ -448,14 +448,19 @@ function Close() {
           case 65:
             responseC = _context3.sent;
 
-          case 66:
+            if (responseC.code >= 200 && responseC.code < 300) {
+              contentC = JSON.parse(responseC.content);
+              updatedContacts.push(contentC);
+            }
+
+          case 67:
             c++;
             _context3.next = 61;
             break;
 
-          case 69:
-            if (!(updatedLeads.length > 0)) {
-              _context3.next = 73;
+          case 70:
+            if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
+              _context3.next = 74;
               break;
             }
 
@@ -467,10 +472,10 @@ function Close() {
               })
             }));
 
-          case 73:
+          case 74:
             return _context3.abrupt("return", this.run(msg, connector));
 
-          case 74:
+          case 75:
           case "end":
             return _context3.stop();
         }
