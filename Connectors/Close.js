@@ -270,7 +270,7 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(msg, connector, forms, data, method) {
-      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, l, lead, responseL, c, contact, responseC;
+      var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, c, contact, responseC;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -404,51 +404,73 @@ function Close() {
             break;
 
           case 49:
+            //end form handler;
+            //send lead updates;
+            updatedLeads = [];
             l = 0;
 
-          case 50:
+          case 51:
             if (!(l < leads.length)) {
-              _context3.next = 58;
+              _context3.next = 60;
               break;
             }
 
             lead = leads[l];
-            _context3.next = 54;
+            _context3.next = 55;
             return performFetch(this.url + '/lead/' + (method === 'add' ? '' : lead.id + '/'), method === 'add' ? 'post' : 'put', headers, lead);
 
-          case 54:
+          case 55:
             responseL = _context3.sent;
 
-          case 55:
+            if (responseL.code >= 200 && responseL.code < 300) {
+              contentL = JSON.parse(responseL.content);
+              updatedLeads.push(contentL);
+            }
+
+          case 57:
             l++;
-            _context3.next = 50;
+            _context3.next = 51;
             break;
 
-          case 58:
+          case 60:
             c = 0;
 
-          case 59:
+          case 61:
             if (!(c < contacts.length)) {
-              _context3.next = 67;
+              _context3.next = 69;
               break;
             }
 
             contact = contacts[c];
-            _context3.next = 63;
+            _context3.next = 65;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 63:
+          case 65:
             responseC = _context3.sent;
 
-          case 64:
+          case 66:
             c++;
-            _context3.next = 59;
+            _context3.next = 61;
             break;
 
-          case 67:
+          case 69:
+            if (!(updatedLeads.length > 0)) {
+              _context3.next = 73;
+              break;
+            }
+
+            return _context3.abrupt("return", this.run(msg, connector, {
+              code: 200,
+              headers: {},
+              content: JSON.stringify({
+                data: updatedLeads
+              })
+            }));
+
+          case 73:
             return _context3.abrupt("return", this.run(msg, connector));
 
-          case 68:
+          case 74:
           case "end":
             return _context3.stop();
         }
