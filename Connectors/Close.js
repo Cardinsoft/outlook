@@ -189,70 +189,113 @@ function Close() {
    */
 
 
-  this.addConfig = function (connector, msg) {
-    var message = trimMessage(msg, true, true);
-    var prompt = '';
-    var config = [];
+  this.addConfig =
+  /*#__PURE__*/
+  function () {
+    var _ref3 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee3(connector, msg) {
+      var message, headers, leads, prompt, config, adder;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            message = trimMessage(msg, true, true);
+            headers = {
+              Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
+            };
+            _context3.next = 4;
+            return new this[connector.type]().fetchLeads_(headers, ['id', 'name']);
 
-    switch (connector.view) {
-      case 'lead':
-        prompt = 'Create lead';
-        config.push({
-          widgets: [{
-            type: globalTextInput,
-            title: 'Company Name',
-            name: 'name',
-            hint: 'e.g. Close'
-          }, {
-            type: globalTextInput,
-            title: 'Contact Name',
-            content: message.name,
-            name: 'contacts-name',
-            hint: 'e.g. Steli Efti'
-          }, {
-            type: globalTextInput,
-            title: 'Contact Email',
-            content: message.email,
-            name: 'contacts-emails-email'
-          }, {
-            type: globalEnumDropdown,
-            content: [{
-              value: 'office',
-              text: 'Office',
-              selected: false
-            }, {
-              value: 'mobile',
-              text: 'Mobile',
-              selected: false
-            }, {
-              value: 'direct',
-              text: 'Direct',
-              selected: false
-            }, {
-              value: 'home',
-              text: 'Home',
-              selected: false
-            }, {
-              value: 'other',
-              text: 'Other',
-              selected: true
-            }],
-            name: 'contacts-emails-type'
-          }]
-        });
-        break;
+          case 4:
+            leads = _context3.sent;
+            prompt = '';
+            config = [];
+            _context3.t0 = connector.view;
+            _context3.next = _context3.t0 === 'lead' ? 10 : 14;
+            break;
 
-      default:
-        prompt = 'Create contact';
-    }
+          case 10:
+            prompt = 'Create lead';
+            config.push({
+              widgets: [{
+                type: globalTextInput,
+                title: 'Company Name',
+                name: 'name',
+                hint: 'e.g. Close'
+              }, {
+                type: globalTextInput,
+                title: 'Contact Name',
+                content: message.name,
+                name: 'contacts-name',
+                hint: 'e.g. Steli Efti'
+              }, {
+                type: globalTextInput,
+                title: 'Contact Email',
+                content: message.email,
+                name: 'contacts-emails-email'
+              }, {
+                type: globalEnumDropdown,
+                content: [{
+                  value: 'office',
+                  text: 'Office',
+                  selected: false
+                }, {
+                  value: 'mobile',
+                  text: 'Mobile',
+                  selected: false
+                }, {
+                  value: 'direct',
+                  text: 'Direct',
+                  selected: false
+                }, {
+                  value: 'home',
+                  text: 'Home',
+                  selected: false
+                }, {
+                  value: 'other',
+                  text: 'Other',
+                  selected: true
+                }],
+                name: 'contacts-emails-type'
+              }]
+            });
 
-    var adder = mergeObjects({
-      config: JSON.stringify(config),
-      method: 'add',
-      caText: prompt
-    }, connector);
-    return adder;
-  };
+            if (leads.length > 0) {
+              config[0].widgets.push({
+                title: 'Assign to Lead',
+                type: globalEnumDropdown,
+                content: leads.map(function (lead) {
+                  return {
+                    value: lead.id,
+                    text: lead.name,
+                    selected: false
+                  };
+                }),
+                name: 'lead_id'
+              });
+            }
+
+            return _context3.abrupt("break", 14);
+
+          case 14:
+            adder = mergeObjects({
+              config: JSON.stringify(config),
+              method: 'add',
+              caText: prompt
+            }, connector);
+            return _context3.abrupt("return", adder);
+
+          case 16:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3, this);
+    }));
+
+    return function (_x7, _x8) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
   /**
    * General method for updating info;
    * @param {Object} msg object with current message info;
@@ -267,12 +310,12 @@ function Close() {
   this.update =
   /*#__PURE__*/
   function () {
-    var _ref3 = _asyncToGenerator(
+    var _ref4 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3(msg, connector, forms, data, method) {
+    regeneratorRuntime.mark(function _callee4(msg, connector, forms, data, method) {
       var headers, contacts, leads, key, input, k, kName, kSubs, kNameSub, kSub, kSubSub, kId, kType, update, updatedLeads, l, lead, responseL, contentL, c, contact, responseC, contentC;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
           case 0:
             //construct headers;
             headers = {
@@ -282,15 +325,15 @@ function Close() {
             contacts = [];
             leads = []; //create payload;
 
-            _context3.t0 = regeneratorRuntime.keys(forms);
+            _context4.t0 = regeneratorRuntime.keys(forms);
 
           case 4:
-            if ((_context3.t1 = _context3.t0()).done) {
-              _context3.next = 49;
+            if ((_context4.t1 = _context4.t0()).done) {
+              _context4.next = 49;
               break;
             }
 
-            key = _context3.t1.value;
+            key = _context4.t1.value;
             input = forms[key];
             k = key.split('&');
             kName = k[0]; //field name;
@@ -335,51 +378,51 @@ function Close() {
               }
             }
 
-            _context3.t2 = true;
-            _context3.next = _context3.t2 === (kName === 'status_id') ? 19 : _context3.t2 === (kName.indexOf('lcf_') !== -1) ? 21 : _context3.t2 === (kNameSub === 'contacts') ? 37 : 46;
+            _context4.t2 = true;
+            _context4.next = _context4.t2 === (kName === 'status_id') ? 19 : _context4.t2 === (kName.indexOf('lcf_') !== -1) ? 21 : _context4.t2 === (kNameSub === 'contacts') ? 37 : 46;
             break;
 
           case 19:
             update[kName] = input[0];
-            return _context3.abrupt("break", 47);
+            return _context4.abrupt("break", 47);
 
           case 21:
-            _context3.t3 = true;
-            _context3.next = _context3.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 24 : _context3.t3 === (kType === 'date' || kType === 'datetime') ? 26 : 35;
+            _context4.t3 = true;
+            _context4.next = _context4.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 24 : _context4.t3 === (kType === 'date' || kType === 'datetime') ? 26 : 35;
             break;
 
           case 24:
             update['custom.' + kName] = input;
-            return _context3.abrupt("break", 36);
+            return _context4.abrupt("break", 36);
 
           case 26:
-            _context3.prev = 26;
+            _context4.prev = 26;
             input = new Date(input[0]).toISOString();
-            _context3.next = 33;
+            _context4.next = 33;
             break;
 
           case 30:
-            _context3.prev = 30;
-            _context3.t4 = _context3["catch"](26);
-            return _context3.abrupt("break", 36);
+            _context4.prev = 30;
+            _context4.t4 = _context4["catch"](26);
+            return _context4.abrupt("break", 36);
 
           case 33:
             update['custom.' + kName] = input;
-            return _context3.abrupt("break", 36);
+            return _context4.abrupt("break", 36);
 
           case 35:
             update['custom.' + kName] = input[0];
 
           case 36:
-            return _context3.abrupt("break", 47);
+            return _context4.abrupt("break", 47);
 
           case 37:
             if (!update[kNameSub]) {
               update[kNameSub] = [{}];
             }
 
-            _context3.t5 = kSub;
-            _context3.next = _context3.t5 === 'emails' ? 41 : 44;
+            _context4.t5 = kSub;
+            _context4.next = _context4.t5 === 'emails' ? 41 : 44;
             break;
 
           case 41:
@@ -388,19 +431,19 @@ function Close() {
             }
 
             update[kNameSub][0][kSub][0][kSubSub] = input[0];
-            return _context3.abrupt("break", 45);
+            return _context4.abrupt("break", 45);
 
           case 44:
             update[kNameSub][0][kSub] = input[0];
 
           case 45:
-            return _context3.abrupt("break", 47);
+            return _context4.abrupt("break", 47);
 
           case 46:
             update[kName] = input[0];
 
           case 47:
-            _context3.next = 4;
+            _context4.next = 4;
             break;
 
           case 49:
@@ -411,16 +454,16 @@ function Close() {
 
           case 51:
             if (!(l < leads.length)) {
-              _context3.next = 60;
+              _context4.next = 60;
               break;
             }
 
             lead = leads[l];
-            _context3.next = 55;
+            _context4.next = 55;
             return performFetch(this.url + '/lead/' + (method === 'add' ? '' : lead.id + '/'), method === 'add' ? 'post' : 'put', headers, lead);
 
           case 55:
-            responseL = _context3.sent;
+            responseL = _context4.sent;
 
             if (responseL.code >= 200 && responseL.code < 300) {
               contentL = JSON.parse(responseL.content);
@@ -429,7 +472,7 @@ function Close() {
 
           case 57:
             l++;
-            _context3.next = 51;
+            _context4.next = 51;
             break;
 
           case 60:
@@ -437,16 +480,16 @@ function Close() {
 
           case 61:
             if (!(c < contacts.length)) {
-              _context3.next = 70;
+              _context4.next = 70;
               break;
             }
 
             contact = contacts[c];
-            _context3.next = 65;
+            _context4.next = 65;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
           case 65:
-            responseC = _context3.sent;
+            responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
               contentC = JSON.parse(responseC.content);
@@ -455,16 +498,16 @@ function Close() {
 
           case 67:
             c++;
-            _context3.next = 61;
+            _context4.next = 61;
             break;
 
           case 70:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context3.next = 74;
+              _context4.next = 74;
               break;
             }
 
-            return _context3.abrupt("return", this.run(msg, connector, {
+            return _context4.abrupt("return", this.run(msg, connector, {
               code: 200,
               headers: {},
               content: JSON.stringify({
@@ -473,17 +516,17 @@ function Close() {
             }));
 
           case 74:
-            return _context3.abrupt("return", this.run(msg, connector));
+            return _context4.abrupt("return", this.run(msg, connector));
 
           case 75:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
-      }, _callee3, this, [[26, 30]]);
+      }, _callee4, this, [[26, 30]]);
     }));
 
-    return function (_x7, _x8, _x9, _x10, _x11) {
-      return _ref3.apply(this, arguments);
+    return function (_x9, _x10, _x11, _x12, _x13) {
+      return _ref4.apply(this, arguments);
     };
   }();
   /**
@@ -498,12 +541,12 @@ function Close() {
   this.run =
   /*#__PURE__*/
   function () {
-    var _ref4 = _asyncToGenerator(
+    var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4(msg, connector, data) {
+    regeneratorRuntime.mark(function _callee5(msg, connector, data) {
       var message, queryL, url, headers, response, view, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             //modify message;
             message = trimMessage(msg, true, true);
@@ -515,16 +558,16 @@ function Close() {
             }; //fetch endpoint and return response;
 
             if (data) {
-              _context4.next = 10;
+              _context5.next = 10;
               break;
             }
 
-            _context4.next = 7;
+            _context5.next = 7;
             return performFetch(url, 'get', headers);
 
           case 7:
-            response = _context4.sent;
-            _context4.next = 11;
+            response = _context5.sent;
+            _context5.next = 11;
             break;
 
           case 10:
@@ -541,7 +584,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context4.next = 92;
+              _context5.next = 92;
               break;
             }
 
@@ -556,11 +599,11 @@ function Close() {
 
             users = [];
             usersURL = this.url + '/user';
-            _context4.next = 22;
+            _context5.next = 22;
             return performFetch(usersURL, 'get', headers);
 
           case 22:
-            usersResp = _context4.sent;
+            usersResp = _context5.sent;
 
             if (usersResp.code >= 200 && usersResp.code < 300) {
               users = JSON.parse(usersResp.content).data;
@@ -568,21 +611,21 @@ function Close() {
             //access lead statuses;
 
 
-            _context4.next = 26;
+            _context5.next = 26;
             return this.fetchLeadStatuses_(headers);
 
           case 26:
-            leadStatuses = _context4.sent;
-            _context4.next = 29;
+            leadStatuses = _context5.sent;
+            _context5.next = 29;
             return this.fetchFields_(headers);
 
           case 29:
-            fields = _context4.sent;
+            fields = _context5.sent;
             l = 0;
 
           case 31:
             if (!(l < leads.length)) {
-              _context4.next = 90;
+              _context5.next = 90;
               break;
             }
 
@@ -649,7 +692,7 @@ function Close() {
 
           case 55:
             if (!(c < contacts.length)) {
-              _context4.next = 86;
+              _context5.next = 86;
               break;
             }
 
@@ -679,11 +722,11 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context4.next = 69;
+              _context5.next = 69;
               break;
             }
 
-            return _context4.abrupt("continue", 83);
+            return _context5.abrupt("continue", 83);
 
           case 69:
             if (view === 'contact') {
@@ -700,31 +743,31 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context4.next = 82;
+              _context5.next = 82;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context4.next = 78;
+              _context5.next = 78;
               break;
             }
 
-            _context4.next = 75;
+            _context5.next = 75;
             return this.fetchActivities_(headers, 0, leadId, contId);
 
           case 75:
-            activities = _context4.sent;
-            _context4.next = 81;
+            activities = _context5.sent;
+            _context5.next = 81;
             break;
 
           case 78:
-            _context4.next = 80;
+            _context5.next = 80;
             return this.fetchActivities_(headers, 0, leadId);
 
           case 80:
-            activities = _context4.sent;
+            activities = _context5.sent;
 
           case 81:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
@@ -746,7 +789,7 @@ function Close() {
 
           case 83:
             c++;
-            _context4.next = 55;
+            _context5.next = 55;
             break;
 
           case 86:
@@ -769,16 +812,16 @@ function Close() {
 
           case 87:
             l++;
-            _context4.next = 31;
+            _context5.next = 31;
             break;
 
           case 90:
-            _context4.next = 99;
+            _context5.next = 99;
             break;
 
           case 92:
             if (!(response.code === 401)) {
-              _context4.next = 98;
+              _context5.next = 98;
               break;
             }
 
@@ -804,7 +847,7 @@ function Close() {
                 }]
               }]
             }];
-            return _context4.abrupt("return", {
+            return _context5.abrupt("return", {
               code: 200,
               headers: {},
               content: JSON.stringify(authErr),
@@ -815,7 +858,7 @@ function Close() {
             });
 
           case 98:
-            return _context4.abrupt("return", response);
+            return _context5.abrupt("return", response);
 
           case 99:
             //contruct resulting object;
@@ -832,17 +875,17 @@ function Close() {
               };
             }
 
-            return _context4.abrupt("return", returned);
+            return _context5.abrupt("return", returned);
 
           case 102:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
-      }, _callee4, this);
+      }, _callee5, this);
     }));
 
-    return function (_x12, _x13, _x14) {
-      return _ref4.apply(this, arguments);
+    return function (_x14, _x15, _x16) {
+      return _ref5.apply(this, arguments);
     };
   }();
   /**
@@ -1870,12 +1913,12 @@ function Close() {
   this.fetchLeads_ =
   /*#__PURE__*/
   function () {
-    var _ref5 = _asyncToGenerator(
+    var _ref6 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(headers, fields, start) {
+    regeneratorRuntime.mark(function _callee6(headers, fields, start) {
       var lds, query, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) switch (_context5.prev = _context5.next) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
             start = start || 0;
             lds = [];
@@ -1886,14 +1929,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/lead/' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context5.next = 7;
+            _context6.next = 7;
             return performFetch(url, 'get', headers);
 
           case 7:
-            response = _context5.sent;
+            response = _context6.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 19;
+              _context6.next = 19;
               break;
             }
 
@@ -1904,30 +1947,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context5.next = 19;
+              _context6.next = 19;
               break;
             }
 
-            _context5.t0 = lds;
-            _context5.next = 17;
+            _context6.t0 = lds;
+            _context6.next = 17;
             return this.fetchLeads_(headers, fields, start + 100);
 
           case 17:
-            _context5.t1 = _context5.sent;
-            lds = _context5.t0.concat.call(_context5.t0, _context5.t1);
+            _context6.t1 = _context6.sent;
+            lds = _context6.t0.concat.call(_context6.t0, _context6.t1);
 
           case 19:
-            return _context5.abrupt("return", lds);
+            return _context6.abrupt("return", lds);
 
           case 20:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
-      }, _callee5, this);
+      }, _callee6, this);
     }));
 
-    return function (_x15, _x16, _x17) {
-      return _ref5.apply(this, arguments);
+    return function (_x17, _x18, _x19) {
+      return _ref6.apply(this, arguments);
     };
   }();
   /**
@@ -1942,24 +1985,24 @@ function Close() {
   this.fetchLeadStatuses_ =
   /*#__PURE__*/
   function () {
-    var _ref6 = _asyncToGenerator(
+    var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(headers, start, id) {
+    regeneratorRuntime.mark(function _callee7(headers, start, id) {
       var lsts, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
             start = start || 0;
             lsts = [];
             url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
-            _context6.next = 5;
+            _context7.next = 5;
             return performFetch(url, 'get', headers);
 
           case 5:
-            response = _context6.sent;
+            response = _context7.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context6.next = 17;
+              _context7.next = 17;
               break;
             }
 
@@ -1970,30 +2013,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context6.next = 17;
+              _context7.next = 17;
               break;
             }
 
-            _context6.t0 = lsts;
-            _context6.next = 15;
+            _context7.t0 = lsts;
+            _context7.next = 15;
             return this.fetchLeadStatuses_(headers, start + 100, id);
 
           case 15:
-            _context6.t1 = _context6.sent;
-            lsts = _context6.t0.concat.call(_context6.t0, _context6.t1);
+            _context7.t1 = _context7.sent;
+            lsts = _context7.t0.concat.call(_context7.t0, _context7.t1);
 
           case 17:
-            return _context6.abrupt("return", lsts);
+            return _context7.abrupt("return", lsts);
 
           case 18:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
-      }, _callee6, this);
+      }, _callee7, this);
     }));
 
-    return function (_x18, _x19, _x20) {
-      return _ref6.apply(this, arguments);
+    return function (_x20, _x21, _x22) {
+      return _ref7.apply(this, arguments);
     };
   }();
   /**
@@ -2009,12 +2052,12 @@ function Close() {
   this.fetchActivities_ =
   /*#__PURE__*/
   function () {
-    var _ref7 = _asyncToGenerator(
+    var _ref8 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(headers, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee8(headers, start, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
           case 0:
             start = start || 0;
             acts = [];
@@ -2033,14 +2076,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context7.next = 9;
+            _context8.next = 9;
             return performFetch(url, 'get', headers);
 
           case 9:
-            response = _context7.sent;
+            response = _context8.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 21;
+              _context8.next = 21;
               break;
             }
 
@@ -2051,30 +2094,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context7.next = 21;
+              _context8.next = 21;
               break;
             }
 
-            _context7.t0 = acts;
-            _context7.next = 19;
+            _context8.t0 = acts;
+            _context8.next = 19;
             return this.fetchActivities_(headers, start + 100, lid, cid);
 
           case 19:
-            _context7.t1 = _context7.sent;
-            acts = _context7.t0.concat.call(_context7.t0, _context7.t1);
+            _context8.t1 = _context8.sent;
+            acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
 
           case 21:
-            return _context7.abrupt("return", acts);
+            return _context8.abrupt("return", acts);
 
           case 22:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
-      }, _callee7, this);
+      }, _callee8, this);
     }));
 
-    return function (_x21, _x22, _x23, _x24) {
-      return _ref7.apply(this, arguments);
+    return function (_x23, _x24, _x25, _x26) {
+      return _ref8.apply(this, arguments);
     };
   }();
   /**
@@ -2089,12 +2132,12 @@ function Close() {
   this.fetchFields_ =
   /*#__PURE__*/
   function () {
-    var _ref8 = _asyncToGenerator(
+    var _ref9 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8(headers, start, id) {
+    regeneratorRuntime.mark(function _callee9(headers, start, id) {
       var fds, query, url, response, content, fields, hasMore;
-      return regeneratorRuntime.wrap(function _callee8$(_context8) {
-        while (1) switch (_context8.prev = _context8.next) {
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
           case 0:
             start = start || 0;
             fds = [];
@@ -2105,14 +2148,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context8.next = 7;
+            _context9.next = 7;
             return performFetch(url, 'get', headers);
 
           case 7:
-            response = _context8.sent;
+            response = _context9.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context8.next = 19;
+              _context9.next = 19;
               break;
             }
 
@@ -2123,30 +2166,30 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context8.next = 19;
+              _context9.next = 19;
               break;
             }
 
-            _context8.t0 = fds;
-            _context8.next = 17;
+            _context9.t0 = fds;
+            _context9.next = 17;
             return this.fetchFields_(headers, start + 100, id);
 
           case 17:
-            _context8.t1 = _context8.sent;
-            fds = _context8.t0.concat.call(_context8.t0, _context8.t1);
+            _context9.t1 = _context9.sent;
+            fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
 
           case 19:
-            return _context8.abrupt("return", fds);
+            return _context9.abrupt("return", fds);
 
           case 20:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
-      }, _callee8, this);
+      }, _callee9, this);
     }));
 
-    return function (_x25, _x26, _x27) {
-      return _ref8.apply(this, arguments);
+    return function (_x27, _x28, _x29) {
+      return _ref9.apply(this, arguments);
     };
   }();
 }
