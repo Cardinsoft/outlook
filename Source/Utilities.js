@@ -206,7 +206,9 @@ function preserveValues(connector, widgets) {
           }
         } else if (!connector[name] && !connector.short) {
           //make sure it isn't type;
-          widget.selected = false;
+          if (!widget.force) {
+            widget.selected = false;
+          }
         }
       }
     });
