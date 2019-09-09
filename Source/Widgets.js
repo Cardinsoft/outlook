@@ -277,7 +277,7 @@ function createWidgetResetSubmit(section) {
   //set confirmation params;
   var params = {
     confirmAction: 'performFullReset',
-    cancelAction: 'goSettings',
+    cancelAction: 'cardAdvanced',
     prompt: globalConfirmResetWidgetContent,
     success: globalResetSuccess,
     failure: globalResetFailure
