@@ -875,13 +875,14 @@ function createSectionSimple(builder, data, isCollapsed, index) {
  * @param {Integer} sectionIndex index of section currently created;
  * @param {Object} connector connector config object;
  * @param {Integer} max maximum number of widgets to create;
+ * @param {Object=} start layout of sections starts;
  * @returns {CardSection} this CardSection;
  */
 
 
 function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start) {
   //access account preferences;
-  var popup; //create section;
+  var popup = !getAccount().popups; //create section;
 
   var section = CardService.newCardSection(); //access section parameters;
 
@@ -944,6 +945,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var content = widget.content;
             var callback = widget.callback;
             var spin = widget.hasSpinner;
+            var params = widget.parameters;
 
             switch (type) {
               case globalTextParagraph:
@@ -1008,6 +1010,18 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 element = buttonSet(buttons);
                 break;
 
+              case globalImageButton:
+                var alt = widget.alt;
+                var fullsized = widget.fullsized;
+                var reload = widget.reload; //if account has preferences -> override;
+
+                if (popup) {
+                  fullsized = popup;
+                }
+
+                element = imageButtonWidget(icon, alt, content, {}, globalActionLink, fullsized, reload);
+                break;
+
               case globalTextButton:
                 //access TextButton-specific params;
                 var disabled = widget.disabled;
@@ -1016,7 +1030,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var reload = widget.reload;
                 var action = widget.action;
                 var funcName = widget.funcName;
-                var parameters = widget.parameters;
                 var colour = widget.colour; //set button text colour if provided;
 
                 if (colour) {
@@ -1024,8 +1037,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 } //set parameters if provided and default to connector;
 
 
-                if (!parameters) {
-                  parameters = connector;
+                if (!params) {
+                  params = connector;
                 } //if account has preferences -> override;
 
 
@@ -1035,9 +1048,9 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
 
                 if (action === globalActionClick) {
-                  element = textButtonWidget(title, disabled, filled, funcName, parameters);
+                  element = textButtonWidget(title, disabled, filled, funcName, params);
                 } else if (action === globalActionAction) {
-                  element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, funcName, parameters);
+                  element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, funcName, params);
                 } else {
                   element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload);
                 }
@@ -1056,7 +1069,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var filled = widget.filled;
                 var reload = widget.reload;
                 var funcName = widget.funcName;
-                var params = widget.parameters;
                 var action = widget.action; //default to multiline;
 
                 if (!isMultiline) {
@@ -1134,7 +1146,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 break;
 
               case globalEnumRadio:
-                element = selectionInputWidget(title, name, type, content);
+                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
                 break;
 
               case globalEnumCheckbox:
