@@ -227,6 +227,7 @@ function editSectionAdvanced(_x5) {
 /**
  * Updates data with form input values, performs request and calls display with updated response;
  * @param {Object} e event object;
+  * @return {Function} actionShow call with modified data;
  */
 
 
@@ -433,7 +434,7 @@ function _updateSectionAdvanced() {
                         option.selected = false;
                       }
                     });
-                  } else if (type === 'KeyValue') {
+                  } else if (type === globalKeyValue) {
                     if (form[key]) {
                       widget.switchValue = true;
                     }
@@ -455,9 +456,9 @@ function _updateSectionAdvanced() {
                 }
               }
 
-              if (type === 'TextInput') {
+              if (type === globalTextInput) {
                 widget.state = 'editable';
-                widget.type = 'KeyValue';
+                widget.type = globalKeyValue;
               } //handle widgets with switches that are toggled off after load;
 
 
@@ -469,7 +470,7 @@ function _updateSectionAdvanced() {
                 noInput = false;
               }
 
-              if (type === 'KeyValue' && widget.switchValue && noInput) {
+              if (type === globalKeyValue && widget.switchValue && noInput) {
                 widget.switchValue = false;
               }
             });
