@@ -195,28 +195,61 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(connector, msg) {
-      var message, headers, leads, prompt, config, adder;
+      var message, headers, type, leads, prompt, config, users, leadUsers, stats, opptStats, adder;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             message = trimMessage(msg, true, true);
             headers = {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
-            };
-            _context3.next = 4;
-            return new this[connector.type]().fetchLeads_(headers, ['id', 'name']);
+            }; //initiate type and fetch entities;
 
-          case 4:
+            type = new this[connector.type]();
+            _context3.next = 5;
+            return type.fetchLeads_(headers, ['id', 'name']);
+
+          case 5:
             leads = _context3.sent;
             prompt = '';
             config = [];
             _context3.t0 = connector.view;
-            _context3.next = _context3.t0 === 'lead' ? 10 : _context3.t0 === 'contact' ? 13 : 17;
+            _context3.next = _context3.t0 === 'lead' ? 11 : _context3.t0 === 'contact' ? 25 : 29;
             break;
 
-          case 10:
-            prompt = 'Create lead';
+          case 11:
+            prompt = 'Create lead'; //fetch and prepare users;
+
+            _context3.next = 14;
+            return type.fetchUsers_(headers, 0);
+
+          case 14:
+            users = _context3.sent;
+            leadUsers = users.map(function (user) {
+              return {
+                text: user.first_name + ' ' + user.last_name,
+                value: user.id,
+                selected: false
+              };
+            });
+            leadUsers[0].selected = true;
+            _context3.next = 19;
+            return type.fetchOpportStatuses_(headers);
+
+          case 19:
+            stats = _context3.sent;
+            opptStats = stats.map(function (stat) {
+              return {
+                text: stat.label,
+                value: stat.id,
+                selected: false
+              };
+            });
+            opptStats.sort(function (a, b) {
+              return order(a.text, b.text);
+            });
+            opptStats[0].selected = true;
             config.push({
+              header: 'Lead info',
               widgets: [{
                 type: globalTextInput,
                 title: 'Company Name',
@@ -258,10 +291,62 @@ function Close() {
                 }],
                 name: 'contacts-emails-type'
               }]
+            }, {
+              header: 'Opportunity',
+              widgets: [{
+                type: globalEnumDropdown,
+                title: 'Status',
+                content: opptStats,
+                name: 'opportunities-status_id'
+              }, {
+                type: globalTextInput,
+                title: 'Confidence',
+                content: '',
+                hint: 'e.g. 65 (50% by default)',
+                name: 'opportunities-confidence'
+              }, {
+                type: globalTextInput,
+                title: 'Value',
+                content: '',
+                name: 'opportunities-value'
+              }, {
+                type: globalEnumDropdown,
+                content: [{
+                  text: 'One-time',
+                  value: 'one_time',
+                  selected: true
+                }, {
+                  text: 'Monthly',
+                  value: 'monthly',
+                  selected: false
+                }, {
+                  text: 'Annually',
+                  value: 'annual',
+                  selected: false
+                }],
+                name: 'opportunities-value_period'
+              }, {
+                type: globalTextInput,
+                title: 'Estimated Close',
+                content: new Date().toLocaleDateString(),
+                name: 'opportunities-date_won',
+                hint: 'Keep date format the same'
+              }, {
+                type: globalTextInput,
+                title: 'Comments',
+                content: '',
+                name: 'opportunities-note',
+                multiline: true
+              }, {
+                type: globalEnumDropdown,
+                title: 'User',
+                content: leadUsers,
+                name: 'opportunities-user_id'
+              }]
             });
-            return _context3.abrupt("break", 17);
+            return _context3.abrupt("break", 29);
 
-          case 13:
+          case 25:
             prompt = 'Create contact';
             config.push({
               widgets: [{
@@ -286,7 +371,7 @@ function Close() {
                 content: [{
                   value: 'office',
                   text: 'Office',
-                  selected: false
+                  selected: true
                 }, {
                   value: 'mobile',
                   text: 'Mobile',
@@ -302,7 +387,7 @@ function Close() {
                 }, {
                   value: 'other',
                   text: 'Other',
-                  selected: true
+                  selected: false
                 }],
                 name: 'emails-type'
               }]
@@ -323,9 +408,9 @@ function Close() {
               });
             }
 
-            return _context3.abrupt("break", 17);
+            return _context3.abrupt("break", 29);
 
-          case 17:
+          case 29:
             adder = mergeObjects({
               config: JSON.stringify(config),
               method: 'add',
@@ -333,7 +418,7 @@ function Close() {
             }, connector);
             return _context3.abrupt("return", adder);
 
-          case 19:
+          case 31:
           case "end":
             return _context3.stop();
         }
