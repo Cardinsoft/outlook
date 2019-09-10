@@ -2302,6 +2302,51 @@ function Close() {
       return _ref10.apply(this, arguments);
     };
   }();
+  /**
+  * Utility method for fetching opportunity statuses;
+  * @param {Object} headers request headers;
+  * @param {String=} id if provided -> fetch single status;
+  * @return {Array<Object>} opportunity statuses;
+  */
+
+
+  this.fetchOpportStatuses_ =
+  /*#__PURE__*/
+  function () {
+    var _ref11 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee11(headers, id) {
+      var oss, url, response, content, statuses;
+      return regeneratorRuntime.wrap(function _callee11$(_context11) {
+        while (1) switch (_context11.prev = _context11.next) {
+          case 0:
+            oss = [];
+            url = encodeURI(this.url + '/status/opportunity' + (id ? '/' + id + '/' : ''));
+            _context11.next = 4;
+            return performFetch(url, 'get', headers);
+
+          case 4:
+            response = _context11.sent;
+
+            if (response.code >= 200 && response.code < 300) {
+              content = JSON.parse(response.content);
+              statuses = content.data;
+              oss = oss.concat(statuses);
+            }
+
+            return _context11.abrupt("return", oss);
+
+          case 7:
+          case "end":
+            return _context11.stop();
+        }
+      }, _callee11, this);
+    }));
+
+    return function (_x33, _x34) {
+      return _ref11.apply(this, arguments);
+    };
+  }();
 }
 
 Close.prototype = Object.create(Connector.prototype);
