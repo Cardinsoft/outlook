@@ -112,6 +112,7 @@ var globalIconHomeEmail              = 'https://cardinsoft.com/wp-content/upload
 var globalIconHomePhone              = 'https://cardinsoft.com/wp-content/uploads/2019/07/HOME-PHONE.png';
 var globalIconMobileEmail            = 'https://cardinsoft.com/wp-content/uploads/2019/07/MOBILE-EMAIL.png';
 var globalIconOfficeEmail            = 'https://cardinsoft.com/wp-content/uploads/2019/07/OFFICE-EMAIL.png';
+var globalIconOpen                   = 'https://cardinsoft.com/wp-content/uploads/2019/09/OPEN.png';
 var globalIconOverdue                = 'https://cardinsoft.com/wp-content/uploads/2019/08/OVERDUE.png';
 var globalIconRefresh                = 'https://cardinsoft.com/wp-content/uploads/2019/09/REFRESH.png';
 var globalIconRemove                 = 'https://cardinsoft.com/wp-content/uploads/2019/09/REMOVE.png';
