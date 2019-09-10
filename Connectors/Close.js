@@ -610,7 +610,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, view, response, sections, contents, leads, users, usersURL, usersResp, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, leads, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -650,7 +650,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 92;
+              _context5.next = 89;
               break;
             }
 
@@ -663,35 +663,26 @@ function Close() {
             } //access users;
 
 
-            users = [];
-            usersURL = this.url + '/user';
-            _context5.next = 22;
-            return performFetch(usersURL, 'get', headers);
+            _context5.next = 20;
+            return this.fetchUsers_(headers, 0);
 
-          case 22:
-            usersResp = _context5.sent;
-
-            if (usersResp.code >= 200 && usersResp.code < 300) {
-              users = JSON.parse(usersResp.content).data;
-            } //end user success;
-            //access lead statuses;
-
-
-            _context5.next = 26;
+          case 20:
+            users = _context5.sent;
+            _context5.next = 23;
             return this.fetchLeadStatuses_(headers);
 
-          case 26:
+          case 23:
             leadStatuses = _context5.sent;
-            _context5.next = 29;
+            _context5.next = 26;
             return this.fetchFields_(headers);
 
-          case 29:
+          case 26:
             fields = _context5.sent;
             l = 0;
 
-          case 31:
+          case 28:
             if (!(l < leads.length)) {
-              _context5.next = 90;
+              _context5.next = 87;
               break;
             }
 
@@ -756,9 +747,9 @@ function Close() {
 
             c = 0;
 
-          case 55:
+          case 52:
             if (!(c < contacts.length)) {
-              _context5.next = 86;
+              _context5.next = 83;
               break;
             }
 
@@ -788,13 +779,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 69;
+              _context5.next = 66;
               break;
             }
 
-            return _context5.abrupt("continue", 83);
+            return _context5.abrupt("continue", 80);
 
-          case 69:
+          case 66:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -809,36 +800,36 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context5.next = 82;
+              _context5.next = 79;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context5.next = 78;
+              _context5.next = 75;
               break;
             }
 
-            _context5.next = 75;
+            _context5.next = 72;
             return this.fetchActivities_(headers, 0, leadId, contId);
 
-          case 75:
+          case 72:
             activities = _context5.sent;
-            _context5.next = 81;
+            _context5.next = 78;
             break;
 
-          case 78:
-            _context5.next = 80;
+          case 75:
+            _context5.next = 77;
             return this.fetchActivities_(headers, 0, leadId);
 
-          case 80:
+          case 77:
             activities = _context5.sent;
 
-          case 81:
+          case 78:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
-          case 82:
+          case 79:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
@@ -853,12 +844,12 @@ function Close() {
               }
             }
 
-          case 83:
+          case 80:
             c++;
-            _context5.next = 55;
+            _context5.next = 52;
             break;
 
-          case 86:
+          case 83:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -876,18 +867,18 @@ function Close() {
               }
             }
 
-          case 87:
+          case 84:
             l++;
-            _context5.next = 31;
+            _context5.next = 28;
             break;
 
-          case 90:
-            _context5.next = 99;
+          case 87:
+            _context5.next = 96;
             break;
 
-          case 92:
+          case 89:
             if (!(response.code === 401)) {
-              _context5.next = 98;
+              _context5.next = 95;
               break;
             }
 
@@ -923,10 +914,10 @@ function Close() {
               }
             });
 
-          case 98:
+          case 95:
             return _context5.abrupt("return", response);
 
-          case 99:
+          case 96:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -943,7 +934,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 102:
+          case 99:
           case "end":
             return _context5.stop();
         }
