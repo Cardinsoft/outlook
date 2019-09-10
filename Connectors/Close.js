@@ -1636,6 +1636,7 @@ function Close() {
 
       var opptConf = opportunity.confidence; //50;
 
+      var opptStatLbl = opportunity.status_label;
       var opptStat = opportunity.status_type; //active;
 
       var opptWon = opportunity.date_won; //null;
@@ -1665,23 +1666,31 @@ function Close() {
           break;
       }
 
-      switch (opptStat) {
-        case 'active':
-          opw.buttonIcon = globalIconDealOpen;
-          break;
+      opw.buttonIcon = globalIconOpen;
+      opw.buttonText = 'Open';
+      opw.buttonLink = 'https://app.close.com/opportunities/';
+      woppt.push(opw);
+      var ostw = {
+        icon: globalIconDealOpen,
+        type: globalKeyValue,
+        content: '<b>' + opptStatLbl + '</b>'
+      };
 
+      switch (opptStat) {
         case 'won':
-          opw.buttonIcon = globalIconDealWon;
+          ostw.colour = '#88DD88';
           break;
 
         case 'lost':
-          opw.buttonIcon = globalIconDealLost;
+          ostw.colour = '#cccccc';
+          break;
+
+        case 'active':
+          ostw.colour = '#ffbd2e';
           break;
       }
 
-      opw.buttonText = opptStat;
-      opw.buttonLink = 'https://app.close.com/opportunities/';
-      woppt.push(opw);
+      woppt.push(ostw);
 
       if (opptValue !== '') {
         var ovcw = {
