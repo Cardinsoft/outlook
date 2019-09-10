@@ -2258,6 +2258,59 @@ function Close() {
       return _ref9.apply(this, arguments);
     };
   }();
+  /**
+   * Utility method for fetching users;
+   * @param {Object} headers request headers;
+   * @param {Integer=} start start for pagination;
+   * @param {String=} id if provided -> fetch single user;
+   * @return {Array<Object>} users; 
+   */
+
+
+  this.fetchUsers_ =
+  /*#__PURE__*/
+  function () {
+    var _ref10 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee10(headers, start, id) {
+      var uss, query, url, response, content, users;
+      return regeneratorRuntime.wrap(function _callee10$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            start = start || 0;
+            uss = [];
+            query = [];
+
+            if (start > 0) {
+              query.push('_skip=' + start);
+            }
+
+            url = encodeURI(this.url + '/user' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context10.next = 7;
+            return performFetch(url, 'get', headers);
+
+          case 7:
+            response = _context10.sent;
+
+            if (response.code >= 200 && response.code < 300) {
+              content = JSON.parse(response.content);
+              users = content.data;
+              uss = uss.concat(users);
+            }
+
+            return _context10.abrupt("return", uss);
+
+          case 10:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee10, this);
+    }));
+
+    return function (_x30, _x31, _x32) {
+      return _ref10.apply(this, arguments);
+    };
+  }();
 }
 
 Close.prototype = Object.create(Connector.prototype);
