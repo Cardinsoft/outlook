@@ -1069,7 +1069,13 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var filled = widget.filled;
                 var reload = widget.reload;
                 var funcName = widget.funcName;
-                var action = widget.action; //default to multiline;
+                var action = widget.action;
+                var colour = widget.colour; //set colour if provided;
+
+                if (colour) {
+                  content = '<font color="' + colour + '">' + content + '</font>';
+                } //default to multiline;
+
 
                 if (!isMultiline) {
                   isMultiline = true;
