@@ -726,7 +726,7 @@ function Close() {
 
           case 97:
             if (!(c < contacts.length)) {
-              _context4.next = 106;
+              _context4.next = 107;
               break;
             }
 
@@ -742,14 +742,16 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-          case 103:
+            console.log(responseC);
+
+          case 104:
             c++;
             _context4.next = 97;
             break;
 
-          case 106:
+          case 107:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context4.next = 110;
+              _context4.next = 111;
               break;
             }
 
@@ -761,10 +763,10 @@ function Close() {
               })
             }));
 
-          case 110:
+          case 111:
             return _context4.abrupt("return", this.run(msg, connector));
 
-          case 111:
+          case 112:
           case "end":
             return _context4.stop();
         }
