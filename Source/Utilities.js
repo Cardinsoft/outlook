@@ -74,6 +74,28 @@ function timestamp(label, content, type) {
   }
 }
 /**
+ * flat() polyfill utility;
+ * @param {Array<*>} input input to flatten;
+ * @param {Integer=} depth child depth to flatten;
+ * @return {Array<*>} flat Array; 
+ */
+
+
+function flatten(input, depth) {
+  depth = depth || 1;
+  var f = [];
+  input.forEach(function (el) {
+    if (el instanceof Array && depth > 1) {
+      f = f.concat(flatten(el, depth - 1));
+    } else if (el instanceof Array) {
+      f = f.concat(el);
+    } else {
+      f.push(el);
+    }
+  });
+  return f;
+}
+/**
  * Changes input into a set of "*";
  * @param {String} input input to convert;
  * @returns {String} password;
