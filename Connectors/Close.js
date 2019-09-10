@@ -782,7 +782,7 @@ function Close() {
             //skip contact if does not comply to email query;
 
             hasQueryEmail = emails.filter(function (email) {
-              if (email.email === message.email) {
+              if (email.email === message.email.toLowerCase()) {
                 return email;
               }
             }).length > 0;
