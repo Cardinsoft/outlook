@@ -186,7 +186,6 @@ function makeRequest(url, params) {
         content: response,
         headers: map
       };
-      console.log(obj);
       resolve(obj);
     }; //handle timeout event;
 
