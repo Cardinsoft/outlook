@@ -680,7 +680,7 @@ function Close() {
 
           case 79:
             if (!(o < opportunities.length)) {
-              _context4.next = 95;
+              _context4.next = 96;
               break;
             }
 
@@ -688,14 +688,14 @@ function Close() {
             console.log(oppt);
 
             if (!(oppt.id === 'temp')) {
-              _context4.next = 92;
+              _context4.next = 93;
               break;
             }
 
             leadAssigned = updatedLeads[0];
 
             if (!leadAssigned.id) {
-              _context4.next = 90;
+              _context4.next = 91;
               break;
             }
 
@@ -705,22 +705,23 @@ function Close() {
 
           case 88:
             responseO = _context4.sent;
+            console.log(responseO);
 
             if (responseO.code >= 200 && responseO.code < 300) {
               contentO = JSON.parse(responseO.content);
               updatedOppts.push(contentO);
             }
 
-          case 90:
-            _context4.next = 92;
+          case 91:
+            _context4.next = 93;
             break;
 
-          case 92:
+          case 93:
             o++;
             _context4.next = 79;
             break;
 
-          case 95:
+          case 96:
             if (updatedLeads.length > 0) {
               updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
             }
@@ -729,17 +730,17 @@ function Close() {
             updatedContacts = [];
             c = 0;
 
-          case 99:
+          case 100:
             if (!(c < contacts.length)) {
-              _context4.next = 108;
+              _context4.next = 109;
               break;
             }
 
             contact = contacts[c];
-            _context4.next = 103;
+            _context4.next = 104;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 103:
+          case 104:
             responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
@@ -747,14 +748,14 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-          case 105:
+          case 106:
             c++;
-            _context4.next = 99;
+            _context4.next = 100;
             break;
 
-          case 108:
+          case 109:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context4.next = 112;
+              _context4.next = 113;
               break;
             }
 
@@ -766,10 +767,10 @@ function Close() {
               })
             }));
 
-          case 112:
+          case 113:
             return _context4.abrupt("return", this.run(msg, connector));
 
-          case 113:
+          case 114:
           case "end":
             return _context4.stop();
         }
