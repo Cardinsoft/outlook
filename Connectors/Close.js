@@ -721,20 +721,21 @@ function Close() {
 
           case 94:
             updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
+            console.log(updatedOppts);
             updatedContacts = [];
             c = 0;
 
-          case 97:
+          case 98:
             if (!(c < contacts.length)) {
               _context4.next = 107;
               break;
             }
 
             contact = contacts[c];
-            _context4.next = 101;
+            _context4.next = 102;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 101:
+          case 102:
             responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
@@ -742,16 +743,16 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-            console.log(responseC);
-
           case 104:
             c++;
-            _context4.next = 97;
+            _context4.next = 98;
             break;
 
           case 107:
+            console.log(updatedContacts); //rerun connector to display updates;
+
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
-              _context4.next = 111;
+              _context4.next = 112;
               break;
             }
 
@@ -763,10 +764,10 @@ function Close() {
               })
             }));
 
-          case 111:
+          case 112:
             return _context4.abrupt("return", this.run(msg, connector));
 
-          case 112:
+          case 113:
           case "end":
             return _context4.stop();
         }
