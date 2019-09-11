@@ -720,7 +720,10 @@ function Close() {
             break;
 
           case 94:
-            updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
+            if (updatedLeads.length > 0) {
+              updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
+            }
+
             console.log(updatedOppts);
             updatedContacts = [];
             c = 0;
