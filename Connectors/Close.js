@@ -680,53 +680,53 @@ function Close() {
 
           case 79:
             if (!(o < opportunities.length)) {
-              _context4.next = 96;
+              _context4.next = 97;
               break;
             }
 
             oppt = opportunities[o];
-            console.log(oppt);
 
             if (!(oppt.id === 'temp')) {
-              _context4.next = 93;
+              _context4.next = 94;
               break;
             }
 
             leadAssigned = updatedLeads[0];
 
             if (!leadAssigned.id) {
-              _context4.next = 91;
+              _context4.next = 92;
               break;
             }
 
             oppt.lead = leadAssigned.id;
-            _context4.next = 88;
+            _context4.next = 87;
             return performFetch(this.url + '/opportunity/' + (method === 'add' ? '' : leadAssigned.id + '/'), method === 'add' ? 'post' : 'put', headers, oppt);
 
-          case 88:
+          case 87:
             responseO = _context4.sent;
-            console.log(responseO);
+            console.log(this.url + '/opportunity/' + (method === 'add' ? '' : leadAssigned.id + '/'));
+            console.log(method === 'add' ? '' : leadAssigned.id + '/');
+            console.log(headers);
 
             if (responseO.code >= 200 && responseO.code < 300) {
               contentO = JSON.parse(responseO.content);
               updatedOppts.push(contentO);
             }
 
-          case 91:
-            _context4.next = 93;
+          case 92:
+            _context4.next = 94;
             break;
 
-          case 93:
+          case 94:
             o++;
             _context4.next = 79;
             break;
 
-          case 96:
+          case 97:
             if (updatedLeads.length > 0) {
               updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
             }
 
-            console.log(updatedOppts);
             updatedContacts = [];
             c = 0;
 
