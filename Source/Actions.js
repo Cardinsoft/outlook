@@ -519,7 +519,7 @@ function _updateSectionAdvanced() {
 
         case 23:
           if (!(cType.update && method === 'add')) {
-            _context6.next = 28;
+            _context6.next = 29;
             break;
           }
 
@@ -529,39 +529,42 @@ function _updateSectionAdvanced() {
 
         case 27:
           resp = _context6.sent;
+          connector.method = 'edit';
 
-        case 28:
+        case 29:
           if (!(cType.update && method === 'edit')) {
-            _context6.next = 32;
+            _context6.next = 34;
             break;
           }
 
-          _context6.next = 31;
+          _context6.next = 32;
           return cType.update(msg, connector, forms, data, method);
 
-        case 31:
-          resp = _context6.sent;
-
         case 32:
+          resp = _context6.sent;
+          connector.method = 'edit';
+
+        case 34:
           if (!(cType.remove && method === 'remove')) {
-            _context6.next = 36;
+            _context6.next = 39;
             break;
           }
 
-          _context6.next = 35;
+          _context6.next = 37;
           return cType.remove(msg, connector, data);
 
-        case 35:
+        case 37:
           resp = _context6.sent;
+          connector.method = 'add';
 
-        case 36:
+        case 39:
           //override event object parameters with response data;
           e.parameters.code = resp.code;
           e.parameters.content = resp.content;
           e.parameters.method = connector.method;
           return _context6.abrupt("return", actionShow(e));
 
-        case 40:
+        case 43:
         case "end":
           return _context6.stop();
       }
