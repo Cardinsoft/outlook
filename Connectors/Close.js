@@ -700,7 +700,7 @@ function Close() {
 
             oppt.lead = leadAssigned.id;
             _context4.next = 87;
-            return performFetch(this.url + '/opportunity/' + (method === 'add' ? '' : leadAssigned.id + '/'), method === 'add' ? 'post' : 'put', headers, oppt);
+            return performFetch(this.url + '/opportunity' + (method === 'add' ? '' : leadAssigned.id + '/'), method === 'add' ? 'post' : 'put', headers, oppt);
 
           case 87:
             responseO = _context4.sent;
