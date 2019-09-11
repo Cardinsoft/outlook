@@ -680,29 +680,30 @@ function Close() {
 
           case 79:
             if (!(o < opportunities.length)) {
-              _context4.next = 94;
+              _context4.next = 95;
               break;
             }
 
             oppt = opportunities[o];
+            console.log(oppt);
 
             if (!(oppt.id === 'temp')) {
-              _context4.next = 91;
+              _context4.next = 92;
               break;
             }
 
             leadAssigned = updatedLeads[0];
 
             if (!leadAssigned.id) {
-              _context4.next = 89;
+              _context4.next = 90;
               break;
             }
 
             oppt.lead = leadAssigned.id;
-            _context4.next = 87;
+            _context4.next = 88;
             return performFetch(this.url + '/opportunity/' + (method === 'add' ? '' : leadAssigned.id + '/'), method === 'add' ? 'post' : 'put', headers, oppt);
 
-          case 87:
+          case 88:
             responseO = _context4.sent;
 
             if (responseO.code >= 200 && responseO.code < 300) {
@@ -710,16 +711,16 @@ function Close() {
               updatedOppts.push(contentO);
             }
 
-          case 89:
-            _context4.next = 91;
+          case 90:
+            _context4.next = 92;
             break;
 
-          case 91:
+          case 92:
             o++;
             _context4.next = 79;
             break;
 
-          case 94:
+          case 95:
             if (updatedLeads.length > 0) {
               updatedLeads[0].opportunities = updatedLeads[0].opportunities.concat(updatedOppts);
             }
@@ -728,17 +729,17 @@ function Close() {
             updatedContacts = [];
             c = 0;
 
-          case 98:
+          case 99:
             if (!(c < contacts.length)) {
-              _context4.next = 107;
+              _context4.next = 108;
               break;
             }
 
             contact = contacts[c];
-            _context4.next = 102;
+            _context4.next = 103;
             return performFetch(this.url + '/contact/' + (method === 'add' ? '' : contact.id + '/'), method === 'add' ? 'post' : 'put', headers, contact);
 
-          case 102:
+          case 103:
             responseC = _context4.sent;
 
             if (responseC.code >= 200 && responseC.code < 300) {
@@ -746,14 +747,12 @@ function Close() {
               updatedContacts.push(contentC);
             }
 
-          case 104:
+          case 105:
             c++;
-            _context4.next = 98;
+            _context4.next = 99;
             break;
 
-          case 107:
-            console.log(updatedContacts); //rerun connector to display updates;
-
+          case 108:
             if (!(updatedLeads.length > 0 && updatedContacts.length === 0)) {
               _context4.next = 112;
               break;
