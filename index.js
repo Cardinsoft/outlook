@@ -26,6 +26,7 @@ Office.initialize = function (reason) {
           Utilities = new e_Utilities();
           PropertiesService = new e_PropertiesService();
           Session = new e_Session();
+          Logger = new e_Logger();
           $('#app-body').show(); //show app body overlay;
 
           o = new Overlay();
@@ -36,15 +37,15 @@ Office.initialize = function (reason) {
           s.setSize('large');
           s.show(); //trigger Card;
 
-          _context.next = 16;
+          _context.next = 17;
           return trigger();
 
-        case 16:
+        case 17:
           o.hide('#app-overlay');
           s.hide();
           Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
 
-        case 19:
+        case 20:
         case "end":
           return _context.stop();
       }
