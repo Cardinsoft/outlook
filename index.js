@@ -940,8 +940,7 @@ const e_actions = {};
 let Utilities;
 let PropertiesService;
 let Session;
-let CardService;
-let Logger; //=======================================START POLYFILLS===================================//
+let CardService; //=======================================START POLYFILLS===================================//
 
 const HtmlElement = GLOBAL.HTMLElement;
 const Element = GLOBAL.Element; //polyfill for empty() method of HtmlElement;
