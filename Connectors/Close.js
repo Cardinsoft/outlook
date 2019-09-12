@@ -2451,6 +2451,7 @@ function Close() {
   /**
    * Utility method for fetching users;
    * @param {Object} headers request headers;
+   * @param {Array<String>=} fields fields to return;
    * @param {Integer=} start start for pagination;
    * @param {String=} id if provided -> fetch single user;
    * @return {Array<Object>} users; 
@@ -2462,7 +2463,7 @@ function Close() {
   function () {
     var _ref10 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee10(headers, start, id) {
+    regeneratorRuntime.mark(function _callee10(headers, fields, start, id) {
       var uss, query, url, response, content, users;
       return regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) switch (_context10.prev = _context10.next) {
@@ -2471,15 +2472,19 @@ function Close() {
             uss = [];
             query = [];
 
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
+
             if (start > 0) {
               query.push('_skip=' + start);
             }
 
             url = encodeURI(this.url + '/user' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context10.next = 7;
+            _context10.next = 8;
             return performFetch(url, 'get', headers);
 
-          case 7:
+          case 8:
             response = _context10.sent;
 
             if (response.code >= 200 && response.code < 300) {
@@ -2490,14 +2495,14 @@ function Close() {
 
             return _context10.abrupt("return", uss);
 
-          case 10:
+          case 11:
           case "end":
             return _context10.stop();
         }
       }, _callee10, this);
     }));
 
-    return function (_x31, _x32, _x33) {
+    return function (_x31, _x32, _x33, _x34) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2542,7 +2547,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x34, _x35) {
+    return function (_x35, _x36) {
       return _ref11.apply(this, arguments);
     };
   }();
