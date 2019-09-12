@@ -1974,10 +1974,6 @@ function Close() {
       var type = activity._type;
       var organization = activity.organization_id;
 
-      if (a > 0 && type !== 'Created') {
-        wact.push(globalWidgetSeparator);
-      }
-
       switch (type) {
         case 'TaskCompleted':
           var titleTC = activity.task_text;
@@ -2148,7 +2144,12 @@ function Close() {
 
           break;
       }
-    });
+
+      if (a < activities.length - 1 && type !== 'Created') {
+        wact.push(globalWidgetSeparator);
+      }
+    }); //end activities loop;
+
     return wact;
   };
   /**
