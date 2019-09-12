@@ -220,7 +220,7 @@ function Close() {
             prompt = 'Create lead'; //fetch and prepare users;
 
             _context3.next = 14;
-            return type.fetchUsers_(headers, 0);
+            return type.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
 
           case 14:
             users = _context3.sent;
@@ -850,7 +850,7 @@ function Close() {
 
 
             _context5.next = 20;
-            return this.fetchUsers_(headers, 0);
+            return this.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
 
           case 20:
             users = _context5.sent;
