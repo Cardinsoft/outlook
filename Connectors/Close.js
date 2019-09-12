@@ -1674,7 +1674,7 @@ function Close() {
             break;
 
           case 'mailing':
-            alw.icon = 'EMAIL';
+            alw.icon = globalIconAddressBill;
             break;
 
           case 'other':
