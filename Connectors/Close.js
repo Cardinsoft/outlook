@@ -1592,6 +1592,9 @@ function Close() {
       }
     }); //create status widget;
 
+    lstOptions.sort(function (a, b) {
+      return order(a.text, b.text);
+    });
     var lsw = {
       icon: 'BOOKMARK',
       type: globalKeyValue,
