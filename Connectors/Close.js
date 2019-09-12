@@ -2052,28 +2052,19 @@ function Close() {
           break;
 
         case 'Email':
-          var sentdate = activity.date_sent;
+          var createdate = activity.date_created.split('.')[0];
+          var sentdate = activity.date_sent ? activity.date_sent.split('.')[0] : null;
           var emailDirect = activity.direction;
           var idTempl = activity.template_id;
           var template = activity.template_name;
+          var emailDate = sentdate ? new Date(sentdate).toLocaleDateString() + ' ' + new Date(sentdate).toLocaleTimeString() : new Date(createdate).toLocaleDateString() + ' ' + new Date(createdate).toLocaleTimeString();
           var at = {
-            icon: 'EMAIL',
+            icon: emailDirect === 'incoming' ? globalIconInbox : globalIconSend,
             type: globalKeyValue,
-            title: 'Subject',
-            content: activity.subject,
-            buttonText: emailDirect
+            title: emailDate,
+            content: activity.subject
           };
           wact.push(at);
-
-          if (sentdate !== null) {
-            var sent = new Date(sentdate.split('.')[0]);
-            var as = {
-              icon: 'CLOCK',
-              type: globalKeyValue,
-              content: sent.toLocaleDateString() + ' ' + sent.toLocaleTimeString()
-            };
-            wact.push(as);
-          }
 
           if (template !== null) {
             var tu = {
