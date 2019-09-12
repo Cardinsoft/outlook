@@ -860,7 +860,7 @@ function Close() {
           case 23:
             leadStatuses = _context5.sent;
             _context5.next = 26;
-            return this.fetchFields_(headers);
+            return this.fetchFields_(headers, ['id', 'type', 'name', 'choices']);
 
           case 26:
             fields = _context5.sent;
@@ -2374,6 +2374,7 @@ function Close() {
   /**
    * Utility method for fetching custom fields;
    * @param {Object} headers request headers;
+   * @param {Array<String>} fields fields to return;
    * @param {Integer=} start start for pagination;
    * @param {String=} id if provided -> fetch single lead;
    * @return {Array<Object>} custom fields;
@@ -2385,8 +2386,8 @@ function Close() {
   function () {
     var _ref9 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee9(headers, start, id) {
-      var fds, query, url, response, content, fields, hasMore;
+    regeneratorRuntime.mark(function _callee9(headers, fields, start, id) {
+      var fds, query, url, response, content, hasMore;
       return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) switch (_context9.prev = _context9.next) {
           case 0:
@@ -2394,19 +2395,23 @@ function Close() {
             fds = [];
             query = [];
 
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
+
             if (start > 0) {
               query.push('_skip=' + start);
             }
 
             url = encodeURI(this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context9.next = 7;
+            _context9.next = 8;
             return performFetch(url, 'get', headers);
 
-          case 7:
+          case 8:
             response = _context9.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context9.next = 19;
+              _context9.next = 20;
               break;
             }
 
@@ -2417,29 +2422,29 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context9.next = 19;
+              _context9.next = 20;
               break;
             }
 
             _context9.t0 = fds;
-            _context9.next = 17;
-            return this.fetchFields_(headers, start + 100, id);
+            _context9.next = 18;
+            return this.fetchFields_(headers, fields, start + 100, id);
 
-          case 17:
+          case 18:
             _context9.t1 = _context9.sent;
             fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
 
-          case 19:
+          case 20:
             return _context9.abrupt("return", fds);
 
-          case 20:
+          case 21:
           case "end":
             return _context9.stop();
         }
       }, _callee9, this);
     }));
 
-    return function (_x27, _x28, _x29) {
+    return function (_x27, _x28, _x29, _x30) {
       return _ref9.apply(this, arguments);
     };
   }();
@@ -2492,7 +2497,7 @@ function Close() {
       }, _callee10, this);
     }));
 
-    return function (_x30, _x31, _x32) {
+    return function (_x31, _x32, _x33) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2537,7 +2542,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x33, _x34) {
+    return function (_x34, _x35) {
       return _ref11.apply(this, arguments);
     };
   }();
