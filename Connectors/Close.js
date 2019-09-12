@@ -998,7 +998,7 @@ function Close() {
             }
 
             _context5.next = 72;
-            return this.fetchActivities_(headers, 0, leadId, contId);
+            return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId, contId);
 
           case 72:
             activities = _context5.sent;
@@ -1007,7 +1007,7 @@ function Close() {
 
           case 75:
             _context5.next = 77;
-            return this.fetchActivities_(headers, 0, leadId);
+            return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId);
 
           case 77:
             activities = _context5.sent;
@@ -2293,6 +2293,7 @@ function Close() {
   /**
    * Utility method for fetching activities;
    * @param {Object} request headers;
+   * @param {Array<String>=} fields fields to return;
    * @param {Integer=} start start for pagination;
    * @param {String=} lid lead id filter;
    * @param {String=} cid contact id filter;
@@ -2305,7 +2306,7 @@ function Close() {
   function () {
     var _ref8 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8(headers, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee8(headers, fields, start, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
       return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) switch (_context8.prev = _context8.next) {
@@ -2313,6 +2314,10 @@ function Close() {
             start = start || 0;
             acts = [];
             query = [];
+
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
 
             if (lid) {
               query.push('lead_id=' + lid);
@@ -2327,14 +2332,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context8.next = 9;
+            _context8.next = 10;
             return performFetch(url, 'get', headers);
 
-          case 9:
+          case 10:
             response = _context8.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context8.next = 21;
+              _context8.next = 22;
               break;
             }
 
@@ -2345,29 +2350,29 @@ function Close() {
             hasMore = content.has_more;
 
             if (!hasMore) {
-              _context8.next = 21;
+              _context8.next = 22;
               break;
             }
 
             _context8.t0 = acts;
-            _context8.next = 19;
-            return this.fetchActivities_(headers, start + 100, lid, cid);
+            _context8.next = 20;
+            return this.fetchActivities_(headers, fields, start + 100, lid, cid);
 
-          case 19:
+          case 20:
             _context8.t1 = _context8.sent;
             acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
 
-          case 21:
+          case 22:
             return _context8.abrupt("return", acts);
 
-          case 22:
+          case 23:
           case "end":
             return _context8.stop();
         }
       }, _callee8, this);
     }));
 
-    return function (_x23, _x24, _x25, _x26) {
+    return function (_x23, _x24, _x25, _x26, _x27) {
       return _ref8.apply(this, arguments);
     };
   }();
@@ -2444,7 +2449,7 @@ function Close() {
       }, _callee9, this);
     }));
 
-    return function (_x27, _x28, _x29, _x30) {
+    return function (_x28, _x29, _x30, _x31) {
       return _ref9.apply(this, arguments);
     };
   }();
@@ -2502,7 +2507,7 @@ function Close() {
       }, _callee10, this);
     }));
 
-    return function (_x31, _x32, _x33, _x34) {
+    return function (_x32, _x33, _x34, _x35) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2547,7 +2552,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x35, _x36) {
+    return function (_x36, _x37) {
       return _ref11.apply(this, arguments);
     };
   }();
