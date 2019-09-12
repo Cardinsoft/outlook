@@ -1337,177 +1337,181 @@ function Close() {
       var fieldInfo = fields.filter(function (f) {
         return f.name === key;
       })[0];
-      var cfw = {
-        icon: globalIconCustom,
-        type: globalKeyValue,
-        title: key,
-        state: 'editable',
-        name: [fieldInfo.id, leadId, fieldInfo.type].join('&')
-      };
 
-      switch (fieldInfo.type) {
-        case 'text':
-          cfw.icon = globalIconText;
-          cfw.content = field;
-          break;
+      if (fieldInfo) {
+        var cfw = {
+          icon: globalIconCustom,
+          type: globalKeyValue,
+          title: key,
+          state: 'editable',
+          name: [fieldInfo.id, leadId, fieldInfo.type].join('&')
+        };
 
-        case 'number':
-          cfw.icon = globalIconNumber;
-          cfw.content = field.toString();
-          break;
+        switch (fieldInfo.type) {
+          case 'text':
+            cfw.icon = globalIconText;
+            cfw.content = field.toString();
+            break;
 
-        case 'date':
-          cfw.icon = 'INVITE';
-          var dateContent = new Date(field);
-          cfw.content = dateContent.toLocaleDateString();
-          cfw.editMap = [copyObject(cfw, {
-            type: globalTextInput,
-            hint: 'Please, keep date syntax as displayed'
-          }, false)];
-          break;
+          case 'number':
+            cfw.icon = globalIconNumber;
+            cfw.content = field.toString();
+            break;
 
-        case 'datetime':
-          cfw.icon = 'INVITE';
-          var dtime = new Date(field);
-          cfw.content = dtime.toLocaleDateString() + '\r\n' + dtime.toLocaleTimeString();
-          cfw.editMap = [copyObject(cfw, {
-            type: globalTextInput,
-            hint: 'Please, keep date syntax as displayed'
-          }, false)];
-          break;
+          case 'date':
+            cfw.icon = 'INVITE';
+            var dateContent = new Date(field);
+            cfw.content = dateContent.toLocaleDateString();
+            cfw.editMap = [copyObject(cfw, {
+              type: globalTextInput,
+              hint: 'Please, keep date syntax as displayed'
+            }, false)];
+            break;
 
-        case 'choices':
-          cfw.icon = globalIconList; //handle multiple and single choices;
+          case 'datetime':
+            cfw.icon = 'INVITE';
+            var dtime = new Date(field);
+            cfw.content = dtime.toLocaleDateString() + '\r\n' + dtime.toLocaleTimeString();
+            cfw.editMap = [copyObject(cfw, {
+              type: globalTextInput,
+              hint: 'Please, keep date syntax as displayed'
+            }, false)];
+            break;
 
-          if (field instanceof Array) {
-            cfw.content = field.join('\r\n');
-            var customMultiChoices = field.map(function (mch) {
-              return {
-                text: mch,
-                value: mch,
-                selected: true
-              };
-            });
-            fieldInfo.choices.forEach(function (choice) {
-              if (field.indexOf(choice) === -1) {
-                customMultiChoices.push({
-                  text: choice,
-                  value: choice,
-                  selected: false
-                });
-              }
-            });
-            cfw.editMap = [{
-              type: globalEnumCheckbox,
-              title: cfw.title,
-              name: cfw.name,
-              state: cfw.state,
-              content: customMultiChoices
-            }];
-          } else {
-            cfw.content = field;
-            var customChoices = [{
-              text: field,
-              value: field,
-              selected: true
-            }];
-            fieldInfo.choices.forEach(function (choice) {
-              if (choice !== field) {
-                customChoices.push({
-                  text: choice,
-                  value: choice,
-                  selected: false
-                });
-              }
-            });
-            cfw.editMap = [{
-              type: globalEnumDropdown,
-              title: cfw.title,
-              name: cfw.name,
-              state: cfw.state,
-              content: customChoices
-            }];
-          }
+          case 'choices':
+            cfw.icon = globalIconList; //handle multiple and single choices;
 
-          break;
-
-        case 'user':
-          cfw.icon = globalIconAccount;
-          var user;
-          var userDisplay = 'Failed to get user info';
-
-          if (field instanceof Array) {
-            user = users.filter(function (u) {
-              return field.indexOf(u.id) !== -1;
-            });
-            userDisplay = user.map(function (u) {
-              return u.first_name + ' ' + u.last_name;
-            }).join('\r\n');
-            var customMultiUsers = user.map(function (mu) {
-              return {
-                text: mu.first_name + ' ' + mu.last_name,
-                value: mu.id,
-                selected: true
-              };
-            });
-            users.forEach(function (u) {
-              var isOtherUser = user.every(function (ur) {
-                return ur.id !== u.id;
+            if (field instanceof Array) {
+              cfw.content = field.join('\r\n');
+              var customMultiChoices = field.map(function (mch) {
+                return {
+                  text: mch,
+                  value: mch,
+                  selected: true
+                };
               });
-
-              if (isOtherUser) {
-                customMultiUsers.push({
-                  text: u.first_name + ' ' + u.last_name,
-                  value: u.id,
-                  selected: false
-                });
-              }
-            });
-            cfw.editMap = [{
-              type: globalEnumCheckbox,
-              title: cfw.title,
-              name: cfw.name,
-              state: cfw.state,
-              content: customMultiUsers
-            }];
-          } else {
-            user = users.filter(function (u) {
-              return u.id === field;
-            })[0];
-
-            if (user) {
-              userDisplay = user.first_name + ' ' + user.last_name;
+              fieldInfo.choices.forEach(function (choice) {
+                if (field.indexOf(choice) === -1) {
+                  customMultiChoices.push({
+                    text: choice,
+                    value: choice,
+                    selected: false
+                  });
+                }
+              });
+              cfw.editMap = [{
+                type: globalEnumCheckbox,
+                title: cfw.title,
+                name: cfw.name,
+                state: cfw.state,
+                content: customMultiChoices
+              }];
+            } else {
+              cfw.content = field;
+              var customChoices = [{
+                text: field,
+                value: field,
+                selected: true
+              }];
+              fieldInfo.choices.forEach(function (choice) {
+                if (choice !== field) {
+                  customChoices.push({
+                    text: choice,
+                    value: choice,
+                    selected: false
+                  });
+                }
+              });
+              cfw.editMap = [{
+                type: globalEnumDropdown,
+                title: cfw.title,
+                name: cfw.name,
+                state: cfw.state,
+                content: customChoices
+              }];
             }
 
-            var customUsers = [{
-              text: userDisplay,
-              value: user.id,
-              selected: true
-            }];
-            users.forEach(function (u) {
-              if (u.id !== user.id) {
-                customUsers.push({
-                  text: u.first_name + ' ' + u.last_name,
-                  value: u.id,
-                  selected: false
+            break;
+
+          case 'user':
+            cfw.icon = globalIconAccount;
+            var user;
+            var userDisplay = 'Failed to get user info';
+
+            if (field instanceof Array) {
+              user = users.filter(function (u) {
+                return field.indexOf(u.id) !== -1;
+              });
+              userDisplay = user.map(function (u) {
+                return u.first_name + ' ' + u.last_name;
+              }).join('\r\n');
+              var customMultiUsers = user.map(function (mu) {
+                return {
+                  text: mu.first_name + ' ' + mu.last_name,
+                  value: mu.id,
+                  selected: true
+                };
+              });
+              users.forEach(function (u) {
+                var isOtherUser = user.every(function (ur) {
+                  return ur.id !== u.id;
                 });
+
+                if (isOtherUser) {
+                  customMultiUsers.push({
+                    text: u.first_name + ' ' + u.last_name,
+                    value: u.id,
+                    selected: false
+                  });
+                }
+              });
+              cfw.editMap = [{
+                type: globalEnumCheckbox,
+                title: cfw.title,
+                name: cfw.name,
+                state: cfw.state,
+                content: customMultiUsers
+              }];
+            } else {
+              user = users.filter(function (u) {
+                return u.id === field;
+              })[0];
+
+              if (user) {
+                userDisplay = user.first_name + ' ' + user.last_name;
               }
-            });
-            cfw.editMap = [{
-              type: globalEnumDropdown,
-              title: cfw.title,
-              name: cfw.name,
-              state: cfw.state,
-              content: customUsers
-            }];
-          }
 
-          cfw.content = userDisplay;
-          break;
-      }
+              var customUsers = [{
+                text: userDisplay,
+                value: user.id,
+                selected: true
+              }];
+              users.forEach(function (u) {
+                if (u.id !== user.id) {
+                  customUsers.push({
+                    text: u.first_name + ' ' + u.last_name,
+                    value: u.id,
+                    selected: false
+                  });
+                }
+              });
+              cfw.editMap = [{
+                type: globalEnumDropdown,
+                title: cfw.title,
+                name: cfw.name,
+                state: cfw.state,
+                content: customUsers
+              }];
+            }
 
-      wcfds.push(cfw);
-    } //end fields loop;              
+            cfw.content = userDisplay;
+            break;
+        }
+
+        wcfds.push(cfw);
+      } //end field info check;
+
+    } //end fields loop;
 
 
     return wcfds;
