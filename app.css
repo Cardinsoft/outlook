@@ -30,10 +30,17 @@ body {
 	white-space: pre-wrap;
 }
 
-.KeyValueLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
+.KeyValueTopLabel, .KeyValueBottomLabel, .SelectionInputTopLabel, .TextInputTopLabel, .TextInputBottomLabel {
 	display       : block;
-	margin-bottom : 5px;
 	color         : #a6a6a6;
+}
+
+.KeyValueTopLabel {
+	margin-bottom: 4px;
+}
+
+.KeyValueBottomLabel {
+	margin-top: 4px;
 }
 
 .TextInputLabel {
