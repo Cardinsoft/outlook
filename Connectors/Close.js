@@ -11,6 +11,7 @@ function Close() {
   this.typeName = 'Close';
   this.short = globalCloseShort;
   this.url = 'https://api.close.com/api/v1';
+  this.traversable = true;
   this.addInCRM = {
     domain: 'app.close.com',
     base: '/search'
@@ -796,7 +797,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, view, response, sections, contents, leads, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -837,49 +838,57 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 92;
+              _context5.next = 96;
               break;
             }
 
             //access contacts and create sections for each contact;
             contents = JSON.parse(response.content);
-            leads = contents.data; //initiate actions if has result;
+            leads = contents.data;
+            has_more = contents.has_more;
+            total = contents.total_results;
+            connector.hasNext = has_more;
+
+            if (connector.method === 'traverse') {
+              connector.pages = total;
+            } //initiate actions if has result;
+
 
             if (leads.length > 0) {
               connector.method = 'edit';
             } //access users;
 
 
-            _context5.next = 21;
+            _context5.next = 25;
             return this.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
 
-          case 21:
+          case 25:
             users = _context5.sent;
-            _context5.next = 24;
+            _context5.next = 28;
             return this.fetchLeadStatuses_(headers);
 
-          case 24:
+          case 28:
             leadStatuses = _context5.sent;
             //access fields;
             fields = [];
 
             if (!connector.fields) {
-              _context5.next = 30;
+              _context5.next = 34;
               break;
             }
 
-            _context5.next = 29;
+            _context5.next = 33;
             return this.fetchFields_(headers, ['id', 'type', 'name', 'choices']);
 
-          case 29:
+          case 33:
             fields = _context5.sent;
 
-          case 30:
+          case 34:
             l = 0;
 
-          case 31:
+          case 35:
             if (!(l < leads.length)) {
-              _context5.next = 90;
+              _context5.next = 94;
               break;
             }
 
@@ -944,9 +953,9 @@ function Close() {
 
             c = 0;
 
-          case 55:
+          case 59:
             if (!(c < contacts.length)) {
-              _context5.next = 86;
+              _context5.next = 90;
               break;
             }
 
@@ -976,13 +985,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 69;
+              _context5.next = 73;
               break;
             }
 
-            return _context5.abrupt("continue", 83);
+            return _context5.abrupt("continue", 87);
 
-          case 69:
+          case 73:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -997,36 +1006,36 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context5.next = 82;
+              _context5.next = 86;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context5.next = 78;
+              _context5.next = 82;
               break;
             }
 
-            _context5.next = 75;
+            _context5.next = 79;
             return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId, contId);
 
-          case 75:
+          case 79:
             activities = _context5.sent;
-            _context5.next = 81;
+            _context5.next = 85;
             break;
 
-          case 78:
-            _context5.next = 80;
+          case 82:
+            _context5.next = 84;
             return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId);
 
-          case 80:
+          case 84:
             activities = _context5.sent;
 
-          case 81:
+          case 85:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
-          case 82:
+          case 86:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
@@ -1041,12 +1050,12 @@ function Close() {
               }
             }
 
-          case 83:
+          case 87:
             c++;
-            _context5.next = 55;
+            _context5.next = 59;
             break;
 
-          case 86:
+          case 90:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1064,18 +1073,18 @@ function Close() {
               }
             }
 
-          case 87:
+          case 91:
             l++;
-            _context5.next = 31;
+            _context5.next = 35;
             break;
 
-          case 90:
-            _context5.next = 99;
+          case 94:
+            _context5.next = 103;
             break;
 
-          case 92:
+          case 96:
             if (!(response.code === 401)) {
-              _context5.next = 98;
+              _context5.next = 102;
               break;
             }
 
@@ -1111,10 +1120,10 @@ function Close() {
               }
             });
 
-          case 98:
+          case 102:
             return _context5.abrupt("return", response);
 
-          case 99:
+          case 103:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1131,7 +1140,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 102:
+          case 106:
           case "end":
             return _context5.stop();
         }
