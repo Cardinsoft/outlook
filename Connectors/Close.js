@@ -2039,15 +2039,11 @@ function Close() {
           var lscw = {
             icon: globalIconSwitch,
             type: globalKeyValue,
-            title: 'Lead status change',
-            content: oldStatus + ' &rarr; ' + newStatus
+            hint: dateChanged.toLocaleDateString() + ' ' + dateChanged.toLocaleTimeString(),
+            content: oldStatus + ' &rarr; ' + newStatus,
+            title: 'Lead status change'
           };
-          var lscuw = {
-            icon: 'INVITE',
-            type: globalKeyValue,
-            content: dateChanged.toLocaleDateString() + ' ' + dateChanged.toLocaleTimeString()
-          };
-          wact.push(lscw, lscuw);
+          wact.push(lscw);
           break;
 
         case 'Note':
