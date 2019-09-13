@@ -195,34 +195,29 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(connector, msg) {
-      var message, headers, type, leads, prompt, config, users, leadUsers, stats, opptStats, adder;
+      var message, headers, type, prompt, config, users, leadUsers, stats, opptStats, leads, adder;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             message = trimMessage(msg, true, true);
             headers = {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
-            }; //initiate type and fetch entities;
+            }; //initiate type;
 
             type = new this[connector.type]();
-            _context3.next = 5;
-            return type.fetchLeads_(headers, ['id', 'name']);
-
-          case 5:
-            leads = _context3.sent;
             prompt = '';
             config = [];
             _context3.t0 = connector.view;
-            _context3.next = _context3.t0 === 'lead' ? 11 : _context3.t0 === 'contact' ? 25 : 29;
+            _context3.next = _context3.t0 === 'lead' ? 8 : _context3.t0 === 'contact' ? 22 : 29;
             break;
 
-          case 11:
+          case 8:
             prompt = 'Create lead'; //fetch and prepare users;
 
-            _context3.next = 14;
+            _context3.next = 11;
             return type.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
 
-          case 14:
+          case 11:
             users = _context3.sent;
             leadUsers = users.map(function (user) {
               return {
@@ -232,10 +227,10 @@ function Close() {
               };
             });
             leadUsers[0].selected = true;
-            _context3.next = 19;
+            _context3.next = 16;
             return type.fetchOpportStatuses_(headers);
 
-          case 19:
+          case 16:
             stats = _context3.sent;
             opptStats = stats.map(function (stat) {
               return {
@@ -346,8 +341,13 @@ function Close() {
             });
             return _context3.abrupt("break", 29);
 
-          case 25:
+          case 22:
             prompt = 'Create contact';
+            _context3.next = 25;
+            return type.fetchLeads_(headers, ['id', 'name']);
+
+          case 25:
+            leads = _context3.sent;
             config.push({
               widgets: [{
                 type: globalTextInput,
