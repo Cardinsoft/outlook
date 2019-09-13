@@ -9,8 +9,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  */
 function createWidgetGetSupport(section) {
   //create widgets with help prompt and email;
-  var contactText = simpleKeyValueWidget(globalContactSupportTitle, 'Be sure to contact us if you need any assistance', true);
-  var contactEmail = simpleKeyValueWidget('', '<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>', true, 'EMAIL'); //append to section and return;
+  var contactText = simpleKeyValueWidget({
+    title: globalContactSupportTitle,
+    content: 'Be sure to contact us if you need any assistance',
+    multiline: true
+  });
+  var contactEmail = simpleKeyValueWidget({
+    icon: 'EMAIL',
+    content: '<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',
+    multiline: true
+  }); //append to section and return;
 
   section.addWidget(contactText);
   section.addWidget(contactEmail);
@@ -20,14 +28,16 @@ function createWidgetGetSupport(section) {
  * Creates KeyValue widget with 401 code and text explaining further actions;
  * @param {CardSection} section section to append widget sets;
  * @param {String} content widget content or value;
- * @param {Integer} code response status code;
  * @returns {KeyValue}
  */
 
 
-function createWidgetNotAuthorized(section, content, code) {
+function createWidgetNotAuthorized(section, content) {
   //create widget with not authorized prompt;
-  var widget = simpleKeyValueWidget(code, content, true); //append to section and return;
+  var widget = simpleKeyValueWidget({
+    content: content,
+    multiline: true
+  }); //append to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -42,78 +52,13 @@ function createWidgetNotAuthorized(section, content, code) {
 
 function createWidgetAuthTypeErr(section, content) {
   //create widget with authorization error prompt;
-  var widget = simpleKeyValueWidget(globalAuthTypeErrorTitle, content, true); //append to section and return;
+  var widget = simpleKeyValueWidget({
+    title: globalAuthTypeErrorTitle,
+    content: content,
+    multiline: true
+  }); //append to section and return;
 
   section.addWidget(widget);
-  return widget;
-}
-/**
- * Creates TextButton widget with action set to open Auth link;
- * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
- * @param {String} text text to appear on the button;
- * @param {Object} parameters authorization config object;
- * @returns {TextButton}
- */
-
-
-function createWidgetOpenAuth(builder, text, parameters) {
-  //create auth service;
-  var service = authService(parameters); //create widget for initiating authorization flow;
-
-  var widget = textButtonWidgetAuth(text, false, false, service.getAuthorizationUrl(parameters)); //append button or add to ButtonSet and return;
-
-  try {
-    builder.addWidget(widget);
-  } catch (error) {
-    builder.addButton(widget);
-  }
-
-  return widget;
-}
-/**
- * Creates TextButton widget with action set to revoke Auth;
- * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
- * @param {String} text text to appear on the button;
- * @param {Object} parameters authorization config object;
- * @returns {TextButton}
- */
-
-
-function createWidgetRevoke(builder, text, parameters) {
-  //create auth service;
-  var service = authService(parameters); //check if service does not have access;
-
-  var disableRevoke = !service.hasAccess(); //create widget for revoking authorization;
-
-  var widget = textButtonWidget(text, disableRevoke, false, 'revokeAuth', parameters); //append button or add to ButtonSet and return;
-
-  try {
-    builder.addWidget(widget);
-  } catch (error) {
-    builder.addButton(widget);
-  }
-
-  return widget;
-}
-/**
- * Creates TextButton widget with action set to open login link;
- * @param {CardSection|ButtonSet} builder section or button set to append widget sets;
- * @param {String} text text to appear on the button;
- * @param {String} url URL to open link text;
- * @returns {TextButton}
- */
-
-
-function createWidgetLogin(builder, text, url) {
-  //create TextButton widget to open login link;
-  var widget = textButtonWidgetLinked(text, false, false, url, false, false); //append button or add to ButtonSet and return;
-
-  try {
-    builder.addWidget(widget);
-  } catch (error) {
-    builder.addButton(widget);
-  }
-
   return widget;
 }
 /**
@@ -125,7 +70,11 @@ function createWidgetLogin(builder, text, url) {
 
 function createWidgetWelcomeText(section) {
   //create KeyValue widget with welcome prompt;
-  var widget = simpleKeyValueWidget(globalWelcomeWidgetTitle, globalWelcomeWidgetContent, true); //append widget to section and return;
+  var widget = simpleKeyValueWidget({
+    title: globalWelcomeWidgetTitle,
+    content: globalWelcomeWidgetContent,
+    multiline: true
+  }); //append widget to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -139,7 +88,11 @@ function createWidgetWelcomeText(section) {
 
 function createWidgetHelpText(section) {
   //create KeyValue widget with help prompt;
-  var widget = simpleKeyValueWidget(globalHelpWidgetTitle, globalHelpWidgetContent, true); //append widget to section and return;
+  var widget = simpleKeyValueWidget({
+    title: globalHelpWidgetTitle,
+    content: globalHelpWidgetContent,
+    multiline: true
+  }); //append widget to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -170,7 +123,11 @@ function createWidgetFieldsText(section, text) {
 
 function createWidgetCustomIconPrompt(section, title, content) {
   //create KeyValue widget for prompt;
-  var widget = simpleKeyValueWidget(title, content, true); //append widget to section and return;
+  var widget = simpleKeyValueWidget({
+    title: title,
+    content: content,
+    multiline: true
+  }); //append widget to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -231,7 +188,7 @@ function createWidgetCreateType(section, type) {
   } //create KeyValue widget with Connector creation card display action;
 
 
-  var widget = actionKeyValueWidget(type.icon, '', type.typeName, 'action', 'cardCreate', params); //append widget to section and return;
+  var widget = actionKeyValueWidget(type.icon, '', type.typeName, 'action', 'actionCreate', params); //append widget to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -247,7 +204,11 @@ function createWidgetCreateType(section, type) {
 
 function createWidgetShortText(section, title, content) {
   //create KeyValue widget with type short description;
-  var widget = simpleKeyValueWidget(title, content, true); //append to section and return;
+  var widget = simpleKeyValueWidget({
+    title: title,
+    content: content,
+    multiline: true
+  }); //append to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -261,7 +222,10 @@ function createWidgetShortText(section, title, content) {
 
 function createWidgetResetText(section) {
   //create KeyValue widget with reset prompt;
-  var widget = simpleKeyValueWidget('', globalResetWidgetContent, true); //append to section and return;
+  var widget = simpleKeyValueWidget({
+    content: globalResetWidgetContent,
+    multiline: true
+  }); //append to section and return;
 
   section.addWidget(widget);
   return widget;
@@ -316,7 +280,11 @@ function _createWidgetSortBy() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           //create KeyValue prompt for order type choice;
-          prompt = simpleKeyValueWidget(globalOrderingWidgetTitle, globalOrderingWidgetContent, true);
+          prompt = simpleKeyValueWidget({
+            title: globalOrderingWidgetTitle,
+            content: globalOrderingWidgetContent,
+            multiline: true
+          });
           section.addWidget(prompt); //create options array for order type;
 
           options = [{
@@ -550,7 +518,12 @@ function createWidgetsConfirm(section, e) {
   //access parameters;
   var params = e.parameters; //create KeyValue widget to prompt user of action;
 
-  var userPrompt = simpleKeyValueWidget(globalConfirmWidgetTitle, params.prompt, true, globalIconWarning);
+  var userPrompt = simpleKeyValueWidget({
+    title: globalConfirmWidgetTitle,
+    content: params.prompt,
+    multiline: true,
+    icon: globalIconWarning
+  });
   section.addWidget(userPrompt); //create TextButton widgets to confirm or cancel;
 
   var btnConfirm = textButtonWidget(globalConfirmText, false, false, params.confirmAction, params);
@@ -562,7 +535,11 @@ function createWidgetsConfirm(section, e) {
   var urlRevoke = params.urlRevoke;
 
   if (urlRevoke) {
-    var revokePrompt = simpleKeyValueWidget(globalConfirmWidgetTitle, globalRevokeWidgetContent, true);
+    var revokePrompt = simpleKeyValueWidget({
+      title: globalConfirmWidgetTitle,
+      content: globalRevokeWidgetContent,
+      multiline: true
+    });
     var revokeCheckbox = selectionInputWidget(globalConfirmWidgetTitle, 'uninstall', globalEnumCheckbox, [{
       text: 'Uninstall',
       value: true,
