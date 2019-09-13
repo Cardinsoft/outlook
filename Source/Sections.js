@@ -1639,6 +1639,12 @@ function createSectionHelp(builder, isCollapsed) {
         funcName: 'https://cardinsoft.com/gmail-integrations/1crm/'
       }, {
         type: globalImageButton,
+        icon: globalCloseIconUrl,
+        alt: 'Close',
+        action: globalActionLink,
+        funcName: 'https://cardinsoft.com/gmail-integrations/close/'
+      }, {
+        type: globalImageButton,
         icon: globalLACRMiconUrl,
         alt: 'LACRM',
         action: globalActionLink,
