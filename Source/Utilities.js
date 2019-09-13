@@ -596,6 +596,7 @@ function propertiesToString(object) {
 
       if (value) {
         //check normal types;
+        var isString = typeof value === 'string';
         var isObject = typeof value === 'object';
         var isBoolean = typeof value === 'boolean';
         var isNumber = typeof value === 'number'; //check unique situations;
@@ -629,22 +630,28 @@ function propertiesToString(object) {
           });
           object[key] = value.join(',');
         } //handle arrays (only plain ones);
+        //handle proper objects;
 
 
         if (!isNull && isObject && !isArray) {
+          for (var k in value) {
+            if (typeof value[k] === 'boolean') {
+              value[k] = value[k].toString();
+            }
+          }
+
           object[key] = JSON.stringify(value);
-        } //handle proper objects;
-
-
-        if (isBoolean || isNumber || isNotNum) {
-          object[key] = value.toString();
         } //handle booleans, numbers and NaNs (same behaviour);
+
+
+        if ((isBoolean || isNumber) && !isNotNum) {
+          object[key] = value.toString();
+        } //handle null;
 
 
         if (isNull) {
           object[key] = JSON.stringify(new Object(value));
-        } //handle null;
-
+        }
       } else {
         object[key] = ''; //undefined props to empty strings;
       }
