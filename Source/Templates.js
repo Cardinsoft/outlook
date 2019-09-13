@@ -380,23 +380,36 @@ function imageButtonWidget(icon, alt, funcName, params, type, fullsized, reload)
     } else {
       widget.setIconUrl(icon);
     }
-  }
+  } //add action if provided;
 
-  //add action if provided;
-  if(funcName) {
+
+  if (funcName) {
     var action;
-    switch(type) {
+
+    switch (type) {
       case globalActionLink:
         action = CardService.newOpenLink();
         action.setUrl(funcName);
-        if(fullsized) { action.setOpenAs(CardService.OpenAs.FULL_SIZE); }else { action.setOpenAs(CardService.OpenAs.OVERLAY); }
-        if(reload) { action.setOnClose(CardService.OnClose.RELOAD_ADD_ON); }else { action.setOnClose(CardService.OnClose.NOTHING); }
+
+        if (fullsized) {
+          action.setOpenAs(CardService.OpenAs.FULL_SIZE);
+        } else {
+          action.setOpenAs(CardService.OpenAs.OVERLAY);
+        }
+
+        if (reload) {
+          action.setOnClose(CardService.OnClose.RELOAD_ADD_ON);
+        } else {
+          action.setOnClose(CardService.OnClose.NOTHING);
+        }
+
         widget.setOpenLink(action);
         break;
-      default: 
-        action = actionAction(funcName,true,params);
+
+      default:
+        action = actionAction(funcName, true, params);
         widget.setOnClickAction(action);
-    }    
+    }
   }
 
   return widget;
@@ -491,34 +504,39 @@ function switchWidget(icon, top, content, name, selected, value, funcName, hasSp
 }
 /** 
  * Creates a simple KeyValue widget;
- * @param {String} icon url or enum of icon to use;
- * @param {String} top label text;
- * @param {String} content content text;
- * @param {Boolean} isMultiline truthy value for determining multiline feature;
- * @param {TextButton} button a TextButton widget to set; 
- * @returns {KeyValue} this KeyValue with TextButton set;
+ * @param {Object} config widget configuration;
+ * @return {KeyValue} simple KeyValue widget;
  */
 
 
-function simpleKeyValueWidget(top, content, isMultiline, icon, button) {
-  //modify content to avoid errors;
+function simpleKeyValueWidget(config) {
+  var icon = config.icon;
+  var title = config.title;
+  var content = config.content;
+  var hint = config.hint;
+  var multiline = config.multiline;
+  var button = config.button; //modify content to avoid errors;
+
   if (content instanceof Date) {
     content = content.toLocaleDateString();
   }
 
-  if (content === null) {
+  if (!content) {
     content = '';
   } //create widget and set required parameters;
 
 
   var widget = CardService.newKeyValue();
   widget.setContent(content);
-  widget.setMultiline(isMultiline); //set top title if found;
+  widget.setMultiline(multiline); //set top title if found;
 
-  if (top && top !== '') {
-    widget.setTopLabel(top);
-  } //set button to widget;
+  if (title && title !== '') {
+    widget.setTopLabel(title);
+  }
 
+  if (hint && hint !== '') {
+    widget.setBottomLabel(hint);
+  }
 
   if (button) {
     widget.setButton(button);
