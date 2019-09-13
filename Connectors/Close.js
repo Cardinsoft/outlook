@@ -158,20 +158,13 @@ function Close() {
           case 11:
             removeResponse = _context2.sent;
 
-            if (!(removeResponse.code >= 200 && removeResponse.code < 300)) {
-              _context2.next = 19;
-              break;
+            if (removeResponse.code >= 200 && removeResponse.code < 300) {
+              content = JSON.parse(removeResponse.content);
             }
 
-            content = JSON.parse(removeResponse.content);
-            content.data = [];
-            removeResponse.content = JSON.stringify(content);
-            return _context2.abrupt("return", this.run(msg, connector, removeResponse));
-
-          case 19:
             return _context2.abrupt("return", this.run(msg, connector));
 
-          case 20:
+          case 14:
           case "end":
             return _context2.stop();
         }
