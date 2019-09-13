@@ -980,6 +980,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
           if (type) {
             var icon = widget.icon;
             var title = widget.title;
+            var hint = widget.hint;
             var name = widget.name;
             var content = widget.content;
             var callback = widget.callback;
@@ -1167,6 +1168,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                       element = simpleKeyValueWidget({
                         title: title,
                         content: content,
+                        hint: hint,
                         multiline: isMultiline,
                         icon: icon,
                         button: button
@@ -1181,6 +1183,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                       element = simpleKeyValueWidget({
                         title: title,
                         content: content,
+                        hint: hint,
                         multiline: isMultiline,
                         icon: icon
                       });
