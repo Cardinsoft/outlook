@@ -1043,14 +1043,19 @@ function trimSender(input) {
 
 
 function toBoolean(input) {
-  //check if input is a string or boolean;
-  var isString = typeof input === 'string';
-  var isBoolean = typeof input === 'boolean'; //if is boolean -> return unchanged;
+  //if undefined -> return false;
+  if (!input) {
+    return false;
+  } //if Boolean -> return input;
+
+
+  var isBoolean = typeof input === 'boolean';
 
   if (isBoolean) {
     return input;
-  } //if is string -> change to boolean;
+  }
 
+  var isString = typeof input === 'string'; //if is string -> change to boolean;
 
   if (isString) {
     if (input === 'true') {
