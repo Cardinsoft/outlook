@@ -4,7 +4,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-//Emulate Class KeyValue for CardService service;
+/**
+ * KeyValue class;
+ */
 let KeyValue = function KeyValue() {
   _classCallCheck(this, KeyValue);
 
@@ -17,6 +19,7 @@ let KeyValue = function KeyValue() {
   this.multiline = true;
   this.switchToSet;
   this.topLabel;
+  this.bottomLabel;
   this.action;
   this.authorizationAction;
   this.openLink;
@@ -25,7 +28,7 @@ let KeyValue = function KeyValue() {
 /**
  * Set authorization action to KeyValue;
  * @param {AuthorizationAction} action action to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -37,7 +40,7 @@ KeyValue.prototype.setAuthorizationAction = function (action) {
  * Set compose action to KeyValue;
  * @param {Action} action action to set;
  * @param {composedEmailType} composedEmailType email type to compose;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -49,7 +52,7 @@ KeyValue.prototype.setComposeAction = function (action, composedEmailType) {
 /**
  * Set onclick action to KeyValue;
  * @param {Action} action action to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -60,7 +63,7 @@ KeyValue.prototype.setOnClickAction = function (action) {
 /**
  * Set OpenLink action to KeyValue;
  * @param {Action} action action to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -71,7 +74,7 @@ KeyValue.prototype.setOnClickOpenLinkAction = function (action) {
 /**
  * Set OpenLink to KeyValue;
  * @param {OpenLink} openLink openLink action to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -82,7 +85,7 @@ KeyValue.prototype.setOpenLink = function (openLink) {
 /**
  * Sets Button to this widget if provided;
  * @param {TextButton} button TextButton widget to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -93,7 +96,7 @@ KeyValue.prototype.setButton = function (button) {
 /**
  * Sets this widget's text content;
  * @param {String} text content to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -104,7 +107,7 @@ KeyValue.prototype.setContent = function (text) {
 /**
  * Sets one of the predefined icons from CardService Enum;
  * @param {String} icon icon name from CardService Enum;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -123,7 +126,7 @@ KeyValue.prototype.setIcon = function (icon) {
 /**
  * Sets image URL to append to widget as icon;
  * @param {String} url path to image;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -134,7 +137,7 @@ KeyValue.prototype.setIconUrl = function (url) {
 /**
  * Sets alt text for image acting as widget icon;
  * @param {String} altText text to display on source fail;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -145,7 +148,7 @@ KeyValue.prototype.setIconAltText = function (altText) {
 /**
  * Determines whether to display widget text as multiline or truncated single-line;
  * @param {Boolean} multiline truthy value to set multiline property to;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -156,7 +159,7 @@ KeyValue.prototype.setMultiline = function (multiline) {
 /**
  * Sets a Switch widget on this widget;
  * @param {Switch} switchToSet Switch widget to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
@@ -165,14 +168,25 @@ KeyValue.prototype.setSwitch = function (switchToSet) {
   return this;
 };
 /**
- * Sets this widget's title text on top;
+ * Sets this widget's title text to top;
  * @param {String} text title text to set;
- * @returns {KeyValue} this widget;
+ * @return {KeyValue} this widget;
  */
 
 
 KeyValue.prototype.setTopLabel = function (text) {
   this.topLabel = text;
+  return this;
+};
+/**
+ * Sets this widget's title text to bottom;
+ * @param {String} text title text to set;
+ * @return {KeyValue} this widget;
+ */
+
+
+KeyValue.prototype.setBottomLabel = function (text) {
+  this.bottomLabel = text;
   return this;
 };
 /**
@@ -263,6 +277,13 @@ KeyValue.prototype.appendToUi = function (parent) {
   if (content) {
     loadAnchor(contentText, content);
     loadMailto(contentText, content);
+  }
+
+  if (this.bottomLabel) {
+    const hint = document.createElement('label');
+    hint.className = 'ms-fontSize-s KeyValueLabel';
+    hint.textContent = this.bottomLabel;
+    wrapText.append(hint);
   } //handle button or switch creation;
 
 
