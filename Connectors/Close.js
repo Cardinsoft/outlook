@@ -790,7 +790,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, activities, sectionFields, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, actFields, activities, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, sectionFields, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -949,9 +949,23 @@ function Close() {
               sectionOppt.widgets = this.displayOpportunities(opportunities);
             }
 
+            if (!(view === 'lead' && connector.activities)) {
+              _context5.next = 65;
+              break;
+            }
+
+            actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
+            _context5.next = 63;
+            return this.fetchActivities_(headers, actFields, 0, leadId);
+
+          case 63:
+            activities = _context5.sent;
+            sectionAct.widgets = this.displayActivities(activities, leadId);
+
+          case 65:
             c = 0;
 
-          case 60:
+          case 66:
             if (!(c < contacts.length)) {
               _context5.next = 91;
               break;
@@ -983,13 +997,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 74;
+              _context5.next = 80;
               break;
             }
 
             return _context5.abrupt("continue", 88);
 
-          case 74:
+          case 80:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -1003,34 +1017,17 @@ function Close() {
             } //if activities enabled -> show;
 
 
-            if (!connector.activities) {
+            if (!(view === 'contact' && connector.activities)) {
               _context5.next = 87;
               break;
             }
 
-            activities = [];
-
-            if (!(view === 'contact')) {
-              _context5.next = 83;
-              break;
-            }
-
-            _context5.next = 80;
-            return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId, contId);
-
-          case 80:
-            activities = _context5.sent;
-            _context5.next = 86;
-            break;
-
-          case 83:
+            actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
             _context5.next = 85;
-            return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId);
+            return this.fetchActivities_(headers, actFields, 0, leadId, contId);
 
           case 85:
             activities = _context5.sent;
-
-          case 86:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
           case 87:
@@ -1050,7 +1047,7 @@ function Close() {
 
           case 88:
             c++;
-            _context5.next = 60;
+            _context5.next = 66;
             break;
 
           case 91:
