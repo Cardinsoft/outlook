@@ -41,7 +41,12 @@ function authorizeSection(builder, isCollapsed, connectors) {
       }
 
       var authButton = imageButtonWidgetAuth(authIcon, globalOpenAuthText, service.getAuthorizationUrl(auth));
-      var authPrompt = simpleKeyValueWidget('', connector.name, true, connector.icon, authButton);
+      var authPrompt = simpleKeyValueWidget({
+        content: connector.name,
+        multiline: true,
+        icon: connector.icon,
+        button: authButton
+      });
       section.addWidget(authPrompt);
     }
   }); //append section and return it;
@@ -63,7 +68,11 @@ function skipInitialAuthSection(builder, isCollapsed, types) {
   var section = CardService.newCardSection();
   section.setCollapsible(isCollapsed); //prompt user that they can skip initial auth check;
 
-  var prompt = simpleKeyValueWidget(globalSkipAuthWidgetTitle, globalSkipAuthWidgetContent, true);
+  var prompt = simpleKeyValueWidget({
+    title: globalSkipAuthWidgetTitle,
+    content: globalSkipAuthWidgetContent,
+    multiline: true
+  });
   section.addWidget(prompt); //get skip configuration;
 
   var skipped = getProperty('skipAuth', 'user');
@@ -480,7 +489,11 @@ function createConfigErrorSection(builder, isCollapsed, header, title, content) 
   } //create reset prompt widget;
 
 
-  var resetText = simpleKeyValueWidget(title, content, true);
+  var resetText = simpleKeyValueWidget({
+    title: title,
+    content: content,
+    multiline: true
+  });
   section.addWidget(resetText); //create TextButton widget for full reset;
 
   createWidgetResetSubmit(section); //append section and return it;
@@ -506,7 +519,11 @@ function createExtraDataSection(builder, isCollapsed, end, begin, max, data, con
   var section = CardService.newCardSection();
   section.setCollapsible(isCollapsed); //create widget prompting the user that there is more data to show;
 
-  var restText = simpleKeyValueWidget(globalExtraDataTitle, globalExtraDataText, true);
+  var restText = simpleKeyValueWidget({
+    title: globalExtraDataTitle,
+    content: globalExtraDataText,
+    multiline: true
+  });
   section.addWidget(restText); //set connector parameters;
 
   connector.data = data;
@@ -571,7 +588,10 @@ function _createNoFieldsSection() {
 
           trimmed = trimMessage(msg, true, true);
           prompt = globalNoDataWidgetContent + ' ' + trimmed.first + ' ' + trimmed.last + '\r<b>' + trimmed.email + '</b>';
-          noData = simpleKeyValueWidget('', prompt, true);
+          noData = simpleKeyValueWidget({
+            content: prompt,
+            multiline: true
+          });
           section.addWidget(noData); //create TextButton for adding contact if config provides one;
 
           cType = new this[connector.type]();
@@ -656,10 +676,18 @@ function createUnparsedSection(builder, isCollapsed, error, content) {
   section.setCollapsible(isCollapsed);
   section.setHeader(globalUnparsedHeader); //create widget for unparsed error prompt;
 
-  var errCode = simpleKeyValueWidget(globalUnparsedErrorWidgetTitle, error, true);
+  var errCode = simpleKeyValueWidget({
+    title: globalUnparsedErrorWidgetTitle,
+    content: error,
+    multiline: true
+  });
   section.addWidget(errCode); //create widget for unparsed data;
 
-  var data = simpleKeyValueWidget(globalUnparsedDataWidgetTitle, content, true);
+  var data = simpleKeyValueWidget({
+    title: globalUnparsedDataWidgetTitle,
+    content: content,
+    multiline: true
+  });
   section.addWidget(data); //append section and return it;
 
   builder.addSection(section);
@@ -752,7 +780,10 @@ function createErrorSection(builder, isCollapsed, code, error, header) {
   section.setHeader(header); //create error description widget;
 
   if (content) {
-    var description = simpleKeyValueWidget('', content, true);
+    var description = simpleKeyValueWidget({
+      content: content,
+      multiline: true
+    });
     section.addWidget(description);
   } //create error information widget;
 
@@ -768,7 +799,11 @@ function createErrorSection(builder, isCollapsed, code, error, header) {
     }
 
     if (errorDetails) {
-      var additional = simpleKeyValueWidget(globalErrorWidgetTitle, errorDetails, true);
+      var additional = simpleKeyValueWidget({
+        title: globalErrorWidgetTitle,
+        content: errorDetails,
+        multiline: true
+      });
       section.addWidget(additional);
     }
   } //create contact us widget;
@@ -859,7 +894,11 @@ function createSectionSimple(builder, data, isCollapsed, index) {
   if (Object.keys(data).length !== 0) {
     //append wigets to section;
     for (var key in data) {
-      var widget = simpleKeyValueWidget(key, data[key], true);
+      var widget = simpleKeyValueWidget({
+        title: key,
+        content: data[key],
+        multiline: true
+      });
       section.addWidget(widget);
     } //append section and return it;
 
@@ -1125,7 +1164,13 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                     }
 
                     if (state !== 'editable' && !funcName) {
-                      element = simpleKeyValueWidget(title, content, isMultiline, icon, button);
+                      element = simpleKeyValueWidget({
+                        title: title,
+                        content: content,
+                        multiline: isMultiline,
+                        icon: icon,
+                        button: button
+                      });
                     } else if (state !== 'editable') {
                       element = actionKeyValueWidget(icon, title, content, action, funcName, params);
                     } else {
@@ -1133,7 +1178,12 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                     }
                   } else {
                     if (state !== 'editable' && !funcName) {
-                      element = simpleKeyValueWidget(title, content, isMultiline, icon);
+                      element = simpleKeyValueWidget({
+                        title: title,
+                        content: content,
+                        multiline: isMultiline,
+                        icon: icon
+                      });
                     } else if (state !== 'editable') {
                       element = actionKeyValueWidget(icon, title, content, action, funcName, params);
                     } else {
@@ -1610,8 +1660,16 @@ function createSectionHelp(builder, isCollapsed) {
   };
   createSectionAdvanced(builder, sectionInt, 0, {}, sectionInt.widgets.length, 0); //create help action widgets;
 
-  var web = simpleKeyValueWidget('', '<a href="https://cardinsoft.com/support/">cardinsoft.com</a>', false, globalIconWebsite);
-  var mail = simpleKeyValueWidget('', '<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>', false, 'EMAIL');
+  var web = simpleKeyValueWidget({
+    content: '<a href="https://cardinsoft.com/support/">cardinsoft.com</a>',
+    multiline: false,
+    icon: globalIconWebsite
+  });
+  var mail = simpleKeyValueWidget({
+    content: '<a href="mailto:support@cardinsoft.com">support@cardinsoft.com</a>',
+    multiline: false,
+    icon: 'EMAIL'
+  });
   section.addWidget(web);
   section.addWidget(mail); //append section and return it;
 
