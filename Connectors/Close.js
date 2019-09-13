@@ -2096,24 +2096,15 @@ function Close() {
           var callStatus = activity.status;
           var callNote = activity.note;
           var callDirect = activity.direction;
-          var callDate = activity.date_created;
+          var callDate = new Date(activity.date_created.split('.')[0]);
           var duration = activity.duration / 60 / 60;
           var callPhone = activity.phone;
           var hs = endsOnOne(duration);
           var cf = {
+            icon: callDirect === 'outbound' ? globalIconCallOutbound : globalIconCallInbound,
             type: globalKeyValue,
-            title: 'Call info',
-            buttonText: callDirect
+            title: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString()
           };
-
-          switch (callStatus) {
-            case 'completed':
-              cf.icon = globalIconCallEnded;
-              break;
-
-            default:
-              cf.icon = 'PHONE';
-          }
 
           if (callPhone) {
             cf.content = callPhone;
@@ -2132,14 +2123,6 @@ function Close() {
             };
             wact.push(cw);
           }
-
-          callDate = new Date(callDate.split('.')[0]);
-          var ccd = {
-            icon: 'INVITE',
-            type: globalKeyValue,
-            content: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString()
-          };
-          wact.push(ccd);
 
           if (duration > 0) {
             var cd = {
