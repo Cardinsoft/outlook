@@ -715,28 +715,6 @@ function forceHttps(input) {
   return input;
 }
 /**
- * Parses input into Boolean;
- * @param {*=} input input to parse;
- * @returns {Boolean}
- */
-
-
-function toBoolean(input) {
-  if (typeof input === 'boolean') {
-    return input;
-  }
-
-  const isString = typeof input === 'string';
-
-  if (!isString) {
-    return Boolean(input);
-  } else if (input === 'false') {
-    return false;
-  } else {
-    return true;
-  }
-}
-/**
  * Gets base64-encoded "random" Id;
  * @returns {String|Function}
  */
