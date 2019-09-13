@@ -803,6 +803,7 @@ function Close() {
             //modify message;
             message = trimMessage(msg, true, true);
             queryL = ['email_address:' + message.email.toLowerCase(), '_limit=' + 1];
+            queryL.push('_fields=id,name,contacts,organization_id,custom,status_label,description,url,addresses,opportunities,tasks,date_created,date_updated');
             url = encodeURI(this.url + '/lead?query=' + queryL.join('&')); //construct headers;
 
             headers = {
@@ -817,26 +818,26 @@ function Close() {
 
 
             if (data) {
-              _context5.next = 12;
+              _context5.next = 13;
               break;
             }
 
-            _context5.next = 9;
+            _context5.next = 10;
             return performFetch(url, 'get', headers);
 
-          case 9:
+          case 10:
             response = _context5.sent;
-            _context5.next = 13;
+            _context5.next = 14;
             break;
 
-          case 12:
+          case 13:
             response = data;
 
-          case 13:
+          case 14:
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 89;
+              _context5.next = 92;
               break;
             }
 
@@ -849,26 +850,36 @@ function Close() {
             } //access users;
 
 
-            _context5.next = 20;
+            _context5.next = 21;
             return this.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
 
-          case 20:
+          case 21:
             users = _context5.sent;
-            _context5.next = 23;
+            _context5.next = 24;
             return this.fetchLeadStatuses_(headers);
 
-          case 23:
+          case 24:
             leadStatuses = _context5.sent;
-            _context5.next = 26;
+            //access fields;
+            fields = [];
+
+            if (!connector.fields) {
+              _context5.next = 30;
+              break;
+            }
+
+            _context5.next = 29;
             return this.fetchFields_(headers, ['id', 'type', 'name', 'choices']);
 
-          case 26:
+          case 29:
             fields = _context5.sent;
+
+          case 30:
             l = 0;
 
-          case 28:
+          case 31:
             if (!(l < leads.length)) {
-              _context5.next = 87;
+              _context5.next = 90;
               break;
             }
 
@@ -933,9 +944,9 @@ function Close() {
 
             c = 0;
 
-          case 52:
+          case 55:
             if (!(c < contacts.length)) {
-              _context5.next = 83;
+              _context5.next = 86;
               break;
             }
 
@@ -965,13 +976,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 66;
+              _context5.next = 69;
               break;
             }
 
-            return _context5.abrupt("continue", 80);
+            return _context5.abrupt("continue", 83);
 
-          case 66:
+          case 69:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -986,36 +997,36 @@ function Close() {
 
 
             if (!connector.activities) {
-              _context5.next = 79;
+              _context5.next = 82;
               break;
             }
 
             activities = [];
 
             if (!(view === 'contact')) {
-              _context5.next = 75;
+              _context5.next = 78;
               break;
             }
 
-            _context5.next = 72;
+            _context5.next = 75;
             return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId, contId);
 
-          case 72:
+          case 75:
             activities = _context5.sent;
-            _context5.next = 78;
+            _context5.next = 81;
             break;
 
-          case 75:
-            _context5.next = 77;
+          case 78:
+            _context5.next = 80;
             return this.fetchActivities_(headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 0, leadId);
 
-          case 77:
+          case 80:
             activities = _context5.sent;
 
-          case 78:
+          case 81:
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
-          case 79:
+          case 82:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
@@ -1030,12 +1041,12 @@ function Close() {
               }
             }
 
-          case 80:
+          case 83:
             c++;
-            _context5.next = 52;
+            _context5.next = 55;
             break;
 
-          case 83:
+          case 86:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1053,18 +1064,18 @@ function Close() {
               }
             }
 
-          case 84:
-            l++;
-            _context5.next = 28;
-            break;
-
           case 87:
-            _context5.next = 96;
+            l++;
+            _context5.next = 31;
             break;
 
-          case 89:
+          case 90:
+            _context5.next = 99;
+            break;
+
+          case 92:
             if (!(response.code === 401)) {
-              _context5.next = 95;
+              _context5.next = 98;
               break;
             }
 
@@ -1100,10 +1111,10 @@ function Close() {
               }
             });
 
-          case 95:
+          case 98:
             return _context5.abrupt("return", response);
 
-          case 96:
+          case 99:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1120,7 +1131,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 99:
+          case 102:
           case "end":
             return _context5.stop();
         }
