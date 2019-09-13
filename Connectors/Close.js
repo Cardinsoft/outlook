@@ -802,8 +802,8 @@ function Close() {
           case 0:
             //modify message;
             message = trimMessage(msg, true, true);
-            queryL = encodeURI('?query=email_address:' + message.email.toLowerCase());
-            url = this.url + '/lead' + queryL; //construct headers;
+            queryL = ['email_address:' + message.email.toLowerCase()];
+            url = encodeURI(this.url + '/lead?query=' + queryL.join(',')); //construct headers;
 
             headers = {
               Authorization: 'Basic ' + Utilities.base64Encode(connector[globalApiTokenTokenFieldName] + ':')
