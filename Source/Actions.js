@@ -506,7 +506,7 @@ function _updateSectionAdvanced() {
           break;
 
         case 19:
-          if (!(method === 'refresh')) {
+          if (!(method === 'refresh' || method === 'traverse')) {
             _context6.next = 23;
             break;
           }
