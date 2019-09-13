@@ -263,7 +263,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 
   if (this.topLabel) {
     const label = document.createElement('label');
-    label.className = 'ms-fontSize-s KeyValueLabel';
+    label.className = 'ms-fontSize-s KeyValueTopLabel';
     label.textContent = this.topLabel;
     wrapText.append(label);
   } //create content text element;
@@ -281,7 +281,7 @@ KeyValue.prototype.appendToUi = function (parent) {
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
-    hint.className = 'ms-fontSize-s KeyValueLabel';
+    hint.className = 'ms-fontSize-s KeyValueBottomLabel';
     hint.textContent = this.bottomLabel;
     wrapText.append(hint);
   } //handle button or switch creation;
