@@ -10,9 +10,10 @@ function oneCRM() {
   this.icon = globalOneCRMiconUrl;
   this.typeName = '1CRM';
   this.short = globalOneCRMshort;
-  this.url = '1crmcloud.com/api.php';
+  this.url = '/api.php';
   this.addInCRM = {
-    base: '1crmcloud.com/?module=Contacts&action=EditView&record=&',
+    domain: '1crmcloud.com',
+    base: '/?module=Contacts&action=EditView&record=&',
     params: {
       email: 'email1',
       first: 'first_name',
@@ -23,13 +24,33 @@ function oneCRM() {
     widgets: [{
       type: globalKeyValue,
       title: 'Account name',
-      content: 'Please enter your account name (you can find it at [account].1crmcloud.com)'
+      content: 'Enter your account name (you can find it at [account name].[domain])'
     }, {
       name: 'account',
       type: globalTextInput,
       title: 'Account name',
       content: '',
-      hint: 'Your account'
+      callback: 'validateSubdomain',
+      parameters: {
+        domain: '(1crmcloud\.com)|(1crmcloud)|(opencrm\.eu)|(opencrm)'
+      },
+      hint: 'e.g. cardin'
+    }, {
+      type: globalKeyValue,
+      title: 'Domain',
+      content: 'Choose your deployment domain. If your account is on domain not available below, please <a href="mailto:support@cardinsoft.com?subject=' + encodeURIComponent('New domain support for 1CRM request') + '">contact us</a>'
+    }, {
+      name: 'domain',
+      type: globalEnumDropdown,
+      content: [{
+        text: '1crmcloud',
+        value: '1crmcloud.com',
+        selected: true
+      }, {
+        text: 'opencrm',
+        value: 'opencrm.eu',
+        selected: false
+      }]
     }]
   }];
   this.auth = {
@@ -89,9 +110,10 @@ function oneCRM() {
             });
 
           case 2:
-            //construct url and credentials for request;
+            connector.account = trimWhitespace(connector.account, false, true, true); //construct url and credentials for request;
+
             endpoint = '/data/Contact?';
-            url = 'https://' + connector.account + '.' + this.url;
+            url = 'https://' + connector.account + '.' + (connector.domain ? connector.domain : '1crmcloud.com') + this.url;
             cred = Utilities.base64Encode(connector.usercode + ':' + connector.apitoken);
             headers = {
               Authorization: 'Basic ' + cred
@@ -115,15 +137,15 @@ function oneCRM() {
 
             fullUrl = url + endpoint + params; //fetch endpoint and return response;
 
-            _context.next = 20;
+            _context.next = 21;
             return performFetch(fullUrl, 'get', headers);
 
-          case 20:
+          case 21:
             response = _context.sent;
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context.next = 156;
+              _context.next = 157;
               break;
             }
 
@@ -132,20 +154,20 @@ function oneCRM() {
             contacts = contents.records;
             i = 0;
 
-          case 26:
+          case 27:
             if (!(i < contacts.length)) {
-              _context.next = 154;
+              _context.next = 155;
               break;
             }
 
             contact = contacts[i]; //initiate contact sections;
 
             sectionMain = {
-              header: 'Contact info',
+              header: globalContactInfoHeader,
               isCollapsible: true
             };
             sectionEmpl = {
-              header: 'Employment',
+              header: globalEmploymentContactHeader,
               isCollapsible: true
             };
             sectionBckg = {
@@ -153,7 +175,7 @@ function oneCRM() {
               isCollapsible: true
             };
             sectionAct = {
-              header: 'Activities',
+              header: globalActivitiesHeader,
               isCollapsible: true
             }; //access sections widgets;
 
@@ -378,6 +400,10 @@ function oneCRM() {
                 address.push(pStreet);
               }
 
+              if (pCity !== null) {
+                address.push(pCity);
+              }
+
               if (pState !== null) {
                 address.push(pState);
               }
@@ -409,6 +435,10 @@ function oneCRM() {
 
               if (oStreet !== null) {
                 oAddress.push(oStreet);
+              }
+
+              if (oCity !== null) {
+                oAddress.push(oCity);
               }
 
               if (oState !== null) {
@@ -521,7 +551,7 @@ function oneCRM() {
 
 
             endpoint = '/calendar/events?';
-            urlEvents = 'https://' + connector.account + '.' + this.url; //construct start date (required format YYYY-MM-DD HH-MM-SS);
+            urlEvents = 'https://' + connector.account + '.' + (connector.domain ? connector.domain : '1crmcloud.com') + this.url; //construct start date (required format YYYY-MM-DD HH-MM-SS);
 
             start = new Date().toISOString();
             start = start.substring(0, start.length - 5).split('T').join(' ');
@@ -533,14 +563,14 @@ function oneCRM() {
 
             fullEventsUrl = urlEvents + endpoint + start + '&' + end; //fetch endpoint and return response;
 
-            _context.next = 110;
+            _context.next = 111;
             return performFetch(fullEventsUrl, 'get', headers);
 
-          case 110:
+          case 111:
             responseEvents = _context.sent;
 
-            if (!(responseEvents.code <= 300)) {
-              _context.next = 145;
+            if (!(responseEvents.code >= 200 && responseEvents.code < 300)) {
+              _context.next = 147;
               break;
             }
 
@@ -554,48 +584,56 @@ function oneCRM() {
               title: '',
               content: 'Your activities for the next week'
             };
-            wact.push(eventPrompt);
-            wact.push(globalWidgetSeparator); //construct event widgets for each event;
+
+            if (events.length === 0) {
+              eventPrompt.content = 'No pending activities for the next week';
+            }
+
+            wact.push(eventPrompt); //construct event widgets for each event;
 
             ek = 0;
 
-          case 118:
+          case 119:
             if (!(ek < events.length)) {
-              _context.next = 145;
+              _context.next = 147;
               break;
             }
 
             event = events[ek];
-            sd = event.date_start.split(' ');
+            sd = event.date_start;
             dd = event.date_due; //null;
 
             n = event.name;
-            t = event.type; //
-
+            t = event.type;
             l = event.location; //null;
 
+            wact.push(globalWidgetSeparator);
             subj = {
               type: globalKeyValue,
               title: 'Subject',
               content: n
             };
             _context.t0 = t;
-            _context.next = _context.t0 === 'Call' ? 129 : _context.t0 === 'Meeting' ? 131 : _context.t0 === 'ProjectTask' ? 133 : 135;
+            _context.next = _context.t0 === 'Call' ? 131 : _context.t0 === 'Meeting' ? 133 : _context.t0 === 'ProjectTask' ? 135 : _context.t0 === 'Task' ? 137 : 139;
             break;
 
-          case 129:
-            icon = globalIconCall;
-            return _context.abrupt("break", 135);
-
           case 131:
-            icon = 'EVENT_PERFORMER';
-            return _context.abrupt("break", 135);
+            icon = globalIconCall;
+            return _context.abrupt("break", 139);
 
           case 133:
-            icon = globalIconTask;
-            return _context.abrupt("break", 135);
+            icon = 'EVENT_PERFORMER';
+            return _context.abrupt("break", 139);
 
           case 135:
+            icon = globalIconTask;
+            return _context.abrupt("break", 139);
+
+          case 137:
+            icon = globalIconTask;
+            return _context.abrupt("break", 139);
+
+          case 139:
             subj.icon = icon;
             wact.push(subj);
 
@@ -609,15 +647,19 @@ function oneCRM() {
               wact.push(loc);
             }
 
-            from = {
-              icon: 'INVITE',
-              type: globalKeyValue,
-              title: 'Start date',
-              content: new Date(sd[0]).toLocaleDateString()
-            };
-            wact.push(from);
+            if (sd !== null) {
+              sd = sd.split(' ')[0];
+              from = {
+                icon: 'INVITE',
+                type: globalKeyValue,
+                title: 'Start date',
+                content: new Date(sd).toLocaleDateString()
+              };
+              wact.push(from);
+            }
 
             if (dd !== null) {
+              dd = dd.split(' ')[0];
               due = {
                 icon: 'INVITE',
                 type: globalKeyValue,
@@ -627,37 +669,32 @@ function oneCRM() {
               wact.push(due);
             }
 
-            wact.push(globalWidgetSeparator);
-
-          case 142:
+          case 144:
             ek++;
-            _context.next = 118;
+            _context.next = 119;
             break;
 
-          case 145:
+          case 147:
+            //end events success;
             //push widgets to sections and push sections;
             sectionMain.widgets = wmain;
             sectionEmpl.widgets = wempl;
             sectionBckg.widgets = wbckg;
             sectionAct.widgets = wact;
-            sections.push(sectionMain, sectionEmpl, sectionBckg);
+            sections.push(sectionMain, sectionEmpl, sectionBckg, sectionAct);
 
-            if (wact.length > 2) {
-              sections.push(sectionAct);
-            }
-
-          case 151:
+          case 152:
             i++;
-            _context.next = 26;
+            _context.next = 27;
             break;
 
-          case 154:
-            _context.next = 173;
+          case 155:
+            _context.next = 174;
             break;
 
-          case 156:
+          case 157:
             if (!(response.code === 401)) {
-              _context.next = 162;
+              _context.next = 163;
               break;
             }
 
@@ -685,9 +722,9 @@ function oneCRM() {
               }
             });
 
-          case 162:
+          case 163:
             if (!(response.code === 403)) {
-              _context.next = 167;
+              _context.next = 168;
               break;
             }
 
@@ -710,7 +747,7 @@ function oneCRM() {
                 }, {
                   type: globalTextButton,
                   title: 'Login',
-                  content: 'https://' + connector.account + '.' + this.url.substring(0, 13),
+                  content: 'https://' + connector.account + '.' + (connector.domain ? connector.domain : '1crmcloud.com') + this.url.substring(0, 13),
                   reload: true
                 }]
               }]
@@ -725,9 +762,9 @@ function oneCRM() {
               }
             });
 
-          case 167:
-            if (!(response.content.descr.indexOf('DNS error') !== -1)) {
-              _context.next = 172;
+          case 168:
+            if (!(response.content.descr.indexOf('DNS error') !== -1 || response.content.descr.indexOf('SSL Error') !== -1)) {
+              _context.next = 173;
               break;
             }
 
@@ -736,11 +773,11 @@ function oneCRM() {
               header: 'Inactive account',
               widgets: [{
                 type: globalKeyValue,
-                content: 'We couldn\'t access your account, most likely it is inactive (e.g. your trial expired). Please, check if you still have access!'
+                content: 'We couldn\'t access your account, most likely it is inactive (e.g. your trial expired or there is a typo in your account name). Please, check if you still have access!'
               }, {
                 type: globalTextButton,
                 title: 'Open account',
-                content: 'https://' + connector.account + '.' + this.url.substring(0, 13)
+                content: 'https://' + connector.account + '.' + (connector.domain ? connector.domain : '1crmcloud.com') + this.url.substring(0, 13)
               }]
             }];
             return _context.abrupt("return", {
@@ -753,10 +790,10 @@ function oneCRM() {
               }
             });
 
-          case 172:
+          case 173:
             return _context.abrupt("return", response);
 
-          case 173:
+          case 174:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -773,7 +810,7 @@ function oneCRM() {
 
             return _context.abrupt("return", returned);
 
-          case 176:
+          case 177:
           case "end":
             return _context.stop();
         }
