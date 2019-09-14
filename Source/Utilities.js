@@ -1028,7 +1028,7 @@ function trimSender(input) {
       return '';
     } else {
       input = input.replace(input.slice(index), '');
-      input = input.replace(/^\"|$\"/, '');
+      input = input.replace(/^\"|\"+(?=$)/g, '');
       return input;
     }
   } catch (e) {
