@@ -527,8 +527,11 @@ function simpleKeyValueWidget(config) {
 
 
   var widget = CardService.newKeyValue();
-  widget.setContent(content);
-  widget.setMultiline(multiline); //set top title if found;
+  widget.setContent(content); //set top title if found;
+
+  if (multiline !== undefined) {
+    widget.setMultiline(multiline);
+  }
 
   if (title && title !== '') {
     widget.setTopLabel(title);
