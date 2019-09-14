@@ -1998,7 +1998,8 @@ function Close() {
             icon: globalIconTaskDone,
             type: globalKeyValue,
             title: 'Task completed',
-            content: titleTC
+            content: titleTC,
+            hint: dateTC.toLocaleDateString() + ' ' + dateTC.toLocaleTimeString()
           };
           var utcw = {
             icon: globalIconAccount,
@@ -2006,12 +2007,7 @@ function Close() {
             title: 'Assigned user',
             content: userTC
           };
-          var oscuw = {
-            icon: 'INVITE',
-            type: globalKeyValue,
-            content: dateTC.toLocaleDateString() + ' ' + dateTC.toLocaleTimeString()
-          };
-          wact.push(atcw, utcw, oscuw);
+          wact.push(atcw, utcw);
           break;
 
         case 'OpportunityStatusChange':
@@ -2021,15 +2017,11 @@ function Close() {
           var oscw = {
             icon: globalIconSwitch,
             type: globalKeyValue,
-            title: 'Opportunity status change',
-            content: oldOpptStatus + ' &rarr; ' + newOpptStatus
+            hint: dateOpptChanged.toLocaleDateString() + ' ' + dateOpptChanged.toLocaleTimeString(),
+            content: oldOpptStatus + ' &rarr; ' + newOpptStatus,
+            title: 'Opportunity status change'
           };
-          var oscuw = {
-            icon: 'INVITE',
-            type: globalKeyValue,
-            content: dateOpptChanged.toLocaleDateString() + ' ' + dateOpptChanged.toLocaleTimeString()
-          };
-          wact.push(oscw, oscuw);
+          wact.push(oscw);
           break;
 
         case 'LeadStatusChange':
@@ -2068,7 +2060,8 @@ function Close() {
           var at = {
             icon: emailDirect === 'incoming' ? globalIconInbox : globalIconSend,
             type: globalKeyValue,
-            title: emailDate,
+            title: 'Subject',
+            hint: emailDate,
             content: activity.subject
           };
           wact.push(at);
@@ -2099,7 +2092,8 @@ function Close() {
           var cf = {
             icon: callDirect === 'outbound' ? globalIconCallOutbound : globalIconCallInbound,
             type: globalKeyValue,
-            title: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString()
+            title: 'Call info',
+            hint: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString()
           };
 
           if (callPhone) {
