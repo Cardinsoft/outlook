@@ -590,7 +590,7 @@ function _createNoFieldsSection() {
 
           cType = new this[connector.type]();
           prompt = simpleKeyValueWidget({
-            content: globalNoDataWidgetContent + ' ' + cType.typeName + '. Please, make sure this is the case or add one:'
+            content: globalNoDataWidgetContent + ' ' + cType.typeName + '. Please click below to add a new record for:'
           });
           person = simpleKeyValueWidget({
             icon: 'PERSON',
