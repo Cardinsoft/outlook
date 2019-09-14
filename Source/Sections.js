@@ -577,7 +577,7 @@ function _createNoFieldsSection() {
   _createNoFieldsSection = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(builder, isCollapsed, connector, msg) {
-    var section, trimmed, prompt, noData, cType, addQuery, addConfig, addInCRM, add, domain;
+    var section, trimmed, prompt, person, email, cType, addQuery, addConfig, addInCRM, add, domain;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -587,12 +587,20 @@ function _createNoFieldsSection() {
           section.setHeader(globalNoDataWidgetTitle); //create KeyValue widget prompting user that no data is available;
 
           trimmed = trimMessage(msg, true, true);
-          prompt = globalNoDataWidgetContent + ' ' + trimmed.first + ' ' + trimmed.last + '\r<b>' + trimmed.email + '</b>';
-          noData = simpleKeyValueWidget({
-            content: prompt,
-            multiline: true
+          prompt = simpleKeyValueWidget({
+            content: globalNoDataWidgetContent + ' ' + connector.type + '. Please, make sure this is the case or add one:'
           });
-          section.addWidget(noData); //create TextButton for adding contact if config provides one;
+          person = simpleKeyValueWidget({
+            icon: 'PERSON',
+            content: trimmed.first + ' ' + trimmed.last
+          });
+          email = simpleKeyValueWidget({
+            icon: 'EMAIL',
+            content: trimmed.email
+          });
+          section.addWidget(prompt);
+          section.addWidget(person);
+          section.addWidget(email); //create TextButton for adding contact if config provides one;
 
           cType = new this[connector.type]();
           addQuery = '';
@@ -600,23 +608,23 @@ function _createNoFieldsSection() {
           addInCRM = cType.addInCRM;
 
           if (!addConfig) {
-            _context3.next = 21;
+            _context3.next = 24;
             break;
           }
 
           _context3.t0 = textButtonWidget;
           _context3.t1 = connector.view === 'lead' ? globalAddLeadText : globalAddContactText;
-          _context3.next = 16;
+          _context3.next = 19;
           return addConfig(propertiesToString(connector), msg);
 
-        case 16:
+        case 19:
           _context3.t2 = _context3.sent;
           add = (0, _context3.t0)(_context3.t1, false, false, 'configureContactAdd', _context3.t2);
           section.addWidget(add);
-          _context3.next = 22;
+          _context3.next = 25;
           break;
 
-        case 21:
+        case 24:
           if (addInCRM) {
             //access domain and prepend if required;
             domain = connector.account;
@@ -637,12 +645,12 @@ function _createNoFieldsSection() {
             section.addWidget(add);
           }
 
-        case 22:
+        case 25:
           //append section and return it;
           builder.addSection(section);
           return _context3.abrupt("return", section);
 
-        case 24:
+        case 27:
         case "end":
           return _context3.stop();
       }
