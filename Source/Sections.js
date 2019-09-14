@@ -605,7 +605,7 @@ function _createNoFieldsSection() {
           }
 
           _context3.t0 = textButtonWidget;
-          _context3.t1 = globalAddContactText;
+          _context3.t1 = connector.view === 'lead' ? globalAddLeadText : globalAddContactText;
           _context3.next = 16;
           return addConfig(propertiesToString(connector), msg);
 
