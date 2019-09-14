@@ -577,7 +577,7 @@ function _createNoFieldsSection() {
   _createNoFieldsSection = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(builder, isCollapsed, connector, msg) {
-    var section, trimmed, prompt, person, email, cType, addQuery, addConfig, addInCRM, add, domain;
+    var section, trimmed, cType, prompt, person, email, addQuery, addConfig, addInCRM, add, domain;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -586,9 +586,11 @@ function _createNoFieldsSection() {
           section.setCollapsible(isCollapsed);
           section.setHeader(globalNoDataWidgetTitle); //create KeyValue widget prompting user that no data is available;
 
-          trimmed = trimMessage(msg, true, true);
+          trimmed = trimMessage(msg, true, true); //create TextButton for adding contact if config provides one;
+
+          cType = new this[connector.type]();
           prompt = simpleKeyValueWidget({
-            content: globalNoDataWidgetContent + ' ' + connector.type + '. Please, make sure this is the case or add one:'
+            content: globalNoDataWidgetContent + ' ' + cType.typeName + '. Please, make sure this is the case or add one:'
           });
           person = simpleKeyValueWidget({
             icon: 'PERSON',
@@ -600,9 +602,7 @@ function _createNoFieldsSection() {
           });
           section.addWidget(prompt);
           section.addWidget(person);
-          section.addWidget(email); //create TextButton for adding contact if config provides one;
-
-          cType = new this[connector.type]();
+          section.addWidget(email);
           addQuery = '';
           addConfig = cType.addConfig;
           addInCRM = cType.addInCRM;
