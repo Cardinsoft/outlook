@@ -527,10 +527,12 @@ function simpleKeyValueWidget(config) {
 
 
   var widget = CardService.newKeyValue();
-  widget.setContent(content); //set top title if found;
+  widget.setContent(content); //set optional parameters;
 
   if (multiline !== undefined) {
     widget.setMultiline(multiline);
+  } else {
+    widget.setMultiline(true);
   }
 
   if (title && title !== '') {
