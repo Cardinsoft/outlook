@@ -246,8 +246,6 @@ function _editSectionAdvanced() {
           content = connector.content;
           isAuto = connector.updates; //parse content;
 
-          content = parseData(content);
-
           if (typeof content === 'string') {
             content = JSON.parse(content);
           } //access form data and set contents;
@@ -381,7 +379,7 @@ function _editSectionAdvanced() {
           builder.setStateChanged(true);
           return _context5.abrupt("return", builder.build());
 
-        case 20:
+        case 19:
         case "end":
           return _context5.stop();
       }
