@@ -235,7 +235,7 @@ function _editSectionAdvanced() {
   _editSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee5(e) {
-    var builder, connector, content, isAuto, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
+    var builder, connector, content, isAuto, formInputs, keys, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -248,13 +248,14 @@ function _editSectionAdvanced() {
 
           if (typeof content === 'string') {
             content = JSON.parse(content);
-          } //access form data and set contents;
+          } //access form inputs and preserve;
 
 
           formInputs = e.formInputs;
+          keys = Object.keys(formInputs);
           content.forEach(function (section) {
             section.widgets.forEach(function (widget) {
-              Object.keys(formInputs).forEach(function (key) {
+              keys.forEach(function (key) {
                 if (key === widget.name) {
                   if (widget.type === globalEnumCheckbox || widget.type === globalEnumDropdown || widget.type === globalEnumRadio) {
                     widget.content.forEach(function (option) {
@@ -284,11 +285,7 @@ function _editSectionAdvanced() {
 
           if (editMap) {
             //filter out widget on which edit map is set;
-            widgets = widgets.filter(function (widget, index) {
-              if (index !== widgetIdx) {
-                return widget;
-              }
-            }); //insert edit map widgets;
+            widgets.splice(widgetIdx, 1); //insert edit map widgets;
 
             editMap.forEach(function (ew, i) {
               if (!ew.type) {
@@ -330,7 +327,7 @@ function _editSectionAdvanced() {
                     });
                     otherEM.forEach(function (ew, j) {
                       if (!ew.type) {
-                        ew.type = 'TextInput';
+                        ew.type = globalTextInput;
                       }
 
                       if (!ew.multiline) {
@@ -376,7 +373,6 @@ function _editSectionAdvanced() {
           e.parameters.content = JSON.stringify(content); //set data state change and navigate to display card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
-          builder.setStateChanged(true);
           return _context5.abrupt("return", builder.build());
 
         case 19:
