@@ -235,7 +235,7 @@ function _editSectionAdvanced() {
   _editSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee5(e) {
-    var builder, connector, content, isAuto, formInput, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
+    var builder, connector, content, isAuto, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -253,11 +253,10 @@ function _editSectionAdvanced() {
           } //access form data and set contents;
 
 
-          formInput = e.formInput;
           formInputs = e.formInputs;
           content.forEach(function (section) {
             section.widgets.forEach(function (widget) {
-              Object.keys(formInput).forEach(function (key) {
+              Object.keys(formInputs).forEach(function (key) {
                 if (key === widget.name) {
                   if (widget.type === globalEnumCheckbox || widget.type === globalEnumDropdown || widget.type === globalEnumRadio) {
                     widget.content.forEach(function (option) {
@@ -268,7 +267,7 @@ function _editSectionAdvanced() {
                       }
                     });
                   } else {
-                    widget.content = formInput[key];
+                    widget.content = formInputs[key][0];
                   }
                 }
               });
@@ -382,7 +381,7 @@ function _editSectionAdvanced() {
           builder.setStateChanged(true);
           return _context5.abrupt("return", builder.build());
 
-        case 21:
+        case 20:
         case "end":
           return _context5.stop();
       }
