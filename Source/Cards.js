@@ -488,7 +488,9 @@ function _cardDisplay() {
           } catch (err) {
             console.error('Failed to create simple section after error in advanced: ' + err); //try handle simple section faling as well;
 
-            createUnparsedSection(builder, true, err.message, JSON.stringify(section));
+            createErrorSection(builder, true, 0, {
+              descr: 'An error occured during display build'
+            }, 'Display error');
           }
 
         case 81:
