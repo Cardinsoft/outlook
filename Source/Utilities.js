@@ -851,6 +851,10 @@ function checkEditable(data) {
   }
 
   var hasEditable = data.some(function (elem) {
+    if (elem.editable) {
+      return true;
+    }
+
     var widgets = elem.widgets;
 
     if (widgets instanceof Array) {
