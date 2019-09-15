@@ -47,6 +47,16 @@ function Close() {
       selected: true
     }, {
       type: globalKeyValue,
+      title: 'Handle updates',
+      content: 'Lead and contact updates are sent to Close as soon as each input looses focus. If turned off, you can submit them when ready'
+    }, {
+      type: globalKeyValue,
+      name: 'updates',
+      content: 'Auto update',
+      switchValue: true,
+      selected: true
+    }, {
+      type: globalKeyValue,
       title: 'Choose view',
       content: 'The Connector can prioritize display of lead or contact information depending on your preferences:'
     }, {
