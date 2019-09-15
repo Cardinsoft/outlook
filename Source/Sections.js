@@ -968,8 +968,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
       widget: 0,
       section: sectionIndex
     };
-  } //append widgets if there are any;
+  } //sanitize connector for actions;
 
+
+  propertiesToString(connector); //append widgets if there are any;
 
   var curr = 0;
 
@@ -1146,9 +1148,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                   element = switchWidget(icon, title, content, name, selected, switchValue);
                 } else {
                   //set section and widget index and stringify;
-                  connector.sectionIdx = sectionIndex;
-                  connector.widgetIdx = index;
-                  connector = propertiesToString(connector);
+                  connector.sectionIdx = sectionIndex.toString();
+                  connector.widgetIdx = index.toString();
 
                   if (buttonText || buttonLink || buttonIcon) {
                     if (disabled === undefined) {
