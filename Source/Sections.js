@@ -1095,12 +1095,19 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 } //build either a clickable or a linked button;
 
 
-                if (action === globalActionClick) {
-                  element = textButtonWidget(title, disabled, filled, funcName, params);
-                } else if (action === globalActionAction) {
-                  element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, funcName, params);
-                } else {
-                  element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload);
+                switch (action) {
+                  case globalActionClick:
+                    //callback onclick;
+                    element = textButtonWidget(title, disabled, filled, funcName, params);
+                    break;
+
+                  case globalActionAction:
+                    //callback + open link onclick;
+                    element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, funcName, params);
+                    break;
+
+                  default:
+                    element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload);
                 }
 
                 break;
