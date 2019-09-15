@@ -575,7 +575,9 @@ function _cardDisplay() {
             error: _context3.t2,
             type: 'display'
           }, 'error');
-          createUnparsedSection(builder, true, _context3.t2.message, JSON.stringify(content));
+          createErrorSection(builder, true, 0, {
+            descr: 'An error occured during display build'
+          }, 'Display error');
 
         case 115:
           if (!(config.length > 0)) {
