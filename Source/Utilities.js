@@ -889,6 +889,10 @@ function checkNested(data) {
   }
 
   var hasNested = data.some(function (elem) {
+    if (elem.widgets) {
+      return true;
+    }
+
     var hasSecondLevelObject = false;
 
     for (var key in elem) {
