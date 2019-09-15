@@ -267,13 +267,13 @@ var globalActionCompose              = 'compose';
 var globalActionLink                 = 'link';
 
 //parameters;
-var includeConnectorsInDev           = true;
-var globalAnalyticsTesting           = true;
+var includeConnectorsInDev           = false;
+var globalAnalyticsTesting           = false;
 var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
-var globalWidgetsCap                 = 25;
+var globalWidgetsCap                 = 15;
 
 //Sign in flow;
 var globalAccountInfoHeader          = 'Account Info';
