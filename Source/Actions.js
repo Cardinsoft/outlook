@@ -235,7 +235,7 @@ function _editSectionAdvanced() {
   _editSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee5(e) {
-    var builder, connector, content, formInput, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
+    var builder, connector, content, isAuto, formInput, formInputs, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -243,7 +243,8 @@ function _editSectionAdvanced() {
           builder = CardService.newActionResponseBuilder(); //access content;
 
           connector = e.parameters;
-          content = connector.content; //parse content;
+          content = connector.content;
+          isAuto = connector.updates; //parse content;
 
           content = parseData(content);
 
@@ -294,11 +295,15 @@ function _editSectionAdvanced() {
 
             editMap.forEach(function (ew, i) {
               if (!ew.type) {
-                ew.type = 'TextInput';
+                ew.type = globalTextInput;
               }
 
               if (!ew.multiline) {
                 ew.multiline = true;
+              }
+
+              if (isAuto && i === editMap.length - 1) {
+                ew.callback = 'updateSectionAdvanced', ew.parameters = connector, ew.hasSpinner = true;
               }
 
               widgets.splice(widgetIdx + i, 0, ew);
@@ -344,8 +349,13 @@ function _editSectionAdvanced() {
               });
             }
           } else {
-            editable.type = 'TextInput';
-            editable.multiline = true; //check for array-like properties;
+            editable.type = globalTextInput;
+            editable.multiline = true;
+
+            if (isAuto) {
+              editable.callback = 'updateSectionAdvanced', editable.parameters = connector, editable.hasSpinner = true;
+            } //check for array-like properties;
+
 
             p = editable.name.split('&')[0];
             i = p.split('-');
@@ -356,7 +366,7 @@ function _editSectionAdvanced() {
                 if (widget.state === 'editable' && !widget.editMap) {
                   if (widget.name.split('&')) {
                     if (widget.name.split('&')[0].split('-')[0] === i[0]) {
-                      widget.type = 'TextInput';
+                      widget.type = globalTextInput;
                       widget.multiline = true;
                     }
                   }
@@ -372,7 +382,7 @@ function _editSectionAdvanced() {
           builder.setStateChanged(true);
           return _context5.abrupt("return", builder.build());
 
-        case 20:
+        case 21:
         case "end":
           return _context5.stop();
       }
