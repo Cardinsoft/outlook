@@ -259,18 +259,8 @@ function _cardDisplay() {
           error = connector.error;
           start = connector.start; //e.parameters accepts only strings;
 
-          if (manual === 'true') {
-            manual = true;
-          } else if (manual === 'false') {
-            manual = false;
-          }
-
-          if (isDefault === 'true') {
-            isDefault = true;
-          } else if (isDefault === 'false') {
-            isDefault = false;
-          } //access current message object;
-
+          manual = toBoolean(manual);
+          isDefault = toBoolean(isDefault); //access current message object;
 
           msg = getToken(e); //create card header with connector properties;
 
@@ -434,16 +424,18 @@ function _cardDisplay() {
           } //if has update() method, add action;
 
 
-          if (cType.update || connector.method === 'send') {
-            paramsUpdate = copyObject(connector, {
-              method: connector.method
-            }, false);
-            actionsConfig.push({
-              icon: globalIconUpload,
-              text: caText,
-              funcName: 'updateSectionAdvanced',
-              params: paramsUpdate
-            });
+          if (!connector.updates) {
+            if (cType.update || connector.method === 'send') {
+              paramsUpdate = copyObject(connector, {
+                method: connector.method
+              }, false);
+              actionsConfig.push({
+                icon: globalIconUpload,
+                text: caText,
+                funcName: 'updateSectionAdvanced',
+                params: paramsUpdate
+              });
+            }
           } //if has remove() method, add action;
 
 
