@@ -800,7 +800,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields, actFields, activities, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, has_more, total, leads, users, leadStatuses, fields, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields, actFields, activities, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -846,61 +846,55 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 98;
+              _context5.next = 89;
               break;
             }
 
             //access contacts and create sections for each contact;
             contents = JSON.parse(response.content);
-            leads = contents.data;
             has_more = contents.has_more;
             total = contents.total_results;
             connector.hasNext = has_more;
 
             if (connector.method === 'traverse') {
               connector.pages = total;
-            } //initiate actions if has result;
+            }
 
+            leads = contents.data;
 
-            if (leads.length > 0) {
-              connector.method = 'edit';
-            } //access users;
+            if (!(leads.length > 0)) {
+              _context5.next = 87;
+              break;
+            }
 
+            connector.method = 'edit'; //access users;
 
-            _context5.next = 26;
-            return this.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
+            _context5.next = 27;
+            return this.fetchUsers_(headers, ['id', 'first_name', 'last_name'], false, 0, 4);
 
-          case 26:
+          case 27:
             users = _context5.sent;
-            _context5.next = 29;
+            _context5.next = 30;
             return this.fetchLeadStatuses_(headers);
 
-          case 29:
+          case 30:
             leadStatuses = _context5.sent;
             //access fields;
             fields = [];
 
             if (!connector.fields) {
-              _context5.next = 35;
+              _context5.next = 36;
               break;
             }
 
-            _context5.next = 34;
+            _context5.next = 35;
             return this.fetchFields_(headers, ['id', 'type', 'name', 'choices'], false, 0, 8);
 
-          case 34:
+          case 35:
             fields = _context5.sent;
 
-          case 35:
-            l = 0;
-
           case 36:
-            if (!(l < leads.length)) {
-              _context5.next = 96;
-              break;
-            }
-
-            lead = leads[l]; //access lead properties;
+            lead = leads[0]; //access lead properties;
 
             leadId = lead.id;
             leadName = lead.name;
@@ -927,7 +921,8 @@ function Close() {
               header: globalEmploymentContactHeader,
               isCollapsible: true,
               widgets: [],
-              entity: leadId
+              entity: leadId,
+              editable: true
             };
             sectionTask = {
               header: 'Tasks',
@@ -972,37 +967,43 @@ function Close() {
 
             if (view === 'lead') {
               sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
-            } //if tasks enabled -> show;
+            } //if tasks enabled -> display;
 
 
             if (connector.tasks) {
               sectionTask.widgets = this.displayTasks(tasks, leadId);
-            } //if opportunities enabled -> show;
+            } //if opportunities enabled -> display;
 
 
             if (connector.opportunities) {
               sectionOppt.widgets = this.displayOpportunities(opportunities);
-            }
+            } //if activities enabled -> display;
 
-            if (!(view === 'lead' && connector.activities)) {
-              _context5.next = 66;
+
+            if (!connector.activities) {
+              _context5.next = 65;
               break;
             }
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
-            _context5.next = 64;
-            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId);
+            _context5.next = 63;
+            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, view === 'contact' ? contacts[0] : null);
 
-          case 64:
+          case 63:
             activities = _context5.sent;
             sectionAct.widgets = this.displayActivities(activities, leadId);
 
-          case 66:
+          case 65:
+            //if fields enabled -> display;
+            if (connector.fields) {
+              sectionFields.widgets = this.displayFields(headers, fields, custom, leadId, users);
+            }
+
             c = 0;
 
           case 67:
             if (!(c < contacts.length)) {
-              _context5.next = 92;
+              _context5.next = 86;
               break;
             }
 
@@ -1036,7 +1037,7 @@ function Close() {
               break;
             }
 
-            return _context5.abrupt("continue", 89);
+            return _context5.abrupt("continue", 83);
 
           case 81:
             if (view === 'contact') {
@@ -1049,62 +1050,32 @@ function Close() {
               }
 
               sectionCont.widgets = sectionCont.widgets.concat(this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view));
-            } //if activities enabled -> show;
-
-
-            if (!(view === 'contact' && connector.activities)) {
-              _context5.next = 88;
-              break;
             }
 
-            actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
-            _context5.next = 86;
-            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, contId);
-
-          case 86:
-            activities = _context5.sent;
-            sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
-
-          case 88:
             if (view === 'contact') {
-              sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
-
-              if (connector.fields) {
-                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
-                sections.push(sectionFields);
-              }
+              sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields);
             }
 
-          case 89:
+          case 83:
             c++;
             _context5.next = 67;
             break;
 
-          case 92:
-            //end contacts loop;
+          case 86:
+            //end contacts loop;        
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
               sectionCont.header = 'Contacts';
-              sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct);
-
-              if (connector.fields) {
-                sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
-                sections.push(sectionFields);
-              }
+              sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct, sectionFields);
             }
 
-          case 93:
-            l++;
-            _context5.next = 36;
+          case 87:
+            _context5.next = 96;
             break;
 
-          case 96:
-            _context5.next = 105;
-            break;
-
-          case 98:
+          case 89:
             if (!(response.code === 401)) {
-              _context5.next = 104;
+              _context5.next = 95;
               break;
             }
 
@@ -1140,10 +1111,10 @@ function Close() {
               }
             });
 
-          case 104:
+          case 95:
             return _context5.abrupt("return", response);
 
-          case 105:
+          case 96:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1160,7 +1131,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 108:
+          case 99:
           case "end":
             return _context5.stop();
         }
@@ -1369,7 +1340,7 @@ function Close() {
    */
 
 
-  this.displayFields = function (fields, custom, leadId, users) {
+  this.displayFields = function (headers, fields, custom, leadId, users) {
     var wcfds = [];
 
     for (var key in custom) {
