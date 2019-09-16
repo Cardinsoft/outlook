@@ -36,7 +36,11 @@ function _reloadDisplay() {
           fetcher = fetch.fetcher;
           displayer = fetch.displayer; //fetch new data;
 
-          fetched = type[fetcher.callback].apply(type, fetcher.params);
+          _context.next = 10;
+          return type[fetcher.callback].apply(type, fetcher.params);
+
+        case 10:
+          fetched = _context.sent;
           displayer.params.unshift(fetched); //construct new data display;
 
           displayed = type[displayer.callback].apply(type, displayer.params); //append to existing display and uncollapse;
@@ -48,7 +52,7 @@ function _reloadDisplay() {
           builder.setStateChanged(true);
           return _context.abrupt("return", builder.build());
 
-        case 17:
+        case 19:
         case "end":
           return _context.stop();
       }
