@@ -34,25 +34,33 @@ function _reloadDisplay() {
           fetch = JSON.parse(params.fetch); //access fetch and display config;
 
           fetcher = fetch.fetcher;
-          displayer = fetch.displayer; //fetch new data;
+          displayer = fetch.displayer; //increment start;
 
-          _context.next = 10;
+          fetcher.params[3] += fetcher.params[4]; //fetch new data;
+
+          _context.next = 11;
           return type[fetcher.callback].apply(type, fetcher.params);
 
-        case 10:
+        case 11:
           fetched = _context.sent;
           displayer.params.unshift(fetched); //construct new data display;
 
           displayed = type[displayer.callback].apply(type, displayer.params); //append to existing display and uncollapse;
 
+          card[index].fetch = fetch;
           card[index].isCollapsible = false;
-          card[index].widgets = card[index].widgets.concat(globalWidgetSeparator, displayed);
+
+          if (displayed.length > 0) {
+            card[index].widgets = card[index].widgets.concat(globalWidgetSeparator, displayed);
+          } //update content and fetcher;
+
+
           e.parameters.content = JSON.stringify(card);
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
           return _context.abrupt("return", builder.build());
 
-        case 19:
+        case 21:
         case "end":
           return _context.stop();
       }
