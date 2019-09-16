@@ -936,7 +936,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
   var header = obj.header;
   var isCollapsible = obj.isCollapsible;
   var numUncollapsible = obj.numUncollapsible;
-  var widgets = obj.widgets; //set optional parameters;
+  var widgets = obj.widgets;
+  var fetch = obj.fetch; //set optional parameters;
 
   if (header) {
     section.setHeader(header);
@@ -971,7 +972,18 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
   } //sanitize connector for actions;
 
 
-  propertiesToString(connector); //append widgets if there are any;
+  propertiesToString(connector); //if fetcher provided -> build initiator;
+
+  if (fetch) {
+    var fetchParams = copyObject(connector, propertiesToString({
+      fetch: fetch,
+      section: sectionIndex
+    }));
+    delete fetchParams.start;
+    var fbtn = imageButtonWidget(globalIconDownload, 'Load more', 'reloadDisplay', fetchParams);
+    section.addWidget(fbtn);
+  } //append widgets if there are any;
+
 
   var curr = 0;
 
@@ -1225,11 +1237,11 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 break;
 
               case globalEnumCheckbox:
-                element = selectionInputWidget(title, name, type, content);
+                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
                 break;
 
               case globalEnumDropdown:
-                element = selectionInputWidget(title, name, type, content);
+                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
                 break;
             }
 
