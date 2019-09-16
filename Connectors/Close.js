@@ -987,7 +987,7 @@ function Close() {
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
             _context5.next = 63;
-            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, view === 'contact' ? contacts[0] : null);
+            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, view === 'contact' ? contacts[0].id : null);
 
           case 63:
             activities = _context5.sent;
