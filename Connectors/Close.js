@@ -800,7 +800,7 @@ function Close() {
     var _ref5 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee5(msg, connector, data) {
-      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, actFields, activities, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, sectionFields, authErr, returned;
+      var message, queryL, url, headers, view, response, sections, contents, leads, has_more, total, users, leadStatuses, fields, l, lead, leadId, leadName, contacts, orgId, custom, leadStatus, leadDescr, leadURL, addresses, opportunities, tasks, leadCreated, leadEdited, sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields, actFields, activities, c, contact, contId, name, title, emails, phones, urls, socials, created, edited, hasQueryEmail, authErr, returned;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -846,7 +846,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 97;
+              _context5.next = 98;
               break;
             }
 
@@ -886,7 +886,7 @@ function Close() {
             }
 
             _context5.next = 34;
-            return this.fetchFields_(headers, ['id', 'type', 'name', 'choices']);
+            return this.fetchFields_(headers, ['id', 'type', 'name', 'choices'], false, 0, 8);
 
           case 34:
             fields = _context5.sent;
@@ -896,7 +896,7 @@ function Close() {
 
           case 36:
             if (!(l < leads.length)) {
-              _context5.next = 95;
+              _context5.next = 96;
               break;
             }
 
@@ -954,6 +954,21 @@ function Close() {
                 }
               }]
             };
+            sectionFields = {
+              header: 'Custom fields',
+              isCollapsible: true,
+              widgets: [],
+              fetch: [{
+                fetcher: {
+                  callback: 'fetchFields_',
+                  params: [headers, ['id', 'type', 'name', 'choices'], false, 0, 8]
+                },
+                displayer: {
+                  callback: 'displayFields',
+                  params: [custom, leadId, users]
+                }
+              }]
+            };
 
             if (view === 'lead') {
               sectionEmpl.widgets = this.displayLead(sectionEmpl, orgId, leadId, leadName, leadDescr, leadStatuses, leadStatus, leadURL, addresses, leadCreated, leadEdited, view);
@@ -970,24 +985,24 @@ function Close() {
             }
 
             if (!(view === 'lead' && connector.activities)) {
-              _context5.next = 65;
+              _context5.next = 66;
               break;
             }
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
-            _context5.next = 63;
+            _context5.next = 64;
             return this.fetchActivities_(headers, actFields, false, 0, 8, leadId);
 
-          case 63:
+          case 64:
             activities = _context5.sent;
             sectionAct.widgets = this.displayActivities(activities, leadId);
 
-          case 65:
+          case 66:
             c = 0;
 
-          case 66:
+          case 67:
             if (!(c < contacts.length)) {
-              _context5.next = 91;
+              _context5.next = 92;
               break;
             }
 
@@ -1017,13 +1032,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 80;
+              _context5.next = 81;
               break;
             }
 
-            return _context5.abrupt("continue", 88);
+            return _context5.abrupt("continue", 89);
 
-          case 80:
+          case 81:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -1038,39 +1053,34 @@ function Close() {
 
 
             if (!(view === 'contact' && connector.activities)) {
-              _context5.next = 87;
+              _context5.next = 88;
               break;
             }
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
-            _context5.next = 85;
+            _context5.next = 86;
             return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, contId);
 
-          case 85:
+          case 86:
             activities = _context5.sent;
             sectionAct.widgets = sectionAct.widgets.concat(this.displayActivities(activities, leadId, contId));
 
-          case 87:
+          case 88:
             if (view === 'contact') {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct);
 
               if (connector.fields) {
-                sectionFields = {
-                  header: 'Custom fields',
-                  isCollapsible: true,
-                  widgets: []
-                };
                 sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
                 sections.push(sectionFields);
               }
             }
 
-          case 88:
+          case 89:
             c++;
-            _context5.next = 66;
+            _context5.next = 67;
             break;
 
-          case 91:
+          case 92:
             //end contacts loop;
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1078,28 +1088,23 @@ function Close() {
               sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct);
 
               if (connector.fields) {
-                sectionFields = {
-                  header: 'Custom fields',
-                  isCollapsible: true,
-                  widgets: []
-                };
                 sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
                 sections.push(sectionFields);
               }
             }
 
-          case 92:
+          case 93:
             l++;
             _context5.next = 36;
             break;
 
-          case 95:
-            _context5.next = 104;
+          case 96:
+            _context5.next = 105;
             break;
 
-          case 97:
+          case 98:
             if (!(response.code === 401)) {
-              _context5.next = 103;
+              _context5.next = 104;
               break;
             }
 
@@ -1135,10 +1140,10 @@ function Close() {
               }
             });
 
-          case 103:
+          case 104:
             return _context5.abrupt("return", response);
 
-          case 104:
+          case 105:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1155,7 +1160,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 107:
+          case 108:
           case "end":
             return _context5.stop();
         }
@@ -2394,8 +2399,10 @@ function Close() {
    * Utility method for fetching custom fields;
    * @param {Object} headers request headers;
    * @param {Array<String>} fields fields to return;
+   * @param {Boolean} fetchAll autopaginate flag;
    * @param {Integer=} start start for pagination;
-   * @param {String=} id if provided -> fetch single lead;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} lid lead id filter;
    * @return {Array<Object>} custom fields;
    */
 
@@ -2405,7 +2412,7 @@ function Close() {
   function () {
     var _ref9 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee9(headers, fields, start, id) {
+    regeneratorRuntime.mark(function _callee9(headers, fields, fetchAll, start, limit, lid) {
       var fds, query, url, response, content, hasMore;
       return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) switch (_context9.prev = _context9.next) {
@@ -2418,19 +2425,23 @@ function Close() {
               query.push('_fields=' + fields.join(','));
             }
 
-            if (start > 0) {
+            if (start) {
               query.push('_skip=' + start);
             }
 
-            url = encodeURI(this.url + '/custom_fields/lead' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context9.next = 8;
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/custom_fields/lead' + (lid ? '/' + lid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context9.next = 9;
             return performFetch(url, 'get', headers);
 
-          case 8:
+          case 9:
             response = _context9.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context9.next = 20;
+              _context9.next = 21;
               break;
             }
 
@@ -2440,30 +2451,30 @@ function Close() {
 
             hasMore = content.has_more;
 
-            if (!hasMore) {
-              _context9.next = 20;
+            if (!(hasMore && fetchAll)) {
+              _context9.next = 21;
               break;
             }
 
             _context9.t0 = fds;
-            _context9.next = 18;
-            return this.fetchFields_(headers, fields, start + 100, id);
+            _context9.next = 19;
+            return this.fetchFields_(headers, fields, fetchAll, start + limit, lid);
 
-          case 18:
+          case 19:
             _context9.t1 = _context9.sent;
             fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
 
-          case 20:
+          case 21:
             return _context9.abrupt("return", fds);
 
-          case 21:
+          case 22:
           case "end":
             return _context9.stop();
         }
       }, _callee9, this);
     }));
 
-    return function (_x30, _x31, _x32, _x33) {
+    return function (_x30, _x31, _x32, _x33, _x34, _x35) {
       return _ref9.apply(this, arguments);
     };
   }();
@@ -2521,7 +2532,7 @@ function Close() {
       }, _callee10, this);
     }));
 
-    return function (_x34, _x35, _x36, _x37) {
+    return function (_x36, _x37, _x38, _x39) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2566,7 +2577,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x38, _x39) {
+    return function (_x40, _x41) {
       return _ref11.apply(this, arguments);
     };
   }();
