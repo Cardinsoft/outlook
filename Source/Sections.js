@@ -1005,6 +1005,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var hint = widget.hint;
             var name = widget.name;
             var content = widget.content;
+            var action = widget.action;
             var callback = widget.callback;
             var spin = widget.hasSpinner;
             var params = widget.parameters;
@@ -1081,7 +1082,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                   fullsized = popup;
                 }
 
-                element = imageButtonWidget(icon, alt, content, {}, globalActionLink, fullsized, reload);
+                element = imageButtonWidget(icon, alt, callback, params, action, fullsized, reload);
                 break;
 
               case globalTextButton:
@@ -1090,8 +1091,8 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var filled = widget.filled;
                 var fullsized = widget.fullsized;
                 var reload = widget.reload;
-                var action = widget.action;
-                var funcName = widget.funcName;
+                var funcName = widget.funcName; //TODO: deprecate;
+
                 var colour = widget.colour; //set button text colour if provided;
 
                 if (colour) {
@@ -1138,7 +1139,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var filled = widget.filled;
                 var reload = widget.reload;
                 var funcName = widget.funcName;
-                var action = widget.action;
                 var colour = widget.colour; //set colour if provided;
 
                 if (colour) {
@@ -1227,7 +1227,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
               case globalTextInput:
                 //access TextInput-specific params;
-                var hint = widget.hint;
                 var multiline = widget.multiline;
                 element = textInputWidget(title, name, hint, content, multiline, callback, spin, connector);
                 break;
@@ -1250,9 +1249,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
         } //end state check;
 
-      } //end cap check;
+      } //end cap check; 
 
-    } //initiate new starter;
+    } //end widget loop;
+    //initiate new starter;
 
 
     var newStarter = {
