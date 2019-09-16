@@ -946,7 +946,7 @@ function Close() {
               fetch: [{
                 fetcher: {
                   callback: 'fetchActivities_',
-                  params: [headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 1, leadId]
+                  params: [headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], false, 0, 8, leadId]
                 },
                 displayer: {
                   callback: 'displayActivities',
@@ -976,7 +976,7 @@ function Close() {
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
             _context5.next = 63;
-            return this.fetchActivities_(headers, actFields, 0, leadId);
+            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId);
 
           case 63:
             activities = _context5.sent;
@@ -1044,7 +1044,7 @@ function Close() {
 
             actFields = ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'];
             _context5.next = 85;
-            return this.fetchActivities_(headers, actFields, 0, leadId, contId);
+            return this.fetchActivities_(headers, actFields, false, 0, 8, leadId, contId);
 
           case 85:
             activities = _context5.sent;
@@ -2299,14 +2299,16 @@ function Close() {
     };
   }();
   /**
-   * Utility method for fetching activities;
-   * @param {Object} request headers;
-   * @param {Array<String>=} fields fields to return;
-   * @param {Integer=} start start for pagination;
-   * @param {String=} lid lead id filter;
-   * @param {String=} cid contact id filter;
-   * @return {Array<Object>} activities;
-   */
+  * Utility method for fetching activities;
+  * @param {Object} request headers;
+  * @param {Array<String>} fields fields to return;
+  * @param {Boolean} fetchAll autopaginate flag;
+  * @param {Integer=} start start for pagination;
+  * @param {Integer=} limit limit for pagination;
+  * @param {String=} lid lead id filter;
+  * @param {String=} cid contact id filter;
+  * @return {Array<Object>} activities;
+  */
 
 
   this.fetchActivities_ =
@@ -2314,14 +2316,14 @@ function Close() {
   function () {
     var _ref8 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8(headers, fields, start, lid, cid) {
+    regeneratorRuntime.mark(function _callee8(headers, fields, fetchAll, start, limit, lid, cid) {
       var acts, query, url, response, content, activities, hasMore;
       return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) switch (_context8.prev = _context8.next) {
           case 0:
             start = start || 0;
             acts = [];
-            query = ['_limit=10'];
+            query = [];
 
             if (fields) {
               query.push('_fields=' + fields.join(','));
@@ -2339,15 +2341,19 @@ function Close() {
               query.push('_skip=' + start);
             }
 
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
             url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context8.next = 10;
+            _context8.next = 11;
             return performFetch(url, 'get', headers);
 
-          case 10:
+          case 11:
             response = _context8.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context8.next = 22;
+              _context8.next = 23;
               break;
             }
 
@@ -2357,30 +2363,30 @@ function Close() {
 
             hasMore = content.has_more;
 
-            if (!hasMore) {
-              _context8.next = 22;
+            if (!(hasMore && fetchAll)) {
+              _context8.next = 23;
               break;
             }
 
             _context8.t0 = acts;
-            _context8.next = 20;
-            return this.fetchActivities_(headers, fields, start + 100, lid, cid);
+            _context8.next = 21;
+            return this.fetchActivities_(headers, fields, fetchAll, start + limit, limit, lid, cid);
 
-          case 20:
+          case 21:
             _context8.t1 = _context8.sent;
             acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
 
-          case 22:
+          case 23:
             return _context8.abrupt("return", acts);
 
-          case 23:
+          case 24:
           case "end":
             return _context8.stop();
         }
       }, _callee8, this);
     }));
 
-    return function (_x23, _x24, _x25, _x26, _x27) {
+    return function (_x23, _x24, _x25, _x26, _x27, _x28, _x29) {
       return _ref8.apply(this, arguments);
     };
   }();
@@ -2457,7 +2463,7 @@ function Close() {
       }, _callee9, this);
     }));
 
-    return function (_x28, _x29, _x30, _x31) {
+    return function (_x30, _x31, _x32, _x33) {
       return _ref9.apply(this, arguments);
     };
   }();
@@ -2515,7 +2521,7 @@ function Close() {
       }, _callee10, this);
     }));
 
-    return function (_x32, _x33, _x34, _x35) {
+    return function (_x34, _x35, _x36, _x37) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2560,7 +2566,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x36, _x37) {
+    return function (_x38, _x39) {
       return _ref11.apply(this, arguments);
     };
   }();
