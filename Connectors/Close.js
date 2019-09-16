@@ -960,7 +960,7 @@ function Close() {
                 },
                 displayer: {
                   callback: 'displayFields',
-                  params: [custom, leadId, users]
+                  params: [headers, custom, leadId, users]
                 }
               }]
             };
