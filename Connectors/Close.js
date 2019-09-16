@@ -960,7 +960,7 @@ function Close() {
                 },
                 displayer: {
                   callback: 'displayFields',
-                  params: [headers, custom, leadId, users]
+                  params: [custom, leadId, users]
                 }
               }]
             };
@@ -996,7 +996,7 @@ function Close() {
           case 65:
             //if fields enabled -> display;
             if (connector.fields) {
-              sectionFields.widgets = this.displayFields(headers, fields, custom, leadId, users);
+              sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
             }
 
             c = 0;
@@ -1340,7 +1340,7 @@ function Close() {
    */
 
 
-  this.displayFields = function (headers, fields, custom, leadId, users) {
+  this.displayFields = function (fields, custom, leadId, users) {
     var wcfds = [];
 
     for (var key in custom) {
