@@ -90,6 +90,7 @@ var globalIconDepartment             = 'https://cardinsoft.com/wp-content/upload
 var globalIconDialpad                = 'https://cardinsoft.com/wp-content/uploads/2019/07/DIALPAD.png';
 var globalIconDirectEmail            = 'https://cardinsoft.com/wp-content/uploads/2019/07/DIRECT-EMAIL.png';
 var globalIconDirectPhone            = 'https://cardinsoft.com/wp-content/uploads/2019/07/DIRECT-PHONE.png';
+var globalIconDownload               = 'https://cardinsoft.com/wp-content/uploads/2019/09/DOWNLOAD.png';
 var globalIconEdit                   = 'https://cardinsoft.com/wp-content/uploads/2019/08/EDIT.png';
 var globalIconFacebook               = 'https://cardinsoft.com/wp-content/uploads/2019/06/FACEBOOK.png';
 var globalIconFaxPhone               = 'https://cardinsoft.com/wp-content/uploads/2019/07/FAX.png';
