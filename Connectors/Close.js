@@ -942,7 +942,17 @@ function Close() {
             sectionAct = {
               header: globalActivitiesHeader,
               isCollapsible: true,
-              widgets: []
+              widgets: [],
+              fetch: [{
+                fetcher: {
+                  callback: 'fetchActivities_',
+                  params: [headers, ['_type', 'date_created', 'date_updated', 'date_sent', 'direction', 'duration', 'new_status_label', 'note', 'old_status_label', 'organization_id', 'phone', 'status', 'subject', 'task_assigned_to_name', 'task_text', 'template_id', 'template_name'], 1, leadId]
+                },
+                displayer: {
+                  callback: 'displayActivities',
+                  params: [leadId]
+                }
+              }]
             };
 
             if (view === 'lead') {
@@ -2311,7 +2321,7 @@ function Close() {
           case 0:
             start = start || 0;
             acts = [];
-            query = [];
+            query = ['_limit=10'];
 
             if (fields) {
               query.push('_fields=' + fields.join(','));
