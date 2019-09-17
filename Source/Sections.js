@@ -929,30 +929,15 @@ function createSectionSimple(builder, data, isCollapsed, index) {
 
 function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start) {
   //access account preferences;
-  var popup; //create section;
+  var popup = !getAccount().popups; //create section;
 
   var section = CardService.newCardSection(); //access section parameters;
 
   var header = obj.header;
   var isCollapsible = obj.isCollapsible;
-  var numUncollapsible = obj.numUncollapsible;
+  var numUncollapsible = obj.numUncollapsible || 0;
   var widgets = obj.widgets;
-  var fetch = obj.fetch; //set optional parameters;
-
-  if (header) {
-    section.setHeader(header);
-  }
-
-  if (isCollapsible) {
-    section.setCollapsible(isCollapsible);
-
-    if (numUncollapsible > 0) {
-      section.setNumUncollapsibleWidgets(numUncollapsible);
-    } else if (numUncollapsible) {
-      section.setNumUncollapsibleWidgets(globalNumUncollapsible);
-    }
-  } //default start or parse start layout;
-
+  var fetch = obj.fetch; //default start or parse start layout;
 
   if (!start) {
     start = [];
@@ -1264,12 +1249,24 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
             if (prepend && separate && index < max && index < widgets.length - 1) {
               section.addWidget(textWidget('\r'));
+
+              if (isCollapsible && numUncollapsible) {
+                numUncollapsible++;
+              }
+
+              ;
             }
 
             section.addWidget(element);
 
             if (!prepend && separate && index < max && index < widgets.length - 1) {
               section.addWidget(textWidget('\r'));
+
+              if (isCollapsible && numUncollapsible) {
+                numUncollapsible++;
+              }
+
+              ;
             }
           } //end type check;
 
@@ -1339,6 +1336,19 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
       if (back || next) {
         var bset = buttonSet(buttons);
         section.addWidget(bset);
+      }
+    } //set optional parameters;
+
+
+    if (header) {
+      section.setHeader(header);
+    }
+
+    if (isCollapsible) {
+      section.setCollapsible(isCollapsible);
+
+      if (numUncollapsible > 0) {
+        section.setNumUncollapsibleWidgets(numUncollapsible);
       }
     } //append section and return it;
 
