@@ -1010,6 +1010,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var spin = widget.hasSpinner;
             var params = widget.parameters;
             var separate = widget.separate;
+            var prepend = widget.prepend;
             var wfetch = widget.fetch;
 
             if (wfetch) {
@@ -1261,9 +1262,13 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 break;
             }
 
+            if (prepend && separate && index < max && index < widgets.length - 1) {
+              section.addWidget(textWidget('\r'));
+            }
+
             section.addWidget(element);
 
-            if (separate && index < max && index < widgets.length - 1) {
+            if (!prepend && separate && index < max && index < widgets.length - 1) {
               section.addWidget(textWidget('\r'));
             }
           } //end type check;
