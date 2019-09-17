@@ -565,7 +565,7 @@ function _cardDisplay() {
           addConfig = cType.addConfig;
 
           if (!addConfig) {
-            _context3.next = 124;
+            _context3.next = 125;
             break;
           }
 
@@ -574,36 +574,45 @@ function _cardDisplay() {
 
         case 110:
           adder = _context3.sent;
-          e.parameters.content = adder.config;
           add = JSON.parse(adder.config);
-          trimmed = trimMessage(msg, true, true);
+          e.parameters.content = adder.config;
+          trimmed = trimMessage(msg, true, true); //prepend no data prompt and append adder button;
+
           add[0].widgets.unshift({
             type: globalKeyValue,
             content: globalNoDataWidgetContent + ' ' + cType.typeName
           });
+          add[0].widgets.push({
+            type: globalTextButton,
+            title: 'Add ' + adder.prompt,
+            action: globalActionClick,
+            funcName: 'updateSectionAdvanced',
+            params: copyObject(connector, {
+              method: 'add'
+            }, false)
+          });
           a = 0;
 
-        case 116:
+        case 117:
           if (!(a < add.length)) {
-            _context3.next = 122;
+            _context3.next = 123;
             break;
           }
 
-          _context3.next = 119;
+          _context3.next = 120;
           return createSectionAdvanced(builder, add[a], a, connector, globalWidgetsCap, 0);
 
-        case 119:
+        case 120:
           a++;
-          _context3.next = 116;
+          _context3.next = 117;
           break;
 
-        case 122:
+        case 123:
           _context3.next = 126;
           break;
 
-        case 124:
-          _context3.next = 126;
-          return createNoFieldsSection(builder, false, connector, msg);
+        case 125:
+          createNoFieldsSection(builder, false, connector, msg);
 
         case 126:
           _context3.next = 132;
