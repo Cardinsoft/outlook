@@ -607,11 +607,6 @@ function actionKeyValueWidget(icon, top, content, type, callback, params) {
   var action;
 
   switch (type) {
-    case globalActionAction:
-      action = actionAction(callback, true, params);
-      widget.setOnClickAction(action);
-      break;
-
     case globalActionLink:
       action = CardService.newOpenLink();
       action.setUrl(callback);
@@ -630,6 +625,10 @@ function actionKeyValueWidget(icon, top, content, type, callback, params) {
 
       widget.setOpenLink(action);
       break;
+
+    default:
+      action = actionAction(callback, true, params);
+      widget.setOnClickAction(action);
   }
 
   return widget;
