@@ -240,7 +240,7 @@ function _cardDisplay() {
   _cardDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, has_more, total, page, paramsForward, paramsBackward, paramsRefresh, paramsUpdate, paramsRemove, j, section, bm, full, begin, max, cap, result, length, diff, end, prev;
+    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, has_more, total, page, paramsForward, paramsBackward, paramsRefresh, paramsUpdate, paramsRemove, j, section, bm, full, begin, max, cap, result, length, diff, end, prev, addConfig, adder, add, trimmed, a;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -286,7 +286,7 @@ function _cardDisplay() {
           return createErrorSection(builder, false, code, error);
 
         case 25:
-          _context3.next = 114;
+          _context3.next = 132;
           break;
 
         case 27:
@@ -553,24 +553,64 @@ function _cardDisplay() {
           }
 
         case 103:
-          _context3.next = 108;
+          _context3.next = 126;
           break;
 
         case 105:
           if (error) {
-            _context3.next = 108;
+            _context3.next = 126;
             break;
           }
 
-          _context3.next = 108;
-          return createNoFieldsSection(builder, false, connector, msg);
+          addConfig = cType.addConfig;
 
-        case 108:
-          _context3.next = 114;
-          break;
+          if (!addConfig) {
+            _context3.next = 124;
+            break;
+          }
+
+          _context3.next = 110;
+          return addConfig(propertiesToString(connector), msg);
 
         case 110:
-          _context3.prev = 110;
+          adder = _context3.sent;
+          e.parameters.content = adder.config;
+          add = JSON.parse(adder.config);
+          trimmed = trimMessage(msg, true, true);
+          add[0].widgets.unshift({
+            type: globalKeyValue,
+            content: globalNoDataWidgetContent + ' ' + cType.typeName
+          });
+          a = 0;
+
+        case 116:
+          if (!(a < add.length)) {
+            _context3.next = 122;
+            break;
+          }
+
+          _context3.next = 119;
+          return createSectionAdvanced(builder, add[a], a, connector, globalWidgetsCap, 0);
+
+        case 119:
+          a++;
+          _context3.next = 116;
+          break;
+
+        case 122:
+          _context3.next = 126;
+          break;
+
+        case 124:
+          _context3.next = 126;
+          return createNoFieldsSection(builder, false, connector, msg);
+
+        case 126:
+          _context3.next = 132;
+          break;
+
+        case 128:
+          _context3.prev = 128;
           _context3.t2 = _context3["catch"](36);
           timestamp('error during display Card build', {
             error: _context3.t2,
@@ -580,23 +620,23 @@ function _cardDisplay() {
             descr: 'An error occured during display build'
           }, 'Display error');
 
-        case 114:
+        case 132:
           if (!(config.length > 0)) {
-            _context3.next = 117;
+            _context3.next = 135;
             break;
           }
 
-          _context3.next = 117;
+          _context3.next = 135;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 117:
+        case 135:
           return _context3.abrupt("return", menu(builder));
 
-        case 118:
+        case 136:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[36, 110], [72, 77]]);
+    }, _callee3, this, [[36, 128], [72, 77]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
