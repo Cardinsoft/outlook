@@ -153,13 +153,14 @@ function _reloadWidgetDisplay() {
           } //update content and fetcher;
 
 
+          section.isCollapsible = false;
           widget.fetch = fetch;
           e.parameters.content = JSON.stringify(card);
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
           return _context2.abrupt("return", builder.build());
 
-        case 24:
+        case 25:
         case "end":
           return _context2.stop();
       }
