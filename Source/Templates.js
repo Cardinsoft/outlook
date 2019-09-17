@@ -465,7 +465,8 @@ function imageWidget(src, alt, funcName, hasSpinner, params, isAuth) {
 function switchWidget(icon, top, content, name, selected, value, funcName, hasSpinner, params) {
   //create base KeyValue widget and set required parameters;
   var keyValue = CardService.newKeyValue();
-  keyValue.setContent(content); //set icon if found or set icon url if not;
+  keyValue.setContent(content);
+  keyValue.setMultiline(true); //set icon if found or set icon url if not;
 
   if (icon && icon !== '') {
     var iconEnum = CardService.Icon[icon];
