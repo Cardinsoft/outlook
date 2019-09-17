@@ -11,9 +11,9 @@ function reloadDisplay(_x) {
   return _reloadDisplay.apply(this, arguments);
 }
 /**
- * Validates domain name entered;
+ * Fetches new data and updates a specific widget;
  * @param {Object} e event object;
- * @returns {ActionResponse} domain check response;
+ * @return {ActionResponse} updated display;
  */
 
 
@@ -69,7 +69,103 @@ function _reloadDisplay() {
   return _reloadDisplay.apply(this, arguments);
 }
 
-function validateSubdomain(_x2) {
+function reloadWidgetDisplay(_x2) {
+  return _reloadWidgetDisplay.apply(this, arguments);
+}
+/**
+ * Validates domain name entered;
+ * @param {Object} e event object;
+ * @returns {ActionResponse} domain check response;
+ */
+
+
+function _reloadWidgetDisplay() {
+  _reloadWidgetDisplay = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(e) {
+    var builder, params, headers, type, card, section, widget, fetch, fetcher, displayer, fetched, show, edit, showMapper, showJoiner;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          builder = CardService.newActionResponseBuilder(); //access parameters and construct headers;
+
+          params = e.parameters;
+          headers = {
+            Authorization: 'Basic ' + Utilities.base64Encode(params[globalApiTokenTokenFieldName] + ':')
+          }; //access type, card and fetcher config;
+
+          type = new this[params.type]();
+          card = JSON.parse(params.content);
+          section = card[+params.section];
+          widget = section.widgets[+params.widget]; //access fetch and display config;
+
+          fetch = JSON.parse(params.fetch);
+          fetcher = fetch.fetcher;
+          displayer = fetch.displayer; //prepend headers;
+
+          if (!fetcher.params[0].Authorization) {
+            fetcher.params.unshift(headers);
+          } //TODO: diff auth types;
+          //increment start;
+
+
+          fetcher.params[3] += fetcher.params[4]; //fetch new data;
+
+          _context2.next = 14;
+          return type[fetcher.callback].apply(type, fetcher.params);
+
+        case 14:
+          fetched = _context2.sent;
+          //access display config;
+          show = displayer.show; //Object<map,join>
+
+          edit = displayer.edit; //Array<Object<value,text,join>>
+          //access edit config and build;
+
+          edit.forEach(function (e, w) {
+            var prop = e.value;
+            var selected = e.select;
+            var mapper = e.map;
+            var joiner = e.join;
+            var edited = fetched.map(function (entity) {
+              return {
+                value: entity[prop],
+                selected: selected.indexOf(entity[prop]) !== -1 ? true : false,
+                text: mapper.map(function (t) {
+                  return entity[t];
+                }).join(joiner)
+              };
+            });
+
+            if (edited.length > 0) {
+              widget.editMap[w].content = widget.editMap[w].content.concat(edited);
+            }
+          }); //access show config and build;
+
+          showMapper = show.map;
+          showJoiner = show.join;
+          widget.content += showJoiner + fetched.map(function (entity) {
+            return showMapper.map(function (t) {
+              return entity[t];
+            }).join(' ');
+          }).join(showJoiner); //update content and fetcher;
+
+          widget.fetch = fetch;
+          e.parameters.content = JSON.stringify(card);
+          builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
+          builder.setStateChanged(true);
+          return _context2.abrupt("return", builder.build());
+
+        case 26:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, this);
+  }));
+  return _reloadWidgetDisplay.apply(this, arguments);
+}
+
+function validateSubdomain(_x3) {
   return _validateSubdomain.apply(this, arguments);
 }
 /**
@@ -82,10 +178,10 @@ function validateSubdomain(_x2) {
 function _validateSubdomain() {
   _validateSubdomain = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2(e) {
+  regeneratorRuntime.mark(function _callee3(e) {
     var builder, subdomain, domainreg, success, regexp, matches, hasdomain, notify;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access account name in input;
@@ -105,25 +201,25 @@ function _validateSubdomain() {
           }
 
           if (success) {
-            _context2.next = 10;
+            _context3.next = 10;
             break;
           }
 
           notify = notification('Please, enter a valid subdomain (avoid full URLs and hanging dots)'); //set notification and return;
 
           builder.setNotification(notify);
-          return _context2.abrupt("return", builder.build());
+          return _context3.abrupt("return", builder.build());
 
         case 10:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _validateSubdomain.apply(this, arguments);
 }
 
-function configureContactAdd(_x3) {
+function configureContactAdd(_x4) {
   return _configureContactAdd.apply(this, arguments);
 }
 /**
@@ -136,10 +232,10 @@ function configureContactAdd(_x3) {
 function _configureContactAdd() {
   _configureContactAdd = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(e) {
+  regeneratorRuntime.mark(function _callee4(e) {
     var builder, params;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -149,18 +245,18 @@ function _configureContactAdd() {
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context3.abrupt("return", builder.build());
+          return _context4.abrupt("return", builder.build());
 
         case 7:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _configureContactAdd.apply(this, arguments);
 }
 
-function applySort(_x4) {
+function applySort(_x5) {
   return _applySort.apply(this, arguments);
 }
 /**
@@ -173,10 +269,10 @@ function applySort(_x4) {
 function _applySort() {
   _applySort = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(e) {
+  regeneratorRuntime.mark(function _callee5(e) {
     var builder, data, isReverse;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access settings form;
@@ -190,29 +286,29 @@ function _applySort() {
           } //save ordering preference;
 
 
-          _context4.next = 6;
+          _context5.next = 6;
           return setProperty('order', data.order, 'user');
 
         case 6:
-          _context4.next = 8;
+          _context5.next = 8;
           return setProperty('reverse', isReverse, 'user');
 
         case 8:
           //set data state change and navigate to settings card;
           builder.setNavigation(CardService.newNavigation().updateCard(cardSettings(e)));
           builder.setStateChanged(true);
-          return _context4.abrupt("return", builder.build());
+          return _context5.abrupt("return", builder.build());
 
         case 11:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4);
+    }, _callee5);
   }));
   return _applySort.apply(this, arguments);
 }
 
-function chooseAuth(_x5) {
+function chooseAuth(_x6) {
   return _chooseAuth.apply(this, arguments);
 }
 /**
@@ -225,10 +321,10 @@ function chooseAuth(_x5) {
 function _chooseAuth() {
   _chooseAuth = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(e) {
+  regeneratorRuntime.mark(function _callee6(e) {
     var builder, data, authType, parameters, isEdit, custom, input, val;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -272,18 +368,18 @@ function _chooseAuth() {
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardCreate(e)));
           builder.setStateChanged(true);
-          return _context5.abrupt("return", builder.build());
+          return _context6.abrupt("return", builder.build());
 
         case 21:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5);
+    }, _callee6);
   }));
   return _chooseAuth.apply(this, arguments);
 }
 
-function editSectionAdvanced(_x6) {
+function editSectionAdvanced(_x7) {
   return _editSectionAdvanced.apply(this, arguments);
 }
 /**
@@ -296,10 +392,10 @@ function editSectionAdvanced(_x6) {
 function _editSectionAdvanced() {
   _editSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee6(e) {
+  regeneratorRuntime.mark(function _callee7(e) {
     var builder, connector, content, isAuto, formInputs, keys, sectionIdx, widgetIdx, section, widgets, editable, editMap, fName, split, prop, idx, p, i;
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
-      while (1) switch (_context6.prev = _context6.next) {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //access content;
@@ -435,18 +531,18 @@ function _editSectionAdvanced() {
           e.parameters.content = JSON.stringify(content); //set data state change and navigate to display card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
-          return _context6.abrupt("return", builder.build());
+          return _context7.abrupt("return", builder.build());
 
         case 19:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
-    }, _callee6);
+    }, _callee7);
   }));
   return _editSectionAdvanced.apply(this, arguments);
 }
 
-function updateSectionAdvanced(_x7) {
+function updateSectionAdvanced(_x8) {
   return _updateSectionAdvanced.apply(this, arguments);
 }
 /**
@@ -459,10 +555,10 @@ function updateSectionAdvanced(_x7) {
 function _updateSectionAdvanced() {
   _updateSectionAdvanced = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee7(e) {
+  regeneratorRuntime.mark(function _callee8(e) {
     var connector, data, form, forms, msg, cType, resp, method;
-    return regeneratorRuntime.wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
           connector = e.parameters;
           data = connector.content; //parse content; 
@@ -546,80 +642,80 @@ function _updateSectionAdvanced() {
           method = connector.method; //if type only has run() method or connector is simply comm;
 
           if (!(!cType.update && !cType.remove || method === 'send')) {
-            _context7.next = 13;
+            _context8.next = 13;
             break;
           }
 
-          _context7.next = 12;
+          _context8.next = 12;
           return cType.run(msg, connector, data);
 
         case 12:
-          resp = _context7.sent;
+          resp = _context8.sent;
 
         case 13:
           if (!(method === 'refresh' && cType.refresh)) {
-            _context7.next = 19;
+            _context8.next = 19;
             break;
           }
 
-          _context7.next = 16;
+          _context8.next = 16;
           return cType.refresh(msg, connector, data);
 
         case 16:
-          resp = _context7.sent;
-          _context7.next = 23;
+          resp = _context8.sent;
+          _context8.next = 23;
           break;
 
         case 19:
           if (!(method === 'refresh' || method === 'traverse')) {
-            _context7.next = 23;
+            _context8.next = 23;
             break;
           }
 
-          _context7.next = 22;
+          _context8.next = 22;
           return cType.run(msg, connector);
 
         case 22:
-          resp = _context7.sent;
+          resp = _context8.sent;
 
         case 23:
           if (!(cType.update && method === 'add')) {
-            _context7.next = 29;
+            _context8.next = 29;
             break;
           }
 
           delete connector.caText;
-          _context7.next = 27;
+          _context8.next = 27;
           return cType.update(msg, connector, forms, data, method);
 
         case 27:
-          resp = _context7.sent;
+          resp = _context8.sent;
           connector.method = 'edit';
 
         case 29:
           if (!(cType.update && method === 'edit')) {
-            _context7.next = 34;
+            _context8.next = 34;
             break;
           }
 
-          _context7.next = 32;
+          _context8.next = 32;
           return cType.update(msg, connector, forms, data, method);
 
         case 32:
-          resp = _context7.sent;
+          resp = _context8.sent;
           connector.method = 'edit';
 
         case 34:
           if (!(cType.remove && method === 'remove')) {
-            _context7.next = 39;
+            _context8.next = 39;
             break;
           }
 
-          _context7.next = 37;
+          _context8.next = 37;
           return cType.remove(msg, connector, data);
 
         case 37:
-          resp = _context7.sent;
+          resp = _context8.sent;
           connector.method = 'add';
 
         case 39:
@@ -627,18 +723,18 @@ function _updateSectionAdvanced() {
           e.parameters.code = resp.code;
           e.parameters.content = resp.content;
           e.parameters.method = connector.method;
-          return _context7.abrupt("return", actionShow(e));
+          return _context8.abrupt("return", actionShow(e));
 
         case 43:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
-    }, _callee7, this);
+    }, _callee8, this);
   }));
   return _updateSectionAdvanced.apply(this, arguments);
 }
 
-function checkURL(_x8) {
+function checkURL(_x9) {
   return _checkURL.apply(this, arguments);
 }
 /**
@@ -651,34 +747,34 @@ function checkURL(_x8) {
 function _checkURL() {
   _checkURL = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee8(e) {
+  regeneratorRuntime.mark(function _callee9(e) {
     var regExp, url, test, action;
-    return regeneratorRuntime.wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
+    return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
         case 0:
           regExp = /^http:\/\/\S+\.+\S+|^https:\/\/\S+\.+\S+/;
           url = e.formInput.connectionURL;
           test = regExp.test(url);
 
           if (test) {
-            _context8.next = 7;
+            _context9.next = 7;
             break;
           }
 
           action = CardService.newActionResponseBuilder();
           action.setNotification(warning(globalInvalidURLnoMethod));
-          return _context8.abrupt("return", action.build());
+          return _context9.abrupt("return", action.build());
 
         case 7:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
-    }, _callee8);
+    }, _callee9);
   }));
   return _checkURL.apply(this, arguments);
 }
 
-function goBack(_x9) {
+function goBack(_x10) {
   return _goBack.apply(this, arguments);
 }
 /**
@@ -691,28 +787,28 @@ function goBack(_x9) {
 function _goBack() {
   _goBack = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee9(e) {
+  regeneratorRuntime.mark(function _callee10(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee9$(_context9) {
-      while (1) switch (_context9.prev = _context9.next) {
+    return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and pop card from stack;
 
           builder.setNavigation(CardService.newNavigation().popCard());
           builder.setStateChanged(true);
-          return _context9.abrupt("return", builder.build());
+          return _context10.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
-    }, _callee9);
+    }, _callee10);
   }));
   return _goBack.apply(this, arguments);
 }
 
-function goRoot(_x10) {
+function goRoot(_x11) {
   return _goRoot.apply(this, arguments);
 }
 /**
@@ -725,28 +821,28 @@ function goRoot(_x10) {
 function _goRoot() {
   _goRoot = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee10(e) {
+  regeneratorRuntime.mark(function _callee11(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
+    return regeneratorRuntime.wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to main card;
 
           builder.setNavigation(CardService.newNavigation().popCard().pushCard(cardOpen(e)));
           builder.setStateChanged(true);
-          return _context10.abrupt("return", builder.build());
+          return _context11.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
-    }, _callee10);
+    }, _callee11);
   }));
   return _goRoot.apply(this, arguments);
 }
 
-function goSettings(_x11) {
+function goSettings(_x12) {
   return _goSettings.apply(this, arguments);
 }
 /**
@@ -759,28 +855,28 @@ function goSettings(_x11) {
 function _goSettings() {
   _goSettings = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee11(e) {
+  regeneratorRuntime.mark(function _callee12(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
+    return regeneratorRuntime.wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to settings card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
           builder.setStateChanged(true);
-          return _context11.abrupt("return", builder.build());
+          return _context12.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
-    }, _callee11);
+    }, _callee12);
   }));
   return _goSettings.apply(this, arguments);
 }
 
-function actionConfirm(_x12) {
+function actionConfirm(_x13) {
   return _actionConfirm.apply(this, arguments);
 }
 /**
@@ -793,28 +889,28 @@ function actionConfirm(_x12) {
 function _actionConfirm() {
   _actionConfirm = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee12(e) {
+  regeneratorRuntime.mark(function _callee13(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
+    return regeneratorRuntime.wrap(function _callee13$(_context13) {
+      while (1) switch (_context13.prev = _context13.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to confirmation card;
 
           builder.setNavigation(CardService.newNavigation().updateCard(cardConfirm(e)));
           builder.setStateChanged(false);
-          return _context12.abrupt("return", builder.build());
+          return _context13.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context12.stop();
+          return _context13.stop();
       }
-    }, _callee12);
+    }, _callee13);
   }));
   return _actionConfirm.apply(this, arguments);
 }
 
-function actionCreate(_x13) {
+function actionCreate(_x14) {
   return _actionCreate.apply(this, arguments);
 }
 /**
@@ -827,28 +923,28 @@ function actionCreate(_x13) {
 function _actionCreate() {
   _actionCreate = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee13(e) {
+  regeneratorRuntime.mark(function _callee14(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee13$(_context13) {
-      while (1) switch (_context13.prev = _context13.next) {
+    return regeneratorRuntime.wrap(function _callee14$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to edit connector card;
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardCreate(e)));
           builder.setStateChanged(true);
-          return _context13.abrupt("return", builder.build());
+          return _context14.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context13.stop();
+          return _context14.stop();
       }
-    }, _callee13);
+    }, _callee14);
   }));
   return _actionCreate.apply(this, arguments);
 }
 
-function actionEdit(_x14) {
+function actionEdit(_x15) {
   return _actionEdit.apply(this, arguments);
 }
 /**
@@ -861,28 +957,28 @@ function actionEdit(_x14) {
 function _actionEdit() {
   _actionEdit = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee14(e) {
+  regeneratorRuntime.mark(function _callee15(e) {
     var builder;
-    return regeneratorRuntime.wrap(function _callee14$(_context14) {
-      while (1) switch (_context14.prev = _context14.next) {
+    return regeneratorRuntime.wrap(function _callee15$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //set data state change and navigate to edit connector card;
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardUpdate(e)));
           builder.setStateChanged(true);
-          return _context14.abrupt("return", builder.build());
+          return _context15.abrupt("return", builder.build());
 
         case 4:
         case "end":
-          return _context14.stop();
+          return _context15.stop();
       }
-    }, _callee14);
+    }, _callee15);
   }));
   return _actionEdit.apply(this, arguments);
 }
 
-function actionShow(_x15) {
+function actionShow(_x16) {
   return _actionShow.apply(this, arguments);
 }
 /**
@@ -895,10 +991,10 @@ function actionShow(_x15) {
 function _actionShow() {
   _actionShow = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee15(e) {
+  regeneratorRuntime.mark(function _callee16(e) {
     var builder, code;
-    return regeneratorRuntime.wrap(function _callee15$(_context15) {
-      while (1) switch (_context15.prev = _context15.next) {
+    return regeneratorRuntime.wrap(function _callee16$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -911,18 +1007,18 @@ function _actionShow() {
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context15.abrupt("return", builder.build());
+          return _context16.abrupt("return", builder.build());
 
         case 6:
         case "end":
-          return _context15.stop();
+          return _context16.stop();
       }
-    }, _callee15);
+    }, _callee16);
   }));
   return _actionShow.apply(this, arguments);
 }
 
-function actionManual(_x16) {
+function actionManual(_x17) {
   return _actionManual.apply(this, arguments);
 }
 /**
@@ -935,10 +1031,10 @@ function actionManual(_x16) {
 function _actionManual() {
   _actionManual = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee16(e) {
+  regeneratorRuntime.mark(function _callee17(e) {
     var builder, msg, connector, cType, cAuth, response, isAuthError, code, content, len;
-    return regeneratorRuntime.wrap(function _callee16$(_context16) {
-      while (1) switch (_context16.prev = _context16.next) {
+    return regeneratorRuntime.wrap(function _callee17$(_context17) {
+      while (1) switch (_context17.prev = _context17.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder();
@@ -947,20 +1043,20 @@ function _actionManual() {
           cType = new this[connector.type]();
           cAuth = cType.auth; //try to perform request;
 
-          _context16.prev = 5;
-          _context16.next = 8;
+          _context17.prev = 5;
+          _context17.next = 8;
           return cType.run(msg, connector);
 
         case 8:
-          response = _context16.sent;
-          _context16.next = 17;
+          response = _context17.sent;
+          _context17.next = 17;
           break;
 
         case 11:
-          _context16.prev = 11;
-          _context16.t0 = _context16["catch"](5);
+          _context17.prev = 11;
+          _context17.t0 = _context17["catch"](5);
           timestamp('failed to run manual action (' + connector.type + ')', {
-            error: _context16.t0,
+            error: _context17.t0,
             data: response
           }, 'error');
           response = {
@@ -970,7 +1066,7 @@ function _actionManual() {
             }
           }; //check if error is caused by code or fetch fail;
 
-          isAuthError = checkAgainstErrorTypes(_context16.t0);
+          isAuthError = checkAgainstErrorTypes(_context17.t0);
 
           if (isAuthError) {
             response.code = 401;
@@ -1002,28 +1098,28 @@ function _actionManual() {
 
           builder.setNavigation(CardService.newNavigation().pushCard(cardDisplay(e)));
           builder.setStateChanged(true);
-          return _context16.abrupt("return", builder.build());
+          return _context17.abrupt("return", builder.build());
 
         case 24:
         case "end":
-          return _context16.stop();
+          return _context17.stop();
       }
-    }, _callee16, this, [[5, 11]]);
+    }, _callee17, this, [[5, 11]]);
   }));
   return _actionManual.apply(this, arguments);
 }
 
-function performFullReset(_x17) {
+function performFullReset(_x18) {
   return _performFullReset.apply(this, arguments);
 }
 
 function _performFullReset() {
   _performFullReset = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee17(e) {
+  regeneratorRuntime.mark(function _callee18(e) {
     var builder, onSuccessText, onFailureText, config;
-    return regeneratorRuntime.wrap(function _callee17$(_context17) {
-      while (1) switch (_context17.prev = _context17.next) {
+    return regeneratorRuntime.wrap(function _callee18$(_context18) {
+      while (1) switch (_context18.prev = _context18.next) {
         case 0:
           //create action response builder;
           builder = CardService.newActionResponseBuilder(); //custom text ot pass to notifications;
@@ -1031,12 +1127,12 @@ function _performFullReset() {
           onSuccessText = e.parameters.success;
           onFailureText = e.parameters.failure; //try to delete all OAuth2.0 specific properties;
 
-          _context17.prev = 3;
-          _context17.next = 6;
+          _context18.prev = 3;
+          _context18.next = 6;
           return getConfig();
 
         case 6:
-          config = _context17.sent;
+          config = _context18.sent;
 
           if (config.length !== 0) {
             config.forEach(function (connector) {
@@ -1049,43 +1145,43 @@ function _performFullReset() {
             });
           }
 
-          _context17.next = 13;
+          _context18.next = 13;
           break;
 
         case 10:
-          _context17.prev = 10;
-          _context17.t0 = _context17["catch"](3);
+          _context18.prev = 10;
+          _context18.t0 = _context18["catch"](3);
           timestamp('error during Add-in reset', {
-            error: _context17.t0,
+            error: _context18.t0,
             action: 'full reset'
           }, 'error');
 
         case 13:
-          _context17.prev = 13;
-          _context17.next = 16;
+          _context18.prev = 13;
+          _context18.next = 16;
           return deleteAllProperties('user');
 
         case 16:
           builder.setNotification(notification(onSuccessText));
-          _context17.next = 22;
+          _context18.next = 22;
           break;
 
         case 19:
-          _context17.prev = 19;
-          _context17.t1 = _context17["catch"](13);
+          _context18.prev = 19;
+          _context18.t1 = _context18["catch"](13);
           builder.setNotification(error(onFailureText));
 
         case 22:
           //set data state change and navigate to main card;
           builder.setNavigation(CardService.newNavigation().updateCard(cardHome(e)));
           builder.setStateChanged(true);
-          return _context17.abrupt("return", builder.build());
+          return _context18.abrupt("return", builder.build());
 
         case 25:
         case "end":
-          return _context17.stop();
+          return _context18.stop();
       }
-    }, _callee17, null, [[3, 10], [13, 19]]);
+    }, _callee18, null, [[3, 10], [13, 19]]);
   }));
   return _performFullReset.apply(this, arguments);
 }
