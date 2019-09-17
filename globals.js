@@ -274,7 +274,7 @@ var globalInfusionsoftApptsCap       = 5;
 var globalInfusionsoftTasksCap       = 5;
 var globalNumUncollapsible           = 5;
 var globalNumUncollapsibleList       = 3;
-var globalWidgetsCap                 = 15;
+var globalWidgetsCap                 = 14;
 
 //Sign in flow;
 var globalAccountInfoHeader          = 'Account Info';
