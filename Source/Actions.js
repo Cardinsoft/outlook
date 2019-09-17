@@ -142,13 +142,16 @@ function _reloadWidgetDisplay() {
             }
           }); //access show config and build;
 
-          showMapper = show.map;
-          showJoiner = show.join;
-          widget.content += showJoiner + fetched.map(function (entity) {
-            return showMapper.map(function (t) {
-              return entity[t];
-            }).join(' ');
-          }).join(showJoiner); //update content and fetcher;
+          if (show) {
+            showMapper = show.map;
+            showJoiner = show.join;
+            widget.content += showJoiner + fetched.map(function (entity) {
+              return showMapper.map(function (t) {
+                return entity[t];
+              }).join(' ');
+            }).join(showJoiner);
+          } //update content and fetcher;
+
 
           widget.fetch = fetch;
           e.parameters.content = JSON.stringify(card);
@@ -156,7 +159,7 @@ function _reloadWidgetDisplay() {
           builder.setStateChanged(true);
           return _context2.abrupt("return", builder.build());
 
-        case 26:
+        case 24:
         case "end":
           return _context2.stop();
       }
