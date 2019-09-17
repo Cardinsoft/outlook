@@ -794,6 +794,8 @@ function trimMessage(msg, trimFromToFrom, trimFromToSender, idx) {
   }
 
   var trimmed = {};
+  var domains = toTrim.match(/\w+(?=\..+(?=$))/g);
+  trimmed.domain = toSentenceCase(domains[domains.length - 1]);
 
   if (trimFromToFrom) {
     trimmed.email = trimFrom(toTrim);
