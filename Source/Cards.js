@@ -286,7 +286,7 @@ function _cardDisplay() {
           return createErrorSection(builder, false, code, error);
 
         case 25:
-          _context3.next = 132;
+          _context3.next = 133;
           break;
 
         case 27:
@@ -553,19 +553,19 @@ function _cardDisplay() {
           }
 
         case 103:
-          _context3.next = 126;
+          _context3.next = 127;
           break;
 
         case 105:
           if (error) {
-            _context3.next = 126;
+            _context3.next = 127;
             break;
           }
 
           addConfig = cType.addConfig;
 
           if (!addConfig) {
-            _context3.next = 125;
+            _context3.next = 126;
             break;
           }
 
@@ -574,8 +574,11 @@ function _cardDisplay() {
 
         case 110:
           adder = _context3.sent;
-          add = JSON.parse(adder.config);
-          e.parameters.content = adder.config;
+          add = JSON.parse(adder.config); //set method and config;
+
+          connector.method = 'add';
+          connector.content = adder.config; //access message;
+
           trimmed = trimMessage(msg, true, true); //prepend no data prompt and append adder button;
 
           add[0].widgets.unshift({
@@ -587,39 +590,38 @@ function _cardDisplay() {
             title: 'Add ' + adder.prompt,
             action: globalActionClick,
             funcName: 'updateSectionAdvanced',
-            params: copyObject(connector, {
-              method: 'add'
-            }, false)
-          });
+            params: connector
+          }); //build add config;
+
           a = 0;
 
-        case 117:
+        case 118:
           if (!(a < add.length)) {
-            _context3.next = 123;
+            _context3.next = 124;
             break;
           }
 
-          _context3.next = 120;
+          _context3.next = 121;
           return createSectionAdvanced(builder, add[a], a, connector, globalWidgetsCap, 0);
 
-        case 120:
+        case 121:
           a++;
-          _context3.next = 117;
+          _context3.next = 118;
           break;
 
-        case 123:
-          _context3.next = 126;
+        case 124:
+          _context3.next = 127;
           break;
-
-        case 125:
-          createNoFieldsSection(builder, false, connector, msg);
 
         case 126:
-          _context3.next = 132;
+          createNoFieldsSection(builder, false, connector, msg);
+
+        case 127:
+          _context3.next = 133;
           break;
 
-        case 128:
-          _context3.prev = 128;
+        case 129:
+          _context3.prev = 129;
           _context3.t2 = _context3["catch"](36);
           timestamp('error during display Card build', {
             error: _context3.t2,
@@ -629,23 +631,23 @@ function _cardDisplay() {
             descr: 'An error occured during display build'
           }, 'Display error');
 
-        case 132:
+        case 133:
           if (!(config.length > 0)) {
-            _context3.next = 135;
+            _context3.next = 136;
             break;
           }
 
-          _context3.next = 135;
+          _context3.next = 136;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 135:
+        case 136:
           return _context3.abrupt("return", menu(builder));
 
-        case 136:
+        case 137:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[36, 128], [72, 77]]);
+    }, _callee3, this, [[36, 129], [72, 77]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
