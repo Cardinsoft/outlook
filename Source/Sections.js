@@ -1009,6 +1009,16 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var callback = widget.callback;
             var spin = widget.hasSpinner;
             var params = widget.parameters;
+            var wfetch = widget.fetch;
+
+            if (wfetch) {
+              var fetchWidgetParams = copyObject(connector, propertiesToString({
+                fetch: wfetch,
+                section: sectionIndex,
+                widget: index
+              }));
+              delete fetchWidgetParams.start;
+            }
 
             switch (type) {
               case globalTextParagraph:
@@ -1161,7 +1171,13 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 } else {
                   //set section and widget index and stringify;
                   connector.sectionIdx = sectionIndex.toString();
-                  connector.widgetIdx = index.toString();
+                  connector.widgetIdx = index.toString(); //if fetch is set -> construct special ui;
+
+                  if (wfetch) {
+                    var btn = imageButtonWidget(globalIconDownload, 'Load more', 'reloadWidgetDisplay', fetchWidgetParams);
+                    element = actionKeyValueWidgetButton(icon, title, content, btn, 'editSectionAdvanced', connector);
+                    break;
+                  }
 
                   if (buttonText || buttonLink || buttonIcon) {
                     if (disabled === undefined) {
