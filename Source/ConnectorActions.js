@@ -428,23 +428,19 @@ function _updateConnector() {
           builder.setNotification(error(globalUpdateFailure));
 
         case 36:
-          if (!e.parameters.autoUpdate) {
-            _context3.next = 40;
-            break;
+          //if autoupdate -> stay in card;
+          if (e.parameters.autoUpdate) {
+            builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
+          } else {
+            //if nothing to authotize, build dashboard; 
+            //change data state and build settings card;
+            builder.setStateChanged(true);
+            builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           }
 
-          builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
-          _context3.next = 43;
-          break;
-
-        case 40:
-          //if nothing to authotize, build dashboard; 
-          //change data state and build settings card;
-          builder.setStateChanged(true);
-          builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context3.abrupt("return", builder.build());
 
-        case 43:
+        case 38:
         case "end":
           return _context3.stop();
       }
