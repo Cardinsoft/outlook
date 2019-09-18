@@ -179,18 +179,27 @@ function Close() {
             removeResponse = _context2.sent;
 
             if (!(removeResponse.code >= 200 && removeResponse.code < 300)) {
-              _context2.next = 16;
+              _context2.next = 18;
               break;
             }
 
             content = JSON.parse(removeResponse.content);
-            _context2.next = 16;
-            return Utilities.sleep(500);
+
+            if (!(view === 'lead')) {
+              _context2.next = 16;
+              break;
+            }
+
+            return _context2.abrupt("return", this.run(msg, connector, content));
 
           case 16:
+            _context2.next = 18;
+            return Utilities.sleep(500);
+
+          case 18:
             return _context2.abrupt("return", this.run(msg, connector));
 
-          case 17:
+          case 19:
           case "end":
             return _context2.stop();
         }
