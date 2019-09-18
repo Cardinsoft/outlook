@@ -58,7 +58,9 @@ function _reloadDisplay() {
           } //preserve input;
 
 
-          preserveValues(form, section.widgets, true); //update content and fetcher;
+          card.forEach(function (s) {
+            preserveValues(form, s.widgets, true);
+          }); //update content and fetcher;
 
           e.parameters.content = JSON.stringify(card);
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
