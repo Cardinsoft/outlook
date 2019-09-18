@@ -1264,10 +1264,9 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 case globalEnumDropdown:
                   fetchWidgetParams.widget -= 1;
                   btn = actionKeyValueWidget(globalIconDownload, '', '', globalActionClick, 'reloadWidgetDisplay', propertiesToString(fetchWidgetParams));
+                  section.addWidget(btn);
                   break;
               }
-
-              section.addWidget(btn);
             }
 
             if (!prepend && separate && index < max && index < widgets.length - 1) {
