@@ -209,7 +209,7 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(connector, msg) {
-      var message, headers, type, config, users, leadUsers, stats, opptStats, leads, contLeads, las;
+      var message, headers, type, config, users, leadUsers, stats, opptStats, ous, leads, contLeads, las;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -302,6 +302,27 @@ function Close() {
             }); //if opportunity bundle enabled;
 
             if (connector.initOpportunity) {
+              ous = {
+                type: globalEnumDropdown,
+                title: 'Assign user',
+                name: 'opportunities-user_id',
+                content: leadUsers,
+                fetch: {
+                  fetcher: {
+                    callback: 'fetchUsers_',
+                    params: [['id', 'first_name', 'last_name'], false, 0, 4]
+                  },
+                  displayer: {
+                    edit: [{
+                      value: 'id',
+                      map: ['first_name', 'last_name'],
+                      join: ' ',
+                      select: []
+                    }]
+                  }
+                }
+              };
+              ous.editMap = [copyObject(ous, {})];
               config.push({
                 header: 'Opportunity',
                 isCollapsible: true,
@@ -349,40 +370,9 @@ function Close() {
                   content: '',
                   name: 'opportunities-note',
                   multiline: true
-                }, {
-                  type: globalKeyValue,
-                  title: 'Assign user (click to choose)',
-                  name: 'opportunities-user_id',
-                  content: users.map(function (u) {
-                    return u.first_name + ' ' + u.last_name;
-                  }).join('\r\n'),
-                  state: 'editable',
-                  editMap: [{
-                    type: globalEnumDropdown,
-                    title: 'User',
-                    content: leadUsers,
-                    name: 'opportunities-user_id'
-                  }],
-                  fetch: {
-                    fetcher: {
-                      callback: 'fetchUsers_',
-                      params: [['id', 'first_name', 'last_name'], false, 0, 4]
-                    },
-                    displayer: {
-                      show: {
-                        map: ['first_name', 'last_name'],
-                        join: '\r\n'
-                      },
-                      edit: [{
-                        value: 'id',
-                        map: ['first_name', 'last_name'],
-                        join: ' ',
-                        select: []
-                      }]
-                    }
-                  }
                 }]
               });
+              config[1].widgets.push(ous);
             }
 
             return _context3.abrupt("break", 29);
