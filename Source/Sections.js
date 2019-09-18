@@ -929,7 +929,7 @@ function createSectionSimple(builder, data, isCollapsed, index) {
 
 function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start) {
   //access account preferences;
-  var popup = !getAccount().popups; //create section;
+  var popup; //create section;
 
   var section = CardService.newCardSection(); //access section parameters;
 
