@@ -10,6 +10,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function sleepy(ms) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
+      console.log('awoke');
       resolve(true);
     }, ms);
   });
