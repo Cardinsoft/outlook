@@ -83,12 +83,13 @@ function _reloadWidgetDisplay() {
   _reloadWidgetDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2(e) {
-    var builder, params, headers, type, card, section, widget, fetch, fetcher, displayer, fetched, show, edit, showMapper, showJoiner;
+    var builder, form, params, headers, type, card, section, widget, fetch, fetcher, displayer, fetched, show, edit, showMapper, showJoiner;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           builder = CardService.newActionResponseBuilder(); //access parameters and construct headers;
 
+          form = e.formInputs;
           params = e.parameters;
           headers = {
             Authorization: 'Basic ' + Utilities.base64Encode(params[globalApiTokenTokenFieldName] + ':')
@@ -111,10 +112,10 @@ function _reloadWidgetDisplay() {
 
           fetcher.params[3] += fetcher.params[4]; //fetch new data;
 
-          _context2.next = 14;
+          _context2.next = 15;
           return type[fetcher.callback].apply(type, fetcher.params);
 
-        case 14:
+        case 15:
           fetched = _context2.sent;
           //access display config;
           show = displayer.show; //Object<map,join>
@@ -152,8 +153,10 @@ function _reloadWidgetDisplay() {
                 return entity[t];
               }).join(' ');
             }).join(showJoiner);
-          } //update content and fetcher;
+          } //preserve input;
 
+
+          preserveValues(form, section.widgets, true); //update content and fetcher;
 
           section.isCollapsible = false;
           widget.fetch = fetch;
@@ -162,7 +165,7 @@ function _reloadWidgetDisplay() {
           builder.setStateChanged(true);
           return _context2.abrupt("return", builder.build());
 
-        case 25:
+        case 27:
         case "end":
           return _context2.stop();
       }
