@@ -379,7 +379,7 @@ function Close() {
 
           case 21:
             _context3.next = 23;
-            return type.fetchLeads_(headers, ['id', 'name'], false, 0, 2);
+            return type.fetchLeads_(headers, ['id', 'name'], false, 0, 4);
 
           case 23:
             leads = _context3.sent;
@@ -448,7 +448,7 @@ function Close() {
                 fetch: {
                   fetcher: {
                     callback: 'fetchLeads_',
-                    params: [['id', 'name'], false, 0, 2]
+                    params: [['id', 'name'], false, 0, 4]
                   },
                   displayer: {
                     edit: [{
