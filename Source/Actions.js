@@ -21,16 +21,19 @@ function _reloadDisplay() {
   _reloadDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(e) {
-    var builder, params, type, card, index, fetch, fetcher, displayer, fetched, displayed;
+    var builder, form, params, type, card, index, section, fetch, fetcher, displayer, fetched, displayed;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          builder = CardService.newActionResponseBuilder();
+          builder = CardService.newActionResponseBuilder(); //access parameters and construct headers;
+
+          form = e.formInputs;
           params = e.parameters; //access type, card and fetcher config;
 
           type = new this[params.type]();
           card = JSON.parse(params.content);
           index = +params.section;
+          section = card[index];
           fetch = JSON.parse(params.fetch); //access fetch and display config;
 
           fetcher = fetch.fetcher;
@@ -38,29 +41,31 @@ function _reloadDisplay() {
 
           fetcher.params[3] += fetcher.params[4]; //fetch new data;
 
-          _context.next = 11;
+          _context.next = 13;
           return type[fetcher.callback].apply(type, fetcher.params);
 
-        case 11:
+        case 13:
           fetched = _context.sent;
           displayer.params.unshift(fetched); //construct new data display;
 
           displayed = type[displayer.callback].apply(type, displayer.params); //append to existing display and uncollapse;
 
-          card[index].fetch = fetch;
-          card[index].isCollapsible = false;
+          section.fetch = fetch;
+          section.isCollapsible = false;
 
           if (displayed.length > 0) {
-            card[index].widgets = card[index].widgets.concat(globalWidgetSeparator, displayed);
-          } //update content and fetcher;
+            section.widgets = section.widgets.concat(globalWidgetSeparator, displayed);
+          } //preserve input;
 
+
+          preserveValues(form, section.widgets, true); //update content and fetcher;
 
           e.parameters.content = JSON.stringify(card);
           builder.setNavigation(CardService.newNavigation().updateCard(cardDisplay(e)));
           builder.setStateChanged(true);
           return _context.abrupt("return", builder.build());
 
-        case 21:
+        case 24:
         case "end":
           return _context.stop();
       }
