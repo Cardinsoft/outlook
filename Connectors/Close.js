@@ -47,14 +47,18 @@ function Close() {
       selected: true
     }, {
       type: globalKeyValue,
-      title: 'Handle updates',
-      content: 'Lead and contact updates are sent to Close as soon as each input looses focus. If turned off, you can submit them when ready'
+      name: 'initOpportunity',
+      title: 'Initial opportunity',
+      content: 'Create leads (lead view only) in bundle with an initial opportunity',
+      switchValue: true,
+      selected: false
     }, {
       type: globalKeyValue,
       name: 'updates',
-      content: 'Auto update',
+      title: 'Handle updates',
       switchValue: true,
-      selected: true
+      selected: true,
+      content: 'Updates are sent to Close as soon as inputs lose focus. If turned off, they can be submitted when needed'
     }, {
       type: globalKeyValue,
       title: 'Choose view',
@@ -73,6 +77,12 @@ function Close() {
       }]
     }]
   }];
+  this.caps = {
+    activities: 8,
+    fields: 8,
+    statuses: 8,
+    users: 4
+  };
   this.auth = {
     type: globalApiTokenAuthType,
     config: {
@@ -199,7 +209,7 @@ function Close() {
     var _ref3 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3(connector, msg) {
-      var message, headers, type, prompt, config, users, leadUsers, stats, opptStats, leads, adder;
+      var message, headers, type, config, users, leadUsers, stats, opptStats, leads, contLeads, las;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -209,19 +219,16 @@ function Close() {
             }; //initiate type;
 
             type = new this[connector.type]();
-            prompt = '';
             config = [];
             _context3.t0 = connector.view;
-            _context3.next = _context3.t0 === 'lead' ? 8 : _context3.t0 === 'contact' ? 22 : 29;
+            _context3.next = _context3.t0 === 'lead' ? 7 : _context3.t0 === 'contact' ? 21 : 29;
             break;
 
-          case 8:
-            prompt = 'Create lead'; //fetch and prepare users;
+          case 7:
+            _context3.next = 9;
+            return type.fetchUsers_(headers, ['id', 'first_name', 'last_name'], false, 0, 4);
 
-            _context3.next = 11;
-            return type.fetchUsers_(headers, ['id', 'first_name', 'last_name']);
-
-          case 11:
+          case 9:
             users = _context3.sent;
             leadUsers = users.map(function (user) {
               return {
@@ -230,11 +237,12 @@ function Close() {
                 selected: false
               };
             });
-            leadUsers[0].selected = true;
-            _context3.next = 16;
+            leadUsers[0].selected = true; //fetch and prepare opportunity statuses;
+
+            _context3.next = 14;
             return type.fetchOpportStatuses_(headers);
 
-          case 16:
+          case 14:
             stats = _context3.sent;
             opptStats = stats.map(function (stat) {
               return {
@@ -252,6 +260,7 @@ function Close() {
               widgets: [{
                 type: globalTextInput,
                 title: 'Company Name',
+                content: message.domain,
                 name: 'name',
                 hint: 'e.g. Close'
               }, {
@@ -270,7 +279,7 @@ function Close() {
                 content: [{
                   value: 'office',
                   text: 'Office',
-                  selected: false
+                  selected: true
                 }, {
                   value: 'mobile',
                   text: 'Mobile',
@@ -286,73 +295,116 @@ function Close() {
                 }, {
                   value: 'other',
                   text: 'Other',
-                  selected: true
+                  selected: false
                 }],
                 name: 'contacts-emails-type'
               }]
-            }, {
-              header: 'Opportunity',
-              widgets: [{
-                type: globalEnumDropdown,
-                title: 'Status',
-                content: opptStats,
-                name: 'opportunities-status_id'
-              }, {
-                type: globalTextInput,
-                title: 'Confidence',
-                content: '',
-                hint: 'e.g. 65 (50% by default)',
-                name: 'opportunities-confidence'
-              }, {
-                type: globalTextInput,
-                title: 'Value',
-                content: '',
-                name: 'opportunities-value'
-              }, {
-                type: globalEnumDropdown,
-                content: [{
-                  text: 'One-time',
-                  value: 'one_time',
-                  selected: true
+            }); //if opportunity bundle enabled;
+
+            if (connector.initOpportunity) {
+              config.push({
+                header: 'Opportunity',
+                isCollapsible: true,
+                widgets: [{
+                  type: globalEnumDropdown,
+                  title: 'Status',
+                  content: opptStats,
+                  name: 'opportunities-status_id'
                 }, {
-                  text: 'Monthly',
-                  value: 'monthly',
-                  selected: false
+                  type: globalTextInput,
+                  title: 'Confidence',
+                  content: '',
+                  hint: 'e.g. 65 (50% by default)',
+                  name: 'opportunities-confidence'
                 }, {
-                  text: 'Annually',
-                  value: 'annual',
-                  selected: false
-                }],
-                name: 'opportunities-value_period'
-              }, {
-                type: globalTextInput,
-                title: 'Estimated Close',
-                content: new Date().toLocaleDateString(),
-                name: 'opportunities-date_won',
-                hint: 'Keep date format the same'
-              }, {
-                type: globalTextInput,
-                title: 'Comments',
-                content: '',
-                name: 'opportunities-note',
-                multiline: true
-              }, {
-                type: globalEnumDropdown,
-                title: 'User',
-                content: leadUsers,
-                name: 'opportunities-user_id'
-              }]
-            });
+                  type: globalTextInput,
+                  title: 'Value',
+                  content: '',
+                  name: 'opportunities-value'
+                }, {
+                  type: globalEnumDropdown,
+                  content: [{
+                    text: 'One-time',
+                    value: 'one_time',
+                    selected: true
+                  }, {
+                    text: 'Monthly',
+                    value: 'monthly',
+                    selected: false
+                  }, {
+                    text: 'Annually',
+                    value: 'annual',
+                    selected: false
+                  }],
+                  name: 'opportunities-value_period'
+                }, {
+                  type: globalTextInput,
+                  title: 'Estimated Close',
+                  content: new Date().toLocaleDateString(),
+                  name: 'opportunities-date_won',
+                  hint: 'Keep date format the same'
+                }, {
+                  type: globalTextInput,
+                  title: 'Comments',
+                  content: '',
+                  name: 'opportunities-note',
+                  multiline: true
+                }, {
+                  type: globalKeyValue,
+                  title: 'Assign user (click to choose)',
+                  name: 'opportunities-user_id',
+                  content: users.map(function (u) {
+                    return u.first_name + ' ' + u.last_name;
+                  }).join('\r\n'),
+                  state: 'editable',
+                  editMap: [{
+                    type: globalEnumDropdown,
+                    title: 'User',
+                    content: leadUsers,
+                    name: 'opportunities-user_id'
+                  }],
+                  fetch: {
+                    fetcher: {
+                      callback: 'fetchUsers_',
+                      params: [['id', 'first_name', 'last_name'], false, 0, 4]
+                    },
+                    displayer: {
+                      show: {
+                        map: ['first_name', 'last_name'],
+                        join: '\r\n'
+                      },
+                      edit: [{
+                        value: 'id',
+                        map: ['first_name', 'last_name'],
+                        join: ' ',
+                        select: []
+                      }]
+                    }
+                  }
+                }]
+              });
+            }
+
             return _context3.abrupt("break", 29);
 
-          case 22:
-            prompt = 'Create contact';
-            _context3.next = 25;
-            return type.fetchLeads_(headers, ['id', 'name']);
+          case 21:
+            _context3.next = 23;
+            return type.fetchLeads_(headers, ['id', 'name'], false, 0, 2);
 
-          case 25:
+          case 23:
             leads = _context3.sent;
+            leads.sort(function (a, b) {
+              return order(a.name, b.name);
+            });
+            contLeads = leads.map(function (lead, l) {
+              return {
+                text: lead.name,
+                value: lead.id,
+                selected: l === 0 ? true : false
+              };
+            });
             config.push({
+              header: 'Contact info',
               widgets: [{
                 type: globalTextInput,
                 title: 'Name',
@@ -395,34 +447,90 @@ function Close() {
                 }],
                 name: 'emails-type'
               }]
-            });
+            }); //add lead assignment or new lead section;
 
             if (leads.length > 0) {
-              config[0].widgets.push({
+              las = {
                 title: 'Assign to Lead',
                 type: globalEnumDropdown,
-                content: leads.map(function (lead) {
-                  return {
-                    value: lead.id,
-                    text: lead.name,
+                content: contLeads,
+                name: 'lead_id',
+                fetch: {
+                  fetcher: {
+                    callback: 'fetchLeads_',
+                    params: [['id', 'name'], false, 0, 2]
+                  },
+                  displayer: {
+                    edit: [{
+                      value: 'id',
+                      map: ['name'],
+                      join: '',
+                      select: []
+                    }]
+                  }
+                }
+              };
+              las.editMap = [copyObject(las, {})];
+              config[0].widgets.push(las);
+            } else {
+              config.push({
+                header: 'Lead info',
+                isCollapsible: true,
+                widgets: [{
+                  type: globalTextInput,
+                  title: 'Company Name',
+                  content: message.domain,
+                  name: 'name',
+                  hint: 'e.g. Close'
+                }, {
+                  type: globalTextInput,
+                  title: 'Contact Name',
+                  content: message.name,
+                  name: 'contacts-name',
+                  hint: 'e.g. Steli Efti'
+                }, {
+                  type: globalTextInput,
+                  title: 'Contact Email',
+                  content: message.email,
+                  name: 'contacts-emails-email'
+                }, {
+                  type: globalEnumDropdown,
+                  content: [{
+                    value: 'office',
+                    text: 'Office',
+                    selected: true
+                  }, {
+                    value: 'mobile',
+                    text: 'Mobile',
                     selected: false
-                  };
-                }),
-                name: 'lead_id'
+                  }, {
+                    value: 'direct',
+                    text: 'Direct',
+                    selected: false
+                  }, {
+                    value: 'home',
+                    text: 'Home',
+                    selected: false
+                  }, {
+                    value: 'other',
+                    text: 'Other',
+                    selected: false
+                  }],
+                  name: 'contacts-emails-type'
+                }]
               });
             }
 
             return _context3.abrupt("break", 29);
 
           case 29:
-            adder = mergeObjects({
+            return _context3.abrupt("return", {
               config: JSON.stringify(config),
               method: 'add',
-              caText: prompt
-            }, connector);
-            return _context3.abrupt("return", adder);
+              prompt: connector.view
+            });
 
-          case 31:
+          case 30:
           case "end":
             return _context3.stop();
         }
@@ -875,7 +983,7 @@ function Close() {
           case 27:
             users = _context5.sent;
             _context5.next = 30;
-            return this.fetchLeadStatuses_(headers);
+            return this.fetchLeadStatuses_(headers, ['id', 'label'], false, 0, 8);
 
           case 30:
             leadStatuses = _context5.sent;
@@ -1201,11 +1309,7 @@ function Close() {
     } //create email widgets;
 
 
-    if (emails.length > 1) {
-      wmain.push(globalWidgetSeparator);
-    }
-
-    emails.forEach(function (email) {
+    emails.forEach(function (email, el) {
       var t = email.type;
       var m = email.email;
       var em = {
@@ -1235,14 +1339,15 @@ function Close() {
           em.icon = 'EMAIL';
       }
 
+      if (el === 0) {
+        em.separate = true;
+        em.prepend = true;
+      }
+
       wmain.push(em);
     }); //create phone widgets;
 
-    if (phones.length > 1) {
-      wmain.push(globalWidgetSeparator);
-    }
-
-    phones.forEach(function (phone) {
+    phones.forEach(function (phone, ph) {
       var t = phone.type;
       var p = phone.phone_formatted;
       var ep = {
@@ -1272,6 +1377,11 @@ function Close() {
           ep.icon = 'PHONE';
       }
 
+      if (ph === 0) {
+        ep.separate = true;
+        ep.prepend = true;
+      }
+
       wmain.push(ep);
     }); //if contact view -> add info widgets;
 
@@ -1284,8 +1394,7 @@ function Close() {
     };
 
     if (view === 'contact') {
-      wmain.push(ei);
-      wmain.push(globalWidgetSeparator); //parse dates and compare;
+      wmain.push(ei); //parse dates and compare;
 
       var equal = false;
       created = created.split('.');
@@ -1302,7 +1411,9 @@ function Close() {
         icon: 'CLOCK',
         type: globalKeyValue,
         title: 'Created',
-        content: dCreated.toLocaleDateString() + '\r' + dCreated.toLocaleTimeString()
+        content: dCreated.toLocaleDateString() + '\r' + dCreated.toLocaleTimeString(),
+        separate: true,
+        prepend: true
       };
       wmain.push(cr); //if difference in create-edit time -> create edit widget;
 
@@ -1645,8 +1756,7 @@ function Close() {
 
 
     if (addresses.length > 0) {
-      wempl.push(globalWidgetSeparator);
-      addresses.forEach(function (address) {
+      addresses.forEach(function (address, a) {
         var addressContent = [];
 
         if (address.zipcode) {
@@ -1691,6 +1801,11 @@ function Close() {
           case 'other':
             alw.icon = 'MAP_PIN';
             break;
+        }
+
+        if (a === 0) {
+          alw.separate = true;
+          alw.prepend = true;
         }
 
         wempl.push(alw);
@@ -1778,8 +1893,13 @@ function Close() {
       var ttw = {
         icon: globalIconActivities,
         type: globalKeyValue,
-        content: taskTitle
+        content: taskTitle,
+        title: 'due ' + taskDue.toLocaleDateString()
       };
+
+      if (taskDue.getHours() > 0) {
+        ttw.hint = 'till ' + taskDue.toLocaleTimeString();
+      }
 
       if (taskState) {
         ttw.buttonIcon = globalIconTaskDone;
@@ -1794,29 +1914,14 @@ function Close() {
       }
 
       wtask.push(ttw);
-      var tdw = {
-        icon: 'INVITE',
-        type: globalKeyValue,
-        title: 'Due date',
-        content: taskDue.toLocaleDateString()
-      };
-
-      if (taskDue.getHours() > 0) {
-        tdw.content += '\r\n' + taskDue.toLocaleTimeString();
-      }
-
-      wtask.push(tdw);
       var tatw = {
         icon: globalIconAccount,
         type: globalKeyValue,
         title: 'Assigned to',
-        content: taskUser
+        content: taskUser,
+        separate: true
       };
       wtask.push(tatw);
-
-      if (t < tasks.length - 1) {
-        wtask.push(globalWidgetSeparator);
-      }
     }); //end tasks loop;              
 
     return wtask;
@@ -1928,7 +2033,8 @@ function Close() {
               icon: 'INVITE',
               type: globalKeyValue,
               title: 'Estimated Close',
-              content: new Date(opptWon).toLocaleDateString()
+              content: new Date(opptWon).toLocaleDateString(),
+              separate: opptCont ? false : true
             };
             woppt.push(ecdw);
           }
@@ -1939,7 +2045,8 @@ function Close() {
           var wlw = {
             icon: 'INVITE',
             type: globalKeyValue,
-            title: 'Date ' + opptStat
+            title: 'Date ' + opptStat,
+            separate: opptCont ? false : true
           };
 
           if (opptWon !== null) {
@@ -1958,24 +2065,21 @@ function Close() {
           icon: 'PERSON',
           type: globalKeyValue,
           title: 'Contact name',
-          content: opptCont
+          content: opptCont,
+          separate: true
         };
         woppt.push(cnw);
-      }
-
-      if (op !== opportunities.length - 1) {
-        woppt.push(globalWidgetSeparator);
       }
     });
     return woppt;
   };
   /**
-   * Utility method for building activities display;
-   * @param {Array<Object>} activities activities set;
-   * @param {String} leadId lead id;
-   * @param {String} contactId contact id;
-   * @return {Array<Object>} activities widgets;
-   */
+  * Utility method for building activities display;
+  * @param {Array<Object>} activities activities set;
+  * @param {String} leadId lead id;
+  * @param {String} contactId contact id;
+  * @return {Array<Object>} activities widgets;
+  */
 
 
   this.displayActivities = function (activities, leadId, contactId) {
@@ -2001,7 +2105,8 @@ function Close() {
             icon: globalIconAccount,
             type: globalKeyValue,
             title: 'Assigned user',
-            content: userTC
+            content: userTC,
+            separate: true
           };
           wact.push(atcw, utcw);
           break;
@@ -2015,7 +2120,8 @@ function Close() {
             type: globalKeyValue,
             hint: dateOpptChanged.toLocaleDateString() + ' ' + dateOpptChanged.toLocaleTimeString(),
             content: oldOpptStatus + ' &rarr; ' + newOpptStatus,
-            title: 'Opportunity status change'
+            title: 'Opportunity status change',
+            separate: true
           };
           wact.push(oscw);
           break;
@@ -2029,7 +2135,8 @@ function Close() {
             type: globalKeyValue,
             hint: dateChanged.toLocaleDateString() + ' ' + dateChanged.toLocaleTimeString(),
             content: oldStatus + ' &rarr; ' + newStatus,
-            title: 'Lead status change'
+            title: 'Lead status change',
+            separate: true
           };
           wact.push(lscw);
           break;
@@ -2041,7 +2148,8 @@ function Close() {
             icon: globalIconNotes,
             type: globalKeyValue,
             title: 'Noted on ' + noteTitle.toLocaleDateString(),
-            content: noteText
+            content: noteText,
+            separate: true
           };
           wact.push(antw);
           break;
@@ -2068,11 +2176,15 @@ function Close() {
               type: globalKeyValue,
               title: 'Template used',
               content: template,
-              buttonText: 'Edit',
               disabled: false,
+              separate: true,
+              buttonIcon: globalIconOpen,
+              buttonText: 'Edit',
               buttonLink: 'https://app.close.com/organization/' + organization + '/email_templates/' + idTempl
             };
             wact.push(tu);
+          } else {
+            at.separate = true;
           }
 
           break;
@@ -2089,7 +2201,8 @@ function Close() {
             icon: callDirect === 'outbound' ? globalIconCallOutbound : globalIconCallInbound,
             type: globalKeyValue,
             title: 'Call info',
-            hint: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString()
+            hint: callDate.toLocaleDateString() + ' ' + callDate.toLocaleTimeString(),
+            separate: callNote !== '' || duration > 0 ? false : true
           };
 
           if (callPhone) {
@@ -2105,7 +2218,8 @@ function Close() {
               icon: globalIconBackground,
               title: 'Call note',
               type: globalKeyValue,
-              content: callNote
+              content: callNote,
+              separate: duration > 0 ? false : true
             };
             wact.push(cw);
           }
@@ -2114,7 +2228,8 @@ function Close() {
             var cd = {
               icon: 'CLOCK',
               type: globalKeyValue,
-              title: 'Duration'
+              title: 'Duration',
+              separate: true
             };
 
             if (hs || duration < 1) {
@@ -2128,10 +2243,6 @@ function Close() {
 
           break;
       }
-
-      if (a < activities.length - 1 && type !== 'Created') {
-        wact.push(globalWidgetSeparator);
-      }
     }); //end activities loop;
 
     return wact;
@@ -2140,7 +2251,9 @@ function Close() {
    * Utility method for fetching leads;
    * @param {Object} headers request headers;
    * @param {Array<String>} fields fileds to return;
+   * @param {Boolean} fetchAll autopaginate flag;
    * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;
    * @return {Array<Object>} leads;   
    */
 
@@ -2150,20 +2263,20 @@ function Close() {
   function () {
     var _ref6 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(headers, fields, start) {
+    regeneratorRuntime.mark(function _callee6(headers, fields, fetchAll, start, limit) {
       var lds, query, url, response, content, statuses, hasMore;
       return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) switch (_context6.prev = _context6.next) {
           case 0:
             start = start || 0;
             lds = [];
-            query = ['_fields=' + fields.join(',')];
+            query = ['_fields=' + fields.join(','), '_skip=' + start];
 
-            if (start > 0) {
-              query.push('_skip=' + start);
+            if (limit) {
+              query.push('_limit=' + limit);
             }
 
-            url = encodeURI(this.url + '/lead/' + (query.length > 0 ? '?' + query.join('&') : ''));
+            url = encodeURI(this.url + '/lead/?' + query.join('&'));
             _context6.next = 7;
             return performFetch(url, 'get', headers);
 
@@ -2181,14 +2294,14 @@ function Close() {
 
             hasMore = content.has_more;
 
-            if (!hasMore) {
+            if (!(hasMore && fetchAll)) {
               _context6.next = 19;
               break;
             }
 
             _context6.t0 = lds;
             _context6.next = 17;
-            return this.fetchLeads_(headers, fields, start + 100);
+            return this.fetchLeads_(headers, fields, fetchAll, start + limit, limit);
 
           case 17:
             _context6.t1 = _context6.sent;
@@ -2204,15 +2317,18 @@ function Close() {
       }, _callee6, this);
     }));
 
-    return function (_x17, _x18, _x19) {
+    return function (_x17, _x18, _x19, _x20, _x21) {
       return _ref6.apply(this, arguments);
     };
   }();
   /**
    * Utility method for fetching lead statuses;
    * @param {Object} headers request headers;
+   * @param {Array<String>} fields fields to return;   
+   * @param {Boolean} fetchAll autopaginate flag;   
    * @param {Integer=} start start for pagination;
-   * @param {String=} id status id filter;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} lsid status id filter;
    * @return {Array<Object>} lead statuses;
    */
 
@@ -2222,22 +2338,28 @@ function Close() {
   function () {
     var _ref7 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(headers, start, id) {
-      var lsts, url, response, content, statuses, hasMore;
+    regeneratorRuntime.mark(function _callee7(headers, fields, fetchAll, start, limit, lsid) {
+      var lsts, query, url, response, content, statuses, hasMore;
       return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) switch (_context7.prev = _context7.next) {
           case 0:
             start = start || 0;
             lsts = [];
-            url = encodeURI(this.url + '/status/lead' + (id ? '/' + id + '/' : ''));
-            _context7.next = 5;
+            query = ['_skip=' + start];
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/status/lead' + (lsid ? '/' + lsid + '/' : ''));
+            _context7.next = 7;
             return performFetch(url, 'get', headers);
 
-          case 5:
+          case 7:
             response = _context7.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 17;
+              _context7.next = 19;
               break;
             }
 
@@ -2247,30 +2369,30 @@ function Close() {
 
             hasMore = content.has_more;
 
-            if (!hasMore) {
-              _context7.next = 17;
+            if (!(hasMore && fetchAll)) {
+              _context7.next = 19;
               break;
             }
 
             _context7.t0 = lsts;
-            _context7.next = 15;
-            return this.fetchLeadStatuses_(headers, start + 100, id);
+            _context7.next = 17;
+            return this.fetchLeadStatuses_(headers, fields, fetchAll, start + limit, limit, lsid);
 
-          case 15:
+          case 17:
             _context7.t1 = _context7.sent;
             lsts = _context7.t0.concat.call(_context7.t0, _context7.t1);
 
-          case 17:
+          case 19:
             return _context7.abrupt("return", lsts);
 
-          case 18:
+          case 20:
           case "end":
             return _context7.stop();
         }
       }, _callee7, this);
     }));
 
-    return function (_x20, _x21, _x22) {
+    return function (_x22, _x23, _x24, _x25, _x26, _x27) {
       return _ref7.apply(this, arguments);
     };
   }();
@@ -2299,7 +2421,7 @@ function Close() {
           case 0:
             start = start || 0;
             acts = [];
-            query = [];
+            query = ['_skip=' + start];
 
             if (fields) {
               query.push('_fields=' + fields.join(','));
@@ -2313,23 +2435,19 @@ function Close() {
               query.push('contact_id=' + cid);
             }
 
-            if (start > 0) {
-              query.push('_skip=' + start);
-            }
-
             if (limit) {
               query.push('_limit=' + limit);
             }
 
             url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context8.next = 11;
+            _context8.next = 10;
             return performFetch(url, 'get', headers);
 
-          case 11:
+          case 10:
             response = _context8.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context8.next = 23;
+              _context8.next = 22;
               break;
             }
 
@@ -2340,29 +2458,29 @@ function Close() {
             hasMore = content.has_more;
 
             if (!(hasMore && fetchAll)) {
-              _context8.next = 23;
+              _context8.next = 22;
               break;
             }
 
             _context8.t0 = acts;
-            _context8.next = 21;
+            _context8.next = 20;
             return this.fetchActivities_(headers, fields, fetchAll, start + limit, limit, lid, cid);
 
-          case 21:
+          case 20:
             _context8.t1 = _context8.sent;
             acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
 
-          case 23:
+          case 22:
             return _context8.abrupt("return", acts);
 
-          case 24:
+          case 23:
           case "end":
             return _context8.stop();
         }
       }, _callee8, this);
     }));
 
-    return function (_x23, _x24, _x25, _x26, _x27, _x28, _x29) {
+    return function (_x28, _x29, _x30, _x31, _x32, _x33, _x34) {
       return _ref8.apply(this, arguments);
     };
   }();
@@ -2390,14 +2508,10 @@ function Close() {
           case 0:
             start = start || 0;
             fds = [];
-            query = [];
+            query = ['_skip=' + start];
 
             if (fields) {
               query.push('_fields=' + fields.join(','));
-            }
-
-            if (start) {
-              query.push('_skip=' + start);
             }
 
             if (limit) {
@@ -2405,14 +2519,14 @@ function Close() {
             }
 
             url = encodeURI(this.url + '/custom_fields/lead' + (lid ? '/' + lid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context9.next = 9;
+            _context9.next = 8;
             return performFetch(url, 'get', headers);
 
-          case 9:
+          case 8:
             response = _context9.sent;
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context9.next = 21;
+              _context9.next = 20;
               break;
             }
 
@@ -2423,38 +2537,40 @@ function Close() {
             hasMore = content.has_more;
 
             if (!(hasMore && fetchAll)) {
-              _context9.next = 21;
+              _context9.next = 20;
               break;
             }
 
             _context9.t0 = fds;
-            _context9.next = 19;
+            _context9.next = 18;
             return this.fetchFields_(headers, fields, fetchAll, start + limit, lid);
 
-          case 19:
+          case 18:
             _context9.t1 = _context9.sent;
             fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
 
-          case 21:
+          case 20:
             return _context9.abrupt("return", fds);
 
-          case 22:
+          case 21:
           case "end":
             return _context9.stop();
         }
       }, _callee9, this);
     }));
 
-    return function (_x30, _x31, _x32, _x33, _x34, _x35) {
+    return function (_x35, _x36, _x37, _x38, _x39, _x40) {
       return _ref9.apply(this, arguments);
     };
   }();
   /**
    * Utility method for fetching users;
    * @param {Object} headers request headers;
-   * @param {Array<String>=} fields fields to return;
+   * @param {Array<String>} fields fields to return;
+   * @param {Boolean} fetchAll autopaginate flag;
    * @param {Integer=} start start for pagination;
-   * @param {String=} id if provided -> fetch single user;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} uid user id to filter;
    * @return {Array<Object>} users; 
    */
 
@@ -2464,46 +2580,64 @@ function Close() {
   function () {
     var _ref10 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee10(headers, fields, start, id) {
-      var uss, query, url, response, content, users;
+    regeneratorRuntime.mark(function _callee10(headers, fields, fetchAll, start, limit, uid) {
+      var uss, query, url, response, content, users, hasMore;
       return regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) switch (_context10.prev = _context10.next) {
           case 0:
             start = start || 0;
             uss = [];
-            query = [];
+            query = ['_skip=' + start];
 
             if (fields) {
               query.push('_fields=' + fields.join(','));
             }
 
-            if (start > 0) {
-              query.push('_skip=' + start);
+            if (limit) {
+              query.push('_limit=' + limit);
             }
 
-            url = encodeURI(this.url + '/user' + (id ? '/' + id + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            url = encodeURI(this.url + '/user' + (uid ? '/' + uid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
             _context10.next = 8;
             return performFetch(url, 'get', headers);
 
           case 8:
             response = _context10.sent;
 
-            if (response.code >= 200 && response.code < 300) {
-              content = JSON.parse(response.content);
-              users = content.data;
-              uss = uss.concat(users);
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context10.next = 20;
+              break;
             }
 
+            content = JSON.parse(response.content);
+            users = content.data;
+            uss = uss.concat(users);
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context10.next = 20;
+              break;
+            }
+
+            _context10.t0 = uss;
+            _context10.next = 18;
+            return this.fetchUsers_(headers, fields, fetchAll, start + limit, uid);
+
+          case 18:
+            _context10.t1 = _context10.sent;
+            uss = _context10.t0.concat.call(_context10.t0, _context10.t1);
+
+          case 20:
             return _context10.abrupt("return", uss);
 
-          case 11:
+          case 21:
           case "end":
             return _context10.stop();
         }
       }, _callee10, this);
     }));
 
-    return function (_x36, _x37, _x38, _x39) {
+    return function (_x41, _x42, _x43, _x44, _x45, _x46) {
       return _ref10.apply(this, arguments);
     };
   }();
@@ -2548,7 +2682,7 @@ function Close() {
       }, _callee11, this);
     }));
 
-    return function (_x40, _x41) {
+    return function (_x47, _x48) {
       return _ref11.apply(this, arguments);
     };
   }();
