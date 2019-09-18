@@ -1154,7 +1154,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
 
                 if (switchValue) {
-                  element = switchWidget(icon, title, content, name, selected, switchValue);
+                  element = switchWidget(icon, title, content, name, selected, switchValue, funcName, true, params);
                 } else {
                   //set section and widget index and stringify;
                   connector.sectionIdx = sectionIndex.toString();
