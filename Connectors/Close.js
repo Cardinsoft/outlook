@@ -894,12 +894,12 @@ function Close() {
     };
   }();
   /**
-   * General method for retrieving info;
-   * @param {Object} msg object with current message info;
-   * @param {Object} connector Connector configuration;
-   * @param {Object} data data to pass to endpoint;
-   * @returns {Object} Display configuration;
-   */
+  * General method for retrieving info;
+  * @param {Object} msg object with current message info;
+  * @param {Object} connector Connector configuration;
+  * @param {Object} data data to pass to endpoint;
+  * @returns {Object} Display configuration;
+  */
 
 
   this.run =
@@ -954,7 +954,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 89;
+              _context5.next = 92;
               break;
             }
 
@@ -971,7 +971,7 @@ function Close() {
             leads = contents.data;
 
             if (!(leads.length > 0)) {
-              _context5.next = 87;
+              _context5.next = 90;
               break;
             }
 
@@ -983,7 +983,7 @@ function Close() {
           case 27:
             users = _context5.sent;
             _context5.next = 30;
-            return this.fetchLeadStatuses_(headers, ['id', 'label'], false, 0, 8);
+            return this.fetchLeadStatuses_(headers, ['id', 'label'], false, 0, 1);
 
           case 30:
             leadStatuses = _context5.sent;
@@ -1102,16 +1102,23 @@ function Close() {
             sectionAct.widgets = this.displayActivities(activities, leadId);
 
           case 65:
-            //if fields enabled -> display;
-            if (connector.fields) {
-              sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
+            if (!connector.fields) {
+              _context5.next = 69;
+              break;
             }
 
+            _context5.next = 68;
+            return this.displayFields(fields, custom, leadId, users);
+
+          case 68:
+            sectionFields.widgets = _context5.sent;
+
+          case 69:
             c = 0;
 
-          case 67:
+          case 70:
             if (!(c < contacts.length)) {
-              _context5.next = 86;
+              _context5.next = 89;
               break;
             }
 
@@ -1141,13 +1148,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 81;
+              _context5.next = 84;
               break;
             }
 
-            return _context5.abrupt("continue", 83);
+            return _context5.abrupt("continue", 86);
 
-          case 81:
+          case 84:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -1164,12 +1171,12 @@ function Close() {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields);
             }
 
-          case 83:
+          case 86:
             c++;
-            _context5.next = 67;
+            _context5.next = 70;
             break;
 
-          case 86:
+          case 89:
             //end contacts loop;        
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1177,13 +1184,13 @@ function Close() {
               sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct, sectionFields);
             }
 
-          case 87:
-            _context5.next = 96;
+          case 90:
+            _context5.next = 99;
             break;
 
-          case 89:
+          case 92:
             if (!(response.code === 401)) {
-              _context5.next = 95;
+              _context5.next = 98;
               break;
             }
 
@@ -1219,10 +1226,10 @@ function Close() {
               }
             });
 
-          case 95:
+          case 98:
             return _context5.abrupt("return", response);
 
-          case 96:
+          case 99:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1239,7 +1246,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 99:
+          case 102:
           case "end":
             return _context5.stop();
         }
