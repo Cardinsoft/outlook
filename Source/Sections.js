@@ -1448,20 +1448,14 @@ function _createSectionAddConnector() {
             widgets: [{
               type: globalKeyValue,
               title: 'Choose behaviour',
-              content: 'If you have multiple accounts or want to control when to search your account, you can set the Connector to run on explicit interaction only'
-            }, {
-              type: globalKeyValue,
-              content: globalCustomWidgetSwitchText,
+              content: 'Search account when a message is open or on explicit interaction only',
               name: globalManualFieldName,
               switchValue: true,
               selected: man
             }, {
               type: globalKeyValue,
               title: 'Choose display',
-              content: 'If you have multiple accounts or configured Connectors, switching on this option will make it display results directly to the dashboard'
-            }, {
-              type: globalKeyValue,
-              content: globalIsDefaultWidgetSwitchText,
+              content: 'Make the Connector display search results directly in the dashboard',
               name: globalDefaultFieldName,
               switchValue: true,
               selected: def
@@ -1500,20 +1494,14 @@ function createSectionUpdateConnector(builder, isCollapsed, connector, isReloade
     widgets: [{
       type: globalKeyValue,
       title: 'Choose behaviour',
-      content: 'If you have multiple accounts or want to control when to search your account, you can set the Connector to run on explicit interaction only'
-    }, {
-      type: globalKeyValue,
-      content: globalCustomWidgetSwitchText,
+      content: 'Search account when a message is open or on explicit interaction only',
       name: globalManualFieldName,
       switchValue: true,
       selected: connector.manual
     }, {
       type: globalKeyValue,
       title: 'Choose display',
-      content: 'If you have multiple accounts or configured Connectors, switching on this option will make it display results directly to the dashboard'
-    }, {
-      type: globalKeyValue,
-      content: globalIsDefaultWidgetSwitchText,
+      content: 'Make the Connector display search results directly in the dashboard',
       name: globalDefaultFieldName,
       switchValue: true,
       selected: connector.isDefault
