@@ -315,7 +315,7 @@ function _cardDisplay() {
 
           _context3.prev = 36;
 
-          if (!(content.length !== 0)) {
+          if (!(content.length !== 0 && method !== 'add')) {
             _context3.next = 105;
             break;
           }
@@ -577,7 +577,13 @@ function _cardDisplay() {
           add = JSON.parse(adder.config); //set method and config;
 
           connector.method = 'add';
-          connector.content = adder.config; //access message;
+
+          if (content.length === 0) {
+            connector.content = adder.config;
+          } else {
+            add = content;
+          } //access message;
+
 
           trimmed = trimMessage(msg, true, true); //prepend no data prompt and append adder button;
 
