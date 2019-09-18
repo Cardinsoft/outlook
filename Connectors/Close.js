@@ -665,11 +665,11 @@ function Close() {
 
           case 27:
             _context4.t3 = true;
-            _context4.next = _context4.t3 === (kType === 'choices' || kType === 'user' && input.length > 1) ? 30 : _context4.t3 === (kType === 'date' || kType === 'datetime') ? 32 : 41;
+            _context4.next = _context4.t3 === (kType === 'choices' || kType === 'user') ? 30 : _context4.t3 === (kType === 'date' || kType === 'datetime') ? 32 : 41;
             break;
 
           case 30:
-            update['custom.' + kName] = input;
+            update['custom.' + kName] = input.length > 1 ? input : input[0];
             return _context4.abrupt("break", 42);
 
           case 32:
