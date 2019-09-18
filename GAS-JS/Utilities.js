@@ -35,7 +35,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(milliseconds) {
-    var ms;
+    var ms, slept;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -44,6 +44,10 @@ function () {
           return sleepy(ms);
 
         case 3:
+          slept = _context.sent;
+          return _context.abrupt("return");
+
+        case 5:
         case "end":
           return _context.stop();
       }
