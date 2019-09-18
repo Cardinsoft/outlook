@@ -311,50 +311,27 @@ function _updateConnector() {
             } //override stringifyed booleans;
 
 
-            if (value === 'true') {
-              value = true;
-            }
-
-            if (value === 'false') {
-              value = false;
-            } //default icon, name and url if custom connector and no content provided;
-
-
-            if (value === '' && type === globalBaseClassName) {
-              if (key === globalIconFieldName) {
-                connector[key] = globalCustomIconUrl;
-              }
-
-              if (key === globalNameFieldName) {
-                connector[key] = globalCustomNameName;
-              }
-
-              if (key === globalURLfieldName) {
-                connector[key] = globalCustomUrlUrl;
-              }
-            }
+            value = toBoolean(value);
           } //set icon and url for typed connectors;
+          //handle connector icon creation;
 
 
-          if (type !== globalBaseClassName) {
-            //handle connector icon creation;
-            if (data.hasOwnProperty(globalIconFieldName)) {
-              connector[globalIconFieldName] = data[globalIconFieldName];
-            } else {
-              connector[globalIconFieldName] = cType[globalIconFieldName];
-            } //handle connector name creation;
+          if (data.hasOwnProperty(globalIconFieldName)) {
+            connector[globalIconFieldName] = data[globalIconFieldName];
+          } else {
+            connector[globalIconFieldName] = cType[globalIconFieldName];
+          } //handle connector name creation;
 
 
-            if (data[globalNameFieldName] === '' || !data[globalNameFieldName]) {
-              connector[globalNameFieldName] = cType.typeName;
-            } //handle connector url creation;
+          if (data[globalNameFieldName] === '' || !data[globalNameFieldName]) {
+            connector[globalNameFieldName] = cType.typeName;
+          } //handle connector url creation;
 
 
-            if (data.hasOwnProperty(globalURLfieldName)) {
-              connector[globalURLfieldName] = data[globalURLfieldName];
-            } else if (cType.hasOwnProperty(globalURLfieldName)) {
-              connector[globalURLfieldName] = cType[globalURLfieldName];
-            }
+          if (data.hasOwnProperty(globalURLfieldName)) {
+            connector[globalURLfieldName] = data[globalURLfieldName];
+          } else if (cType.hasOwnProperty(globalURLfieldName)) {
+            connector[globalURLfieldName] = cType[globalURLfieldName];
           } //add auth type property if connector type does not specify any;
 
 
@@ -412,17 +389,17 @@ function _updateConnector() {
           } //connector index (for ease of flow);
 
 
-          _context3.next = 18;
+          _context3.next = 20;
           return getConfig();
 
-        case 18:
+        case 20:
           config = _context3.sent;
           index = getIndex(config, e.parameters);
-          _context3.prev = 20;
-          _context3.next = 23;
+          _context3.prev = 22;
+          _context3.next = 25;
           return getConfig();
 
-        case 23:
+        case 25:
           config = _context3.sent;
 
           //reset default connectors if updated one is default;
@@ -436,31 +413,42 @@ function _updateConnector() {
 
 
           config[index] = connector;
-          _context3.next = 28;
+          _context3.next = 30;
           return setProperty('config', config, 'user');
 
-        case 28:
+        case 30:
           builder.setNotification(notification(globalUpdateSuccess));
-          _context3.next = 34;
+          _context3.next = 36;
           break;
 
-        case 31:
-          _context3.prev = 31;
-          _context3.t0 = _context3["catch"](20);
+        case 33:
+          _context3.prev = 33;
+          _context3.t0 = _context3["catch"](22);
           //notify the user that connector update failed;
           builder.setNotification(error(globalUpdateFailure));
 
-        case 34:
+        case 36:
+          if (!e.parameters.autoUpdate) {
+            _context3.next = 40;
+            break;
+          }
+
+          builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
+          _context3.next = 43;
+          break;
+
+        case 40:
+          //if nothing to authotize, build dashboard; 
           //change data state and build settings card;
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context3.abrupt("return", builder.build());
 
-        case 37:
+        case 43:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[20, 31]]);
+    }, _callee3, this, [[22, 33]]);
   }));
   return _updateConnector.apply(this, arguments);
 }
