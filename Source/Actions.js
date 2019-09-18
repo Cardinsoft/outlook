@@ -137,7 +137,9 @@ function _reloadWidgetDisplay() {
               };
             });
 
-            if (edited.length > 0) {
+            if (widget.type === globalEnumDropdown) {
+              widget.content = widget.content.concat(edited);
+            } else if (edited.length > 0) {
               widget.editMap[w].content = widget.editMap[w].content.concat(edited);
             }
           }); //access show config and build;
