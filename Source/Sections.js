@@ -1257,7 +1257,18 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
               ;
             }
 
-            section.addWidget(element);
+            section.addWidget(element); //create additional loaders;
+
+            if (wfetch) {
+              switch (type) {
+                case globalEnumDropdown:
+                  fetchWidgetParams.widget -= 1;
+                  btn = actionKeyValueWidget(globalIconDownload, '', '', globalActionClick, 'reloadWidgetDisplay', propertiesToString(fetchWidgetParams));
+                  break;
+              }
+
+              section.addWidget(btn);
+            }
 
             if (!prepend && separate && index < max && index < widgets.length - 1) {
               section.addWidget(textWidget('\r'));
