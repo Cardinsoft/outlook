@@ -240,7 +240,7 @@ function _cardDisplay() {
   _cardDisplay = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, connector, id, code, content, manual, isDefault, type, authType, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, has_more, total, page, paramsForward, paramsBackward, paramsRefresh, paramsUpdate, paramsRemove, j, section, bm, full, begin, max, cap, result, length, diff, end, prev, addConfig, adder, add, trimmed, a;
+    var builder, connector, id, code, content, manual, isDefault, type, authType, method, cType, error, start, msg, header, config, hasNested, hasEditable, caText, actionsConfig, has_more, total, page, paramsForward, paramsBackward, paramsRefresh, paramsUpdate, paramsRemove, j, section, bm, full, begin, max, cap, result, length, diff, end, prev, addConfig, adder, add, trimmed, a;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -254,6 +254,7 @@ function _cardDisplay() {
           isDefault = connector.isDefault;
           type = connector.type;
           authType = connector.auth;
+          method = connector.method;
           cType = new this[type](); //get optional parameters;
 
           error = connector.error;
@@ -269,29 +270,29 @@ function _cardDisplay() {
           header.setTitle(connector.name);
           builder.setHeader(header); //access Connector config and get its index;
 
-          _context3.next = 21;
+          _context3.next = 22;
           return getConfig({
             ID: id
           }, true);
 
-        case 21:
+        case 22:
           config = _context3.sent;
 
           if (!((code < 200 || code >= 300) && code !== 401)) {
-            _context3.next = 27;
+            _context3.next = 28;
             break;
           }
 
-          _context3.next = 25;
+          _context3.next = 26;
           return createErrorSection(builder, false, code, error);
 
-        case 25:
-          _context3.next = 133;
+        case 26:
+          _context3.next = 134;
           break;
 
-        case 27:
+        case 28:
           if (!(code === 401)) {
-            _context3.next = 35;
+            _context3.next = 36;
             break;
           }
 
@@ -299,24 +300,24 @@ function _cardDisplay() {
           createNotAuthorizedSection(builder, false, connector, code);
 
           if (!(config.length > 0)) {
-            _context3.next = 32;
+            _context3.next = 33;
             break;
           }
 
-          _context3.next = 32;
+          _context3.next = 33;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 32:
+        case 33:
           return _context3.abrupt("return", menu(builder));
 
-        case 35:
+        case 36:
           //parse content;
           content = parseData(content); //try to display content or show unparsed data if error;
 
-          _context3.prev = 36;
+          _context3.prev = 37;
 
           if (!(content.length !== 0 && method !== 'add')) {
-            _context3.next = 105;
+            _context3.next = 106;
             break;
           }
 
@@ -324,7 +325,7 @@ function _cardDisplay() {
           hasNested = checkNested(content);
 
           if (!hasNested) {
-            _context3.next = 86;
+            _context3.next = 87;
             break;
           }
 
@@ -332,7 +333,7 @@ function _cardDisplay() {
           hasEditable = checkEditable(content);
 
           if (!hasEditable) {
-            _context3.next = 68;
+            _context3.next = 69;
             break;
           }
 
@@ -340,7 +341,7 @@ function _cardDisplay() {
           connector = propertiesToString(connector);
 
           if (!connector.method) {
-            _context3.next = 68;
+            _context3.next = 69;
             break;
           }
 
@@ -355,7 +356,7 @@ function _cardDisplay() {
           actionsConfig = []; //if is traversable -> add traverse actions;
 
           if (!cType.traversable) {
-            _context3.next = 64;
+            _context3.next = 65;
             break;
           }
 
@@ -373,19 +374,19 @@ function _cardDisplay() {
           propertiesToString(paramsForward);
           propertiesToString(paramsBackward);
           _context3.t0 = true;
-          _context3.next = _context3.t0 === (!has_more && page === total - 1) ? 58 : _context3.t0 === (has_more && page < total && page > 0) ? 60 : _context3.t0 === (has_more && !page) ? 62 : 64;
+          _context3.next = _context3.t0 === (!has_more && page === total - 1) ? 59 : _context3.t0 === (has_more && page < total && page > 0) ? 61 : _context3.t0 === (has_more && !page) ? 63 : 65;
           break;
 
-        case 58:
+        case 59:
           actionsConfig.push({
             icon: globalIconBackArrow,
             text: 'Previous',
             funcName: 'updateSectionAdvanced',
             params: paramsBackward
           });
-          return _context3.abrupt("break", 64);
+          return _context3.abrupt("break", 65);
 
-        case 60:
+        case 61:
           actionsConfig.push({
             icon: globalIconBackArrow,
             text: 'Previous',
@@ -397,18 +398,18 @@ function _cardDisplay() {
             funcName: 'updateSectionAdvanced',
             params: paramsForward
           });
-          return _context3.abrupt("break", 64);
+          return _context3.abrupt("break", 65);
 
-        case 62:
+        case 63:
           actionsConfig.push({
             icon: globalIconForwardArrow,
             text: 'Next',
             funcName: 'updateSectionAdvanced',
             params: paramsForward
           });
-          return _context3.abrupt("break", 64);
+          return _context3.abrupt("break", 65);
 
-        case 64:
+        case 65:
           //if has refresh() method, add action;
           if (cType.refresh) {
             paramsRefresh = copyObject(connector, {
@@ -455,12 +456,12 @@ function _cardDisplay() {
 
           createActionsSection(builder, false, actionsConfig);
 
-        case 68:
+        case 69:
           j = 0;
 
-        case 69:
+        case 70:
           if (!(j < content.length)) {
-            _context3.next = 84;
+            _context3.next = 85;
             break;
           }
 
@@ -470,17 +471,17 @@ function _cardDisplay() {
             section = JSON.parse(section);
           }
 
-          _context3.prev = 72;
-          _context3.next = 75;
+          _context3.prev = 73;
+          _context3.next = 76;
           return createSectionAdvanced(builder, section, j, connector, globalWidgetsCap, start);
 
-        case 75:
-          _context3.next = 81;
+        case 76:
+          _context3.next = 82;
           break;
 
-        case 77:
-          _context3.prev = 77;
-          _context3.t1 = _context3["catch"](72);
+        case 78:
+          _context3.prev = 78;
+          _context3.t1 = _context3["catch"](73);
           console.error('Failed to create advanced section: ' + _context3.t1); //try to handle nested objects that do not conform to our schema;
 
           try {
@@ -493,16 +494,16 @@ function _cardDisplay() {
             }, 'Display error');
           }
 
-        case 81:
+        case 82:
           j++;
-          _context3.next = 69;
+          _context3.next = 70;
           break;
 
-        case 84:
-          _context3.next = 103;
+        case 85:
+          _context3.next = 104;
           break;
 
-        case 86:
+        case 87:
           //get parameters for extra data;
           bm = getBeginMax(content, start);
           full = bm.full;
@@ -512,20 +513,20 @@ function _cardDisplay() {
 
           j = begin;
 
-        case 92:
+        case 93:
           if (!(j < content.length)) {
-            _context3.next = 100;
+            _context3.next = 101;
             break;
           }
 
           if (!(j === max)) {
-            _context3.next = 95;
+            _context3.next = 96;
             break;
           }
 
-          return _context3.abrupt("break", 100);
+          return _context3.abrupt("break", 101);
 
-        case 95:
+        case 96:
           result = content[j];
 
           if (content.length !== 1) {
@@ -534,12 +535,12 @@ function _cardDisplay() {
             createSectionSimple(builder, result, false, j);
           }
 
-        case 97:
+        case 98:
           j++;
-          _context3.next = 92;
+          _context3.next = 93;
           break;
 
-        case 100:
+        case 101:
           length = content.length;
           diff = max - begin; //if length is greater than cap, append extra data section;
 
@@ -552,27 +553,27 @@ function _cardDisplay() {
             }
           }
 
-        case 103:
-          _context3.next = 127;
+        case 104:
+          _context3.next = 128;
           break;
 
-        case 105:
+        case 106:
           if (error) {
-            _context3.next = 127;
+            _context3.next = 128;
             break;
           }
 
           addConfig = cType.addConfig;
 
           if (!addConfig) {
-            _context3.next = 126;
+            _context3.next = 127;
             break;
           }
 
-          _context3.next = 110;
+          _context3.next = 111;
           return addConfig(propertiesToString(connector), msg);
 
-        case 110:
+        case 111:
           adder = _context3.sent;
           add = JSON.parse(adder.config); //set method and config;
 
@@ -601,34 +602,34 @@ function _cardDisplay() {
 
           a = 0;
 
-        case 118:
+        case 119:
           if (!(a < add.length)) {
-            _context3.next = 124;
+            _context3.next = 125;
             break;
           }
 
-          _context3.next = 121;
+          _context3.next = 122;
           return createSectionAdvanced(builder, add[a], a, connector, globalWidgetsCap, 0);
 
-        case 121:
+        case 122:
           a++;
-          _context3.next = 118;
+          _context3.next = 119;
           break;
 
-        case 124:
-          _context3.next = 127;
+        case 125:
+          _context3.next = 128;
           break;
-
-        case 126:
-          createNoFieldsSection(builder, false, connector, msg);
 
         case 127:
-          _context3.next = 133;
+          createNoFieldsSection(builder, false, connector, msg);
+
+        case 128:
+          _context3.next = 134;
           break;
 
-        case 129:
-          _context3.prev = 129;
-          _context3.t2 = _context3["catch"](36);
+        case 130:
+          _context3.prev = 130;
+          _context3.t2 = _context3["catch"](37);
           timestamp('error during display Card build', {
             error: _context3.t2,
             type: 'display'
@@ -637,23 +638,23 @@ function _cardDisplay() {
             descr: 'An error occured during display build'
           }, 'Display error');
 
-        case 133:
+        case 134:
           if (!(config.length > 0)) {
-            _context3.next = 136;
+            _context3.next = 137;
             break;
           }
 
-          _context3.next = 136;
+          _context3.next = 137;
           return createConnectorListSection(builder, true, globalConnectorListHeader, config, msg);
 
-        case 136:
+        case 137:
           return _context3.abrupt("return", menu(builder));
 
-        case 137:
+        case 138:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, this, [[36, 129], [72, 77]]);
+    }, _callee3, this, [[37, 130], [73, 78]]);
   }));
   return _cardDisplay.apply(this, arguments);
 }
