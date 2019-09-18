@@ -391,7 +391,7 @@ function editSectionAdvanced(_x7) {
 /**
  * Updates data with form input values, performs request and calls display with updated response;
  * @param {Object} e event object;
-  * @return {Function} actionShow call with modified data;
+ * @return {Function} actionShow call with modified data;
  */
 
 
@@ -645,93 +645,101 @@ function _updateSectionAdvanced() {
           msg = getToken(e);
           cType = new this[connector.type](); //initiate check variables;
 
-          method = connector.method; //if type only has run() method or connector is simply comm;
+          method = connector.method;
+          Logger.log('method: ' + method); //if type only has run() method or connector is simply comm;
 
           if (!(!cType.update && !cType.remove || method === 'send')) {
-            _context8.next = 13;
+            _context8.next = 15;
             break;
           }
 
-          _context8.next = 12;
+          Logger.log('happened: sent');
+          _context8.next = 14;
           return cType.run(msg, connector, data);
 
-        case 12:
+        case 14:
           resp = _context8.sent;
 
-        case 13:
-          if (!(method === 'refresh' && cType.refresh)) {
-            _context8.next = 19;
+        case 15:
+          if (!(cType.refresh && method === 'refresh')) {
+            _context8.next = 22;
             break;
           }
 
-          _context8.next = 16;
+          Logger.log('happened: refreshed');
+          _context8.next = 19;
           return cType.refresh(msg, connector, data);
 
-        case 16:
+        case 19:
           resp = _context8.sent;
-          _context8.next = 23;
+          _context8.next = 27;
           break;
 
-        case 19:
+        case 22:
           if (!(method === 'refresh' || method === 'traverse')) {
-            _context8.next = 23;
+            _context8.next = 27;
             break;
           }
 
-          _context8.next = 22;
+          Logger.log('happened: traversed');
+          _context8.next = 26;
           return cType.run(msg, connector);
 
-        case 22:
+        case 26:
           resp = _context8.sent;
-
-        case 23:
-          if (!(cType.update && method === 'add')) {
-            _context8.next = 29;
-            break;
-          }
-
-          delete connector.caText;
-          _context8.next = 27;
-          return cType.update(msg, connector, forms, data, method);
 
         case 27:
-          resp = _context8.sent;
-          connector.method = 'edit';
-
-        case 29:
-          if (!(cType.update && method === 'edit')) {
-            _context8.next = 34;
+          if (!(cType.update && method === 'add')) {
+            _context8.next = 33;
             break;
           }
 
-          _context8.next = 32;
+          Logger.log('happened: edited');
+          _context8.next = 31;
           return cType.update(msg, connector, forms, data, method);
 
-        case 32:
+        case 31:
           resp = _context8.sent;
           connector.method = 'edit';
 
-        case 34:
-          if (!(cType.remove && method === 'remove')) {
+        case 33:
+          if (!(cType.update && method === 'edit')) {
             _context8.next = 39;
             break;
           }
 
+          Logger.log('happened: updated');
           _context8.next = 37;
-          return cType.remove(msg, connector, data);
+          return cType.update(msg, connector, forms, data, method);
 
         case 37:
           resp = _context8.sent;
-          connector.method = 'add';
+          connector.method = 'edit';
 
         case 39:
-          //override event object parameters with response data;
+          if (!(cType.remove && method === 'remove')) {
+            _context8.next = 45;
+            break;
+          }
+
+          Logger.log('happened: removed');
+          _context8.next = 43;
+          return cType.remove(msg, connector, data);
+
+        case 43:
+          resp = _context8.sent;
+          connector.method = 'add';
+
+        case 45:
+          Logger.log('new method: ' + connector.method);
+          Logger.log('responded: ' + resp.code); //override event object parameters with response data;
+
           e.parameters.code = resp.code;
           e.parameters.content = resp.content;
           e.parameters.method = connector.method;
           return _context8.abrupt("return", actionShow(e));
 
-        case 43:
+        case 51:
         case "end":
           return _context8.stop();
       }
