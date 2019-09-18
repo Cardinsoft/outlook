@@ -1497,14 +1497,22 @@ function createSectionUpdateConnector(builder, isCollapsed, connector, isReloade
       content: 'Search account when a message is open or on explicit interaction only',
       name: globalManualFieldName,
       switchValue: true,
-      selected: connector.manual
+      selected: connector.manual,
+      funcName: 'updateConnector',
+      parameters: copyObject(connector, {
+        autoUpdate: 'true'
+      })
     }, {
       type: globalKeyValue,
       title: 'Choose display',
       content: 'Make the Connector display search results directly in the dashboard',
       name: globalDefaultFieldName,
       switchValue: true,
-      selected: connector.isDefault
+      selected: connector.isDefault,
+      funcName: 'updateConnector',
+      parameters: copyObject(connector, {
+        autoUpdate: 'true'
+      })
     }]
   };
   createSectionAdvanced(builder, section, 0, connector, section.widgets.length, 0); //set confirmation procedure;
