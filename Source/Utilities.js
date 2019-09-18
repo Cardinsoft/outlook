@@ -196,45 +196,80 @@ function generateId(ids) {
  * Fills content for each widget provided with preserved values;
  * @param {Object} connector object containing preserved values;
  * @param {Array} widgets an array of widgets to loop through;
+ * @param {Boolean=} multiple formInput or formInputs flag;
  */
 
 
-function preserveValues(connector, widgets) {
+function preserveValues(connector, widgets, multiple) {
   //ensure input values are preserved;
   if (widgets.length > 0) {
     widgets.forEach(function (widget) {
+      var type = widget.type;
       var name = widget.name;
       var content = widget.content;
       var hasSwitch = widget.switchValue;
 
       for (var key in connector) {
-        //if field name is found;
-        if (key === name) {
-          //if content is array -> select options;
-          if (content instanceof Array && !hasSwitch) {
-            content.forEach(function (option) {
-              if (connector[key].indexOf(option.value) !== -1) {
-                option.selected = true;
-              } else {
-                option.selected = false;
+        var field = connector[key];
+
+        if (multiple) {
+          if (key === name) {
+            switch (type) {
+              case globalKeyValue:
+                //switch;
+                if (field[0]) {
+                  widget.selected = true;
+                }
+
+                break;
+
+              case globalTextInput:
+                widget.content = field[0];
+                break;
+
+              default:
+                content.forEach(function (option) {
+                  if (field.indexOf(option.value) !== -1) {
+                    option.selected = true;
+                  } else {
+                    option.selected = false;
+                  }
+                });
+            } //end type check;
+
+          } //end this input check;
+
+        } else {
+          //if field name is found;
+          if (key === name) {
+            //if content is array -> select options;
+            if (content instanceof Array && !hasSwitch) {
+              content.forEach(function (option) {
+                if (field.indexOf(option.value) !== -1) {
+                  option.selected = true;
+                } else {
+                  option.selected = false;
+                }
+              });
+            } else if (hasSwitch) {
+              if (field === 'true') {
+                widget.selected = true;
               }
-            });
-          } else if (hasSwitch) {
-            if (connector[key] === 'true') {
-              widget.selected = true;
+            } else {
+              widget.content = field;
             }
-          } else {
-            widget.content = connector[key];
-          }
-        } else if (!connector[name] && !connector.short) {
-          //make sure it isn't type;
-          if (!widget.force) {
-            widget.selected = false;
+          } else if (!connector[name] && !connector.short) {
+            //make sure it isn't type;
+            if (!widget.force) {
+              widget.selected = false;
+            }
           }
         }
-      }
+      } //end form keys loop;
+
     });
-  }
+  } //end widgets check;  
+
 }
 /**
  * Helper function to sort config array;
