@@ -954,7 +954,7 @@ function Close() {
             sections = [];
 
             if (!(response.code >= 200 && response.code < 300)) {
-              _context5.next = 92;
+              _context5.next = 89;
               break;
             }
 
@@ -971,7 +971,7 @@ function Close() {
             leads = contents.data;
 
             if (!(leads.length > 0)) {
-              _context5.next = 90;
+              _context5.next = 87;
               break;
             }
 
@@ -1102,23 +1102,16 @@ function Close() {
             sectionAct.widgets = this.displayActivities(activities, leadId);
 
           case 65:
-            if (!connector.fields) {
-              _context5.next = 69;
-              break;
+            //if fields enabled -> display;
+            if (connector.fields) {
+              sectionFields.widgets = this.displayFields(fields, custom, leadId, users);
             }
 
-            _context5.next = 68;
-            return this.displayFields(fields, custom, leadId, users);
-
-          case 68:
-            sectionFields.widgets = _context5.sent;
-
-          case 69:
             c = 0;
 
-          case 70:
+          case 67:
             if (!(c < contacts.length)) {
-              _context5.next = 89;
+              _context5.next = 86;
               break;
             }
 
@@ -1148,13 +1141,13 @@ function Close() {
             }).length > 0;
 
             if (!(!hasQueryEmail && view === 'contact')) {
-              _context5.next = 84;
+              _context5.next = 81;
               break;
             }
 
-            return _context5.abrupt("continue", 86);
+            return _context5.abrupt("continue", 83);
 
-          case 84:
+          case 81:
             if (view === 'contact') {
               sectionCont.entity = contId;
               sectionCont.widgets = this.displayContact(sectionCont, leadId, contId, name, title, emails, phones, connector.fields, created, edited, view);
@@ -1171,12 +1164,12 @@ function Close() {
               sections.push(sectionCont, sectionEmpl, sectionTask, sectionOppt, sectionAct, sectionFields);
             }
 
-          case 86:
+          case 83:
             c++;
-            _context5.next = 70;
+            _context5.next = 67;
             break;
 
-          case 89:
+          case 86:
             //end contacts loop;        
             if (view === 'lead') {
               sectionEmpl.header = 'Lead';
@@ -1184,13 +1177,13 @@ function Close() {
               sections.push(sectionEmpl, sectionTask, sectionOppt, sectionCont, sectionAct, sectionFields);
             }
 
-          case 90:
-            _context5.next = 99;
+          case 87:
+            _context5.next = 96;
             break;
 
-          case 92:
+          case 89:
             if (!(response.code === 401)) {
-              _context5.next = 98;
+              _context5.next = 95;
               break;
             }
 
@@ -1226,10 +1219,10 @@ function Close() {
               }
             });
 
-          case 98:
+          case 95:
             return _context5.abrupt("return", response);
 
-          case 99:
+          case 96:
             //contruct resulting object;
             returned = {
               code: response.code,
@@ -1246,7 +1239,7 @@ function Close() {
 
             return _context5.abrupt("return", returned);
 
-          case 102:
+          case 99:
           case "end":
             return _context5.stop();
         }
@@ -1255,6 +1248,445 @@ function Close() {
 
     return function (_x14, _x15, _x16) {
       return _ref5.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching leads;
+   * @param {Object} headers request headers;
+   * @param {Array<String>} fields fileds to return;
+   * @param {Boolean} fetchAll autopaginate flag;
+   * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;
+   * @return {Array<Object>} leads;   
+   */
+
+
+  this.fetchLeads_ =
+  /*#__PURE__*/
+  function () {
+    var _ref6 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee6(headers, fields, fetchAll, start, limit) {
+      var lds, query, url, response, content, statuses, hasMore;
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
+          case 0:
+            start = start || 0;
+            lds = [];
+            query = ['_fields=' + fields.join(','), '_skip=' + start];
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/lead/?' + query.join('&'));
+            _context6.next = 7;
+            return performFetch(url, 'get', headers);
+
+          case 7:
+            response = _context6.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context6.next = 19;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            statuses = content.data;
+            lds = lds.concat(statuses); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context6.next = 19;
+              break;
+            }
+
+            _context6.t0 = lds;
+            _context6.next = 17;
+            return this.fetchLeads_(headers, fields, fetchAll, start + limit, limit);
+
+          case 17:
+            _context6.t1 = _context6.sent;
+            lds = _context6.t0.concat.call(_context6.t0, _context6.t1);
+
+          case 19:
+            return _context6.abrupt("return", lds);
+
+          case 20:
+          case "end":
+            return _context6.stop();
+        }
+      }, _callee6, this);
+    }));
+
+    return function (_x17, _x18, _x19, _x20, _x21) {
+      return _ref6.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching lead statuses;
+   * @param {Object} headers request headers;
+   * @param {Array<String>} fields fields to return;   
+   * @param {Boolean} fetchAll autopaginate flag;   
+   * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} lsid status id filter;
+   * @return {Array<Object>} lead statuses;
+   */
+
+
+  this.fetchLeadStatuses_ =
+  /*#__PURE__*/
+  function () {
+    var _ref7 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee7(headers, fields, fetchAll, start, limit, lsid) {
+      var lsts, query, url, response, content, statuses, hasMore;
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
+          case 0:
+            start = start || 0;
+            lsts = [];
+            query = ['_skip=' + start];
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/status/lead' + (lsid ? '/' + lsid + '/' : ''));
+            _context7.next = 7;
+            return performFetch(url, 'get', headers);
+
+          case 7:
+            response = _context7.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context7.next = 19;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            statuses = content.data;
+            lsts = lsts.concat(statuses); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context7.next = 19;
+              break;
+            }
+
+            _context7.t0 = lsts;
+            _context7.next = 17;
+            return this.fetchLeadStatuses_(headers, fields, fetchAll, start + limit, limit, lsid);
+
+          case 17:
+            _context7.t1 = _context7.sent;
+            lsts = _context7.t0.concat.call(_context7.t0, _context7.t1);
+
+          case 19:
+            return _context7.abrupt("return", lsts);
+
+          case 20:
+          case "end":
+            return _context7.stop();
+        }
+      }, _callee7, this);
+    }));
+
+    return function (_x22, _x23, _x24, _x25, _x26, _x27) {
+      return _ref7.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching activities;
+   * @param {Object} request headers;
+   * @param {Array<String>} fields fields to return;
+   * @param {Boolean} fetchAll autopaginate flag;
+   * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;
+   * @param {String=} lid lead id filter;
+   * @param {String=} cid contact id filter;
+   * @return {Array<Object>} activities;
+   */
+
+
+  this.fetchActivities_ =
+  /*#__PURE__*/
+  function () {
+    var _ref8 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee8(headers, fields, fetchAll, start, limit, lid, cid) {
+      var acts, query, url, response, content, activities, hasMore;
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
+          case 0:
+            start = start || 0;
+            acts = [];
+            query = ['_skip=' + start];
+
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
+
+            if (lid) {
+              query.push('lead_id=' + lid);
+            }
+
+            if (cid) {
+              query.push('contact_id=' + cid);
+            }
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context8.next = 10;
+            return performFetch(url, 'get', headers);
+
+          case 10:
+            response = _context8.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context8.next = 22;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            activities = content.data;
+            acts = acts.concat(activities); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context8.next = 22;
+              break;
+            }
+
+            _context8.t0 = acts;
+            _context8.next = 20;
+            return this.fetchActivities_(headers, fields, fetchAll, start + limit, limit, lid, cid);
+
+          case 20:
+            _context8.t1 = _context8.sent;
+            acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
+
+          case 22:
+            return _context8.abrupt("return", acts);
+
+          case 23:
+          case "end":
+            return _context8.stop();
+        }
+      }, _callee8, this);
+    }));
+
+    return function (_x28, _x29, _x30, _x31, _x32, _x33, _x34) {
+      return _ref8.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching custom fields;
+   * @param {Object} headers request headers;
+   * @param {Array<String>} fields fields to return;
+   * @param {Boolean} fetchAll autopaginate flag;
+   * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} lid lead id filter;
+   * @return {Array<Object>} custom fields;
+   */
+
+
+  this.fetchFields_ =
+  /*#__PURE__*/
+  function () {
+    var _ref9 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee9(headers, fields, fetchAll, start, limit, lid) {
+      var fds, query, url, response, content, hasMore;
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
+          case 0:
+            start = start || 0;
+            fds = [];
+            query = ['_skip=' + start];
+
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/custom_fields/lead' + (lid ? '/' + lid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context9.next = 8;
+            return performFetch(url, 'get', headers);
+
+          case 8:
+            response = _context9.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context9.next = 20;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            fields = content.data;
+            fds = fds.concat(fields); //check pagination and fetch;
+
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context9.next = 20;
+              break;
+            }
+
+            _context9.t0 = fds;
+            _context9.next = 18;
+            return this.fetchFields_(headers, fields, fetchAll, start + limit, lid);
+
+          case 18:
+            _context9.t1 = _context9.sent;
+            fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
+
+          case 20:
+            return _context9.abrupt("return", fds);
+
+          case 21:
+          case "end":
+            return _context9.stop();
+        }
+      }, _callee9, this);
+    }));
+
+    return function (_x35, _x36, _x37, _x38, _x39, _x40) {
+      return _ref9.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching users;
+   * @param {Object} headers request headers;
+   * @param {Array<String>} fields fields to return;
+   * @param {Boolean} fetchAll autopaginate flag;
+   * @param {Integer=} start start for pagination;
+   * @param {Integer=} limit limit for pagination;   
+   * @param {String=} uid user id to filter;
+   * @return {Array<Object>} users; 
+   */
+
+
+  this.fetchUsers_ =
+  /*#__PURE__*/
+  function () {
+    var _ref10 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee10(headers, fields, fetchAll, start, limit, uid) {
+      var uss, query, url, response, content, users, hasMore;
+      return regeneratorRuntime.wrap(function _callee10$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            start = start || 0;
+            uss = [];
+            query = ['_skip=' + start];
+
+            if (fields) {
+              query.push('_fields=' + fields.join(','));
+            }
+
+            if (limit) {
+              query.push('_limit=' + limit);
+            }
+
+            url = encodeURI(this.url + '/user' + (uid ? '/' + uid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
+            _context10.next = 8;
+            return performFetch(url, 'get', headers);
+
+          case 8:
+            response = _context10.sent;
+
+            if (!(response.code >= 200 && response.code < 300)) {
+              _context10.next = 20;
+              break;
+            }
+
+            content = JSON.parse(response.content);
+            users = content.data;
+            uss = uss.concat(users);
+            hasMore = content.has_more;
+
+            if (!(hasMore && fetchAll)) {
+              _context10.next = 20;
+              break;
+            }
+
+            _context10.t0 = uss;
+            _context10.next = 18;
+            return this.fetchUsers_(headers, fields, fetchAll, start + limit, uid);
+
+          case 18:
+            _context10.t1 = _context10.sent;
+            uss = _context10.t0.concat.call(_context10.t0, _context10.t1);
+
+          case 20:
+            return _context10.abrupt("return", uss);
+
+          case 21:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee10, this);
+    }));
+
+    return function (_x41, _x42, _x43, _x44, _x45, _x46) {
+      return _ref10.apply(this, arguments);
+    };
+  }();
+  /**
+   * Utility method for fetching opportunity statuses;
+   * @param {Object} headers request headers;
+   * @param {String=} id if provided -> fetch single status;
+   * @return {Array<Object>} opportunity statuses;
+   */
+
+
+  this.fetchOpportStatuses_ =
+  /*#__PURE__*/
+  function () {
+    var _ref11 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee11(headers, id) {
+      var oss, url, response, content, statuses;
+      return regeneratorRuntime.wrap(function _callee11$(_context11) {
+        while (1) switch (_context11.prev = _context11.next) {
+          case 0:
+            oss = [];
+            url = encodeURI(this.url + '/status/opportunity' + (id ? '/' + id + '/' : ''));
+            _context11.next = 4;
+            return performFetch(url, 'get', headers);
+
+          case 4:
+            response = _context11.sent;
+
+            if (response.code >= 200 && response.code < 300) {
+              content = JSON.parse(response.content);
+              statuses = content.data;
+              oss = oss.concat(statuses);
+            }
+
+            return _context11.abrupt("return", oss);
+
+          case 7:
+          case "end":
+            return _context11.stop();
+        }
+      }, _callee11, this);
+    }));
+
+    return function (_x47, _x48) {
+      return _ref11.apply(this, arguments);
     };
   }();
   /**
@@ -1467,7 +1899,7 @@ function Close() {
         return f.name === key;
       })[0];
 
-      if (fieldInfo) {
+      if (fieldInfo && fieldInfo.type !== 'hidden') {
         var cfw = {
           icon: globalIconCustom,
           type: globalKeyValue,
@@ -1634,6 +2066,24 @@ function Close() {
             }
 
             cfw.content = userDisplay;
+            cfw.fetch = {
+              fetcher: {
+                callback: 'fetchUsers_',
+                params: [['id', 'first_name', 'last_name'], false, 0, 4]
+              },
+              displayer: {
+                show: {
+                  map: ['first_name', 'last_name'],
+                  join: '\r\n'
+                },
+                edit: [{
+                  value: 'id',
+                  map: ['first_name', 'last_name'],
+                  join: ' ',
+                  select: field
+                }]
+              }
+            };
             break;
         }
 
@@ -2081,12 +2531,12 @@ function Close() {
     return woppt;
   };
   /**
-  * Utility method for building activities display;
-  * @param {Array<Object>} activities activities set;
-  * @param {String} leadId lead id;
-  * @param {String} contactId contact id;
-  * @return {Array<Object>} activities widgets;
-  */
+   * Utility method for building activities display;
+   * @param {Array<Object>} activities activities set;
+   * @param {String} leadId lead id;
+   * @param {String} contactId contact id;
+   * @return {Array<Object>} activities widgets;
+   */
 
 
   this.displayActivities = function (activities, leadId, contactId) {
@@ -2254,445 +2704,6 @@ function Close() {
 
     return wact;
   };
-  /**
-   * Utility method for fetching leads;
-   * @param {Object} headers request headers;
-   * @param {Array<String>} fields fileds to return;
-   * @param {Boolean} fetchAll autopaginate flag;
-   * @param {Integer=} start start for pagination;
-   * @param {Integer=} limit limit for pagination;
-   * @return {Array<Object>} leads;   
-   */
-
-
-  this.fetchLeads_ =
-  /*#__PURE__*/
-  function () {
-    var _ref6 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(headers, fields, fetchAll, start, limit) {
-      var lds, query, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
-          case 0:
-            start = start || 0;
-            lds = [];
-            query = ['_fields=' + fields.join(','), '_skip=' + start];
-
-            if (limit) {
-              query.push('_limit=' + limit);
-            }
-
-            url = encodeURI(this.url + '/lead/?' + query.join('&'));
-            _context6.next = 7;
-            return performFetch(url, 'get', headers);
-
-          case 7:
-            response = _context6.sent;
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context6.next = 19;
-              break;
-            }
-
-            content = JSON.parse(response.content);
-            statuses = content.data;
-            lds = lds.concat(statuses); //check pagination and fetch;
-
-            hasMore = content.has_more;
-
-            if (!(hasMore && fetchAll)) {
-              _context6.next = 19;
-              break;
-            }
-
-            _context6.t0 = lds;
-            _context6.next = 17;
-            return this.fetchLeads_(headers, fields, fetchAll, start + limit, limit);
-
-          case 17:
-            _context6.t1 = _context6.sent;
-            lds = _context6.t0.concat.call(_context6.t0, _context6.t1);
-
-          case 19:
-            return _context6.abrupt("return", lds);
-
-          case 20:
-          case "end":
-            return _context6.stop();
-        }
-      }, _callee6, this);
-    }));
-
-    return function (_x17, _x18, _x19, _x20, _x21) {
-      return _ref6.apply(this, arguments);
-    };
-  }();
-  /**
-   * Utility method for fetching lead statuses;
-   * @param {Object} headers request headers;
-   * @param {Array<String>} fields fields to return;   
-   * @param {Boolean} fetchAll autopaginate flag;   
-   * @param {Integer=} start start for pagination;
-   * @param {Integer=} limit limit for pagination;   
-   * @param {String=} lsid status id filter;
-   * @return {Array<Object>} lead statuses;
-   */
-
-
-  this.fetchLeadStatuses_ =
-  /*#__PURE__*/
-  function () {
-    var _ref7 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(headers, fields, fetchAll, start, limit, lsid) {
-      var lsts, query, url, response, content, statuses, hasMore;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
-          case 0:
-            start = start || 0;
-            lsts = [];
-            query = ['_skip=' + start];
-
-            if (limit) {
-              query.push('_limit=' + limit);
-            }
-
-            url = encodeURI(this.url + '/status/lead' + (lsid ? '/' + lsid + '/' : ''));
-            _context7.next = 7;
-            return performFetch(url, 'get', headers);
-
-          case 7:
-            response = _context7.sent;
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context7.next = 19;
-              break;
-            }
-
-            content = JSON.parse(response.content);
-            statuses = content.data;
-            lsts = lsts.concat(statuses); //check pagination and fetch;
-
-            hasMore = content.has_more;
-
-            if (!(hasMore && fetchAll)) {
-              _context7.next = 19;
-              break;
-            }
-
-            _context7.t0 = lsts;
-            _context7.next = 17;
-            return this.fetchLeadStatuses_(headers, fields, fetchAll, start + limit, limit, lsid);
-
-          case 17:
-            _context7.t1 = _context7.sent;
-            lsts = _context7.t0.concat.call(_context7.t0, _context7.t1);
-
-          case 19:
-            return _context7.abrupt("return", lsts);
-
-          case 20:
-          case "end":
-            return _context7.stop();
-        }
-      }, _callee7, this);
-    }));
-
-    return function (_x22, _x23, _x24, _x25, _x26, _x27) {
-      return _ref7.apply(this, arguments);
-    };
-  }();
-  /**
-  * Utility method for fetching activities;
-  * @param {Object} request headers;
-  * @param {Array<String>} fields fields to return;
-  * @param {Boolean} fetchAll autopaginate flag;
-  * @param {Integer=} start start for pagination;
-  * @param {Integer=} limit limit for pagination;
-  * @param {String=} lid lead id filter;
-  * @param {String=} cid contact id filter;
-  * @return {Array<Object>} activities;
-  */
-
-
-  this.fetchActivities_ =
-  /*#__PURE__*/
-  function () {
-    var _ref8 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8(headers, fields, fetchAll, start, limit, lid, cid) {
-      var acts, query, url, response, content, activities, hasMore;
-      return regeneratorRuntime.wrap(function _callee8$(_context8) {
-        while (1) switch (_context8.prev = _context8.next) {
-          case 0:
-            start = start || 0;
-            acts = [];
-            query = ['_skip=' + start];
-
-            if (fields) {
-              query.push('_fields=' + fields.join(','));
-            }
-
-            if (lid) {
-              query.push('lead_id=' + lid);
-            }
-
-            if (cid) {
-              query.push('contact_id=' + cid);
-            }
-
-            if (limit) {
-              query.push('_limit=' + limit);
-            }
-
-            url = encodeURI(this.url + '/activity' + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context8.next = 10;
-            return performFetch(url, 'get', headers);
-
-          case 10:
-            response = _context8.sent;
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context8.next = 22;
-              break;
-            }
-
-            content = JSON.parse(response.content);
-            activities = content.data;
-            acts = acts.concat(activities); //check pagination and fetch;
-
-            hasMore = content.has_more;
-
-            if (!(hasMore && fetchAll)) {
-              _context8.next = 22;
-              break;
-            }
-
-            _context8.t0 = acts;
-            _context8.next = 20;
-            return this.fetchActivities_(headers, fields, fetchAll, start + limit, limit, lid, cid);
-
-          case 20:
-            _context8.t1 = _context8.sent;
-            acts = _context8.t0.concat.call(_context8.t0, _context8.t1);
-
-          case 22:
-            return _context8.abrupt("return", acts);
-
-          case 23:
-          case "end":
-            return _context8.stop();
-        }
-      }, _callee8, this);
-    }));
-
-    return function (_x28, _x29, _x30, _x31, _x32, _x33, _x34) {
-      return _ref8.apply(this, arguments);
-    };
-  }();
-  /**
-   * Utility method for fetching custom fields;
-   * @param {Object} headers request headers;
-   * @param {Array<String>} fields fields to return;
-   * @param {Boolean} fetchAll autopaginate flag;
-   * @param {Integer=} start start for pagination;
-   * @param {Integer=} limit limit for pagination;   
-   * @param {String=} lid lead id filter;
-   * @return {Array<Object>} custom fields;
-   */
-
-
-  this.fetchFields_ =
-  /*#__PURE__*/
-  function () {
-    var _ref9 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee9(headers, fields, fetchAll, start, limit, lid) {
-      var fds, query, url, response, content, hasMore;
-      return regeneratorRuntime.wrap(function _callee9$(_context9) {
-        while (1) switch (_context9.prev = _context9.next) {
-          case 0:
-            start = start || 0;
-            fds = [];
-            query = ['_skip=' + start];
-
-            if (fields) {
-              query.push('_fields=' + fields.join(','));
-            }
-
-            if (limit) {
-              query.push('_limit=' + limit);
-            }
-
-            url = encodeURI(this.url + '/custom_fields/lead' + (lid ? '/' + lid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context9.next = 8;
-            return performFetch(url, 'get', headers);
-
-          case 8:
-            response = _context9.sent;
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context9.next = 20;
-              break;
-            }
-
-            content = JSON.parse(response.content);
-            fields = content.data;
-            fds = fds.concat(fields); //check pagination and fetch;
-
-            hasMore = content.has_more;
-
-            if (!(hasMore && fetchAll)) {
-              _context9.next = 20;
-              break;
-            }
-
-            _context9.t0 = fds;
-            _context9.next = 18;
-            return this.fetchFields_(headers, fields, fetchAll, start + limit, lid);
-
-          case 18:
-            _context9.t1 = _context9.sent;
-            fds = _context9.t0.concat.call(_context9.t0, _context9.t1);
-
-          case 20:
-            return _context9.abrupt("return", fds);
-
-          case 21:
-          case "end":
-            return _context9.stop();
-        }
-      }, _callee9, this);
-    }));
-
-    return function (_x35, _x36, _x37, _x38, _x39, _x40) {
-      return _ref9.apply(this, arguments);
-    };
-  }();
-  /**
-   * Utility method for fetching users;
-   * @param {Object} headers request headers;
-   * @param {Array<String>} fields fields to return;
-   * @param {Boolean} fetchAll autopaginate flag;
-   * @param {Integer=} start start for pagination;
-   * @param {Integer=} limit limit for pagination;   
-   * @param {String=} uid user id to filter;
-   * @return {Array<Object>} users; 
-   */
-
-
-  this.fetchUsers_ =
-  /*#__PURE__*/
-  function () {
-    var _ref10 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee10(headers, fields, fetchAll, start, limit, uid) {
-      var uss, query, url, response, content, users, hasMore;
-      return regeneratorRuntime.wrap(function _callee10$(_context10) {
-        while (1) switch (_context10.prev = _context10.next) {
-          case 0:
-            start = start || 0;
-            uss = [];
-            query = ['_skip=' + start];
-
-            if (fields) {
-              query.push('_fields=' + fields.join(','));
-            }
-
-            if (limit) {
-              query.push('_limit=' + limit);
-            }
-
-            url = encodeURI(this.url + '/user' + (uid ? '/' + uid + '/' : '') + (query.length > 0 ? '?' + query.join('&') : ''));
-            _context10.next = 8;
-            return performFetch(url, 'get', headers);
-
-          case 8:
-            response = _context10.sent;
-
-            if (!(response.code >= 200 && response.code < 300)) {
-              _context10.next = 20;
-              break;
-            }
-
-            content = JSON.parse(response.content);
-            users = content.data;
-            uss = uss.concat(users);
-            hasMore = content.has_more;
-
-            if (!(hasMore && fetchAll)) {
-              _context10.next = 20;
-              break;
-            }
-
-            _context10.t0 = uss;
-            _context10.next = 18;
-            return this.fetchUsers_(headers, fields, fetchAll, start + limit, uid);
-
-          case 18:
-            _context10.t1 = _context10.sent;
-            uss = _context10.t0.concat.call(_context10.t0, _context10.t1);
-
-          case 20:
-            return _context10.abrupt("return", uss);
-
-          case 21:
-          case "end":
-            return _context10.stop();
-        }
-      }, _callee10, this);
-    }));
-
-    return function (_x41, _x42, _x43, _x44, _x45, _x46) {
-      return _ref10.apply(this, arguments);
-    };
-  }();
-  /**
-  * Utility method for fetching opportunity statuses;
-  * @param {Object} headers request headers;
-  * @param {String=} id if provided -> fetch single status;
-  * @return {Array<Object>} opportunity statuses;
-  */
-
-
-  this.fetchOpportStatuses_ =
-  /*#__PURE__*/
-  function () {
-    var _ref11 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee11(headers, id) {
-      var oss, url, response, content, statuses;
-      return regeneratorRuntime.wrap(function _callee11$(_context11) {
-        while (1) switch (_context11.prev = _context11.next) {
-          case 0:
-            oss = [];
-            url = encodeURI(this.url + '/status/opportunity' + (id ? '/' + id + '/' : ''));
-            _context11.next = 4;
-            return performFetch(url, 'get', headers);
-
-          case 4:
-            response = _context11.sent;
-
-            if (response.code >= 200 && response.code < 300) {
-              content = JSON.parse(response.content);
-              statuses = content.data;
-              oss = oss.concat(statuses);
-            }
-
-            return _context11.abrupt("return", oss);
-
-          case 7:
-          case "end":
-            return _context11.stop();
-        }
-      }, _callee11, this);
-    }));
-
-    return function (_x47, _x48) {
-      return _ref11.apply(this, arguments);
-    };
-  }();
 }
 
 Close.prototype = Object.create(Connector.prototype);
