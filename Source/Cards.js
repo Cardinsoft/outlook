@@ -168,7 +168,18 @@ function _cardUpdate() {
 
           basic = new Connector(icon, name, url).basic;
           widgets = basic.widgets;
-          advanced = cType.config; //create section with custom icon URL input;
+          advanced = cType.config; //enable autoupdate;
+
+          advanced.forEach(function (s) {
+            s.widgets.forEach(function (w) {
+              if (w.name && !w.funcName) {
+                w.funcName = 'updateConnector';
+                w.parameters = propertiesToString(copyObject(connector, {
+                  autoUpdate: 'true'
+                }));
+              }
+            });
+          }); //create section with custom icon URL input;
 
           if (cType.allowCustomIcons === true) {
             createCustomIconsSection(builder, false, connector.icon);
@@ -211,13 +222,13 @@ function _cardUpdate() {
           } //create section with manual and default widgets + update button;
 
 
-          _context2.next = 32;
+          _context2.next = 33;
           return createSectionUpdateConnector(builder, false, connector, true, isReloaded, authType);
 
-        case 32:
+        case 33:
           return _context2.abrupt("return", menu(builder));
 
-        case 33:
+        case 34:
         case "end":
           return _context2.stop();
       }
