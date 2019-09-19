@@ -468,14 +468,15 @@ function _trigger() {
           s.show();
           init = new UniversalActionResponseBuilder();
           init.build();
-          _context4.next = 11;
+          console.log(init);
+          _context4.next = 12;
           return init.displayAddOnCards([cardOpen(e)]);
 
-        case 11:
+        case 12:
           o.hide('#app-overlay');
           s.hide();
 
-        case 13:
+        case 14:
         case "end":
           return _context4.stop();
       }
