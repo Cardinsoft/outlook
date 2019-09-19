@@ -580,7 +580,7 @@ function _actionCallback() {
           e.parameters = params;
 
           if (!(loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 24;
+            _context5.next = 26;
             break;
           }
 
@@ -597,26 +597,31 @@ function _actionCallback() {
         case 18:
           result = _context5.sent;
 
-          if (!result) {
-            Utilities.sleep(5000);
+          if (result) {
+            _context5.next = 22;
+            break;
           }
 
+          _context5.next = 22;
+          return Utilities.sleep(5000);
+
+        case 22:
           o.hide();
           s.hide();
-          _context5.next = 27;
+          _context5.next = 29;
           break;
 
-        case 24:
-          _context5.next = 26;
+        case 26:
+          _context5.next = 28;
           return GLOBAL[functionName](e);
 
-        case 26:
+        case 28:
           result = _context5.sent;
 
-        case 27:
+        case 29:
           return _context5.abrupt("return", result === undefined ? {} : result);
 
-        case 28:
+        case 30:
         case "end":
           return _context5.stop();
       }
