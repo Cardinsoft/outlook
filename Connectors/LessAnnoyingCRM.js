@@ -72,6 +72,12 @@ function LessAnnoyingCRM() {
 
   this.addConfig = function (connector, msg) {
     var trimmed = trimMessage(msg, true, true);
+    var usercode = trimWhitespace(connector.usercode, true);
+    var apitoken = trimWhitespace(connector.apitoken, true);
+    var auth = {
+      uc: usercode,
+      api: apitoken
+    };
     var config = [{
       header: 'Main info',
       widgets: [{
