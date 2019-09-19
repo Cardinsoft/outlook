@@ -539,17 +539,25 @@ function _actionCallback() {
 
                   if (valueIndiff) {
                     isSelected = cl.contains('is-selected') || input.checked;
+                    exists = Object.keys(e.formInput).some(function (key) {
+                      return key === name;
+                    });
 
                     if (isSelected) {
-                      exists = Object.keys(e.formInput).some(function (key) {
-                        return key === name;
-                      });
                       e.formInput[name] = value;
 
                       if (!exists) {
                         e.formInputs[name] = [value];
                       } else {
                         e.formInputs[name].push(value);
+                      }
+                    } else {
+                      delete e.formInput[name];
+
+                      if (!exists) {
+                        e.formInputs[name] = [];
+                      } else {
+                        e.formInputs[name].splice(e.formInputs[name].indexOf(value), 1);
                       }
                     }
                   } else {
