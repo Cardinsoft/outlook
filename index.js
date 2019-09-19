@@ -469,7 +469,7 @@ function _trigger() {
           init = new UniversalActionResponseBuilder();
           init.build(); //test
 
-          console.log(init);
+          console.log(cardOpen(e));
           _context4.next = 12;
           return init.displayAddOnCards([cardOpen(e)]);
 
