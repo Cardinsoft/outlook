@@ -466,15 +466,16 @@ function _trigger() {
           s = new Spinner();
           s.setSize('large');
           s.show();
-          init = new UniversalActionResponseBuilder().build();
-          _context4.next = 10;
+          init = new UniversalActionResponseBuilder();
+          init.build();
+          _context4.next = 11;
           return init.displayAddOnCards([cardOpen(e)]);
 
-        case 10:
+        case 11:
           o.hide('#app-overlay');
           s.hide();
 
-        case 12:
+        case 13:
         case "end":
           return _context4.stop();
       }
