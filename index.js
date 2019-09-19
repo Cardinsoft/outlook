@@ -164,7 +164,7 @@ Menu.prototype.addItem = function (item, isCardAction) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
-    var result, response;
+    var result;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -175,14 +175,13 @@ Menu.prototype.addItem = function (item, isCardAction) {
 
         case 3:
           result = _context2.sent;
-          response = new UniversalActionResponseBuilder();
-          _context2.next = 7;
-          return response.displayAddOnCards([response]);
+          _context2.next = 6;
+          return response.displayAddOnCards([result]);
 
-        case 7:
+        case 6:
           response.build();
 
-        case 8:
+        case 7:
         case "end":
           return _context2.stop();
       }
