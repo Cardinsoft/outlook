@@ -80,11 +80,11 @@ regeneratorRuntime.mark(function _callee() {
           break;
         }
 
-        _context.next = 6;
-        return response.returns.navigation.card;
+        card = response.returns.navigation.card;
+        _context.next = 7;
+        return card.appendToUi();
 
-      case 6:
-        card = _context.sent;
+      case 7:
         return _context.abrupt("return", card);
 
       case 8:
