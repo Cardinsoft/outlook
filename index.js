@@ -164,16 +164,31 @@ Menu.prototype.addItem = function (item, isCardAction) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
-    var response;
+    var result, response;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          self.switchShow();
-          console.log(this); //initialize, display Cards and build;
+          self.switchShow(); //perform callback and check if a card should be displayed;
 
-          response = new UniversalActionResponseBuilder(); //await displayAddOnCards();
+          _context2.next = 3;
+          return actionCallback(this);
 
         case 3:
+          result = _context2.sent;
+
+          if (!(result instanceof Card)) {
+            _context2.next = 9;
+            break;
+          }
+
+          response = new UniversalActionResponseBuilder();
+          _context2.next = 8;
+          return response.displayAddOnCards([response]);
+
+        case 8:
+          response.build();
+
+        case 9:
         case "end":
           return _context2.stop();
       }
