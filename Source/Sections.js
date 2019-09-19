@@ -1263,7 +1263,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
               switch (type) {
                 case globalEnumDropdown:
                   fetchWidgetParams.widget -= 1;
-                  btn = actionKeyValueWidget(globalIconDownload, '', '', globalActionClick, 'reloadWidgetDisplay', propertiesToString(fetchWidgetParams));
+                  btn = actionKeyValueWidget(globalIconDownload, 'Load more ' + (widget.entity ? widget.entity + 's' : ''), '', globalActionClick, 'reloadWidgetDisplay', propertiesToString(fetchWidgetParams));
                   section.addWidget(btn);
                   break;
               }
