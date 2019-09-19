@@ -597,13 +597,13 @@ function _actionCallback() {
         case 18:
           result = _context5.sent;
 
-          if (result) {
+          if (!(result === undefined)) {
             _context5.next = 22;
             break;
           }
 
           _context5.next = 22;
-          return Utilities.sleep(5000);
+          return Utilities.sleep(500);
 
         case 22:
           o.hide();
