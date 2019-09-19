@@ -56,11 +56,12 @@ CardBuilder.prototype.setName = function (name) {
 };
 /**
  * Validates the Card;
- * @returns {CardBuilder} CardBuilder instance;
+ * @returns {Card} Card instance;
  */
 
 
 CardBuilder.prototype.build = function () {
-  //TODO: add validation;
-  return this;
+  const card = new Card(this); //TODO: add validation;
+
+  return card;
 };
