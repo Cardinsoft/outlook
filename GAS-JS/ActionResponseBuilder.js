@@ -76,7 +76,7 @@ regeneratorRuntime.mark(function _callee() {
         response = new ActionResponse(this); //if navigation -> build card;
 
         if (this.navigation) {
-          console.log(this.navigation); //const card = response.returns.navigation.card;
+          console.log(response); //const card = response.returns.navigation.card;
           //await card.appendToUi();
           //return card;
         } //return response object;
