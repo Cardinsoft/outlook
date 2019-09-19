@@ -90,34 +90,32 @@ Switch.prototype.appendToUi = function (parent) {
   wrapToggle.append(input); //set action if provided;
 
   if (action) {
-    //parse action if found;
-    action = JSON.parse(action); //change cursor to pointer on hover;
-
-    wrapToggle.classList.add('pointer'); //get unique identifier;
-
-    let id = getId(); //set stringifyed action to global storage;
-
-    e_actions[id] = JSON.stringify(action); //add action reference to widget;
-
-    wrapToggle.setAttribute('action', id); //set event listener to widget;
+    //set refrence;
+    setAction(wrapToggle, action); //set event listener to widget;
 
     wrapToggle.addEventListener('click',
     /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee() {
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return actionCallback(this);
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(event) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              event.stopPropagation();
+              return _context.abrupt("return", actionCallback(this));
 
-          case 2:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee, this);
-    })));
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
   }
 
   const label = document.createElement('label');
