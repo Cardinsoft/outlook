@@ -467,7 +467,8 @@ function _trigger() {
           s.setSize('large');
           s.show();
           init = new UniversalActionResponseBuilder();
-          init.build();
+          init.build(); //test
+
           console.log(init);
           _context4.next = 12;
           return init.displayAddOnCards([cardOpen(e)]);
