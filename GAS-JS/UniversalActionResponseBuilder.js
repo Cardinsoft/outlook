@@ -29,39 +29,20 @@ function () {
     value: function () {
       var _displayAddOnCards = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2(cardObjects) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+      regeneratorRuntime.mark(function _callee(cardObjects) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
             case 0:
-              cardObjects.forEach(
-              /*#__PURE__*/
-              function () {
-                var _ref = _asyncToGenerator(
-                /*#__PURE__*/
-                regeneratorRuntime.mark(function _callee(cardObject) {
-                  return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) switch (_context.prev = _context.next) {
-                      case 0:
-                        _context.next = 2;
-                        return cardObject.appendToUi();
-
-                      case 2:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }, _callee);
-                }));
-
-                return function (_x2) {
-                  return _ref.apply(this, arguments);
-                };
-              }());
+              console.log(cardObjects);
+              /*cardObjects.forEach(async function(cardObject){
+              	await cardObject.appendToUi();
+              });*/
 
             case 1:
             case "end":
-              return _context2.stop();
+              return _context.stop();
           }
-        }, _callee2);
+        }, _callee);
       }));
 
       function displayAddOnCards(_x) {
