@@ -27,13 +27,13 @@ Navigation.prototype.printJson = function () {
 
 Navigation.prototype.updateCard = function (card) {
   this.card = card;
-  cardStack[cardStack.length - 1] = builtCard;
+  cardStack[cardStack.length - 1] = card;
   return this;
 };
 
 Navigation.prototype.pushCard = function (card) {
   this.card = card;
-  cardStack.push(builtCard);
+  cardStack.push(card);
   return this;
 };
 
