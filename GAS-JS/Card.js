@@ -12,10 +12,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 let Card =
 /*#__PURE__*/
 function () {
-  function Card() {
+  function Card(builder) {
     _classCallCheck(this, Card);
 
     this.className = 'Card';
+    this.builder = builder;
   }
   /**
    * Utility method for appending Card to Ui;
@@ -28,41 +29,42 @@ function () {
       var _appendToUi = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var cardHeader, cardSections, cardActions, wrap, headerWrap, icon, header, sections, serialize, s, cardSection, numuncoll, section, menu;
+        var builder, cardHeader, cardSections, cardActions, wrap, headerWrap, icon, header, sections, serialize, s, cardSection, numuncoll, section, menu;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              cardHeader = this.cardHeader;
-              cardSections = this.sections;
-              cardActions = this.actions;
+              builder = this.builder;
+              cardHeader = builder.cardHeader;
+              cardSections = builder.sections;
+              cardActions = builder.actions;
               $('#main-Ui-header').empty();
               $('#app-body').empty();
               wrap = document.createElement('div');
               wrap.className = 'Card';
               $('#app-body').append(wrap);
 
-              if (this.cardHeader) {
+              if (builder.cardHeader) {
                 headerWrap = document.createElement('div');
                 headerWrap.className = [cardHeader.className, 'separated-both'].join(' ');
                 $('#app-body').prepend(headerWrap);
 
-                if (this.cardHeader.imageUrl) {
+                if (builder.cardHeader.imageUrl) {
                   icon = document.createElement('img');
-                  icon.src = this.cardHeader.imageUrl;
+                  icon.src = builder.cardHeader.imageUrl;
                   icon.className = 'headerIcon';
                   headerWrap.prepend(icon);
                 }
 
                 header = document.createElement('p');
                 header.className = 'ms-font-m-plus';
-                header.textContent = this.cardHeader.title;
+                header.textContent = builder.cardHeader.title;
                 headerWrap.append(header);
               }
 
               sections = []; //if there is at least one section -> append;
 
               if (!(cardSections.length > 0)) {
-                _context.next = 28;
+                _context.next = 29;
                 break;
               }
 
@@ -75,30 +77,30 @@ function () {
 
               s = 0;
 
-            case 14:
+            case 15:
               if (!(s < cardSections.length)) {
-                _context.next = 24;
+                _context.next = 25;
                 break;
               }
 
               cardSection = cardSections[s];
               numuncoll = cardSection.numUncollapsibleWidgets;
-              _context.next = 19;
+              _context.next = 20;
               return cardSection.appendToUi(wrap, serialize, s);
 
-            case 19:
+            case 20:
               section = _context.sent;
               sections.push({
                 s: section,
                 u: numuncoll
               });
 
-            case 21:
+            case 22:
               s++;
-              _context.next = 14;
+              _context.next = 15;
               break;
 
-            case 24:
+            case 25:
               //set collapsibility event listener on each CardSection;
               sections.forEach(function (obj) {
                 let section = obj.s;
@@ -147,7 +149,7 @@ function () {
                 });
               }
 
-            case 28:
+            case 29:
             case "end":
               return _context.stop();
           }
