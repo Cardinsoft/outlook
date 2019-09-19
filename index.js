@@ -539,17 +539,26 @@ function _actionCallback() {
 
                   if (valueIndiff) {
                     isSelected = cl.contains('is-selected') || input.checked;
+                    console.log(isSelected);
+                    exists = Object.keys(e.formInput).some(function (key) {
+                      return key === name;
+                    });
 
                     if (isSelected) {
-                      exists = Object.keys(e.formInput).some(function (key) {
-                        return key === name;
-                      });
                       e.formInput[name] = value;
 
                       if (!exists) {
                         e.formInputs[name] = [value];
                       } else {
                         e.formInputs[name].push(value);
+                      }
+                    } else {
+                      delete e.formInput[name];
+
+                      if (!exists) {
+                        e.formInputs[name] = [];
+                      } else {
+                        e.formInputs[name].splice(e.formInputs[name].indexOf(value), 1);
                       }
                     }
                   } else {
@@ -569,9 +578,10 @@ function _actionCallback() {
           params = a.parameters; //set parameters to event object;
 
           e.parameters = params;
+          console.log(e.formInputs);
 
-          if (!(!loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 23;
+          if (!(loadIndicator || loadIndicator !== 'NONE')) {
+            _context5.next = 24;
             break;
           }
 
@@ -582,28 +592,28 @@ function _actionCallback() {
           s.setSize('large');
           s.show(); //invoke callback and await response;
 
-          _context5.next = 18;
+          _context5.next = 19;
           return GLOBAL[functionName](e);
 
-        case 18:
+        case 19:
           result = _context5.sent;
           o.hide();
           s.hide();
-          _context5.next = 26;
+          _context5.next = 27;
           break;
 
-        case 23:
-          _context5.next = 25;
+        case 24:
+          _context5.next = 26;
           return GLOBAL[functionName](e);
 
-        case 25:
+        case 26:
           result = _context5.sent;
 
-        case 26:
+        case 27:
           console.log(result);
           return _context5.abrupt("return", result);
 
-        case 28:
+        case 29:
         case "end":
           return _context5.stop();
       }
