@@ -29,13 +29,16 @@ function e_Logger() {
 
 
   this.log = function (input) {
+    var _console;
+
     this.history.push(new Date().toDateString() + ' INFO: ' + JSON.stringify(input));
 
     for (var _len = arguments.length, values = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       values[_key - 1] = arguments[_key];
     }
 
-    console.log(input, ...values);
+    (_console = console).log.apply(_console, [input].concat(values));
+
     return this;
   };
 }
