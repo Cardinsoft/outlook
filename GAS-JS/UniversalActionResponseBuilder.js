@@ -74,7 +74,7 @@ function () {
     key: "build",
     value: function build() {
       const response = new UniversalActionResponse(this);
-      return response.returns; //TODO: refactor;
+      return response; //TODO: refactor;
     }
   }]);
 
