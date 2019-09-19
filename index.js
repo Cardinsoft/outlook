@@ -467,17 +467,22 @@ function _trigger() {
           s.setSize('large');
           s.show();
           init = new UniversalActionResponseBuilder();
-          init.build(); //test
-
-          console.log(cardOpen(e));
+          init.build();
+          _context4.t0 = init;
           _context4.next = 12;
-          return init.displayAddOnCards([cardOpen(e)]);
+          return cardOpen(e);
 
         case 12:
+          _context4.t1 = _context4.sent;
+          _context4.t2 = [_context4.t1];
+          _context4.next = 16;
+          return _context4.t0.displayAddOnCards.call(_context4.t0, _context4.t2);
+
+        case 16:
           o.hide('#app-overlay');
           s.hide();
 
-        case 14:
+        case 18:
         case "end":
           return _context4.stop();
       }
