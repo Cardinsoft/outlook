@@ -61,7 +61,8 @@ CardBuilder.prototype.setName = function (name) {
 
 
 CardBuilder.prototype.build = function () {
-  const card = new Card(this); //TODO: add validation;
+  const card = new Card(this);
+  console.log(card); //TODO: add validation;
 
   return card;
 };
