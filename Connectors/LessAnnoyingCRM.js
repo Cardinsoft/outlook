@@ -14,8 +14,8 @@ function LessAnnoyingCRM() {
       title: 'Action',
       content: 'You can choose between different actions for the Connector to perform (actions can be switched anytime in settings):'
     }, {
-      name: 'action',
       type: globalEnumRadio,
+      name: 'action',
       content: [{
         text: 'Pipeline reporting',
         value: 'pipeline',
@@ -36,6 +36,16 @@ function LessAnnoyingCRM() {
       content: '',
       hint: 'e.g. 3587196306',
       multiline: true
+    }, {
+      type: globalKeyValue,
+      title: 'User list',
+      content: 'If you want to be able to assign contacts to different users than yourself, please, provide their ids (comma-separated)'
+    }, {
+      type: globalTextInput,
+      title: 'User Ids',
+      content: '',
+      hint: 'e.g. 123456',
+      name: 'userIds'
     }]
   }];
   this.auth = {
@@ -72,12 +82,6 @@ function LessAnnoyingCRM() {
 
   this.addConfig = function (connector, msg) {
     var trimmed = trimMessage(msg, true, true);
-    var usercode = trimWhitespace(connector.usercode, true);
-    var apitoken = trimWhitespace(connector.apitoken, true);
-    var auth = {
-      uc: usercode,
-      api: apitoken
-    };
     var config = [{
       header: 'Main info',
       widgets: [{
