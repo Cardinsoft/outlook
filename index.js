@@ -578,7 +578,6 @@ function _actionCallback() {
           params = a.parameters; //set parameters to event object;
 
           e.parameters = params;
-          console.log(e.formInputs);
 
           if (!(loadIndicator || loadIndicator !== 'NONE')) {
             _context5.next = 24;
@@ -592,11 +591,16 @@ function _actionCallback() {
           s.setSize('large');
           s.show(); //invoke callback and await response;
 
-          _context5.next = 19;
+          _context5.next = 18;
           return GLOBAL[functionName](e);
 
-        case 19:
+        case 18:
           result = _context5.sent;
+
+          if (!result) {
+            Utilities.sleep(5000);
+          }
+
           o.hide();
           s.hide();
           _context5.next = 27;
@@ -610,10 +614,9 @@ function _actionCallback() {
           result = _context5.sent;
 
         case 27:
-          console.log(result);
           return _context5.abrupt("return", result === undefined ? {} : result);
 
-        case 29:
+        case 28:
         case "end":
           return _context5.stop();
       }
