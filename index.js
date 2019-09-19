@@ -468,18 +468,7 @@ function _trigger() {
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          e = new e_EventObject();
-          /*
-          //show app body overlay;
-          const o = new Overlay();
-          	  o.setColor('white');
-          	  o.show('#app-overlay');
-          		
-          //show spinner on overlay;
-          const s = new Spinner();
-          	  s.setSize('large');
-          	  s.show();	*/
-          //initialize, display Cards and build;
+          e = new e_EventObject(); //initialize, display Cards and build;
 
           init = new UniversalActionResponseBuilder();
           _context4.t0 = init;
@@ -494,9 +483,6 @@ function _trigger() {
 
         case 9:
           init.build();
-          /*
-          o.hide('#app-overlay');
-          s.hide();	*/
 
         case 10:
         case "end":
