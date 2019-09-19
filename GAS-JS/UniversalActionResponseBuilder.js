@@ -20,7 +20,10 @@ function () {
 
   _createClass(UniversalActionResponseBuilder, [{
     key: "setOpenLink",
-    value: function setOpenLink(openLink) {}
+    value: function setOpenLink(openLink) {
+      this.openLink = openLink;
+      return this;
+    }
   }, {
     key: "displayAddOnCards",
     value: function () {
