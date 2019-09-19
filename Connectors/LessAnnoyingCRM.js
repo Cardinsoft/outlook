@@ -63,12 +63,17 @@ function LessAnnoyingCRM() {
       }]
     }
   };
+  /**
+   * General method for adding info;
+   * @param {Object} connector Connector configuration;
+   * @param {Object} msg object with current message info;
+   * @return {Object} adder config;
+   */
 
   this.addConfig = function (connector, msg) {
     var trimmed = trimMessage(msg, true, true);
     var config = [{
       header: 'Main info',
-      isCollapsible: true,
       widgets: [{
         type: globalTextInput,
         title: 'Salutation',
@@ -247,12 +252,10 @@ function LessAnnoyingCRM() {
         name: 'BackgroundInfo&' + 0
       }]
     }];
-    return mergeObjects({
+    return {
       config: JSON.stringify(config),
-      icon: globalLACRMiconUrl,
-      method: 'add',
-      caText: 'Create contact'
-    }, connector);
+      prompt: 'contact'
+    };
   };
 
   this.remove =
