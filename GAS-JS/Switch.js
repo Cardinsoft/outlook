@@ -102,10 +102,11 @@ Switch.prototype.appendToUi = function (parent) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              input.classList.toggle('is-selected');
+              _context.next = 3;
               return actionCallback(this);
 
-            case 2:
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -126,12 +127,8 @@ Switch.prototype.appendToUi = function (parent) {
   } else {
     input.className = 'ms-Toggle-input';
     label.className = 'ms-Toggle-field';
-  } //set state listener;
+  } //append toggle label to wrapper;
 
-
-  wrapToggle.addEventListener('click', function () {
-    input.classList.toggle('is-selected');
-  }); //append toggle label to wrapper;
 
   wrapToggle.append(label);
   new fabric['Toggle'](wrapToggle);
