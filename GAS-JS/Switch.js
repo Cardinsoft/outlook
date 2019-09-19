@@ -102,8 +102,8 @@ Switch.prototype.appendToUi = function (parent) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              event.stopPropagation();
-              return _context.abrupt("return", actionCallback(this));
+              _context.next = 2;
+              return actionCallback(this);
 
             case 2:
             case "end":
