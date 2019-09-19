@@ -482,7 +482,7 @@ function _trigger() {
           return _context4.t0.displayAddOnCards.call(_context4.t0, _context4.t2);
 
         case 9:
-          init.build();
+          return _context4.abrupt("return", init.build());
 
         case 10:
         case "end":
@@ -578,10 +578,9 @@ function _actionCallback() {
           params = a.parameters; //set parameters to event object;
 
           e.parameters = params;
-          console.log(e.formInputs);
 
           if (!(loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 24;
+            _context5.next = 26;
             break;
           }
 
@@ -592,28 +591,37 @@ function _actionCallback() {
           s.setSize('large');
           s.show(); //invoke callback and await response;
 
-          _context5.next = 19;
+          _context5.next = 18;
           return GLOBAL[functionName](e);
 
-        case 19:
+        case 18:
           result = _context5.sent;
+
+          if (!(result === undefined)) {
+            _context5.next = 22;
+            break;
+          }
+
+          _context5.next = 22;
+          return Utilities.sleep(500);
+
+        case 22:
           o.hide();
           s.hide();
-          _context5.next = 27;
+          _context5.next = 29;
           break;
 
-        case 24:
-          _context5.next = 26;
+        case 26:
+          _context5.next = 28;
           return GLOBAL[functionName](e);
 
-        case 26:
+        case 28:
           result = _context5.sent;
 
-        case 27:
-          console.log(result);
-          return _context5.abrupt("return", result);
-
         case 29:
+          return _context5.abrupt("return", result === undefined ? {} : result);
+
+        case 30:
         case "end":
           return _context5.stop();
       }
