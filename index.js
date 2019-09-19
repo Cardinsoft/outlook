@@ -164,18 +164,21 @@ Menu.prototype.addItem = function (item, isCardAction) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
+    var response;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          self.switchShow();
-          _context2.next = 3;
-          return actionCallback(this);
+          self.switchShow(); //initialize, display Cards and build;
 
-        case 3:
+          response = new ActionResponseBuilder();
+          _context2.next = 4;
+          return response.build();
+
+        case 4:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, this);
+    }, _callee2);
   })));
   return this;
 };
