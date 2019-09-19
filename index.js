@@ -453,7 +453,7 @@ function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee4() {
-    var e, o, s;
+    var e, o, s, init;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -466,14 +466,15 @@ function _trigger() {
           s = new Spinner();
           s.setSize('large');
           s.show();
-          _context4.next = 9;
-          return cardOpen(e);
+          init = new UniversalActionResponseBuilder().build();
+          _context4.next = 10;
+          return init.displayAddOnCards([cardOpen(e)]);
 
-        case 9:
+        case 10:
           o.hide('#app-overlay');
           s.hide();
 
-        case 11:
+        case 12:
         case "end":
           return _context4.stop();
       }
