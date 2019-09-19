@@ -322,6 +322,7 @@ function Close() {
                 title: 'Assign user',
                 name: 'opportunities-user_id',
                 content: leadUsers,
+                entity: 'user',
                 fetch: {
                   fetcher: {
                     callback: 'fetchUsers_',
