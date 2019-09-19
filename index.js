@@ -464,37 +464,27 @@ function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee4() {
-    var e, o, s, init;
+    var e, init;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          e = new e_EventObject(); //show app body overlay;
-
-          o = new Overlay();
-          o.setColor('white');
-          o.show('#app-overlay'); //show spinner on overlay;
-
-          s = new Spinner();
-          s.setSize('large');
-          s.show(); //initialize, display Cards and build;
+          e = new e_EventObject(); //initialize, display Cards and build;
 
           init = new UniversalActionResponseBuilder();
           _context4.t0 = init;
-          _context4.next = 11;
+          _context4.next = 5;
           return cardOpen(e);
 
-        case 11:
+        case 5:
           _context4.t1 = _context4.sent;
           _context4.t2 = [_context4.t1];
-          _context4.next = 15;
+          _context4.next = 9;
           return _context4.t0.displayAddOnCards.call(_context4.t0, _context4.t2);
 
-        case 15:
+        case 9:
           init.build();
-          o.hide('#app-overlay');
-          s.hide();
 
-        case 18:
+        case 10:
         case "end":
           return _context4.stop();
       }
@@ -610,9 +600,10 @@ function _actionCallback() {
           result = _context5.sent;
 
         case 26:
+          console.log(result);
           return _context5.abrupt("return", result);
 
-        case 27:
+        case 28:
         case "end":
           return _context5.stop();
       }
