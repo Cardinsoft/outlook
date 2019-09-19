@@ -60,7 +60,7 @@ ActionResponseBuilder.prototype.build =
 _asyncToGenerator(
 /*#__PURE__*/
 regeneratorRuntime.mark(function _callee() {
-  var notif, ui, response;
+  var notif, ui, response, card;
   return regeneratorRuntime.wrap(function _callee$(_context) {
     while (1) switch (_context.prev = _context.next) {
       case 0:
@@ -76,8 +76,8 @@ regeneratorRuntime.mark(function _callee() {
         response = new ActionResponse(this); //if navigation -> build card;
 
         if (this.navigation) {
-          console.log(response); //const card = response.returns.navigation.card;
-          //await card.appendToUi();
+          card = response.returns.navigation.card;
+          console.log(card); //await card.appendToUi();
           //return card;
         } //return response object;
 
@@ -98,7 +98,6 @@ function () {
   function ActionResponse(builder) {
     _classCallCheck(this, ActionResponse);
 
-    this.className = 'ActionResponse';
     this.returns = builder;
   }
   /**
