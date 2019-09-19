@@ -17,6 +17,10 @@ function () {
 
     this.openLink;
   }
+  /**
+   * Sets open link action;
+   */
+
 
   _createClass(UniversalActionResponseBuilder, [{
     key: "setOpenLink",
@@ -26,6 +30,12 @@ function () {
     }
   }, {
     key: "displayAddOnCards",
+
+    /**
+     * Displays cards;
+     * @param {Array<Card>} array of Cards;
+     * @return {UniversalActionResponseBuilder} this UniversalActionResponseBuilder;
+     */
     value: function () {
       var _displayAddOnCards = _asyncToGenerator(
       /*#__PURE__*/
@@ -42,9 +52,10 @@ function () {
                   return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) switch (_context.prev = _context.next) {
                       case 0:
-                        console.log(cardObject.appendToUi);
+                        _context.next = 2;
+                        return cardObject.appendToUi();
 
-                      case 1:
+                      case 2:
                       case "end":
                         return _context.stop();
                     }
@@ -55,12 +66,13 @@ function () {
                   return _ref.apply(this, arguments);
                 };
               }());
+              return _context2.abrupt("return", this);
 
-            case 1:
+            case 2:
             case "end":
               return _context2.stop();
           }
-        }, _callee2);
+        }, _callee2, this);
       }));
 
       function displayAddOnCards(_x) {
