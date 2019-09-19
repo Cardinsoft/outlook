@@ -516,7 +516,7 @@ function _actionCallback() {
   _actionCallback = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee5(elem) {
-    var action, e, forms, f, form, inputs, i, input, name, value, cl, valueIndiff, isSelected, exists, a, functionName, loadIndicator, params, o, s;
+    var action, e, forms, f, form, inputs, i, input, name, value, cl, valueIndiff, isSelected, exists, a, functionName, loadIndicator, params, result, o, s;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -575,10 +575,10 @@ function _actionCallback() {
           loadIndicator = a.loadIndicator;
           params = a.parameters; //set parameters to event object;
 
-          e.parameters = params; //if provided, set load indicator;
+          e.parameters = params;
 
           if (!(!loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 22;
+            _context5.next = 23;
             break;
           }
 
@@ -593,19 +593,23 @@ function _actionCallback() {
           return GLOBAL[functionName](e);
 
         case 18:
+          result = _context5.sent;
           o.hide();
           s.hide();
-          _context5.next = 24;
+          _context5.next = 26;
           break;
 
-        case 22:
-          _context5.next = 24;
+        case 23:
+          _context5.next = 25;
           return GLOBAL[functionName](e);
 
-        case 24:
-          return _context5.abrupt("return");
-
         case 25:
+          result = _context5.sent;
+
+        case 26:
+          return _context5.abrupt("return", result);
+
+        case 27:
         case "end":
           return _context5.stop();
       }
