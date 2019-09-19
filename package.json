@@ -35,6 +35,7 @@
 		"@babel/plugin-transform-parameters",
 		"@babel/plugin-transform-async-to-generator",
 		"@babel/plugin-transform-regenerator",
+		"@babel/plugin-transform-spread",
 		"@babel/plugin-transform-template-literals",
 		"@babel/plugin-transform-dotall-regex"
 	  ]
