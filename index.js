@@ -580,12 +580,12 @@ function _actionCallback() {
           o.show('#app-overlay');
           s = new Spinner();
           s.setSize('large');
-          s.show();
+          s.show(); //invoke callback and await response;
+
           _context5.next = 18;
           return GLOBAL[functionName](e);
 
         case 18:
-          Utilities. //invoke callback and await response;
           result = _context5.sent;
           o.hide();
           s.hide();
