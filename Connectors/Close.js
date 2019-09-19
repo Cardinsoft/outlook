@@ -461,6 +461,7 @@ function Close() {
                 type: globalEnumDropdown,
                 content: contLeads,
                 name: 'lead_id',
+                entity: 'lead',
                 fetch: {
                   fetcher: {
                     callback: 'fetchLeads_',
