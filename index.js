@@ -572,9 +572,10 @@ function _actionCallback() {
           console.log(functionName);
           console.log(loadIndicator);
           console.log(params);
+          console.log(e.formInputs);
 
           if (!(loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 26;
+            _context5.next = 27;
             break;
           }
 
@@ -585,28 +586,28 @@ function _actionCallback() {
           s.setSize('large');
           s.show(); //invoke callback and await response;
 
-          _context5.next = 21;
+          _context5.next = 22;
           return GLOBAL[functionName](e);
 
-        case 21:
+        case 22:
           result = _context5.sent;
           o.hide();
           s.hide();
-          _context5.next = 29;
+          _context5.next = 30;
           break;
 
-        case 26:
-          _context5.next = 28;
+        case 27:
+          _context5.next = 29;
           return GLOBAL[functionName](e);
 
-        case 28:
+        case 29:
           result = _context5.sent;
 
-        case 29:
+        case 30:
           console.log(result);
           return _context5.abrupt("return", result);
 
-        case 31:
+        case 32:
         case "end":
           return _context5.stop();
       }
