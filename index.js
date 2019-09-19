@@ -465,20 +465,21 @@ function _trigger() {
 
           s = new Spinner();
           s.setSize('large');
-          s.show();
+          s.show(); //initialize, display Cards and build;
+
           init = new UniversalActionResponseBuilder();
-          init.build();
           _context4.t0 = init;
-          _context4.next = 12;
+          _context4.next = 11;
           return cardOpen(e);
 
-        case 12:
+        case 11:
           _context4.t1 = _context4.sent;
           _context4.t2 = [_context4.t1];
-          _context4.next = 16;
+          _context4.next = 15;
           return _context4.t0.displayAddOnCards.call(_context4.t0, _context4.t2);
 
-        case 16:
+        case 15:
+          init.build();
           o.hide('#app-overlay');
           s.hide();
 
