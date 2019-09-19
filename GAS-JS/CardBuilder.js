@@ -13,7 +13,7 @@ let CardBuilder = function CardBuilder() {
 /**
  * Adds Card action (multiple actions allowed);
  * @param {CardAction) action CardAction class instance;
- * @returns {CardBuilder} this CardBuilder;
+ * @return {CardBuilder} this CardBuilder;
  */
 
 
@@ -24,7 +24,7 @@ CardBuilder.prototype.addCardAction = function (action) {
 /**
  * Adds Card section (multiple sections allowed);
  * @param {CardSection} section CardSection class instance;
- * @returns {CardBuilder} this CardBuilder;
+ * @return {CardBuilder} this CardBuilder;
  */
 
 
@@ -35,7 +35,7 @@ CardBuilder.prototype.addSection = function (section) {
 /**
  * Sets Card header;
  * @params {CardHeader} cardHeader CardHeader class instance;
- * @returns {CardBuilder} this CardBuilder;
+ * @return {CardBuilder} this CardBuilder;
  */
 
 
@@ -46,7 +46,7 @@ CardBuilder.prototype.setHeader = function (cardHeader) {
 /**
  * Sets Card name;
  * @param {String} name name to reference Card by;
- * @returns {CardBuilder} this CardBuilder;
+ * @return {CardBuilder} this CardBuilder;
  */
 
 
@@ -56,7 +56,7 @@ CardBuilder.prototype.setName = function (name) {
 };
 /**
  * Validates the Card;
- * @returns {Card} Card instance;
+ * @return {Card} Card instance;
  */
 
 
