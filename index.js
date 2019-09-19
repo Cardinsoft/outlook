@@ -176,14 +176,13 @@ Menu.prototype.addItem = function (item, isCardAction) {
         case 3:
           result = _context2.sent;
           response = new UniversalActionResponseBuilder();
-          console.log(response instanceof Card);
-          _context2.next = 8;
+          _context2.next = 7;
           return response.displayAddOnCards([result]);
 
-        case 8:
+        case 7:
           response.build();
 
-        case 9:
+        case 8:
         case "end":
           return _context2.stop();
       }
