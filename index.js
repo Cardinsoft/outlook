@@ -610,9 +610,10 @@ function _actionCallback() {
           result = _context5.sent;
 
         case 26:
+          console.log(result);
           return _context5.abrupt("return", result);
 
-        case 27:
+        case 28:
         case "end":
           return _context5.stop();
       }
