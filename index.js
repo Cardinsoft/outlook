@@ -573,7 +573,7 @@ function _actionCallback() {
           console.log(loadIndicator);
           console.log(params);
 
-          if (!(!loadIndicator || loadIndicator !== 'NONE')) {
+          if (!(loadIndicator || loadIndicator !== 'NONE')) {
             _context5.next = 26;
             break;
           }
