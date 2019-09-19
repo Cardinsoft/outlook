@@ -76,7 +76,7 @@ regeneratorRuntime.mark(function _callee() {
         response = new ActionResponse(this); //if navigation -> build card;
 
         if (!this.navigation) {
-          _context.next = 8;
+          _context.next = 9;
           break;
         }
 
@@ -85,13 +85,13 @@ regeneratorRuntime.mark(function _callee() {
 
       case 6:
         card = _context.sent;
-        console.log(card); //await card.appendToUi();
-        //return card;
-
-      case 8:
-        return _context.abrupt("return", response);
+        _context.next = 9;
+        return card.appendToUi();
 
       case 9:
+        return _context.abrupt("return", response);
+
+      case 10:
       case "end":
         return _context.stop();
     }
