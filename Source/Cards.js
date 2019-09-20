@@ -195,7 +195,7 @@ function cardUpdate(e) {
   } //create section with manual and default widgets + update button;
 
 
-  createSectionUpdateConnector(builder, false, connector, true);
+  createSectionUpdateConnector(builder, false, connector);
   return menu(builder);
 }
 /**
