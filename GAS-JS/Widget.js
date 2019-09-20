@@ -80,9 +80,6 @@ ButtonSet.prototype.appendToUi = function (parent) {
   const btnRow = document.createElement('div');
   btnRow.className = 'row ' + this.className;
   parent.append(btnRow);
-  const wrapBtn = document.createElement('div');
-  wrapBtn.className = 'column';
-  btnRow.append(wrapBtn);
   buttons.forEach(function (button) {
     const backgroundColor = button.backgroundColor;
     const text = button.text;
@@ -91,6 +88,6 @@ ButtonSet.prototype.appendToUi = function (parent) {
     const action = button.action;
     const openLink = button.openLink;
     const authAction = button.authorizationAction;
-    button.appendToUi(wrapBtn, true);
+    button.appendToUi(btnRow, true);
   });
 };
