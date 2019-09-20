@@ -579,7 +579,6 @@ function _actionCallback() {
 
                   if (valueIndiff) {
                     isSelected = cl.contains('is-selected') || input.checked;
-                    console.log(isSelected);
                     exists = Object.keys(e.formInput).some(function (key) {
                       return key === name;
                     });
@@ -659,10 +658,9 @@ function _actionCallback() {
           result = _context6.sent;
 
         case 29:
-          console.log(result);
           return _context6.abrupt("return", result === undefined ? {} : result);
 
-        case 31:
+        case 30:
         case "end":
           return _context6.stop();
       }
@@ -880,6 +878,7 @@ function uncollapsible(numuncol, overlay) {
     }
   }
 
+  console.log(fullHeight);
   return fullHeight;
 }
 /**
