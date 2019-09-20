@@ -1,46 +1,10 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-} //Emulate Class CardSection for CardService service;
-
-
+//Emulate Class CardSection for CardService service;
 let CardSection = function CardSection() {
   _classCallCheck(this, CardSection);
 
@@ -106,7 +70,7 @@ function () {
             header = document.createElement('p');
             header.className = 'ms-font-m-plus sectionHeader';
             header.textContent = headerText;
-            section.appendChild(header);
+            section.append(header);
           } //append widgets wrapper and handle collapsed Ui;
 
 
@@ -116,7 +80,7 @@ function () {
             widgetsWrap.className = 'collapsible';
           }
 
-          section.appendChild(widgetsWrap); //set wrapper to widgets wrapper;
+          section.append(widgetsWrap); //set wrapper to widgets wrapper;
 
           wrapper = widgetsWrap; //access widgets and append;
 
@@ -125,16 +89,16 @@ function () {
           if (!(widgets.length !== 0)) {
             _context2.next = 20;
             break;
-          } //append widgets to Ui;	
+          }
 
-
+          //append widgets to Ui;	
           appendWidgetsAsync =
           /*#__PURE__*/
           function () {
             var _ref2 = _asyncToGenerator(
             /*#__PURE__*/
             regeneratorRuntime.mark(function _callee(warr, wrapper) {
-              var i, widget;
+              var i, widget, element;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
@@ -142,7 +106,7 @@ function () {
 
                   case 1:
                     if (!(i < warr.length)) {
-                      _context.next = 8;
+                      _context.next = 9;
                       break;
                     }
 
@@ -151,11 +115,14 @@ function () {
                     return widget.appendToUi(wrapper);
 
                   case 5:
+                    element = _context.sent;
+
+                  case 6:
                     i++;
                     _context.next = 1;
                     break;
 
-                  case 8:
+                  case 9:
                   case "end":
                     return _context.stop();
                 }
@@ -165,9 +132,9 @@ function () {
             return function appendWidgetsAsync(_x4, _x5) {
               return _ref2.apply(this, arguments);
             };
-          }(); //check if at least one widget is a form input;
+          }();
 
-
+          //check if at least one widget is a form input;
           hasInput = widgets.some(function (widget) {
             //access widget's parameters;
             let name = widget.className;
@@ -182,7 +149,7 @@ function () {
 
           if (hasInput) {
             formElem = document.createElement('form');
-            widgetsWrap.appendChild(formElem);
+            widgetsWrap.append(formElem);
             wrapper = formElem;
           }
 
@@ -195,14 +162,14 @@ function () {
             //create toggler element;
             toggler = document.createElement('div');
             toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
-            section.appendChild(toggler); //add event handler for toggling target element's state;
+            section.append(toggler); //add event handler for toggling target element's state;
 
             toggler.addEventListener('click', function () {
               this.classList.toggle('toggler-up');
             });
           }
 
-          parent.appendChild(section);
+          parent.append(section);
           return _context2.abrupt("return", section);
 
         case 23:
