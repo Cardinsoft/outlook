@@ -227,24 +227,23 @@ function _cardUpdate() {
               preserveValues(connector, section.widgets);
               createSectionAdvanced(builder, section, i, connector, section.widgets.length);
             });
-          } //create API token config section;
+          } //create API token config section; 
 
-
-          authConfig.widgets.forEach(function (a) {
-            if (a.name && !a.funcName && !a.callback) {
-              a.callback = 'updateConnector';
-              a.parameters = propertiesToString(copyObject(connector, {
-                autoUpdate: 'true'
-              }));
-              a.hasSpinner = true;
-            }
-          });
 
           if (authConfig) {
             preserveValues(connector, authConfig.widgets);
           }
 
           if (auth.type === globalApiTokenAuthType) {
+            authConfig.widgets.forEach(function (a) {
+              if (a.name && !a.funcName && !a.callback) {
+                a.callback = 'updateConnector';
+                a.parameters = propertiesToString(copyObject(connector, {
+                  autoUpdate: 'true'
+                }));
+                a.hasSpinner = true;
+              }
+            });
             createSectionAdvanced(builder, authConfig, 0, connector, authConfig.widgets.length);
           } //create section with manual and default widgets + update button;
 
@@ -252,7 +251,7 @@ function _cardUpdate() {
           createSectionUpdateConnector(builder, false, connector);
           return _context2.abrupt("return", menu(builder));
 
-        case 41:
+        case 40:
         case "end":
           return _context2.stop();
       }
