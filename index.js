@@ -454,9 +454,9 @@ function trigger() {
   return _trigger.apply(this, arguments);
 }
 /**
- * Initiates callback function and updates Ui;
- * @param {HtmlElement} elem caller element;
- * @returns {Function}
+ * Handles action response object and returns;
+ * @param {Object} obj response object;
+ * @return {UniversalActionResponse} response;
  */
 
 
@@ -464,27 +464,20 @@ function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee4() {
-    var e, init;
+    var e, card;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           e = new e_EventObject(); //initialize, display Cards and build;
 
-          init = new UniversalActionResponseBuilder();
-          _context4.t0 = init;
-          _context4.next = 5;
+          _context4.next = 3;
           return cardOpen(e);
 
+        case 3:
+          card = _context4.sent;
+          return _context4.abrupt("return", handleResponse(card));
+
         case 5:
-          _context4.t1 = _context4.sent;
-          _context4.t2 = [_context4.t1];
-          _context4.next = 9;
-          return _context4.t0.displayAddOnCards.call(_context4.t0, _context4.t2);
-
-        case 9:
-          return _context4.abrupt("return", init.build());
-
-        case 10:
         case "end":
           return _context4.stop();
       }
@@ -493,7 +486,49 @@ function _trigger() {
   return _trigger.apply(this, arguments);
 }
 
-function actionCallback(_x) {
+function handleResponse(_x) {
+  return _handleResponse.apply(this, arguments);
+}
+/**
+ * Initiates callback function and updates Ui;
+ * @param {HtmlElement} elem caller element;
+ * @returns {Function}
+ */
+
+
+function _handleResponse() {
+  _handleResponse = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee5(obj) {
+    var response;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.t0 = true;
+          _context5.next = _context5.t0 === obj instanceof Card ? 3 : 7;
+          break;
+
+        case 3:
+          response = new UniversalActionResponseBuilder();
+          _context5.next = 6;
+          return response.displayAddOnCards([obj]);
+
+        case 6:
+          return _context5.abrupt("break", 7);
+
+        case 7:
+          return _context5.abrupt("return", response.build());
+
+        case 8:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5);
+  }));
+  return _handleResponse.apply(this, arguments);
+}
+
+function actionCallback(_x2) {
   return _actionCallback.apply(this, arguments);
 } //==========================================END CALLBACKS=======================================//
 //=========================================START UTILITIES======================================//
@@ -508,10 +543,10 @@ function actionCallback(_x) {
 function _actionCallback() {
   _actionCallback = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(elem) {
+  regeneratorRuntime.mark(function _callee6(elem) {
     var action, e, forms, f, form, inputs, i, input, name, value, cl, valueIndiff, isSelected, exists, a, functionName, loadIndicator, params, result, o, s;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
           //access action by its identifier;
           action = e_actions[elem.getAttribute('action')]; //construct event object;
@@ -580,7 +615,7 @@ function _actionCallback() {
           e.parameters = params;
 
           if (!(loadIndicator || loadIndicator !== 'NONE')) {
-            _context5.next = 26;
+            _context6.next = 26;
             break;
           }
 
@@ -591,42 +626,42 @@ function _actionCallback() {
           s.setSize('large');
           s.show(); //invoke callback and await response;
 
-          _context5.next = 18;
+          _context6.next = 18;
           return GLOBAL[functionName](e);
 
         case 18:
-          result = _context5.sent;
+          result = _context6.sent;
 
           if (!(result === undefined)) {
-            _context5.next = 22;
+            _context6.next = 22;
             break;
           }
 
-          _context5.next = 22;
+          _context6.next = 22;
           return Utilities.sleep(500);
 
         case 22:
           o.hide();
           s.hide();
-          _context5.next = 29;
+          _context6.next = 29;
           break;
 
         case 26:
-          _context5.next = 28;
+          _context6.next = 28;
           return GLOBAL[functionName](e);
 
         case 28:
-          result = _context5.sent;
+          result = _context6.sent;
 
         case 29:
           console.log(result);
-          return _context5.abrupt("return", result === undefined ? {} : result);
+          return _context6.abrupt("return", result === undefined ? {} : result);
 
         case 31:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5);
+    }, _callee6);
   }));
   return _actionCallback.apply(this, arguments);
 }
