@@ -150,6 +150,7 @@ function cardUpdate(e) {
         w.parameters = propertiesToString(copyObject(connector, {
           autoUpdate: 'true'
         }));
+        w.hasSpinner = true;
       }
     });
   }); //create section with custom icon URL input;
