@@ -274,7 +274,7 @@ function _updateConnector() {
   _updateConnector = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, data, multi, icon, name, url, isDefault, useManual, ID, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, index, result;
+    var builder, data, multi, icon, name, url, isDefault, useManual, ID, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, index;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -429,23 +429,16 @@ function _updateConnector() {
 
         case 36:
           if (e.parameters.autoUpdate) {
-            _context3.next = 42;
+            _context3.next = 40;
             break;
           }
 
           //if nothing to authotize, build dashboard; 
-          result = initCheck();
-
-          if (!result) {
-            _context3.next = 42;
-            break;
-          }
-
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context3.abrupt("return", builder.build());
 
-        case 42:
+        case 40:
         case "end":
           return _context3.stop();
       }
