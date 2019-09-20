@@ -296,7 +296,7 @@ KeyValue.prototype.appendToUi = function (parent) {
     widget.append(wrapButton);
 
     if (btn) {
-      btn.appendToUi(wrapButton);
+      btn.appendToUi(wrapButton, true);
     }
 
     if (sw) {
