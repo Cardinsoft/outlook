@@ -147,7 +147,10 @@ TextButton.prototype.appendToUi = function (parent) {
   const disabled = this.disabled;
   const textButtonStyle = this.textButtonStyle;
   const openLink = this.openLink;
-  const authAction = this.authorizationAction; //initiate button;
+  const authAction = this.authorizationAction; //create wrapper;
+
+  const widget = document.createElement('div');
+  parent.append(widget); //initiate button;
 
   const button = document.createElement('button');
   button.className = this.className;
@@ -171,7 +174,7 @@ TextButton.prototype.appendToUi = function (parent) {
     cl.remove('btn-disabled');
   }
 
-  parent.append(button);
+  widget.append(button);
 
   if (!openLink && !authAction && action) {
     //set refrence;
@@ -283,7 +286,10 @@ ImageButton.prototype.appendToUi = function (parent) {
   //access button properties;
   let action = this.action;
   const openLink = this.openLink;
-  const authAction = this.authorizationAction; //initiate button;
+  const authAction = this.authorizationAction; //create wrapper;
+
+  const widget = document.createElement('div');
+  parent.append(widget); //initiate button;
 
   const button = document.createElement('img');
   button.className = this.className;
@@ -296,7 +302,7 @@ ImageButton.prototype.appendToUi = function (parent) {
     button.src = this.icon;
   }
 
-  parent.append(button);
+  widget.append(button);
 
   if (!openLink && !authAction && action) {
     //set refrence;
