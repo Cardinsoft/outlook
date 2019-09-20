@@ -182,6 +182,7 @@ TextButton.prototype.appendToUi = function (parent) {
     _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee() {
+      var result;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -189,6 +190,10 @@ TextButton.prototype.appendToUi = function (parent) {
             return actionCallback(this);
 
           case 2:
+            result = _context.sent;
+            return _context.abrupt("return", handleResponse(result));
+
+          case 4:
           case "end":
             return _context.stop();
         }
