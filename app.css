@@ -116,7 +116,7 @@ body {
 }
 
 .ButtonSet .TextButton, .ButtonSet .ImageButton {
-	margin : 0 16px 0 0;
+	margin : 4px 16px 0 0;
 }
 
 .row + .TextButton {
