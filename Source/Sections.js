@@ -1411,9 +1411,7 @@ function createSectionAddConnector(_x13, _x14, _x15, _x16) {
  * @param {CardBuilder} builder card builder to append section to;
  * @param {Boolean} isCollapsed truthy value to determine whether to generate section as collapsible;
  * @param {Object} connector connector configuration object;
- * @param {Boolean} isReloaded truthy value to derermine wheter it is invoked from input change;
- * @param {String} authType authorization type to set auth type choice group to;
- * @returns {Array} Array of CardSections;
+ * @return {Array<CardSection>} Array of CardSections;
  */
 
 
@@ -1483,7 +1481,7 @@ function _createSectionAddConnector() {
   return _createSectionAddConnector.apply(this, arguments);
 }
 
-function createSectionUpdateConnector(builder, isCollapsed, connector, isReloaded, authType) {
+function createSectionUpdateConnector(builder, isCollapsed, connector) {
   //configure advanced config section;
   var section = {
     header: globalConfigAdvancedHeader,
