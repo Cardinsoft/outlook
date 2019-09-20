@@ -212,6 +212,8 @@ TextButton.prototype.appendToUi = function (parent) {
       Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url));
     });
   }
+
+  return button;
 }; //Emulate Class ImageButton extending base Class Button for CardService service;
 
 
