@@ -968,8 +968,8 @@ function _actionCreate() {
   return _actionCreate.apply(this, arguments);
 }
 
-function actionEdit(_x15) {
-  return _actionEdit.apply(this, arguments);
+function actionUpdate(_x15) {
+  return _actionUpdate.apply(this, arguments);
 }
 /**
  * Pushes display card on stack top with data provided and loads it;
@@ -978,8 +978,8 @@ function actionEdit(_x15) {
  */
 
 
-function _actionEdit() {
-  _actionEdit = _asyncToGenerator(
+function _actionUpdate() {
+  _actionUpdate = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee15(e) {
     var builder;
@@ -999,7 +999,7 @@ function _actionEdit() {
       }
     }, _callee15);
   }));
-  return _actionEdit.apply(this, arguments);
+  return _actionUpdate.apply(this, arguments);
 }
 
 function actionShow(_x16) {
