@@ -443,19 +443,14 @@ function _createConfiguredConnectorsSection() {
           config.forEach(function (connector, c) {
             var icon = connector.icon;
             var name = connector.name;
-            var url = connector.url;
+            var url = connector.url || '';
             var type = connector.type;
+            var id = connector.ID || name;
 
             try {
-              //default to empty url if nothing is in source;
-              if (url === undefined) {
-                url = '';
-                connector.url === '';
-              } //stringify connector parameters;
-
-
-              connector = propertiesToString(connector);
-              var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionEdit', connector);
+              var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionUpdate', {
+                id: id
+              });
               section.addWidget(widget);
             } catch (error) {
               timestamp('error in settings due to misconfig', {
