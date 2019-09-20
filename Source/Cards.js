@@ -110,7 +110,7 @@ function _cardUpdate() {
   _cardUpdate = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2(e) {
-    var builder, params, connector, type, icon, name, url, manual, isDefault, header, cType, cAuth, basic, widgets, advanced, config, auth, authConfig;
+    var builder, params, connector, type, icon, name, url, manual, isDefault, header, cType, cAuth, basic, widgets, advanced, auth, authConfig, config;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -176,11 +176,13 @@ function _cardUpdate() {
 
           basic = new Connector(icon, name, url).basic;
           widgets = basic.widgets;
-          advanced = cType.config; //enable autoupdate;
+          advanced = cType.config;
+          auth = cType.auth;
+          authConfig = auth.config; //enable autoupdate;
 
           widgets.forEach(function (b) {
             if (b.name && !b.funcName && !b.callback) {
-              b.funcName = 'updateConnector';
+              b.callback = 'updateConnector';
               b.parameters = propertiesToString(copyObject(connector, {
                 autoUpdate: 'true'
               }));
@@ -190,7 +192,7 @@ function _cardUpdate() {
           advanced.forEach(function (s) {
             s.widgets.forEach(function (w) {
               if (w.name && !w.funcName) {
-                w.funcName = 'updateConnector';
+                w.callback = 'updateConnector';
                 w.parameters = propertiesToString(copyObject(connector, {
                   autoUpdate: 'true'
                 }));
@@ -228,10 +230,17 @@ function _cardUpdate() {
           } //create API token config section;
 
 
-          auth = cType.auth;
-          authConfig = auth.config;
+          authConfig.widgets.forEach(function (a) {
+            if (a.name && !a.funcName && !a.callback) {
+              a.callback = 'updateConnector';
+              a.parameters = propertiesToString(copyObject(connector, {
+                autoUpdate: 'true'
+              }));
+              a.hasSpinner = true;
+            }
+          });
 
-          if (auth.config) {
+          if (authConfig) {
             preserveValues(connector, authConfig.widgets);
           }
 
@@ -243,7 +252,7 @@ function _cardUpdate() {
           createSectionUpdateConnector(builder, false, connector);
           return _context2.abrupt("return", menu(builder));
 
-        case 40:
+        case 41:
         case "end":
           return _context2.stop();
       }
