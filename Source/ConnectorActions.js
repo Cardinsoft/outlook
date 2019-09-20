@@ -274,7 +274,7 @@ function _updateConnector() {
   _updateConnector = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(e) {
-    var builder, data, multi, icon, name, url, isDefault, useManual, ID, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, index;
+    var builder, data, multi, icon, name, url, isDefault, useManual, ID, type, cType, connector, key, value, multivalue, cAuth, auth, scope, urlAuth, urlToken, id, secret, hint, offline, prompt, authType, usercode, apitoken, config, index, result;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -428,23 +428,24 @@ function _updateConnector() {
           builder.setNotification(error(globalUpdateFailure));
 
         case 36:
-          if (!e.parameters.autoUpdate) {
-            _context3.next = 40;
+          if (e.parameters.autoUpdate) {
+            _context3.next = 42;
             break;
           }
 
-          builder.setNavigation(CardService.newNavigation().updateCard(cardUpdate(e)));
-          _context3.next = 43;
-          break;
-
-        case 40:
           //if nothing to authotize, build dashboard; 
-          //change data state and build settings card;
+          result = initCheck();
+
+          if (!result) {
+            _context3.next = 42;
+            break;
+          }
+
           builder.setStateChanged(true);
           builder.setNavigation(CardService.newNavigation().popCard().updateCard(cardHome(e)));
           return _context3.abrupt("return", builder.build());
 
-        case 43:
+        case 42:
         case "end":
           return _context3.stop();
       }
