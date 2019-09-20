@@ -138,8 +138,15 @@ TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
   this.textButtonStyle = textButtonStyle;
   return this;
 };
+/**
+ * Utility method for appending widget to Ui;
+ * @param {HtmlElement} parent element;
+ * @param {Boolean} isSet is element of a ButtonSet;
+ * @return {HtmlElement} this button;
+ */
 
-TextButton.prototype.appendToUi = function (parent) {
+
+TextButton.prototype.appendToUi = function (parent, isSet) {
   //access button properties;
   let action = this.action;
   const backgroundColor = this.backgroundColor;
@@ -150,6 +157,11 @@ TextButton.prototype.appendToUi = function (parent) {
   const authAction = this.authorizationAction; //create wrapper;
 
   const widget = document.createElement('div');
+
+  if (isSet) {
+    widget.className = 'SetElement';
+  }
+
   parent.append(widget); //initiate button;
 
   const button = document.createElement('button');
@@ -216,7 +228,7 @@ TextButton.prototype.appendToUi = function (parent) {
     });
   }
 
-  return button;
+  return widget;
 }; //Emulate Class ImageButton extending base Class Button for CardService service;
 
 
@@ -276,19 +288,25 @@ ImageButton.prototype.setIconUrl = function (url) {
   return this;
 };
 /**
- *
- * @param {HtmlElement} parent parent element to append widget to;
- * @returns {HtmlElement} this widget;
+ * Utility method for appending widget to Ui;
+ * @param {HtmlElement} parent element;
+ * @param {Boolean} isSet is element of a ButtonSet;
+ * @return {HtmlElement} this button;
  */
 
 
-ImageButton.prototype.appendToUi = function (parent) {
+ImageButton.prototype.appendToUi = function (parent, isSet) {
   //access button properties;
   let action = this.action;
   const openLink = this.openLink;
   const authAction = this.authorizationAction; //create wrapper;
 
   const widget = document.createElement('div');
+
+  if (isSet) {
+    widget.className = 'SetElement';
+  }
+
   parent.append(widget); //initiate button;
 
   const button = document.createElement('img');
@@ -341,7 +359,7 @@ ImageButton.prototype.appendToUi = function (parent) {
     });
   }
 
-  return button;
+  return widget;
 }; //Emulate Class CardAction extending base Class Button for CardService service;
 
 
