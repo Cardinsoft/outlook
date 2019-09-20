@@ -191,7 +191,7 @@ function _cardUpdate() {
           });
           advanced.forEach(function (s) {
             s.widgets.forEach(function (w) {
-              if (w.name && !w.funcName) {
+              if (w.name && !w.funcName && !w.callback) {
                 w.callback = 'updateConnector';
                 w.parameters = propertiesToString(copyObject(connector, {
                   autoUpdate: 'true'
