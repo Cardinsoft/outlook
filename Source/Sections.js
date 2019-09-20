@@ -991,11 +991,16 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
             var name = widget.name;
             var content = widget.content;
             var action = widget.action;
-            var callback = widget.callback;
+            var callback = widget.funcName || widget.callback;
             var spin = widget.hasSpinner;
             var params = widget.parameters;
             var separate = widget.separate;
             var prepend = widget.prepend;
+
+            if (!params && callback) {
+              params = connector;
+            }
+
             var wfetch = widget.fetch;
 
             if (wfetch) {
@@ -1088,17 +1093,10 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var filled = widget.filled;
                 var fullsized = widget.fullsized;
                 var reload = widget.reload;
-                var funcName = widget.funcName; //TODO: deprecate;
-
                 var colour = widget.colour; //set button text colour if provided;
 
                 if (colour) {
                   title = '<font color="' + colour + '">' + title + '</font>';
-                } //set parameters if provided and default to connector;
-
-
-                if (!params) {
-                  params = connector;
                 } //if account has preferences -> override;
 
 
@@ -1110,12 +1108,12 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 switch (action) {
                   case globalActionClick:
                     //callback onclick;
-                    element = textButtonWidget(title, disabled, filled, funcName, params);
+                    element = textButtonWidget(title, disabled, filled, callback, params);
                     break;
 
                   case globalActionAction:
                     //callback + open link onclick;
-                    element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, funcName, params);
+                    element = textButtonWidgetLinked(title, disabled, filled, content, fullsized, reload, true, callback, params);
                     break;
 
                   default:
@@ -1135,7 +1133,6 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                 var disabled = widget.disabled;
                 var filled = widget.filled;
                 var reload = widget.reload;
-                var funcName = widget.funcName;
                 var colour = widget.colour; //set colour if provided;
 
                 if (colour) {
@@ -1154,7 +1151,7 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
 
 
                 if (switchValue) {
-                  element = switchWidget(icon, title, content, name, selected, switchValue, funcName, true, params);
+                  element = switchWidget(icon, title, content, name, selected, switchValue, callback, true, params);
                 } else {
                   //set section and widget index and stringify;
                   connector.sectionIdx = sectionIndex.toString();
@@ -1190,12 +1187,12 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                     if (!buttonLink) {
                       button = textButtonWidget(buttonText, disabled, filled);
                     } else if (buttonIcon) {
-                      button = imageButtonWidget(buttonIcon, buttonText, buttonLink, connector, 'link', fullsized, reload);
+                      button = imageButtonWidget(buttonIcon, buttonText, buttonLink, connector, globalActionLink, fullsized, reload);
                     } else {
                       button = textButtonWidgetLinked(buttonText, disabled, false, buttonLink, fullsized, reload);
                     }
 
-                    if (state !== 'editable' && !funcName) {
+                    if (state !== 'editable' && !callback) {
                       element = simpleKeyValueWidget({
                         title: title,
                         content: content,
@@ -1205,12 +1202,12 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                         button: button
                       });
                     } else if (state !== 'editable') {
-                      element = actionKeyValueWidget(icon, title, content, action, funcName, params);
+                      element = actionKeyValueWidget(icon, title, content, action, callback, params);
                     } else {
                       element = actionKeyValueWidgetButton(icon, title, content, button, 'editSectionAdvanced', connector);
                     }
                   } else {
-                    if (state !== 'editable' && !funcName) {
+                    if (state !== 'editable' && !callback) {
                       element = simpleKeyValueWidget({
                         title: title,
                         content: content,
@@ -1219,9 +1216,9 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
                         icon: icon
                       });
                     } else if (state !== 'editable') {
-                      element = actionKeyValueWidget(icon, title, content, action, funcName, params);
+                      element = actionKeyValueWidget(icon, title, content, action, callback, params);
                     } else {
-                      element = actionKeyValueWidget(icon, title, content, 'action', 'editSectionAdvanced', connector);
+                      element = actionKeyValueWidget(icon, title, content, globalActionAction, 'editSectionAdvanced', connector);
                     }
                   }
                 }
@@ -1231,19 +1228,19 @@ function createSectionAdvanced(builder, obj, sectionIndex, connector, max, start
               case globalTextInput:
                 //access TextInput-specific params;
                 var multiline = widget.multiline;
-                element = textInputWidget(title, name, hint, content, multiline, callback, spin, connector);
+                element = textInputWidget(title, name, hint, content, multiline, callback, spin, params);
                 break;
 
               case globalEnumRadio:
-                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
+                element = selectionInputWidget(title, name, type, content, callback, spin, params);
                 break;
 
               case globalEnumCheckbox:
-                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
+                element = selectionInputWidget(title, name, type, content, callback, spin, params);
                 break;
 
               case globalEnumDropdown:
-                element = selectionInputWidget(title, name, type, content, callback, spin, connector);
+                element = selectionInputWidget(title, name, type, content, callback, spin, params);
                 break;
             }
 
