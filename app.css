@@ -111,13 +111,12 @@ body {
 	margin : 0;
 }
 
-.ButtonSet .TextButton, .ButtonSet .ImageButton {
-	display: inline;
-	margin : 0 16px 0 0;
+.SetElement {
+	display : inline;
 }
 
-.ButtonSet .ImageButton {
-	transform: translate(0,6px);
+.ButtonSet .TextButton, .ButtonSet .ImageButton {
+	margin : 0 16px 0 0;
 }
 
 .row + .TextButton {
