@@ -9,7 +9,7 @@ Office.initialize = function (reason) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee() {
-    var menu, o, s;
+    var menu;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -27,25 +27,15 @@ Office.initialize = function (reason) {
           PropertiesService = new e_PropertiesService();
           Session = new e_Session();
           Logger = new e_Logger();
-          $('#app-body').show(); //show app body overlay;
+          $('#app-body').show(); //trigger Card;
 
-          o = new Overlay();
-          o.setColor('white');
-          o.show('#app-overlay'); //show spinner on overlay;
-
-          s = new Spinner();
-          s.setSize('large');
-          s.show(); //trigger Card;
-
-          _context.next = 17;
+          _context.next = 11;
           return trigger();
 
-        case 17:
-          o.hide('#app-overlay');
-          s.hide();
+        case 11:
           Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
 
-        case 20:
+        case 12:
         case "end":
           return _context.stop();
       }
@@ -464,20 +454,35 @@ function _trigger() {
   _trigger = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee4() {
-    var e, card;
+    var e, o, s, card, response;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          e = new e_EventObject(); //initialize, display Cards and build;
+          e = new e_EventObject(); //show app body overlay;
 
-          _context4.next = 3;
+          o = new Overlay();
+          o.setColor('white');
+          o.show('#app-overlay'); //show spinner on overlay;
+
+          s = new Spinner();
+          s.setSize('large');
+          s.show(); //initialize, build initial Card and response;
+
+          _context4.next = 9;
           return cardOpen(e);
 
-        case 3:
+        case 9:
           card = _context4.sent;
-          return _context4.abrupt("return", handleResponse(card));
+          _context4.next = 12;
+          return handleResponse(card);
 
-        case 5:
+        case 12:
+          response = _context4.sent;
+          o.hide('#app-overlay');
+          s.hide();
+          return _context4.abrupt("return", response);
+
+        case 16:
         case "end":
           return _context4.stop();
       }
