@@ -505,7 +505,7 @@ function _handleResponse() {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.t0 = true;
-          _context5.next = _context5.t0 === obj instanceof Card ? 3 : 7;
+          _context5.next = _context5.t0 === obj instanceof Card ? 3 : _context5.t0 === obj instanceof ActionResponse ? 8 : 10;
           break;
 
         case 3:
@@ -514,12 +514,12 @@ function _handleResponse() {
           return response.displayAddOnCards([obj]);
 
         case 6:
-          return _context5.abrupt("break", 7);
-
-        case 7:
           return _context5.abrupt("return", response.build());
 
         case 8:
+          return _context5.abrupt("return", obj);
+
+        case 10:
         case "end":
           return _context5.stop();
       }
