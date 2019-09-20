@@ -160,6 +160,8 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   if (isSet) {
     widget.className = 'SetElement';
+  } else {
+    widget.className = 'row';
   }
 
   parent.append(widget); //initiate button;
@@ -305,6 +307,8 @@ ImageButton.prototype.appendToUi = function (parent, isSet) {
 
   if (isSet) {
     widget.className = 'SetElement';
+  } else {
+    widget.className = 'row';
   }
 
   parent.append(widget); //initiate button;
