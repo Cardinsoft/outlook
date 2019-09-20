@@ -445,11 +445,12 @@ function _createConfiguredConnectorsSection() {
             var name = connector.name;
             var url = connector.url || '';
             var type = connector.type;
-            var id = connector.ID || name;
+            var id = connector.ID;
 
             try {
               var widget = actionKeyValueWidget(icon, '', name, 'action', 'actionUpdate', {
-                id: id
+                id: id,
+                name: name
               });
               section.addWidget(widget);
             } catch (error) {
