@@ -91,6 +91,6 @@ ButtonSet.prototype.appendToUi = function (parent) {
     const action = button.action;
     const openLink = button.openLink;
     const authAction = button.authorizationAction;
-    button.appendToUi(wrapBtn, set);
+    button.appendToUi(wrapBtn, true);
   });
 };
