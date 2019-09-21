@@ -4,35 +4,67 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-//Emulate HTTPResponse class;
+/** HTTPResponse class; */
 let HTTPResponse = function HTTPResponse(headers, content, code) {
   _classCallCheck(this, HTTPResponse);
 
-  this.className = 'HTTPResponse';
   this.headers = headers;
   this.content = content;
   this.code = code;
-}; //add new methods to the class;
+};
+/**
+ * Gets response status code;
+ * @return {Integer} response code;
+ */
+
+
+HTTPResponse.prototype.getResponseCode = function () {
+  return this.code;
+};
+/**
+ * Gets headers of the response;
+ * @return {Object} response headers;
+ */
 
 
 HTTPResponse.prototype.getHeaders = function () {
   return this.headers;
 };
+/**
+ * Parses and gets response as content type;
+ * @return {*} response content;
+ */
 
-HTTPResponse.prototype.getAs = function (contentType) {//future release;
+
+HTTPResponse.prototype.getAs = function (contentType) {
+  //TODO: enable parsing;
+  return;
 };
+/**
+ * Gets response content as text/plain;
+ * @return {String} content string;
+ */
+
 
 HTTPResponse.prototype.getContentText = function () {
-  if (!this.content) {
+  let content = this.content;
+
+  if (!content) {
     return '';
   }
 
-  return this.content.toString();
-};
+  switch (true) {
+    case typeof this.content === 'object':
+      content = JSON.stringify(content);
+      break;
 
-HTTPResponse.prototype.getResponseCode = function () {
-  return this.code;
-}; //Emulate UrlFetchApp service;
+    default:
+      content = content.toString();
+  }
+
+  return content;
+};
+/** UrlFetchApp service */
 
 
 let e_UrlFetchApp = function e_UrlFetchApp() {
@@ -40,6 +72,13 @@ let e_UrlFetchApp = function e_UrlFetchApp() {
 
   this.className = 'UrlFetchApp';
 };
+/**
+ * Issues a single HTTP request;
+ * @param {String} url request Url;
+ * @param {Object} params request parameters;
+ * @return {HTTPResponse} this HTTPResponse;
+ */
+
 
 e_UrlFetchApp.prototype.fetch =
 /*#__PURE__*/
@@ -51,87 +90,77 @@ function () {
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          if (!(params.muteHttpExceptions === true)) {
-            _context.next = 15;
+          if (url) {
+            _context.next = 2;
             break;
           }
 
-          _context.prev = 1;
-          _context.next = 4;
+          throw new Error('Attribute provided with no value: url');
+
+        case 2:
+          if (!(params.muteHttpExceptions === true)) {
+            _context.next = 16;
+            break;
+          }
+
+          _context.prev = 3;
+          _context.next = 6;
           return makeRequest(url, params);
 
-        case 4:
+        case 6:
           response = _context.sent;
-          _context.next = 11;
+          _context.next = 12;
           break;
 
-        case 7:
-          _context.prev = 7;
-          _context.t0 = _context["catch"](1);
+        case 9:
+          _context.prev = 9;
+          _context.t0 = _context["catch"](3);
+          console.log(_context.t0);
 
-          if (!(_context.t0.code === 999)) {
-            _context.next = 11;
-            break;
-          }
-
-          throw new Error(_context.t0.content);
-
-        case 11:
+        case 12:
           if (!(response.code === 500 && response.content === 'DNS error')) {
-            _context.next = 13;
+            _context.next = 14;
             break;
           }
 
           throw new Error('DNS error: ' + url);
 
-        case 13:
-          _context.next = 18;
+        case 14:
+          _context.next = 19;
           break;
 
-        case 15:
-          _context.next = 17;
+        case 16:
+          _context.next = 18;
           return makeRequest(url, params);
 
-        case 17:
+        case 18:
           response = _context.sent;
 
-        case 18:
+        case 19:
           return _context.abrupt("return", new HTTPResponse(response.headers, response.content, response.code));
 
-        case 19:
+        case 20:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 7]]);
+    }, _callee, null, [[3, 9]]);
   }));
 
   return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
-
-const UrlFetchApp = new e_UrlFetchApp();
 /**
  * Makes a HTTP request with parameters (optional);
  * @param {String} url url to request;
  * @param {Object=} params parameters object;
- * @returns {Object} response object {code,content,headers} 
+ * @return {Object} response object {code,content,headers} 
  */
+
 
 function makeRequest(url, params) {
   return new Promise(function (resolve, reject) {
-    //prefent defaulting to location.href and throw an error message;
-    if (url === '') {
-      //construct empty URL error;
-      let emptyUrlErr = {
-        code: 999,
-        content: 'Attribute provided with no value: url',
-        headers: {}
-      };
-      reject(emptyUrlErr);
-    } //default to GET method if no params provided;
-
-
+    //default to GET method if no params provided;
     if (!params) {
       params = {
         method: 'get'
@@ -147,7 +176,7 @@ function makeRequest(url, params) {
       console.log('Using older browser with poor request timeout support (expect timeout to differ from 30s)');
     }
 
-    request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
+    request.open(params.method.toUpperCase(), encodeURI('https://cardin.azurewebsites.net/api/proxy?endpoint=' + url)); //if content type is provided -> set request Content-Type header;
 
     if (params.contentType) {
       request.setRequestHeader('Content-Type', params.contentType);
