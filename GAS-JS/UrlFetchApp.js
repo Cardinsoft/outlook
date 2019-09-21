@@ -176,7 +176,7 @@ function makeRequest(url, params) {
       console.log('Using older browser with poor request timeout support (expect timeout to differ from 30s)');
     }
 
-    request.open(params.method.toUpperCase(), encodeURI('https://cardin.azurewebsites.net/api/proxy?endpoint=' + url)); //if content type is provided -> set request Content-Type header;
+    request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy?endpoint=' + url); //if content type is provided -> set request Content-Type header;
 
     if (params.contentType) {
       request.setRequestHeader('Content-Type', params.contentType);
