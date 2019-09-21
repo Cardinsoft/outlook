@@ -23,19 +23,20 @@ Office.initialize = function (reason) {
           }); //initiate Services;
 
           CardService = new e_CardService();
+          UrlFetchApp = new e_UrlFetchApp();
           Utilities = new e_Utilities();
           PropertiesService = new e_PropertiesService();
           Session = new e_Session();
           Logger = new e_Logger();
           $('#app-body').show(); //trigger Card;
 
-          _context.next = 11;
+          _context.next = 12;
           return trigger();
 
-        case 11:
+        case 12:
           Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, trigger);
 
-        case 12:
+        case 13:
         case "end":
           return _context.stop();
       }
@@ -992,7 +993,8 @@ const e_actions = {};
 let Utilities;
 let PropertiesService;
 let Session;
-let CardService; //=======================================START POLYFILLS===================================//
+let CardService;
+let UrlFetchApp; //=======================================START POLYFILLS===================================//
 
 const HtmlElement = GLOBAL.HTMLElement;
 const Element = GLOBAL.Element; //polyfill for empty() method of HtmlElement;
