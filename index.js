@@ -864,13 +864,13 @@ function uncollapsible(numuncol, overlay) {
   let fullHeight = 0;
 
   for (let c = 0; c < chLength; c++) {
-    let child = children.item(c);
+    let child = children[c];
     let computed = window.getComputedStyle(child);
     let computedT = trimPx(computed.marginTop);
     let computedH = trimPx(computed.height);
     let computedB = trimPx(computed.marginBottom);
 
-    if (c + 1 <= numuncol) {
+    if (c < numuncol) {
       if (c === 0) {
         fullHeight += computedT + computedH;
       } else {
@@ -879,7 +879,6 @@ function uncollapsible(numuncol, overlay) {
     }
   }
 
-  console.log(fullHeight);
   return fullHeight;
 }
 /**
@@ -928,8 +927,11 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
             if (computed === initial) {
               change = -increment;
               end = chProperty;
-            } //set recursive timeout to change height;
+            }
 
+            console.log('computed: ' + computed);
+            console.log('initial: ' + initial);
+            console.log('end: ' + end); //set recursive timeout to change height;
 
             t = setTimeout(function wait() {
               trigger.disabled = true;
@@ -941,16 +943,35 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
               if (newProp > chProperty) {
                 newProp = chProperty;
-              }
+              } //if(end>initial&&newProp>end) {  newProp = end; }
 
-              if (end > initial && newProp > end) {
-                newProp = end;
-              }
 
               overlay.style[property] = newProp + 'px';
+              console.log(overlay.style[property]);
               let currProp = trimPx(overlay.style[property]);
+              console.log(currProp);
+              console.log(typeof currProp);
+              let stop = false;
 
-              if (currProp === end) {
+              switch (true) {
+                //uncollapsed;
+                case computed > initial:
+                  if (currProp <= end) {
+                    stop = true;
+                  }
+
+                  break;
+                //collapsed;
+
+                case computed === initial:
+                  if (currProp >= end) {
+                    stop = true;
+                  }
+
+                  break;
+              }
+
+              if (stop) {
                 trigger.disabled = false;
                 return clearTimeout(t);
               }
@@ -958,7 +979,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
               t = setTimeout(wait, interval);
             }, interval);
 
-          case 6:
+          case 9:
           case "end":
             return _context3.stop();
         }
