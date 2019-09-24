@@ -865,7 +865,6 @@ function uncollapsible(numuncol, overlay) {
 
   for (let c = 0; c < chLength; c++) {
     let child = children[c];
-    console.log(child);
     let computed = window.getComputedStyle(child);
     let computedT = trimPx(computed.marginTop);
     let computedH = trimPx(computed.height);
@@ -951,6 +950,11 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
               overlay.style[property] = newProp + 'px';
               let currProp = trimPx(overlay.style[property]);
               console.log(currProp);
+
+              if (end !== 0 && currProp >= end) {
+                trigger.disabled = false;
+                return clearTimeout(t);
+              }
 
               if (currProp === end) {
                 trigger.disabled = false;
