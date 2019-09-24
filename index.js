@@ -870,9 +870,6 @@ function uncollapsible(numuncol, overlay) {
     let computedT = trimPx(computed.marginTop);
     let computedH = trimPx(computed.height);
     let computedB = trimPx(computed.marginBottom);
-    console.log(computedT);
-    console.log(computedH);
-    console.log(computedB);
 
     if (c < numuncol) {
       if (c === 0) {
@@ -883,7 +880,6 @@ function uncollapsible(numuncol, overlay) {
     }
   }
 
-  console.log(fullHeight);
   return fullHeight;
 }
 /**
@@ -932,8 +928,9 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
             if (computed === initial) {
               change = -increment;
               end = chProperty;
-            } //set recursive timeout to change height;
+            }
 
+            console.log(end); //set recursive timeout to change height;
 
             t = setTimeout(function wait() {
               trigger.disabled = true;
@@ -953,6 +950,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
               overlay.style[property] = newProp + 'px';
               let currProp = trimPx(overlay.style[property]);
+              console.log(currProp);
 
               if (currProp === end) {
                 trigger.disabled = false;
@@ -962,7 +960,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
               t = setTimeout(wait, interval);
             }, interval);
 
-          case 6:
+          case 7:
           case "end":
             return _context3.stop();
         }
