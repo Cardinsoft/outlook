@@ -951,8 +951,27 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
               overlay.style[property] = newProp + 'px';
               let currProp = trimPx(overlay.style[property]);
+              let stop = false;
 
-              if (currProp === end) {
+              switch (true) {
+                //uncollapsed;
+                case computed > initial:
+                  if (currProp <= end) {
+                    stop = true;
+                  }
+
+                  break;
+                //collapsed;
+
+                case computed === initial:
+                  if (currProp >= end) {
+                    stop = true;
+                  }
+
+                  break;
+              }
+
+              if (stop) {
                 trigger.disabled = false;
                 return clearTimeout(t);
               }
