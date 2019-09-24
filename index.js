@@ -864,13 +864,13 @@ function uncollapsible(numuncol, overlay) {
   let fullHeight = 0;
 
   for (let c = 0; c < chLength; c++) {
-    let child = children.item(c);
+    let child = children[c];
     let computed = window.getComputedStyle(child);
     let computedT = trimPx(computed.marginTop);
     let computedH = trimPx(computed.height);
     let computedB = trimPx(computed.marginBottom);
 
-    if (c + 1 <= numuncol) {
+    if (c < numuncol) {
       if (c === 0) {
         fullHeight += computedT + computedH;
       } else {
