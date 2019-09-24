@@ -951,7 +951,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
               let currProp = trimPx(overlay.style[property]);
               console.log(currProp);
 
-              if (end !== 0 && currProp >= end) {
+              if (computed !== initial && currProp >= end) {
                 trigger.disabled = false;
                 return clearTimeout(t);
               }
