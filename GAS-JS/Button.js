@@ -169,7 +169,9 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const button = document.createElement('button');
   button.className = this.className;
   button.type = 'button';
-  button.disabled = disabled;
+  button.disabled = disabled; //process colour info;
+
+  text = text.replace(/<font color=">/, '<span style="color:');
   button.innerText = text; //access button style and class list;
 
   const st = button.style;
