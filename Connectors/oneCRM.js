@@ -96,22 +96,33 @@ function oneCRM() {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            if (connector.account) {
-              _context.next = 2;
+            connector.account = trimWhitespace(connector.account, false, true, true);
+
+            if (!(!connector.account || connector.account === '')) {
+              _context.next = 3;
               break;
             }
 
             return _context.abrupt("return", {
-              code: 0,
+              code: 200,
               headers: {},
-              content: JSON.stringify({
-                descr: 'We couldn\'t access your account because you left the name blank. Please, check and update the Connector!'
-              })
+              content: JSON.stringify([{
+                header: 'Invalid account name',
+                widgets: [{
+                  type: globalKeyValue,
+                  content: 'We couldn\'t access your account because you left the name blank or it consists of reserved characters only.'
+                }, {
+                  type: globalTextButton,
+                  title: 'Open settings',
+                  action: 'click',
+                  funcName: 'goSettings',
+                  parameters: connector
+                }]
+              }])
             });
 
-          case 2:
-            connector.account = trimWhitespace(connector.account, false, true, true); //construct url and credentials for request;
-
+          case 3:
+            //construct url and credentials for request;
             endpoint = '/data/Contact?';
             url = 'https://' + connector.account + '.' + (connector.domain ? connector.domain : '1crmcloud.com') + this.url;
             cred = Utilities.base64Encode(connector.usercode + ':' + connector.apitoken);
