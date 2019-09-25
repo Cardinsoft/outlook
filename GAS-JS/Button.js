@@ -174,29 +174,40 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   console.log(matched);
   matched.forEach(function (match) {
     let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
-    let isB = /<b>(.+?)<\/b>/.test(match);
-    let isU = /<u>(.+?)<\/u>/.test(match);
-    let isI = /<i>(.+?)<\/i>/.test(match);
-    let isS = /<s>(.+?)<\/s>/.test(match);
+    let bold = match.match(/<b>(.+?)<\/b>/);
+    let undl = match.match(/<u>(.+?)<\/u>/);
+    let ital = match.match(/<i>(.+?)<\/i>/);
+    let strk = match.match(/<s>(.+?)<\/s>/);
     let subelem;
 
     switch (true) {
       case font:
         subelem = document.createElement('span');
         subelem.style.color = font[0];
+        button.append(subelem);
+        break;
 
-      case isB:
+      case bold:
         subelem = document.createElement('b');
+        subelem.innerText = bold[0];
+        button.append(subelem);
+        break;
 
-      case isU:
+      case undl:
         subelem = document.createElement('u');
+        subelem.innerText = undl[0];
+        button.append(subelem);
+        break;
 
-      case isI:
+      case ital:
         subelem = document.createElement('i');
+        subelem.innerText = ital[0];
+        button.append(subelem);
+        break;
 
-      case isS:
+      case strk:
         subelem = document.createElement('s');
-        subelem.innerText = match;
+        subelem.innerText = strk[0];
         button.append(subelem);
         break;
 
