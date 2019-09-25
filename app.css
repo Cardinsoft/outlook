@@ -136,7 +136,6 @@ body {
 
 .TextButton {
     display        : block;
-	min-height     : 35px;
 	text-transform : uppercase;
     font-weight    : bold;
     border         : none;
