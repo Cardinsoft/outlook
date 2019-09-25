@@ -203,6 +203,8 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
       default:
         button.insertAdjacentText('beforeend', match);
     }
+
+    console.log(subelem);
   }); //access button style and class list;
 
   const st = button.style;
