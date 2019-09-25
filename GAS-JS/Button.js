@@ -171,7 +171,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   button.disabled = disabled; //process colour info;
 
   let text = this.text;
-  text = text.replace(/<font\s+color=".+?>/g, '<span style="color:');
+  text = text.replace(/<font\s+color="/g, '<span style="color:');
   text = text.replace(/<\/font>/g, '</span>');
   button.innerText = text; //access button style and class list;
 
