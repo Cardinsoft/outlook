@@ -171,55 +171,40 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const text = this.text;
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
-  console.log(matched);
+  console.log(matched); //access button style and class list;
+
+  const st = button.style;
+  const cl = button.classList;
   matched.forEach(function (match) {
     let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
-    let bold = match.match(/<b>(.+?)<\/b>/);
-    let undl = match.match(/<u>(.+?)<\/u>/);
-    let ital = match.match(/<i>(.+?)<\/i>/);
-    let strk = match.match(/<s>(.+?)<\/s>/);
+    let isB = /<b>(.+?)<\/b>/.test(match);
+    let isU = /<u>(.+?)<\/u>/.test(match);
+    let isI = /<i>(.+?)<\/i>/.test(match);
+    let isS = /<s>(.+?)<\/s>/.test(match);
     let subelem;
 
     switch (true) {
       case font:
-        subelem = document.createElement('span');
-        subelem.style.color = font[0];
-        button.append(subelem);
+        st.color = font[0];
         break;
 
-      case bold:
-        subelem = document.createElement('b');
-        subelem.innerText = bold[0];
-        button.append(subelem);
+      case isB:
+        st.fontWeight = 'bold';
         break;
 
-      case undl:
-        subelem = document.createElement('u');
-        subelem.innerText = undl[0];
-        button.append(subelem);
+      case isU:
+        //st.
         break;
 
-      case ital:
-        subelem = document.createElement('i');
-        subelem.innerText = ital[0];
-        button.append(subelem);
+      case isI:
         break;
 
-      case strk:
-        subelem = document.createElement('s');
-        subelem.innerText = strk[0];
-        button.append(subelem);
+      case isS:
         break;
-
-      default:
-        button.insertAdjacentText('beforeend', match);
     }
 
     console.log(subelem);
-  }); //access button style and class list;
-
-  const st = button.style;
-  const cl = button.classList;
+  });
 
   if (textButtonStyle === 'FILLED') {
     st.backgroundColor = backgroundColor;
