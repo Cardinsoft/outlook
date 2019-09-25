@@ -171,6 +171,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const text = this.text;
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
+  console.log(matched);
   matched.forEach(function (match) {
     let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
     let isB = /<b>(.+?)<\/b>/.test(match);
