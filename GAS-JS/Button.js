@@ -150,7 +150,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   //access button properties;
   let action = this.action;
   const backgroundColor = this.backgroundColor;
-  const text = this.text;
   const disabled = this.disabled;
   const textButtonStyle = this.textButtonStyle;
   const openLink = this.openLink;
@@ -166,11 +165,44 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   parent.append(widget); //initiate button;
 
-  const button = document.createElement('button');
+  const button = document.createElement('div');
   button.className = this.className;
-  button.type = 'button';
-  button.disabled = disabled;
-  button.innerHTML = text; //access button style and class list;
+  button.disabled = disabled; //process colour info;
+
+  const text = this.text;
+  const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
+  matched.forEach(function (match) {
+    let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
+    let isB = /<b>/.test(match);
+    let isU = /<u>/.test(match);
+    let isI = /<i>/.test(match);
+    let isS = /<s>/.test(match);
+    let subelem;
+
+    switch (true) {
+      case font:
+        subelem = document.createElement('span');
+        subelem.style.color = font[0];
+
+      case isB:
+        subelem = document.createElement('b');
+
+      case isU:
+        subelem = document.createElement('u');
+
+      case isI:
+        subelem = document.createElement('i');
+
+      case isS:
+        subelem = document.createElement('s');
+        sybelem.innerText = match;
+        button.append(subelem);
+        break;
+
+      default:
+        button.insertAdjacentText('beforeend', match);
+    }
+  }); //access button style and class list;
 
   const st = button.style;
   const cl = button.classList;
