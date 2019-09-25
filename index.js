@@ -843,7 +843,7 @@ function setAction(element, action) {
 
 function trimPx(input) {
   if (input && typeof input === 'string') {
-    return +input.replace('px', '');
+    return Math.ceil(+input.replace('px', ''));
   }
 }
 /**
