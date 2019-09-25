@@ -167,7 +167,25 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const button = document.createElement('div');
   button.className = this.className;
-  button.disabled = disabled; //process colour info;
+  button.disabled = disabled; //access button style and class list;
+
+  const st = button.style;
+  const cl = button.classList;
+
+  if (textButtonStyle === 'FILLED') {
+    st.backgroundColor = backgroundColor;
+    cl.add('btn-filled');
+  } else {
+    cl.add('btn-text');
+  }
+
+  if (disabled) {
+    cl.add('btn-disabled');
+  } else {
+    cl.remove('btn-disabled');
+  }
+
+  widget.append(button); //process colour info;
 
   const text = this.text;
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
@@ -176,10 +194,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
-  console.log(matched); //access button style and class list;
-
-  const st = button.style;
-  const cl = button.classList;
+  console.log(matched);
   matched.forEach(function (ftag) {
     let font = ftag.match(freg);
     let isB = fbld.test(ftag);
@@ -194,6 +209,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
         subelem.style.color = font[0];
         subelem.innerText = font[1];
         button.append(subelem);
+        console.log(button);
         break;
 
       case isB:
@@ -210,22 +226,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
         break;
     }
   });
-  console.log(button);
-
-  if (textButtonStyle === 'FILLED') {
-    st.backgroundColor = backgroundColor;
-    cl.add('btn-filled');
-  } else {
-    cl.add('btn-text');
-  }
-
-  if (disabled) {
-    cl.add('btn-disabled');
-  } else {
-    cl.remove('btn-disabled');
-  }
-
-  widget.append(button);
 
   if (!openLink && !authAction && action) {
     //set refrence;
