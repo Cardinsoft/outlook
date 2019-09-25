@@ -927,11 +927,8 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
             if (computed === initial) {
               change = -increment;
               end = chProperty;
-            }
+            } //set recursive timeout to change height;
 
-            console.log('computed: ' + computed);
-            console.log('initial: ' + initial);
-            console.log('end: ' + end); //set recursive timeout to change height;
 
             t = setTimeout(function wait() {
               trigger.disabled = true;
@@ -947,10 +944,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
 
               overlay.style[property] = newProp + 'px';
-              console.log(overlay.style[property]);
               let currProp = trimPx(overlay.style[property]);
-              console.log(currProp);
-              console.log(typeof currProp);
               let stop = false;
 
               switch (true) {
@@ -979,7 +973,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
               t = setTimeout(wait, interval);
             }, interval);
 
-          case 9:
+          case 6:
           case "end":
             return _context3.stop();
         }
