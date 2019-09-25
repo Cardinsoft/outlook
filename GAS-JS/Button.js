@@ -171,7 +171,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const text = this.text;
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
-  const freg = /<font="(.+?)">(.+?)<\/font>/;
+  const freg = /<font color="(.+?)">(.+?)<\/font>/;
   const fbld = /<b>.+?<\/b>/;
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
