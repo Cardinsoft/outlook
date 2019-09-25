@@ -171,21 +171,29 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const text = this.text;
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
+  const freg = /<font="(.+?)">(.+?)<\/font>/;
+  const fbld = /<b>.+?<\/b>/;
+  const fund = /<u>.+?<\/u>/;
+  const fitl = /<i>.+?<\/i>/;
+  const fstr = /<s>.+?<\/s>/;
   console.log(matched); //access button style and class list;
 
   const st = button.style;
   const cl = button.classList;
-  matched.forEach(function (match) {
-    let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
-    let isB = /<b>(.+?)<\/b>/.test(match);
-    let isU = /<u>(.+?)<\/u>/.test(match);
-    let isI = /<i>(.+?)<\/i>/.test(match);
-    let isS = /<s>(.+?)<\/s>/.test(match);
+  matched.forEach(function (ftag) {
+    let font = ftag.match(freg);
+    let isB = fbld.test(match);
+    let isU = fund.test(match);
+    let isI = fitl.test(match);
+    let isS = fstr.test(match);
     let subelem;
 
     switch (true) {
       case font:
-        st.color = font[0];
+        subelem = document.createElement('span');
+        subelem.style.color = font[0];
+        subelem.innerText = font[1];
+        button.append(subelem);
         break;
 
       case isB:
@@ -202,8 +210,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
       case isS:
         break;
     }
-
-    console.log(subelem);
   });
 
   if (textButtonStyle === 'FILLED') {
