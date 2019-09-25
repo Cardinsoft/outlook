@@ -182,10 +182,10 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const cl = button.classList;
   matched.forEach(function (ftag) {
     let font = ftag.match(freg);
-    let isB = fbld.test(match);
-    let isU = fund.test(match);
-    let isI = fitl.test(match);
-    let isS = fstr.test(match);
+    let isB = fbld.test(ftag);
+    let isU = fund.test(ftag);
+    let isI = fitl.test(ftag);
+    let isS = fstr.test(ftag);
     let subelem;
 
     switch (true) {
