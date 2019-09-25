@@ -197,7 +197,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
         break;
 
       case isB:
-        st.fontWeight = 'bold';
         break;
 
       case isU:
@@ -211,6 +210,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
         break;
     }
   });
+  console.log(button);
 
   if (textButtonStyle === 'FILLED') {
     st.backgroundColor = backgroundColor;
