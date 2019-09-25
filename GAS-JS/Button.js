@@ -150,7 +150,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   //access button properties;
   let action = this.action;
   const backgroundColor = this.backgroundColor;
-  const text = this.text;
   const disabled = this.disabled;
   const textButtonStyle = this.textButtonStyle;
   const openLink = this.openLink;
@@ -171,6 +170,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   button.type = 'button';
   button.disabled = disabled; //process colour info;
 
+  let text = this.text;
   text = text.replace(/<font color=">/, '<span style="color:');
   button.innerText = text; //access button style and class list;
 
