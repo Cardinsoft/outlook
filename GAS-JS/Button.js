@@ -167,42 +167,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
   const button = document.createElement('div');
   button.className = this.className;
-  button.disabled = disabled; //process colour info;
-
-  const text = this.text;
-  const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
-  matched.forEach(function (match) {
-    let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
-    let isB = /<b>/.test(match);
-    let isU = /<u>/.test(match);
-    let isI = /<i>/.test(match);
-    let isS = /<s>/.test(match);
-    let subelem;
-
-    switch (true) {
-      case font:
-        subelem = document.createElement('span');
-        subelem.style.color = font[0];
-
-      case isB:
-        subelem = document.createElement('b');
-
-      case isU:
-        subelem = document.createElement('u');
-
-      case isI:
-        subelem = document.createElement('i');
-
-      case isS:
-        subelem = document.createElement('s');
-        sybelem.innerText = match;
-        button.append(subelem);
-        break;
-
-      default:
-        button.insertAdjacentText('beforeend', match);
-    }
-  }); //access button style and class list;
+  button.disabled = disabled; //access button style and class list;
 
   const st = button.style;
   const cl = button.classList;
@@ -220,7 +185,55 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
     cl.remove('btn-disabled');
   }
 
-  widget.append(button);
+  widget.append(button); //process colour info;
+
+  const text = this.text;
+  const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
+  const freg = /<font color="(.+?)">(.+?)<\/font>/;
+  const fbld = /<b>.+?<\/b>/;
+  const fund = /<u>.+?<\/u>/;
+  const fitl = /<i>.+?<\/i>/;
+  const fstr = /<s>.+?<\/s>/;
+  matched.forEach(function (ftag) {
+    let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
+    let font = ftag.match(freg) || [];
+    let isB = fbld.test(ftag);
+    let isU = fund.test(ftag);
+    let isI = fitl.test(ftag);
+    let isS = fstr.test(ftag);
+    let subelem;
+
+    switch (true) {
+      case font.length > 0:
+        subelem = document.createElement('span');
+        subelem.style.color = font[1];
+        break;
+
+      case isB:
+        subelem = document.createElement('b');
+        break;
+
+      case isU:
+        subelem = document.createElement('u');
+        break;
+
+      case isI:
+        subelem = document.createElement('i');
+        break;
+
+      case isS:
+        subelem = document.createElement('s');
+        break;
+
+      default:
+        button.insertAdjacentText('beforeend', ftag);
+    }
+
+    if (font.length > 0 || isB || isU || isI || isS) {
+      subelem.innerText = mtext[1];
+      button.append(subelem);
+    }
+  });
 
   if (!openLink && !authAction && action) {
     //set refrence;
