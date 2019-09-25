@@ -118,7 +118,7 @@ function _cardUpdate() {
 
           params = e.parameters;
 
-          if (params.id) {
+          if (!params.id) {
             _context2.next = 8;
             break;
           }
