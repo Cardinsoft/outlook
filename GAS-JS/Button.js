@@ -194,7 +194,6 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
-  console.log(matched);
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
