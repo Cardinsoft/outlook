@@ -196,7 +196,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const fstr = /<s>.+?<\/s>/;
   console.log(matched);
   matched.forEach(function (ftag) {
-    let font = ftag.match(freg);
+    let font = ftag.match(freg) || [];
     let isB = fbld.test(ftag);
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
@@ -204,7 +204,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
     let subelem;
 
     switch (true) {
-      case font:
+      case font.length > 0:
         subelem = document.createElement('span');
         subelem.style.color = font[0];
         subelem.innerText = font[1];
