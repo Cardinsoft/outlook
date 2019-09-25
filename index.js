@@ -951,6 +951,8 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
               overlay.style[property] = newProp + 'px';
               let currProp = trimPx(overlay.style[property]);
+              console.log(currProp);
+              console.log(typeof currProp);
               let stop = false;
 
               switch (true) {
