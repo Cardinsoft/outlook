@@ -221,15 +221,11 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
       case isS:
         subelem = document.createElement('s');
         subelem.innerText = mtext[0];
+        button.append(subelem);
         break;
 
       default:
         button.insertAdjacentText('beforeend', ftag);
-
-        if (font.length > 0 || isB || isU || isI || isS) {
-          button.append(subelem);
-        }
-
     }
   });
 
