@@ -73,26 +73,25 @@ regeneratorRuntime.mark(function _callee() {
         } //validate builder; //TODO: enable validation;
 
 
-        response = new ActionResponse(this);
-        console.log(response); //if navigation -> build card;
+        response = new ActionResponse(this); //if navigation -> build card;
 
         if (!this.navigation) {
-          _context.next = 10;
+          _context.next = 9;
           break;
         }
 
-        _context.next = 7;
+        _context.next = 6;
         return response.returns.navigation.card;
 
-      case 7:
+      case 6:
         card = _context.sent;
-        _context.next = 10;
+        _context.next = 9;
         return card.appendToUi();
 
-      case 10:
+      case 9:
         return _context.abrupt("return", response);
 
-      case 11:
+      case 10:
       case "end":
         return _context.stop();
     }
