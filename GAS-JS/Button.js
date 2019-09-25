@@ -201,28 +201,20 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
-    let subelem;
+    let subelem = document.createElement('span');
 
     switch (true) {
       case font.length > 0:
-        subelem = document.createElement('span');
         subelem.style.color = font[0];
         subelem.innerText = font[1];
-        button.append(subelem);
-        console.log(button);
-        break;
 
       case isB:
-        break;
+        subelem.style.fontWeight = 'bold';
 
       case isU:
-        //st.
-        break;
-
       case isI:
-        break;
-
       case isS:
+        button.append(subelem);
         break;
 
       default:
