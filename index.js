@@ -943,11 +943,8 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
 
               if (newProp > chProperty) {
                 newProp = chProperty;
-              }
+              } //if(end>initial&&newProp>end) {  newProp = end; }
 
-              if (end > initial && newProp > end) {
-                newProp = end;
-              }
 
               overlay.style[property] = newProp + 'px';
               console.log(overlay.style[property]);
