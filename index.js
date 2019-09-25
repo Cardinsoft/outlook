@@ -971,8 +971,6 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
                   break;
               }
 
-              console.log(stop);
-
               if (stop) {
                 trigger.disabled = false;
                 return clearTimeout(t);
