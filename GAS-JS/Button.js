@@ -173,10 +173,10 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
   matched.forEach(function (match) {
     let font = match.match(/<font="(.+?)">(.+?)<\/font>/);
-    let isB = /<b>/.test(match);
-    let isU = /<u>/.test(match);
-    let isI = /<i>/.test(match);
-    let isS = /<s>/.test(match);
+    let isB = /<b>(.+?)<\/b>/.test(match);
+    let isU = /<u>(.+?)<\/u>/.test(match);
+    let isI = /<i>(.+?)<\/i>/.test(match);
+    let isS = /<s>(.+?)<\/s>/.test(match);
     let subelem;
 
     switch (true) {
@@ -195,7 +195,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
       case isS:
         subelem = document.createElement('s');
-        sybelem.innerText = match;
+        subelem.innerText = match;
         button.append(subelem);
         break;
 
