@@ -208,24 +208,31 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
       case font.length > 0:
         subelem = document.createElement('span');
         subelem.style.color = font[0];
+        break;
 
       case isB:
         subelem = document.createElement('b');
+        break;
 
       case isU:
         subelem = document.createElement('u');
+        break;
 
       case isI:
         subelem = document.createElement('i');
+        break;
 
       case isS:
         subelem = document.createElement('s');
-        subelem.innerText = mtext[0];
-        button.append(subelem);
         break;
 
       default:
         button.insertAdjacentText('beforeend', ftag);
+    }
+
+    if (font.length > 0 || isB || isU || isI || isS) {
+      subelem.innerText = mtext[0];
+      button.append(subelem);
     }
   });
 
