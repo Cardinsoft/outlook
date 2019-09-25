@@ -170,7 +170,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   button.className = this.className;
   button.type = 'button';
   button.disabled = disabled;
-  button.innerHTML = text; //access button style and class list;
+  button.textContent = text; //access button style and class list;
 
   const st = button.style;
   const cl = button.classList;
