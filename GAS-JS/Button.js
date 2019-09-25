@@ -196,29 +196,40 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   const fstr = /<s>.+?<\/s>/;
   console.log(matched);
   matched.forEach(function (ftag) {
+    let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
     let isB = fbld.test(ftag);
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
-    let subelem = document.createElement('span');
+    let subelem;
 
     switch (true) {
       case font.length > 0:
+        subelem = document.createElement('span');
         subelem.style.color = font[0];
-        subelem.innerText = font[1];
 
       case isB:
-        subelem.style.fontWeight = 'bold';
+        subelem = document.createElement('b');
 
       case isU:
+        subelem = document.createElement('u');
+
       case isI:
+        subelem = document.createElement('i');
+
       case isS:
-        button.append(subelem);
+        subelem = document.createElement('s');
+        subelem.innerText = mtext[0];
         break;
 
       default:
         button.insertAdjacentText('beforeend', ftag);
+
+        if (font.length > 0 || isB || isU || isI || isS) {
+          button.append(subelem);
+        }
+
     }
   });
 
