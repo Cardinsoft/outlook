@@ -224,6 +224,9 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
 
       case isS:
         break;
+
+      default:
+        button.insertAdjacentText('beforeend', ftag);
     }
   });
 
