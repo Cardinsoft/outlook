@@ -207,7 +207,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
     switch (true) {
       case font.length > 0:
         subelem = document.createElement('span');
-        subelem.style.color = font[0];
+        subelem.style.color = font[1];
         break;
 
       case isB:
@@ -231,7 +231,7 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
     }
 
     if (font.length > 0 || isB || isU || isI || isS) {
-      subelem.innerText = mtext[0];
+      subelem.innerText = mtext[1];
       button.append(subelem);
     }
   });
