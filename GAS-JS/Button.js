@@ -264,14 +264,20 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
   } else if (openLink) {
     button.addEventListener('click', function (event) {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (result) {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), {
+        width: 50,
+        height: 50
+      }, function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
   } else {
     button.addEventListener('click', function (event) {
       const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), function (result) {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), {
+        width: 50,
+        height: 50
+      }, function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
@@ -409,14 +415,20 @@ ImageButton.prototype.appendToUi = function (parent, isSet) {
   } else if (openLink) {
     button.addEventListener('click', function (event) {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (result) {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), {
+        width: 50,
+        height: 50
+      }, function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
   } else {
     button.addEventListener('click', function (event) {
       const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), function (result) {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), {
+        width: 50,
+        height: 50
+      }, function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
