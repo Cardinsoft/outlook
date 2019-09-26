@@ -291,8 +291,6 @@ KeyValue.prototype.appendToUi = function (parent) {
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
-    console.log(ftag);
-    console.log(anchor);
     let subelem;
 
     switch (true) {
