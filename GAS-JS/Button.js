@@ -262,21 +262,24 @@ TextButton.prototype.appendToUi = function (parent, isSet) {
       }, _callee, this);
     })));
   } else if (openLink) {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
       const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (e) {
-        console.log(e);
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (result) {
+        result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
   } else {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
       const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url));
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), function (result) {
+        result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
+      });
     });
   }
 
   return widget;
-}; //Emulate Class ImageButton extending base Class Button for CardService service;
+};
+/** ImageButton class */
 
 
 let ImageButton =
@@ -305,7 +308,7 @@ ImageButton.prototype = Object.create(Button.prototype);
 /**
  * Sets alt text to show if icon or image is unavailable;
  * @param {String} altText text to display;
- * @returns {ImageButton} this ImageButton;
+ * @return {ImageButton} this ImageButton;
  */
 
 ImageButton.prototype.setAltText = function (altText) {
@@ -315,7 +318,7 @@ ImageButton.prototype.setAltText = function (altText) {
 /**
  * Sets icon to display on button;
  * @param {String} icon icon enumerable name;
- * @returns {ImageButton} this ImageButton;
+ * @return {ImageButton} this ImageButton;
  */
 
 
@@ -326,7 +329,7 @@ ImageButton.prototype.setIcon = function (icon) {
 /**
  * Sets image to display on button;
  * @param {String} url image source URL;
- * @returns {ImageButton} this ImageButton;
+ * @return {ImageButton} this ImageButton;
  */
 
 
@@ -377,30 +380,41 @@ ImageButton.prototype.appendToUi = function (parent, isSet) {
 
     button.addEventListener('click',
     /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2() {
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return actionCallback(this);
+    function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(event) {
+        var result;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return actionCallback(this);
 
-          case 2:
-          case "end":
-            return _context2.stop();
-        }
-      }, _callee2, this);
-    })));
+            case 2:
+              result = _context2.sent;
+              return _context2.abrupt("return", handleResponse(result));
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }());
   } else if (openLink) {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
       const link = JSON.parse(openLink);
       Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
       });
     });
   } else {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
       const auth = JSON.parse(authAction);
       Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), function (result) {
         result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
