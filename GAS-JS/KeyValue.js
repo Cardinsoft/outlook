@@ -283,12 +283,12 @@ KeyValue.prototype.appendToUi = function (parent) {
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
+    let mailto = ftag.match(fmail) || [];
+    let anchor = ftag.match(fancr) || [];
     let isB = fbld.test(ftag);
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
-    let isM = fmail.test(ftag);
-    let isA = fancr.test(ftag);
     let subelem;
 
     switch (true) {
@@ -297,14 +297,14 @@ KeyValue.prototype.appendToUi = function (parent) {
         subelem.style.color = font[1];
         break;
 
-      case isM:
+      case mailto.length > 0:
         subelem = document.createElement('a');
-        loadMailto(subelem, ftag);
+        loadMailto(subelem, mailto[0]);
         break;
 
-      case isA:
+      case anchor.length > 0:
         subelem = document.createElement('a');
-        loadAnchor(subelem, ftag);
+        loadAnchor(subelem, anchor[0]);
         break;
 
       case isB:
