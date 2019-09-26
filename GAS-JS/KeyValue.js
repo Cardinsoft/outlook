@@ -278,6 +278,8 @@ KeyValue.prototype.appendToUi = function (parent) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
+  const fmail = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/;
+  const fancr = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
@@ -285,12 +287,24 @@ KeyValue.prototype.appendToUi = function (parent) {
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
+    let isM = fmail.test(ftag);
+    let isA = fancr.test(ftag);
     let subelem;
 
     switch (true) {
       case font.length > 0:
         subelem = document.createElement('span');
         subelem.style.color = font[1];
+        break;
+
+      case isM:
+        subelem = document.createElement('a');
+        loadMailto(subelem, ftag);
+        break;
+
+      case isA:
+        subelem = document.createElement('a');
+        loadAnchor(subelem, ftag);
         break;
 
       case isB:
@@ -313,7 +327,7 @@ KeyValue.prototype.appendToUi = function (parent) {
         contentText.insertAdjacentText('beforeend', ftag);
     }
 
-    if (font.length > 0 || isB || isU || isI || isS) {
+    if (font.length > 0 || isB || isU || isI || isS || isM) {
       subelem.innerText = mtext[1];
       contentText.append(subelem);
     }
