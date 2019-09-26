@@ -299,12 +299,12 @@ KeyValue.prototype.appendToUi = function (parent) {
 
       case mailto.length > 0:
         subelem = document.createElement('a');
-        loadMailto(subelem, mailto[0]);
+        loadMailto(subelem, mailto[1]);
         break;
 
       case anchor.length > 0:
         subelem = document.createElement('a');
-        loadAnchor(subelem, anchor[0]);
+        loadAnchor(subelem, anchor[1]);
         break;
 
       case isB:
