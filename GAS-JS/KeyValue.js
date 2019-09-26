@@ -278,7 +278,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
-  const fmail = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/;
+  const fmail = /(<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>)/;
   const fancr = /<a\s*?href="(?!mailto:)(.*?)"\s*?>.*?<\/a>/;
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
@@ -300,12 +300,14 @@ KeyValue.prototype.appendToUi = function (parent) {
         break;
 
       case mailto.length > 0:
-        subelem = document.createElement('a');
+        subelem = document.createElement('span');
+        subelem.className = 'link';
         loadMailto(subelem, mailto[1]);
         break;
 
       case anchor.length > 0:
-        subelem = document.createElement('a');
+        subelem = document.createElement('span');
+        subelem.className = 'link';
         loadAnchor(subelem, anchor[1]);
         break;
 
