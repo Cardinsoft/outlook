@@ -540,9 +540,9 @@ function actionCallback(_x2) {
 //=========================================START UTILITIES======================================//
 
 /**
- * Matches input for being a mailto anchor and sets event listeners;
- * @param {HtmlElement} element element to set listeners to on success;
- * @param {String||Array} input <a> html tag string to check;
+ * Matches input for being a mailto anchor and sets event listener;
+ * @param {HtmlElement} element element to set listeners;
+ * @param {String} input <a> html tag string to check;
  */
 
 
@@ -671,47 +671,15 @@ function _actionCallback() {
 }
 
 function loadMailto(element, input) {
-  if (typeof input === 'number') {
-    input = input.toString();
-  }
+  element.addEventListener('click', function (event) {
+    event.preventDefault(); //set parameters for Compose Ui;
 
-  if (!(input instanceof Array)) {
-    const regexp = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/g;
-    const matches = input.match(regexp); //get children that are anchors with mailto;
-
-    let children = Array.from(element.children);
-    children = children.filter(function (elem) {
-      let isAnchor = elem.tagName.toLowerCase() === 'a';
-
-      if (isAnchor) {
-        let isMail = elem.href.search('mailto:') !== -1;
-        let isNotPhone = elem.href.search('tel:') === -1;
-
-        if (isMail && isNotPhone) {
-          return elem;
-        }
-      }
-    }); //if found anchor and element has child nodes;
-
-    if (matches !== null && matches.length > 0 && children.length > 0) {
-      matches.forEach(function (result, index) {
-        let anchor = children[index]; //change event listener to open Compose Ui;
-
-        anchor.addEventListener('click', function (event) {
-          event.preventDefault(); //find original recipient;
-
-          let mailRegEx = /mailto:(.+@.+)(?="\s*>)/;
-          let recipient = input.match(mailRegEx); //set parameters for Compose Ui;
-
-          let mailParams = {
-            toRecipients: recipient
-          };
-          Office.context.mailbox.displayNewMessageForm(mailParams);
-          return false;
-        });
-      });
-    }
-  }
+    let mailParams = {
+      toRecipients: input
+    };
+    Office.context.mailbox.displayNewMessageForm(mailParams);
+    return false;
+  });
 }
 /**
  * Matches input for being an anchor and sets event listener;
