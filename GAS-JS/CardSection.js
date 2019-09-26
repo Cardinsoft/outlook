@@ -84,8 +84,6 @@ function () {
       var _appendToUi = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(parent, serialize, sI) {
-        var _this = this;
-
         var collapsible, uncollapse, section, headerText, header, widgets, appendWidgetsAsync, hasInput, wrapper, toggler;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
@@ -202,7 +200,7 @@ function () {
                 section.append(toggler); //add event handler for toggling target element's state;
 
                 toggler.addEventListener('click', function (event) {
-                  _this.classList.toggle('toggler-up');
+                  toggler.classList.toggle('toggler-up');
                 });
               }
 
