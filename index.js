@@ -716,56 +716,37 @@ function loadMailto(element, input) {
 /**
  * Matches input for being an anchor and sets event listeners;
  * @param {HtmlElement} element element to set listeners to on success;
- * @param {String||Array} input <a> html tag string to check (or ignore if of different type);
+ * @param {String||Array} input <a> html tag string to check;
  */
 
 
 function loadAnchor(element, input) {
   if (typeof input === 'number') {
     input = input.toString();
-  }
+  } //if found anchor and element has child nodes;
 
-  if (!(input instanceof Array)) {
-    const regexp = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
-    const matches = input.match(regexp); //get children that are anchors;
 
-    let children = Array.from(element.children);
-    children = children.filter(function (elem) {
-      //filter out anchors with mailto or phone set;
-      let isAnchor = elem.tagName.toLowerCase() === 'a';
-
-      if (isAnchor) {
-        let isNotMail = elem.href.search('mailto:') === -1;
-
-        if (isNotMail) {
-          return elem;
-        }
+  if (matches !== null && matches.length > 0 && children.length > 0) {
+    matches.forEach(function (result, index) {
+      //set event listener to choose 
+      if (element.href.search('tel:') !== -1) {
+        element.addEventListener('click', function (event) {
+          event.stopPropagation();
+          element.target = '_self';
+          return false;
+        });
+      } else {
+        //change event listener to open Dialog;
+        element.addEventListener('click', function (event) {
+          event.preventDefault();
+          Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + this.href, {
+            width: 50,
+            height: 50
+          });
+          return false;
+        });
       }
-    }); //if found anchor and element has child nodes;
-
-    if (matches !== null && matches.length > 0 && children.length > 0) {
-      matches.forEach(function (result, index) {
-        let anchor = children[index]; //set event listener to choose 
-
-        if (anchor.href.search('tel:') !== -1) {
-          anchor.addEventListener('click', function (event) {
-            event.stopPropagation();
-            anchor.target = '_self';
-            return false;
-          });
-        } else {
-          //change event listener to open Dialog;
-          anchor.addEventListener('click', function (event) {
-            event.preventDefault();
-            Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + this.href, {
-              width: 50,
-              height: 50
-            });
-            return false;
-          });
-        }
-      });
-    }
+    });
   }
 }
 /**
