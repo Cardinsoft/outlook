@@ -672,7 +672,8 @@ function _actionCallback() {
 
 function loadMailto(element, input) {
   element.addEventListener('click', function (event) {
-    event.preventDefault(); //set parameters for Compose Ui;
+    event.preventDefault();
+    console.log(input); //set parameters for Compose Ui;
 
     let mailParams = {
       toRecipients: input
