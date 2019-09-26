@@ -106,12 +106,18 @@ function (_Button) {
 }(Button); //chain TextButton to Button base class;
 
 
-TextButton.prototype = Object.create(Button.prototype); //add new methods to the class;
+TextButton.prototype = Object.create(Button.prototype);
 
 TextButton.prototype.setDisabled = function (disabled) {
   this.disabled = disabled;
   return this;
 };
+/**
+ * Set button text to display;
+ * @param {String} text button text to set;
+ * @return {TextButton} this TextButton;
+ */
+
 
 TextButton.prototype.setText = function (text) {
   this.text = text;
@@ -120,7 +126,7 @@ TextButton.prototype.setText = function (text) {
 /**
  * Sets background color for filled TextButton;
  * @param {String} backgroundColor color HEX code;
- * @returns {TextButton} this TextButton;
+ * @return {TextButton} this TextButton;
  */
 
 
@@ -133,8 +139,18 @@ TextButton.prototype.setBackgroundColor = function (backgroundColor) {
 
   return this;
 };
+/**
+ * Sets text button style;
+ * @param {String} textButtonStyle style to set;
+ * @return {TextButton} this TextButton;
+ */
+
 
 TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
+  if (!CardService.TextButtonStyle.hasOwnProperty(textButtonStyle)) {
+    throw new TypeError('Incorrect style enum');
+  }
+
   this.textButtonStyle = textButtonStyle;
   return this;
 };
