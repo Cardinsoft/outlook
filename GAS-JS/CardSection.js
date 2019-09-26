@@ -30,11 +30,25 @@ CardSection.prototype.setHeader = function (header) {
   this.header = header;
   return this;
 };
+/**
+ * Sets number of uncollapsible widgets;
+ * @param {Integer} numUncollapsibleWidgets number of widgets;
+ * @return {CardSection} this CardSection;
+ */
+
 
 CardSection.prototype.setNumUncollapsibleWidgets = function (numUncollapsibleWidgets) {
   this.numUncollapsibleWidgets = numUncollapsibleWidgets;
   return this;
 };
+/**
+ * Utility method for building section display;
+ * @param {HtmlElement} parent parent element to append to;
+ * @param {Boolean} serialize several sections flag;
+ * @param {Integer} sI section index;
+ * @return {HtmlElement} built section;
+ */
+
 
 CardSection.prototype.appendToUi =
 /*#__PURE__*/
@@ -42,7 +56,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2(parent, serialize, sI) {
-    var collapsible, uncollapse, section, headerText, header, widgetsWrap, wrapper, widgets, appendWidgetsAsync, hasInput, formElem, toggler;
+    var collapsible, uncollapse, section, headerText, header, widgets, appendWidgetsAsync, hasInput, wrapper, toggler;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -71,23 +85,13 @@ function () {
             header.className = 'ms-font-m-plus sectionHeader';
             header.textContent = headerText;
             section.append(header);
-          } //append widgets wrapper and handle collapsed Ui;
+          } //access widgets and append;
 
-
-          widgetsWrap = document.createElement('div');
-
-          if (collapsible) {
-            widgetsWrap.className = 'collapsible';
-          }
-
-          section.append(widgetsWrap); //set wrapper to widgets wrapper;
-
-          wrapper = widgetsWrap; //access widgets and append;
 
           widgets = this.widgets;
 
-          if (!(widgets.length !== 0)) {
-            _context2.next = 20;
+          if (!(widgets.length > 0)) {
+            _context2.next = 16;
             break;
           }
 
@@ -148,18 +152,21 @@ function () {
           }); //if found form input -> append form element and set wrapper to form;
 
           if (hasInput) {
-            formElem = document.createElement('form');
-            widgetsWrap.append(formElem);
-            wrapper = formElem;
+            wrapper = document.createElement('form');
+            section.append(wrapper);
+          } else {
+            wrapper = document.createElement('div');
+            section.append(wrapper);
           }
 
-          _context2.next = 20;
+          _context2.next = 16;
           return appendWidgetsAsync(widgets, wrapper);
 
-        case 20:
+        case 16:
           //handle collapsible sections;
           if (collapsible && widgets.length > uncollapse || collapsible && !uncollapse) {
-            //create toggler element;
+            wrapper.className = 'collapsible'; //create toggler element;
+
             toggler = document.createElement('div');
             toggler.className = 'toggler centered ms-Icon ms-Icon--ChevronDown pointer';
             section.append(toggler); //add event handler for toggling target element's state;
@@ -172,7 +179,7 @@ function () {
           parent.append(section);
           return _context2.abrupt("return", section);
 
-        case 23:
+        case 19:
         case "end":
           return _context2.stop();
       }
