@@ -672,11 +672,10 @@ function _actionCallback() {
 
 function loadMailto(element, input) {
   element.addEventListener('click', function (event) {
-    event.preventDefault();
-    console.log(input); //set parameters for Compose Ui;
+    event.preventDefault(); //set parameters for Compose Ui;
 
     let mailParams = {
-      toRecipients: input
+      toRecipients: [input]
     };
     Office.context.mailbox.displayNewMessageForm(mailParams);
     return false;
