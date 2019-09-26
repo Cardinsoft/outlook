@@ -302,20 +302,20 @@ KeyValue.prototype.appendToUi = function (parent) {
         break;
 
       case tel.length > 0:
-        subelem = document.createElement('span');
-        subelem.className = 'link';
+        subelem = document.createElement('a');
+        subelem.href = "tel:{tel[1]}";
         loadTel(subelem, tel[1]);
         break;
 
       case mailto.length > 0:
-        subelem = document.createElement('span');
-        subelem.className = 'link';
+        subelem = document.createElement('a');
+        subelem.href = "mailto:{mailto[1]}";
         loadMailto(subelem, mailto[1]);
         break;
 
       case anchor.length > 0:
-        subelem = document.createElement('span');
-        subelem.className = 'link';
+        subelem = document.createElement('a');
+        subelem.href = "{anchor[1]}";
         loadAnchor(subelem, anchor[1]);
         break;
 
