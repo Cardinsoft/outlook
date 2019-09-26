@@ -714,35 +714,35 @@ function loadMailto(element, input) {
   }
 }
 /**
- * Matches input for being an anchor and sets event listeners;
- * @param {HtmlElement} element element to set listeners to on success;
- * @param {String||Array} input <a> html tag string to check;
+ * Matches input for being an anchor and sets event listener;
+ * @param {HtmlElement} element element to set listeners;
+ * @param {String} input <a> html tag string to check;
  */
 
 
 function loadAnchor(element, input) {
-  if (typeof input === 'number') {
-    input = input.toString();
-  } //set event listener to choose 
+  element.addEventListener('click', function (event) {
+    event.preventDefault();
+    Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + input, {
+      width: 50,
+      height: 50
+    });
+    return false;
+  });
+}
+/**
+ * Matches input for being a tel link and sets event listener;
+ * @param {HtmlElement} element element to set listeners;
+ * @param {String} input <a> html tag string to check;
+ */
 
 
-  if (element.href.search('tel:') !== -1) {
-    element.addEventListener('click', function (event) {
-      event.stopPropagation();
-      element.target = '_self';
-      return false;
-    });
-  } else {
-    //change event listener to open Dialog;
-    element.addEventListener('click', function (event) {
-      event.preventDefault();
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + input, {
-        width: 50,
-        height: 50
-      });
-      return false;
-    });
-  }
+function loadTel(element, input) {
+  element.addEventListener('click', function (event) {
+    event.stopPropagation();
+    element.target = '_self';
+    return false;
+  });
 }
 /**
  * Appends https method to URL if none;
