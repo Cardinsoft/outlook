@@ -301,19 +301,19 @@ KeyValue.prototype.appendToUi = function (parent) {
 
       case tel.length > 0:
         subelem = document.createElement('a');
-        subelem.href = encodeURI("tel:{tel[1]}");
+        subelem.href = "tel:{encodeURI(tel[1])}";
         loadTel(subelem, tel[1]);
         break;
 
       case mailto.length > 0:
         subelem = document.createElement('a');
-        subelem.href = encodeURI("mailto:{mailto[1]}");
+        subelem.href = "mailto:{encodeURI(mailto[1])}";
         loadMailto(subelem, mailto[1]);
         break;
 
       case anchor.length > 0:
         subelem = document.createElement('a');
-        subelem.href = encodeURI("{anchor[1]}");
+        subelem.href = "{encodeURI(anchor[1])}";
         loadAnchor(subelem, anchor[1]);
         break;
 
