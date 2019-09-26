@@ -199,8 +199,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   //access parameters;
   let action = this.action;
   const iconUrl = this.url;
-  const icon = this.icon;
-  let content = this.content; //create row element;
+  const icon = this.icon; //create row element;
 
   const widget = document.createElement('div');
   widget.className = 'row ' + this.className;
@@ -266,13 +265,59 @@ KeyValue.prototype.appendToUi = function (parent) {
     label.className = 'ms-fontSize-s KeyValueTopLabel';
     label.textContent = this.topLabel;
     wrapText.append(label);
-  } //create content text element;
-
+  }
 
   const contentText = document.createElement('span');
   contentText.className = 'ms-font-m-plus KeyValueText';
-  contentText.innerHTML = content;
-  wrapText.append(contentText);
+  wrapText.append(contentText); //create content text element;
+
+  let content = this.content;
+  const matched = content.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
+  const freg = /<font color="(.+?)">(.+?)<\/font>/;
+  const fbld = /<b>.+?<\/b>/;
+  const fund = /<u>.+?<\/u>/;
+  const fitl = /<i>.+?<\/i>/;
+  const fstr = /<s>.+?<\/s>/;
+  matched.forEach(function (ftag) {
+    let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
+    let font = ftag.match(freg) || [];
+    let isB = fbld.test(ftag);
+    let isU = fund.test(ftag);
+    let isI = fitl.test(ftag);
+    let isS = fstr.test(ftag);
+    let subelem;
+
+    switch (true) {
+      case font.length > 0:
+        subelem = document.createElement('span');
+        subelem.style.color = font[1];
+        break;
+
+      case isB:
+        subelem = document.createElement('b');
+        break;
+
+      case isU:
+        subelem = document.createElement('u');
+        break;
+
+      case isI:
+        subelem = document.createElement('i');
+        break;
+
+      case isS:
+        subelem = document.createElement('s');
+        break;
+
+      default:
+        contentText.insertAdjacentText('beforeend', ftag);
+    }
+
+    if (font.length > 0 || isB || isU || isI || isS) {
+      subelem.innerText = mtext[1];
+      contentText.append(subelem);
+    }
+  });
 
   if (content) {
     loadAnchor(contentText, content);
@@ -303,4 +348,6 @@ KeyValue.prototype.appendToUi = function (parent) {
       sw.appendToUi(wrapButton);
     }
   }
+
+  return widget;
 };
