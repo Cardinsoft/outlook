@@ -723,29 +723,24 @@ function loadMailto(element, input) {
 function loadAnchor(element, input) {
   if (typeof input === 'number') {
     input = input.toString();
-  } //if found anchor and element has child nodes;
+  } //set event listener to choose 
 
 
-  if (matches !== null && matches.length > 0 && children.length > 0) {
-    matches.forEach(function (result, index) {
-      //set event listener to choose 
-      if (element.href.search('tel:') !== -1) {
-        element.addEventListener('click', function (event) {
-          event.stopPropagation();
-          element.target = '_self';
-          return false;
-        });
-      } else {
-        //change event listener to open Dialog;
-        element.addEventListener('click', function (event) {
-          event.preventDefault();
-          Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + this.href, {
-            width: 50,
-            height: 50
-          });
-          return false;
-        });
-      }
+  if (element.href.search('tel:') !== -1) {
+    element.addEventListener('click', function (event) {
+      event.stopPropagation();
+      element.target = '_self';
+      return false;
+    });
+  } else {
+    //change event listener to open Dialog;
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + this.href, {
+        width: 50,
+        height: 50
+      });
+      return false;
     });
   }
 }
