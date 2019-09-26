@@ -278,17 +278,19 @@ KeyValue.prototype.appendToUi = function (parent) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
-  const fmail = /(<a\s*?href="mailto:.+?"\s*?>.*?<\/a>)/;
-  const fancr = /<a\s*?href="(?!mailto:).*?"\s*?>.*?<\/a>/;
+  const fmail = /(<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>)/;
+  const fancr = /<a\s*?href="(?!mailto:)(.*?)"\s*?>.*?<\/a>/;
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
+    let mailto = ftag.match(fmail) || [];
+    let anchor = ftag.match(fancr) || [];
     let isB = fbld.test(ftag);
     let isU = fund.test(ftag);
     let isI = fitl.test(ftag);
     let isS = fstr.test(ftag);
-    let isM = fmail.test(ftag);
-    let isA = fancr.test(ftag);
+    console.log(ftag);
+    console.log(anchor);
     let subelem;
 
     switch (true) {
@@ -297,14 +299,16 @@ KeyValue.prototype.appendToUi = function (parent) {
         subelem.style.color = font[1];
         break;
 
-      case isM:
-        subelem = document.createElement('a');
-        loadMailto(subelem, ftag);
+      case mailto.length > 0:
+        subelem = document.createElement('span');
+        subelem.className = 'link';
+        loadMailto(subelem, mailto[1]);
         break;
 
-      case isA:
-        subelem = document.createElement('a');
-        loadAnchor(subelem, ftag);
+      case anchor.length > 0:
+        subelem = document.createElement('span');
+        subelem.className = 'link';
+        loadAnchor(subelem, anchor[1]);
         break;
 
       case isB:
@@ -327,7 +331,7 @@ KeyValue.prototype.appendToUi = function (parent) {
         contentText.insertAdjacentText('beforeend', ftag);
     }
 
-    if (font.length > 0 || isB || isU || isI || isS || isM || isA) {
+    if (font.length > 0 || isB || isU || isI || isS || mailto.length > 0 || anchor.length > 0) {
       subelem.innerText = mtext[1];
       contentText.append(subelem);
     }
