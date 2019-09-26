@@ -736,7 +736,7 @@ function loadAnchor(element, input) {
     //change event listener to open Dialog;
     element.addEventListener('click', function (event) {
       event.preventDefault();
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + this.href, {
+      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + input, {
         width: 50,
         height: 50
       });
