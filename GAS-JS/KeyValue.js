@@ -332,11 +332,12 @@ KeyValue.prototype.appendToUi = function (parent) {
       contentText.append(subelem);
     }
   });
-
-  if (content) {
-    loadAnchor(contentText, content);
-    loadMailto(contentText, content);
-  }
+  /*
+  	if(content) {
+  		loadAnchor(contentText,content);
+  		loadMailto(contentText,content);
+  	}
+  	*/
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
