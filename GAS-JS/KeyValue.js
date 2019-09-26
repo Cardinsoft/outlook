@@ -279,11 +279,13 @@ KeyValue.prototype.appendToUi = function (parent) {
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
   const fmail = /(<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>)/;
+  const ftel = /(<a\s*?href="tel:(.+?)"\s*?>.*?<\/a>)/;
   const fancr = /<a\s*?href="(?!mailto:)(.*?)"\s*?>.*?<\/a>/;
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
     let font = ftag.match(freg) || [];
     let mailto = ftag.match(fmail) || [];
+    let tel = ftag.match(ftel) || [];
     let anchor = ftag.match(fancr) || [];
     let isB = fbld.test(ftag);
     let isU = fund.test(ftag);
@@ -297,6 +299,12 @@ KeyValue.prototype.appendToUi = function (parent) {
       case font.length > 0:
         subelem = document.createElement('span');
         subelem.style.color = font[1];
+        break;
+
+      case tel.length > 0:
+        subelem = document.createElement('span');
+        subelem.className = 'link';
+        loadTel(subelem, tel[1]);
         break;
 
       case mailto.length > 0:
