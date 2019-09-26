@@ -191,6 +191,7 @@ body {
 .collapsible {
 	overflow-x : hidden;
 	overflow-y : hidden;
+	height: 0;
 }
 
 .centered {
