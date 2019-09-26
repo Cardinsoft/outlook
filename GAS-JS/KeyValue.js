@@ -278,8 +278,8 @@ KeyValue.prototype.appendToUi = function (parent) {
   const fund = /<u>.+?<\/u>/;
   const fitl = /<i>.+?<\/i>/;
   const fstr = /<s>.+?<\/s>/;
-  const fmail = /(<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>)/;
-  const ftel = /(<a\s*?href="tel:(.+?)"\s*?>.*?<\/a>)/;
+  const fmail = /<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>/;
+  const ftel = /<a\s*?href="tel:(.+?)"\s*?>.*?<\/a>/;
   const fancr = /<a\s*?href="(?!mailto:)(.+?)"\s*?>.*?<\/a>/;
   matched.forEach(function (ftag) {
     let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
