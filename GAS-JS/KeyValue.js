@@ -327,7 +327,7 @@ KeyValue.prototype.appendToUi = function (parent) {
         contentText.insertAdjacentText('beforeend', ftag);
     }
 
-    if (font.length > 0 || isB || isU || isI || isS || isM) {
+    if (font.length > 0 || isB || isU || isI || isS || isM || isA) {
       subelem.innerText = mtext[1];
       contentText.append(subelem);
     }
