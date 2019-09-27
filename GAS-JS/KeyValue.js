@@ -338,7 +338,7 @@ KeyValue.prototype.appendToUi = function (parent) {
     }
 
     if (font.length > 0 || isB || isU || isI || isS || mailto.length > 0 || anchor.length > 0) {
-      subelem.innerText = font.length > 0 ? mtext[2] : mtext[1];
+      subelem.innerText = font.length > 0 ? font[2] : mtext[1];
       contentText.append(subelem);
     }
   });
