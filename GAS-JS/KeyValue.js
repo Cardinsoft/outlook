@@ -4,27 +4,104 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * KeyValue class;
- */
-let KeyValue = function KeyValue() {
-  _classCallCheck(this, KeyValue);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  this.className = 'KeyValue';
-  this.button;
-  this.content;
-  this.icon;
-  this.altText;
-  this.url;
-  this.multiline = true;
-  this.switchToSet;
-  this.topLabel;
-  this.bottomLabel;
-  this.action;
-  this.authorizationAction;
-  this.openLink;
-  this.composedEmailType;
-};
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/** KeyValue class */
+let KeyValue =
+/*#__PURE__*/
+function () {
+  function KeyValue() {
+    _classCallCheck(this, KeyValue);
+
+    this.className = 'KeyValue';
+    this.button;
+    this.content;
+    this.icon;
+    this.altText;
+    this.url;
+    this.multiline = true;
+    this.switchToSet;
+    this.topLabel;
+    this.bottomLabel;
+    this.action;
+    this.authorizationAction;
+    this.openLink;
+    this.composedEmailType;
+  }
+  /**
+   * Sets one of the predefined icons from CardService Enum;
+   * @param {String} icon icon name from CardService Enum;
+   * @return {KeyValue} this widget;
+   */
+
+
+  _createClass(KeyValue, [{
+    key: "setIcon",
+    value: function setIcon(icon) {
+      //acces Icons Enum and check for match;
+      const widgetIcon = CardService.Icon[icon];
+
+      if (!widgetIcon) {
+        throw new Error('Invlaid icon');
+      }
+
+      this.icon = widgetIcon;
+      return this;
+    }
+  }, {
+    key: "setTopLabel",
+
+    /**
+     * Sets this widget's title text to top;
+     * @param {String} text title text to set;
+     * @return {KeyValue} this widget;
+     */
+    value: function setTopLabel(text) {
+      this.topLabel = text;
+      return this;
+    }
+  }, {
+    key: "setContent",
+
+    /**
+     * Sets this widget's text content;
+     * @param {String} text content to set;
+     * @return {KeyValue} this widget;
+     */
+    value: function setContent(text) {
+      this.content = text;
+      return this;
+    }
+  }, {
+    key: "setBottomLabel",
+
+    /**
+     * Sets this widget's title text to bottom;
+     * @param {String} text title text to set;
+     * @return {KeyValue} this widget;
+     */
+    value: function setBottomLabel(text) {
+      this.bottomLabel = text;
+      return this;
+    }
+  }, {
+    key: "setMultiline",
+
+    /**
+     * Determines whether to display widget text as multiline or truncated single-line;
+     * @param {Boolean} multiline truthy value to set multiline property to;
+     * @return {KeyValue} this widget;
+     */
+    value: function setMultiline(multiline) {
+      this.multiline = multiline;
+      return this;
+    }
+  }]);
+
+  return KeyValue;
+}();
 /**
  * Set authorization action to KeyValue;
  * @param {AuthorizationAction} action action to set;
@@ -94,36 +171,6 @@ KeyValue.prototype.setButton = function (button) {
   return this;
 };
 /**
- * Sets this widget's text content;
- * @param {String} text content to set;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setContent = function (text) {
-  this.content = text;
-  return this;
-};
-/**
- * Sets one of the predefined icons from CardService Enum;
- * @param {String} icon icon name from CardService Enum;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setIcon = function (icon) {
-  //acces Icons Enum and check for match;
-  const icons = new e_CardService().Icon;
-
-  for (let key in icons) {
-    if (icons[key] === icon) {
-      this.icon = icons[key];
-    }
-  }
-
-  return this;
-};
-/**
  * Sets image URL to append to widget as icon;
  * @param {String} url path to image;
  * @return {KeyValue} this widget;
@@ -146,17 +193,6 @@ KeyValue.prototype.setIconAltText = function (altText) {
   return this;
 };
 /**
- * Determines whether to display widget text as multiline or truncated single-line;
- * @param {Boolean} multiline truthy value to set multiline property to;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setMultiline = function (multiline) {
-  this.multiline = multiline;
-  return this;
-};
-/**
  * Sets a Switch widget on this widget;
  * @param {Switch} switchToSet Switch widget to set;
  * @return {KeyValue} this widget;
@@ -168,30 +204,9 @@ KeyValue.prototype.setSwitch = function (switchToSet) {
   return this;
 };
 /**
- * Sets this widget's title text to top;
- * @param {String} text title text to set;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setTopLabel = function (text) {
-  this.topLabel = text;
-  return this;
-};
-/**
- * Sets this widget's title text to bottom;
- * @param {String} text title text to set;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setBottomLabel = function (text) {
-  this.bottomLabel = text;
-  return this;
-};
-/**
  * Utility function appending KeyValue widget to Ui;
- * @param {HtmlElement} parent parent element to append to;
+ * @param {HtmlElement} parent element to append to;
+ * @return {HtmlElement} built widget;
  */
 
 
@@ -215,13 +230,18 @@ KeyValue.prototype.appendToUi = function (parent) {
       var _ref = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(event) {
+        var result;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              event.stopPropagation();
-              return _context.abrupt("return", actionCallback(this));
+              _context.next = 2;
+              return actionCallback(this);
 
             case 2:
+              result = _context.sent;
+              return _context.abrupt("return", handleResponse(result));
+
+            case 4:
             case "end":
               return _context.stop();
           }
