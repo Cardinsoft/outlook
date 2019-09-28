@@ -271,77 +271,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   contentText.className = 'ms-font-m-plus KeyValueText';
   wrapText.append(contentText); //create content text element;
 
-  let content = this.content;
-  const matched = content.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
-  const freg = /<font color="(.+?)">(.+?)<\/font>/;
-  const fbld = /<b>.+?<\/b>/;
-  const fund = /<u>.+?<\/u>/;
-  const fitl = /<i>.+?<\/i>/;
-  const fstr = /<s>.+?<\/s>/;
-  const fmail = /<a\s*?href="mailto:(.+?)"\s*?>.*?<\/a>/;
-  const ftel = /<a\s*?href="tel:(.+?)"\s*?>.*?<\/a>/;
-  const fancr = /<a\s*?href="(?!mailto:)(.+?)"\s*?>.*?<\/a>/;
-  matched.forEach(function (ftag) {
-    let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
-    let font = ftag.match(freg) || [];
-    let mailto = ftag.match(fmail) || [];
-    let tel = ftag.match(ftel) || [];
-    let anchor = ftag.match(fancr) || [];
-    let isB = fbld.test(ftag);
-    let isU = fund.test(ftag);
-    let isI = fitl.test(ftag);
-    let isS = fstr.test(ftag);
-    let subelem;
-
-    switch (true) {
-      case font.length > 0:
-        subelem = document.createElement('span');
-        subelem.style.color = font[1];
-        break;
-
-      case tel.length > 0:
-        subelem = document.createElement('a');
-        subelem.href = "tel:".concat(encodeURI(tel[1]));
-        loadTel(subelem, tel[1]);
-        break;
-
-      case mailto.length > 0:
-        subelem = document.createElement('a');
-        subelem.href = "mailto:".concat(encodeURI(mailto[1]));
-        loadMailto(subelem, mailto[1]);
-        break;
-
-      case anchor.length > 0:
-        subelem = document.createElement('a');
-        subelem.href = "".concat(encodeURI(anchor[1]));
-        loadAnchor(subelem, anchor[1]);
-        break;
-
-      case isB:
-        subelem = document.createElement('b');
-        break;
-
-      case isU:
-        subelem = document.createElement('u');
-        break;
-
-      case isI:
-        subelem = document.createElement('i');
-        break;
-
-      case isS:
-        subelem = document.createElement('s');
-        break;
-
-      default:
-        contentText.insertAdjacentText('beforeend', ftag);
-    }
-
-    if (font.length > 0 || isB || isU || isI || isS || mailto.length > 0 || anchor.length > 0) {
-      subelem.innerText = font.length > 0 ? font[2] : mtext[1];
-      contentText.append(subelem);
-    }
-  });
+  toDOM(contentText, this.content);
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
