@@ -42,9 +42,10 @@ function () {
     value: function setIcon(icon) {
       //acces Icons Enum and check for match;
       const widgetIcon = CardService.Icon[icon];
+      console.log(widgetIcon);
 
       if (!widgetIcon) {
-        throw new Error('Invlaid icon');
+        throw new Error('Invalid icon');
       }
 
       this.icon = widgetIcon;
