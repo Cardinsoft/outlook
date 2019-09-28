@@ -713,6 +713,90 @@ function loadTel(element, input) {
   });
 }
 /**
+ * Utility function to convert html string to DOM tree;
+ * @param {HtmlElement} parent element to hook to;
+ * @param {String} tagged string with html markup;
+ * @return {HtmlElement} updated parent element;
+ */
+
+
+function toDOM(parent, tagged) {
+  const reg = /(<\w+.*?>)|(<\/\w+.*?>)/;
+  let t = tagged.split(reg).filter(function (e) {
+    return e;
+  });
+  const otag = /<(\w+)(.*?)>/;
+  const ctag = /<\/(\w+).*?>/;
+  let depth = 0,
+      collection = parent,
+      tag;
+  t.forEach(function (e) {
+    switch (true) {
+      case otag.test(e):
+        //opening tag;
+        tag = e.match(otag)[1];
+        let sub = document.createElement(tag);
+
+        if (tag === 'font' || tag === 'a' || tag === 'b' || tag === 'i' || tag === 'u' || tag === 's') {
+          let attrs = e.match(otag)[2].split(' ').filter(function (a) {
+            return a;
+          });
+          attrs.forEach(function (at) {
+            let keyval = at.split('="');
+            let key = keyval[0];
+
+            if (key === 'color' || key === 'href') {
+              let value = keyval[1].slice(0, keyval[1].length - 1);
+              sub[key] = value;
+            }
+          });
+
+          if (depth) {
+            let collection = parent;
+
+            for (c = 0; c < depth; c++) {
+              collection = collection.children[collection.children.length - 1];
+            }
+
+            collection.appendChild(sub);
+          } else {
+            parent.appendChild(sub);
+          }
+
+          depth++;
+        }
+
+        break;
+
+      case ctag.test(e):
+        //closing tag;
+        tag = e.match(ctag)[1];
+
+        if (tag === 'font' || tag === 'a' || tag === 'b' || tag === 'i' || tag === 'u' || tag === 's') {
+          depth--;
+        }
+
+        break;
+
+      default:
+        //simple text;
+        if (depth) {
+          let collection = parent;
+
+          for (c = 0; c < depth; c++) {
+            collection = collection.children[collection.children.length - 1];
+          }
+
+          collection.insertAdjacentText('beforeend', e);
+        } else {
+          parent.insertAdjacentText('beforeend', e);
+        }
+
+    }
+  });
+  return parent;
+}
+/**
  * Appends https method to URL if none;
  * @param {String} input 
  **/
@@ -794,6 +878,7 @@ function trimPx(input) {
  * Set height to computed from number of uncollapsible widgets;
  * @param {Integer} numuncol number of widgets to show;
  * @param {HtmlElement} overlay wrapper element to uncollapse;
+ * @return {Integer} height to keep uncollapsed;
  */
 
 
