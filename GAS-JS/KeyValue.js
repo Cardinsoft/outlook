@@ -40,16 +40,11 @@ function () {
   _createClass(KeyValue, [{
     key: "setIcon",
     value: function setIcon(icon) {
-      //acces Icons Enum and check for match;
-      const widgetIcon = CardService.Icon[icon];
-      console.log(icon);
-      console.log(widgetIcon);
-
-      if (!widgetIcon) {
+      if (!icon) {
         throw new Error('Invalid icon');
       }
 
-      this.icon = widgetIcon;
+      this.icon = icon;
       return this;
     }
   }, {
