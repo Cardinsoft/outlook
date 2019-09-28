@@ -42,6 +42,7 @@ function () {
     value: function setIcon(icon) {
       //acces Icons Enum and check for match;
       const widgetIcon = CardService.Icon[icon];
+      console.log(icon);
       console.log(widgetIcon);
 
       if (!widgetIcon) {
@@ -294,7 +295,7 @@ KeyValue.prototype.appendToUi = function (parent) {
   contentText.className = 'ms-font-m-plus KeyValueText';
   wrapText.append(contentText); //create content text element;
 
-  toDOM(contentText, this.content);
+  toDOM(contentText, this.content || '');
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
