@@ -51,6 +51,30 @@ function () {
       return this;
     }
   }, {
+    key: "setIconUrl",
+
+    /**
+     * Sets image URL to append to widget as icon;
+     * @param {String} url path to image;
+     * @return {KeyValue} this widget;
+     */
+    value: function setIconUrl(url) {
+      this.url = url;
+      return this;
+    }
+    /**
+     * Sets alt text for image acting as widget icon;
+     * @param {String} altText text to display on source fail;
+     * @return {KeyValue} this widget;
+     */
+
+  }, {
+    key: "setIconAltText",
+    value: function setIconAltText(altText) {
+      this.altText = altText;
+      return this;
+    }
+  }, {
     key: "setTopLabel",
 
     /**
@@ -168,28 +192,6 @@ KeyValue.prototype.setOpenLink = function (openLink) {
 
 KeyValue.prototype.setButton = function (button) {
   this.button = button;
-  return this;
-};
-/**
- * Sets image URL to append to widget as icon;
- * @param {String} url path to image;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setIconUrl = function (url) {
-  this.url = url;
-  return this;
-};
-/**
- * Sets alt text for image acting as widget icon;
- * @param {String} altText text to display on source fail;
- * @return {KeyValue} this widget;
- */
-
-
-KeyValue.prototype.setIconAltText = function (altText) {
-  this.altText = altText;
   return this;
 };
 /**
