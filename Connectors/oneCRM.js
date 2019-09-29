@@ -106,6 +106,10 @@ function oneCRM() {
             return _context.abrupt("return", {
               code: 200,
               headers: {},
+              hasMatch: {
+                value: true,
+                text: 'Auth'
+              },
               content: JSON.stringify([{
                 header: 'Invalid account name',
                 widgets: [{
@@ -116,7 +120,7 @@ function oneCRM() {
                   title: 'Open settings',
                   action: 'click',
                   funcName: 'goSettings',
-                  parameters: connector
+                  parameters: propertiesToString(copyObject(connector, {}))
                 }]
               }])
             });
