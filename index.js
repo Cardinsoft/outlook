@@ -380,14 +380,14 @@ function () {
      * @return {Overlay} this Overlay;
      */
     value: function show() {
-      let p = document.querySelector('#app-overlay');
-      let c = document.createElement('div');
-      p.append(c);
+      const parent = document.querySelector('#app-overlay');
+      const body = document.querySelector('#app-body');
+      const c = document.createElement('div'); //set styling;
+
+      let list = c.classList;
+      list.add('overlay'); //set color and tone;
 
       if (this.color) {
-        let list = c.classList;
-        list.add('overlay');
-
         if (this.tone) {
           list.add('overlay-' + this.tone);
         } else {
@@ -395,8 +395,13 @@ function () {
         }
 
         c.style.backgroundColor = this.color;
-      }
+      } //set overlay height to app body height;
 
+
+      const bodyStyle = window.getComputedStyle(body);
+      const bodyHeight = bodyStyle.height;
+      c.style.height = bodyHeight;
+      parent.append(c);
       this.overlay = c;
       return this;
     }
