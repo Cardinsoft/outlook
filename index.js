@@ -795,6 +795,23 @@ function toDOM(parent, tagged) {
             }
           });
 
+          if (tag === 'a') {
+            const href = sub.href;
+
+            switch (true) {
+              case href.indexOf('mailto:') > -1:
+                loadMailto(sub, href.replace('mailto:', ''));
+                break;
+
+              case href.indexOf('tel:') > -1:
+                loadTel(sub, href.replace('tel:', ''));
+                break;
+
+              default:
+                loadAnchor(sub, href);
+            }
+          }
+
           if (depth) {
             let collection = parent;
 
