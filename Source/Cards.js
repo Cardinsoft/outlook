@@ -325,7 +325,7 @@ function _cardDisplay() {
           break;
 
         case 28:
-          if (!(code === 401)) {
+          if (!(code === 401 && authType === globalOAuth2AuthType)) {
             _context3.next = 36;
             break;
           }
