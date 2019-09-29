@@ -321,11 +321,9 @@ span.menu:before {
 }
 
 .overlay {
-    position : absolute;
-    top      : 0;
-    height   : 100%;
-	width    : 100%;
-    
+    position: absolute;
+    top: 0;
+	width: 100%;  
 }
 
 .overlay-dark {
