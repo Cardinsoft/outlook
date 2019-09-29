@@ -399,8 +399,8 @@ function () {
 
 
       const bodyStyle = window.getComputedStyle(body);
-      const bodyHeight = bodyStyle.height;
-      c.style.height = bodyHeight;
+      const bodyHeight = trimPx(bodyStyle.height) + 35;
+      c.style.height = bodyHeight + 'px';
       parent.append(c);
       this.overlay = c;
       return this;
@@ -413,7 +413,7 @@ function () {
      * @return {Overlay} this Overlay;
      */
     value: function hide() {
-      //this.overlay.remove();
+      this.overlay.remove();
       return this;
     }
   }]);
