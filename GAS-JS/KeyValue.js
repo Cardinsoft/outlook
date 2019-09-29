@@ -290,7 +290,11 @@ KeyValue.prototype.appendToUi = function (parent) {
   contentText.className = 'ms-font-m-plus KeyValueText';
   wrapText.append(contentText); //create content text element;
 
-  toDOM(contentText, this.content || '');
+  const content = this.content || '';
+  toDOM(contentText, content);
+  loadMailto(element, content);
+  loadAnchor(element, content);
+  loadTel(element, content);
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
