@@ -413,7 +413,7 @@ function () {
      * @return {Overlay} this Overlay;
      */
     value: function hide() {
-      this.overlay.remove();
+      //this.overlay.remove();
       return this;
     }
   }]);
