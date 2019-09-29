@@ -75,9 +75,6 @@ function (_Widget) {
 
       const content = this.content || '';
       toDOM(contentText, content);
-      loadMailto(contentText, content);
-      loadAnchor(contentText, content);
-      loadTel(contentText, content);
       return widget;
     }
   }]);
