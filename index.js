@@ -1,3 +1,9 @@
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -328,54 +334,87 @@ Selector.prototype.select = function (index) {
 
 Selector.prototype.toggle = function () {} //future release;
 
-/**
- * Creates an instance of Overlay;
- */
+/** Overlay class */
 ;
 
-function Overlay() {
-  this.className;
-  this.color;
-  this.tone;
-  this.overlay;
-}
+let Overlay =
+/*#__PURE__*/
+function () {
+  function Overlay() {
+    _classCallCheck(this, Overlay);
 
-Overlay.prototype.setColor = function (color) {
-  this.color = color;
-  return this;
-};
-
-Overlay.prototype.setTone = function (tone) {
-  this.tone = tone;
-  return this;
-};
-
-Overlay.prototype.show = function (selector) {
-  let p = document.querySelector(selector);
-  let c = document.createElement('div');
-  p.append(c);
-
-  if (this.color) {
-    let list = c.classList;
-    list.add('overlay');
-
-    if (this.tone) {
-      list.add('overlay-' + this.tone);
-    } else {
-      list.add('overlay-light');
-    }
-
-    c.style.backgroundColor = this.color;
+    this.color;
+    this.tone;
+    this.overlay;
   }
+  /**
+   * Sets overlay color;
+   * @param {String} color color HEX code;
+   * @return {Overlay} this Overlay;
+   */
 
-  this.overlay = c;
-  return this;
-};
 
-Overlay.prototype.hide = function () {
-  this.overlay.remove();
-  return this;
-};
+  _createClass(Overlay, [{
+    key: "setColor",
+    value: function setColor(color) {
+      this.color = color;
+      return this;
+    }
+  }, {
+    key: "setTone",
+
+    /**
+     * Sets overlay opacity (color tone);
+     * @param {String} tone opacity level;
+     * @return {Overlay} this Overlay;
+     */
+    value: function setTone(tone) {
+      this.tone = tone;
+      return this;
+    }
+  }, {
+    key: "show",
+
+    /**
+     * Adds overlay to Ui;
+     * @return {Overlay} this Overlay;
+     */
+    value: function show() {
+      let p = document.querySelector('#app-overlay');
+      let c = document.createElement('div');
+      p.append(c);
+
+      if (this.color) {
+        let list = c.classList;
+        list.add('overlay');
+
+        if (this.tone) {
+          list.add('overlay-' + this.tone);
+        } else {
+          list.add('overlay-light');
+        }
+
+        c.style.backgroundColor = this.color;
+      }
+
+      this.overlay = c;
+      return this;
+    }
+  }, {
+    key: "hide",
+
+    /**
+     * Removes overlay from Ui;
+     * @return {Overlay} this Overlay;
+     */
+    value: function hide() {
+      this.overlay.remove();
+      return this;
+    }
+  }]);
+
+  return Overlay;
+}();
 /**
  * Creates an instance of Spinner;
  */
