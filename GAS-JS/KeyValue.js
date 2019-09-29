@@ -292,9 +292,6 @@ KeyValue.prototype.appendToUi = function (parent) {
 
   const content = this.content || '';
   toDOM(contentText, content);
-  loadMailto(contentText, content);
-  loadAnchor(contentText, content);
-  loadTel(contentText, content);
 
   if (this.bottomLabel) {
     const hint = document.createElement('label');
