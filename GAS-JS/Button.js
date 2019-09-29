@@ -2,6 +2,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _possibleConstructorReturn(self, call) { if (call && (typeof call === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -80,7 +84,8 @@ Button.prototype.setOnClickOpenLinkAction = function (action) {
 Button.prototype.setOpenLink = function (openLink) {
   this.openLink = JSON.stringify(openLink);
   return this;
-}; //Emulate Class TextButton extending base Class Button for CardService service;
+};
+/** TextButton class */
 
 
 let TextButton =
@@ -97,210 +102,174 @@ function (_Button) {
     _this.className = 'TextButton';
     _this.backgroundColor = '#0078d7';
     _this.text;
-    _this.disabled;
+    _this.disabled = false;
     _this.textButtonStyle = 'TEXT';
     return _this;
   }
+  /**
+   * Set button text to display;
+   * @param {String} text button text to set;
+   * @return {TextButton} this TextButton;
+   */
+
+
+  _createClass(TextButton, [{
+    key: "setText",
+    value: function setText(text) {
+      this.text = text;
+      return this;
+    }
+  }, {
+    key: "setBackgroundColor",
+
+    /**
+     * Sets background color for filled TextButton;
+     * @param {String} backgroundColor color HEX code;
+     * @return {TextButton} this TextButton;
+     */
+    value: function setBackgroundColor(backgroundColor) {
+      if (!backgroundColor) {
+        this.backgroundColor = '#0078d7';
+      } else {
+        this.backgroundColor = backgroundColor;
+      }
+
+      return this;
+    }
+  }, {
+    key: "setTextButtonStyle",
+
+    /**
+     * Sets text button style;
+     * @param {String} textButtonStyle style to set;
+     * @return {TextButton} this TextButton;
+     */
+    value: function setTextButtonStyle(textButtonStyle) {
+      if (!CardService.TextButtonStyle.hasOwnProperty(textButtonStyle)) {
+        throw new TypeError('Incorrect style enum');
+      }
+
+      this.textButtonStyle = textButtonStyle;
+      return this;
+    }
+  }, {
+    key: "setDisabled",
+
+    /**
+     * Determines if button is disabled or not;
+     * @param {Boolean} disabled disabled flag;
+     * @return {TextButton} this TextButton;
+     */
+    value: function setDisabled(disabled) {
+      this.disabled = disabled;
+      return this;
+    }
+  }, {
+    key: "appendToUi",
+
+    /**
+     * Utility method for appending widget to Ui;
+     * @param {HtmlElement} parent element;
+     * @param {Boolean} isSet is element of a ButtonSet;
+     * @return {HtmlElement} this button;
+     */
+    value: function appendToUi(parent, isSet) {
+      //access button properties;
+      let action = this.action;
+      const backgroundColor = this.backgroundColor;
+      const disabled = this.disabled;
+      const textButtonStyle = this.textButtonStyle;
+      const openLink = this.openLink;
+      const authAction = this.authorizationAction; //create wrapper;
+
+      const widget = document.createElement('div');
+
+      if (isSet) {
+        widget.className = 'SetElement';
+      } else {
+        widget.className = 'row';
+      }
+
+      parent.append(widget); //initiate button;
+
+      const button = document.createElement('div');
+      button.className = this.className;
+      button.disabled = disabled; //access button style and class list;
+
+      const st = button.style;
+      const cl = button.classList;
+
+      if (textButtonStyle === 'FILLED') {
+        st.backgroundColor = backgroundColor;
+        cl.add('btn-filled');
+      } else {
+        cl.add('btn-text');
+      }
+
+      if (disabled) {
+        cl.add('btn-disabled');
+      } else {
+        cl.remove('btn-disabled');
+      }
+
+      widget.append(button); //process colour info;
+
+      toDOM(button, this.text || '');
+
+      if (!openLink && !authAction && action) {
+        //set refrence;
+        setAction(button, action); //add event listener to button;
+
+        button.addEventListener('click',
+        /*#__PURE__*/
+        _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee() {
+          var result;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return actionCallback(this);
+
+              case 2:
+                result = _context.sent;
+                return _context.abrupt("return", handleResponse(result));
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, this);
+        })));
+      } else if (openLink) {
+        button.addEventListener('click', function (event) {
+          const link = JSON.parse(openLink);
+          Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), {
+            width: 50,
+            height: 50
+          }, function (result) {
+            result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
+          });
+        });
+      } else {
+        button.addEventListener('click', function (event) {
+          const auth = JSON.parse(authAction);
+          Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), {
+            width: 50,
+            height: 50
+          }, function (result) {
+            result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
+          });
+        });
+      }
+
+      return widget;
+    }
+  }]);
 
   return TextButton;
-}(Button); //chain TextButton to Button base class;
-
-
-TextButton.prototype = Object.create(Button.prototype);
-
-TextButton.prototype.setDisabled = function (disabled) {
-  this.disabled = disabled;
-  return this;
-};
-/**
- * Set button text to display;
- * @param {String} text button text to set;
- * @return {TextButton} this TextButton;
- */
-
-
-TextButton.prototype.setText = function (text) {
-  this.text = text;
-  return this;
-};
-/**
- * Sets background color for filled TextButton;
- * @param {String} backgroundColor color HEX code;
- * @return {TextButton} this TextButton;
- */
-
-
-TextButton.prototype.setBackgroundColor = function (backgroundColor) {
-  if (!backgroundColor) {
-    this.backgroundColor = '#0078d7';
-  } else {
-    this.backgroundColor = backgroundColor;
-  }
-
-  return this;
-};
-/**
- * Sets text button style;
- * @param {String} textButtonStyle style to set;
- * @return {TextButton} this TextButton;
- */
-
-
-TextButton.prototype.setTextButtonStyle = function (textButtonStyle) {
-  if (!CardService.TextButtonStyle.hasOwnProperty(textButtonStyle)) {
-    throw new TypeError('Incorrect style enum');
-  }
-
-  this.textButtonStyle = textButtonStyle;
-  return this;
-};
-/**
- * Utility method for appending widget to Ui;
- * @param {HtmlElement} parent element;
- * @param {Boolean} isSet is element of a ButtonSet;
- * @return {HtmlElement} this button;
- */
-
-
-TextButton.prototype.appendToUi = function (parent, isSet) {
-  //access button properties;
-  let action = this.action;
-  const backgroundColor = this.backgroundColor;
-  const disabled = this.disabled;
-  const textButtonStyle = this.textButtonStyle;
-  const openLink = this.openLink;
-  const authAction = this.authorizationAction; //create wrapper;
-
-  const widget = document.createElement('div');
-
-  if (isSet) {
-    widget.className = 'SetElement';
-  } else {
-    widget.className = 'row';
-  }
-
-  parent.append(widget); //initiate button;
-
-  const button = document.createElement('div');
-  button.className = this.className;
-  button.disabled = disabled; //access button style and class list;
-
-  const st = button.style;
-  const cl = button.classList;
-
-  if (textButtonStyle === 'FILLED') {
-    st.backgroundColor = backgroundColor;
-    cl.add('btn-filled');
-  } else {
-    cl.add('btn-text');
-  }
-
-  if (disabled) {
-    cl.add('btn-disabled');
-  } else {
-    cl.remove('btn-disabled');
-  }
-
-  widget.append(button); //process colour info;
-
-  const text = this.text;
-  const matched = text.match(/<.+?>.+?<\/.+?>|.+?(?=<)|.+/g) || [];
-  const freg = /<font color="(.+?)">(.+?)<\/font>/;
-  const fbld = /<b>.+?<\/b>/;
-  const fund = /<u>.+?<\/u>/;
-  const fitl = /<i>.+?<\/i>/;
-  const fstr = /<s>.+?<\/s>/;
-  matched.forEach(function (ftag) {
-    let mtext = ftag.match(/<.+?>(.+?)<\/.+?>/);
-    let font = ftag.match(freg) || [];
-    let isB = fbld.test(ftag);
-    let isU = fund.test(ftag);
-    let isI = fitl.test(ftag);
-    let isS = fstr.test(ftag);
-    let subelem;
-
-    switch (true) {
-      case font.length > 0:
-        subelem = document.createElement('span');
-        subelem.style.color = font[1];
-        break;
-
-      case isB:
-        subelem = document.createElement('b');
-        break;
-
-      case isU:
-        subelem = document.createElement('u');
-        break;
-
-      case isI:
-        subelem = document.createElement('i');
-        break;
-
-      case isS:
-        subelem = document.createElement('s');
-        break;
-
-      default:
-        button.insertAdjacentText('beforeend', ftag);
-    }
-
-    if (font.length > 0 || isB || isU || isI || isS) {
-      subelem.innerText = mtext[1];
-      button.append(subelem);
-    }
-  });
-
-  if (!openLink && !authAction && action) {
-    //set refrence;
-    setAction(button, action); //add event listener to button;
-
-    button.addEventListener('click',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee() {
-      var result;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return actionCallback(this);
-
-          case 2:
-            result = _context.sent;
-            return _context.abrupt("return", handleResponse(result));
-
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee, this);
-    })));
-  } else if (openLink) {
-    button.addEventListener('click', function (event) {
-      const link = JSON.parse(openLink);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(link.url), {
-        width: 50,
-        height: 50
-      }, function (result) {
-        result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
-      });
-    });
-  } else {
-    button.addEventListener('click', function (event) {
-      const auth = JSON.parse(authAction);
-      Office.context.ui.displayDialogAsync('https://cardinsoft.github.io/outlook/redirect?endpoint=' + forceHttps(auth.url), {
-        width: 50,
-        height: 50
-      }, function (result) {
-        result.value.addEventHandler(Office.EventType.DialogEventReceived, dialogCallback);
-      });
-    });
-  }
-
-  return widget;
-};
+}(Button);
 /** ImageButton class */
 
 
