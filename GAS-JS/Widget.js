@@ -73,7 +73,11 @@ function (_Widget) {
       contentText.className = 'ms-font-m-plus';
       wrapText.append(contentText); //create content text element;
 
-      toDOM(contentText, this.content || '');
+      const content = this.content || '';
+      toDOM(contentText, content);
+      loadMailto(contentText, content);
+      loadAnchor(contentText, content);
+      loadTel(contentText, content);
       return widget;
     }
   }]);
