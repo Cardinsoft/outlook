@@ -507,7 +507,7 @@ function _trigger() {
 
           o = new Overlay();
           o.setColor('white');
-          o.show('#app-overlay'); //show spinner on overlay;
+          o.show(); //show spinner on overlay;
 
           s = new Spinner();
           s.setSize('large');
@@ -670,7 +670,7 @@ function _actionCallback() {
 
           o = new Overlay();
           o.setColor('white');
-          o.show('#app-overlay');
+          o.show();
           s = new Spinner();
           s.setSize('large');
           s.show(); //invoke callback and await response;
