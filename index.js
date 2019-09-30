@@ -1003,7 +1003,7 @@ function collapse(trigger, overlay, property, interval, increment, initial) {
                 if (i > 0) {
                   chMargin = trimPx(chcomp.marginBottom);
                 } else {
-                  chMargin = trimPx(chcomp.marginTop) + trimPx(chcomp.marginBottom);
+                  chMargin = trimPx(chcomp.marginTop);
                 }
 
                 chProperty += chMargin;
