@@ -111,6 +111,10 @@ body {
 	margin : 0;
 }
 
+.collapsible > .ButtonSet {
+	margin: 12px 0;
+}
+
 .SetElement {
 	display : inline;
 }

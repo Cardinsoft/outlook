@@ -4,7 +4,10 @@
   "description": "Cardin for Outlook Add-in",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"babel-source": "npx babel **\\Unlinted\\Source --out-dir ..\\Source",
+	"babel-connectors": "npx babel **\\Unlinted\\Connectors --out-dir ..\\Connectors",
+	"babel-lib": "npx babel **\\Unlinted\\GAS-JS --out-dir ..\\GAS-JS"
   },
   "repository": {
     "type": "git",
