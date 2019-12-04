@@ -1,2 +1,5 @@
 /node_modules
 /Unlinted
+
+# ignore local manifest;
+**/manifest-local.xml
