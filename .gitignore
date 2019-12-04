@@ -1,7 +1,2 @@
 /node_modules
-
-# Unlinted source files are not commited;
 /Unlinted
-
-# Manifest for local side-loading;
-**/local-manifest.xml
