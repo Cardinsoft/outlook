@@ -1,6 +1,13 @@
 /node_modules
 /Unlinted
 /test
+/proxy
+/babel
+.vscode
+
+.vscode
+/babel
+/proxy
 
 # ignore local manifest;
 **/manifest-local.xml
