@@ -1,9 +1,9 @@
 /node_modules
 /Unlinted
 /test
+/*vscode
 /proxy
 /babel
-.vscode
 
 .vscode
 /babel

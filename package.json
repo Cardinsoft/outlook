@@ -4,10 +4,9 @@
   "description": "Cardin for Outlook Add-in",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-	"babel-source": "npx babel **\\Unlinted\\Source --out-dir ..\\Source",
-	"babel-connectors": "npx babel **\\Unlinted\\Connectors --out-dir ..\\Connectors",
-	"babel-lib": "npx babel **\\Unlinted\\GAS-JS --out-dir ..\\GAS-JS"
+    "babel": "node .\\babel\\babel.js",
+    "start": "node .\\test\\server\\server.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -15,7 +14,10 @@
   },
   "keywords": [
     "cardin",
-    "integrations"
+    "close",
+    "integrations",
+    "pipedrive",
+    "1CRM"
   ],
   "author": "Oleg Valter",
   "license": "ISC",
@@ -24,24 +26,29 @@
   },
   "homepage": "https://github.com/cardinsoft/outlook#readme",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "expose-require": "git+https://github.com/Oaphi/exposeAndRequire.git",
+    "mocha": "^7.1.1",
+    "xmlhttprequest-ssl": "^1.6.0"
   },
   "babel": {
-	  "plugins": [
-		"@babel/plugin-transform-arrow-functions",
-		"@babel/plugin-transform-block-scoped-functions",
-		"@babel/plugin-transform-classes",
-		"@babel/plugin-transform-destructuring",
-		"@babel/plugin-transform-for-of",
-		"@babel/plugin-transform-function-name",
-		"@babel/plugin-transform-parameters",
-		"@babel/plugin-transform-async-to-generator",
-		"@babel/plugin-transform-regenerator",
-		"@babel/plugin-transform-spread",
-		"@babel/plugin-transform-template-literals",
-		"@babel/plugin-transform-dotall-regex"
-	  ]
+    "plugins": [
+      "@babel/plugin-transform-arrow-functions",
+      "@babel/plugin-transform-block-scoped-functions",
+      "@babel/plugin-transform-classes",
+      "@babel/plugin-transform-destructuring",
+      "@babel/plugin-transform-for-of",
+      "@babel/plugin-transform-function-name",
+      "@babel/plugin-transform-parameters",
+      "@babel/plugin-transform-async-to-generator",
+      "@babel/plugin-transform-spread",
+      "@babel/plugin-transform-template-literals",
+      "@babel/plugin-transform-dotall-regex"
+    ]
+  },
+  "mocha": {
+    "timeout": 30000
   },
   "sourceType": "script",
   "browserslist": [
