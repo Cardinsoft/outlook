@@ -10,11 +10,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 // The initialize function must be run each time a new page is loaded;
 Office.initialize = function (reason) {
-  $(document).ready(
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee() {
+  $(document).ready( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var menu;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -56,6 +52,8 @@ Office.initialize = function (reason) {
 
 
 function Menu() {
+  var _this = this;
+
   this.id = '';
   this.className = 'Menu';
   this.items = {
@@ -64,53 +62,53 @@ function Menu() {
   };
   this.isOpen = false;
   this.element;
-}
-/**
- * Creates Menu and appends to Ui;
- * @param {Array} items an Array of items to add initially;
- * @returns {Object} this Menu;
- */
+  /**
+   * Creates Menu and appends to Ui;
+   * @param {Array} items an Array of items to add initially;
+   * @returns {Object} this Menu;
+   */
+
+  this.create = function (items) {
+    const self = _this;
+    const navbar = document.querySelector('.navbar');
+    const menu = document.createElement('div');
+    menu.classList.add(_this.className, 'singulared');
+    navbar.append(menu); //set element reference;
+
+    _this.id = btoa((menus.length + 1).toString());
+    _this.element = menu;
+
+    for (let i = 0; i < items.length; i++) {
+      let item = items[i];
+
+      _this.addItem(item, item.isCA);
+    } //handle menu close on outside border click;
 
 
-Menu.prototype.create = function (items) {
-  const self = this;
-  const navbar = document.querySelector('.navbar');
-  const menu = document.createElement('div');
-  menu.classList.add(this.className, 'singulared');
-  navbar.append(menu); //set element reference;
+    const body = document.body;
+    menu.addEventListener('pointerover', function () {
+      const out = function out() {
+        menu.removeEventListener('pointerout', out);
 
-  this.id = btoa((menus.length + 1).toString());
-  this.element = menu;
+        const switchMenu = function switchMenu() {
+          if (self.isOpen) {
+            self.switchShow();
+          }
 
-  for (let i = 0; i < items.length; i++) {
-    let item = items[i];
-    this.addItem(item, item.isCA);
-  } //handle menu close on outside border click;
+          body.removeEventListener('click', switchMenu);
+        };
 
-
-  const body = document.body;
-  menu.addEventListener('pointerover', function () {
-    const out = function out() {
-      menu.removeEventListener('pointerout', out);
-
-      const switchMenu = function switchMenu() {
-        if (self.isOpen) {
-          self.switchShow();
-        }
-
-        body.removeEventListener('click', switchMenu);
+        body.addEventListener('click', switchMenu);
       };
 
-      body.addEventListener('click', switchMenu);
-    };
+      menu.addEventListener('pointerout', out);
+    }); //default to open and push to global context;
 
-    menu.addEventListener('pointerout', out);
-  }); //default to open and push to global context;
-
-  this.isOpen = true;
-  menus.push(this);
-  return this;
-};
+    _this.isOpen = true;
+    menus.push(_this);
+    return _this;
+  };
+}
 /**
  * Adds item to Menu;
  * @param {Object} item item to add;
@@ -156,11 +154,7 @@ Menu.prototype.addItem = function (item, isCardAction) {
   menuItem.append(menuText); //set reference;
 
   setAction(menuItem, action);
-  menuItem.addEventListener('click',
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee2() {
+  menuItem.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
     var result, response;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -205,7 +199,7 @@ Menu.prototype.removeItem = function (index, isCardAction) {
   } //remove item from Menu;
 
 
-  items.splice(index, 1); //remove item from HtmlElement;
+  items.splice(index, 1); //remove item from HTMLElement;
 
   let menu = menus[0].element;
   menu.children.item(index).remove();
@@ -219,7 +213,7 @@ Menu.prototype.removeItem = function (index, isCardAction) {
 
 
 Menu.prototype.clear = function (isCardAction) {
-  //clear HtmlElement;
+  //clear HTMLElement;
   let menu = menus[0].element;
   let menuItems = menu.children;
   const length = menuItems.length; //skip empty Menus;
@@ -337,9 +331,7 @@ Selector.prototype.toggle = function () {} //future release;
 /** Overlay class */
 ;
 
-let Overlay =
-/*#__PURE__*/
-function () {
+let Overlay = /*#__PURE__*/function () {
   function Overlay() {
     _classCallCheck(this, Overlay);
 
@@ -496,9 +488,7 @@ function trigger() {
 
 
 function _trigger() {
-  _trigger = _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4() {
+  _trigger = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     var e, o, s, card, response;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -541,15 +531,13 @@ function handleResponse(_x) {
 }
 /**
  * Initiates callback function and updates Ui;
- * @param {HtmlElement} elem caller element;
+ * @param {HTMLElement} elem caller element;
  * @returns {Function}
  */
 
 
 function _handleResponse() {
-  _handleResponse = _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(obj) {
+  _handleResponse = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(obj) {
     var response;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
@@ -585,15 +573,13 @@ function actionCallback(_x2) {
 
 /**
  * Matches input for being a mailto anchor and sets event listener;
- * @param {HtmlElement} element element to set listeners;
+ * @param {HTMLElement} element element to set listeners;
  * @param {String} input <a> html tag string to check;
  */
 
 
 function _actionCallback() {
-  _actionCallback = _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee6(elem) {
+  _actionCallback = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(elem) {
     var action, e, forms, f, form, inputs, i, input, name, value, cl, valueIndiff, isSelected, exists, a, functionName, loadIndicator, params, result, o, s;
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
@@ -727,7 +713,7 @@ function loadMailto(element, input) {
 }
 /**
  * Matches input for being an anchor and sets event listener;
- * @param {HtmlElement} element element to set listeners;
+ * @param {HTMLElement} element element to set listeners;
  * @param {String} input <a> html tag string to check;
  */
 
@@ -744,7 +730,7 @@ function loadAnchor(element, input) {
 }
 /**
  * Matches input for being a tel link and sets event listener;
- * @param {HtmlElement} element element to set listeners;
+ * @param {HTMLElement} element element to set listeners;
  * @param {String} input <a> html tag string to check;
  */
 
@@ -758,15 +744,17 @@ function loadTel(element, input) {
 }
 /**
  * Utility function to convert html string to DOM tree;
- * @param {HtmlElement} parent element to hook to;
+ * @param {HTMLElement} parent element to hook to;
  * @param {String} tagged string with html markup;
- * @return {HtmlElement} updated parent element;
+ * @return {HTMLElement} updated parent element;
  */
 
 
-function toDOM(parent, tagged) {
+function toDOM(parent) {
+  let tagged = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  console.debug(tagged);
   const reg = /(<\w+.*?>)|(<\/\w+.*?>)/;
-  let t = tagged.split(reg).filter(function (e) {
+  let t = "".concat(tagged).split(reg).filter(function (e) {
     return e;
   });
   const otag = /<(\w+)(.*?)>/;
@@ -859,7 +847,7 @@ function toDOM(parent, tagged) {
 }
 /**
  * Appends https method to URL if none;
- * @param {String} input 
+ * @param {String} input
  **/
 
 
@@ -906,7 +894,7 @@ function getId() {
 }
 /**
  * Processes action and sets reference to widget;
- * @param {HtmlElement} element element on which to set reference;
+ * @param {HTMLElement} element element on which to set reference;
  * @param {String} action stringifyed action object;
  */
 
@@ -938,7 +926,7 @@ function trimPx(input) {
 /**
  * Set height to computed from number of uncollapsible widgets;
  * @param {Integer} numuncol number of widgets to show;
- * @param {HtmlElement} overlay wrapper element to uncollapse;
+ * @param {HTMLElement} overlay wrapper element to uncollapse;
  * @return {Integer} height to keep uncollapsed;
  */
 
@@ -973,8 +961,8 @@ function uncollapsible(numuncol, overlay) {
 }
 /**
  * Expands or collapses element;
- * @param {HtmlElement} trigger element trggering event;
- * @param {Htmlelement} overlay element to toggle;
+ * @param {HTMLElement} trigger element trggering event;
+ * @param {HTMLElement} overlay element to toggle;
  * @param {String} property property to animate;
  * @param {Integer} interval delay between incremenets;
  * @param {Integer} increment animation speed;
@@ -983,93 +971,88 @@ function uncollapsible(numuncol, overlay) {
 
 
 function collapse(trigger, overlay, property, interval, increment, initial) {
-  return (
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3() {
-      var chProperty, children, end, change, i, chcomp, chMargin, computed, t;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
-          case 0:
-            //compute child elems height;
-            chProperty = 0, children = overlay.children, end = initial, change = increment;
+  return /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var chProperty, children, end, change, i, chcomp, chMargin, computed, t;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          //compute child elems height;
+          chProperty = 0, children = overlay.children, end = initial, change = increment;
 
-            for (i = 0; i < children.length; i++) {
-              chcomp = window.getComputedStyle(children.item(i));
-              chProperty += trimPx(chcomp[property]);
+          for (i = 0; i < children.length; i++) {
+            chcomp = window.getComputedStyle(children.item(i));
+            chProperty += trimPx(chcomp[property]);
 
-              if (property === 'height') {
-                if (i > 0) {
-                  chMargin = trimPx(chcomp.marginBottom);
-                } else {
-                  chMargin = trimPx(chcomp.marginTop);
+            if (property === 'height') {
+              if (i > 0) {
+                chMargin = trimPx(chcomp.marginBottom);
+              } else {
+                chMargin = trimPx(chcomp.marginTop);
+              }
+
+              chProperty += chMargin;
+            }
+          } //compute and set height to element;
+
+
+          computed = trimPx(window.getComputedStyle(overlay)[property]);
+          overlay.style[property] = computed + 'px'; //if element is collapsed -> inverse increment;
+
+          if (computed === initial) {
+            change = -increment;
+            end = chProperty;
+          } //set recursive timeout to change height;
+
+
+          t = setTimeout(function wait() {
+            trigger.disabled = true;
+            let newProp = trimPx(overlay.style[property]) - change;
+
+            if (newProp < initial) {
+              newProp = initial;
+            }
+
+            if (newProp > chProperty) {
+              newProp = chProperty;
+            } //if(end>initial&&newProp>end) {  newProp = end; }
+
+
+            overlay.style[property] = newProp + 'px';
+            let currProp = trimPx(overlay.style[property]);
+            let stop = false;
+
+            switch (true) {
+              //uncollapsed;
+              case computed > initial:
+                if (currProp <= end) {
+                  stop = true;
                 }
 
-                chProperty += chMargin;
-              }
-            } //compute and set height to element;
+                break;
+              //collapsed;
 
+              case computed === initial:
+                if (currProp >= end) {
+                  stop = true;
+                }
 
-            computed = trimPx(window.getComputedStyle(overlay)[property]);
-            overlay.style[property] = computed + 'px'; //if element is collapsed -> inverse increment;
+                break;
+            }
 
-            if (computed === initial) {
-              change = -increment;
-              end = chProperty;
-            } //set recursive timeout to change height;
+            if (stop) {
+              trigger.disabled = false;
+              return clearTimeout(t);
+            }
 
+            t = setTimeout(wait, interval);
+          }, interval);
 
-            t = setTimeout(function wait() {
-              trigger.disabled = true;
-              let newProp = trimPx(overlay.style[property]) - change;
-
-              if (newProp < initial) {
-                newProp = initial;
-              }
-
-              if (newProp > chProperty) {
-                newProp = chProperty;
-              } //if(end>initial&&newProp>end) {  newProp = end; }
-
-
-              overlay.style[property] = newProp + 'px';
-              let currProp = trimPx(overlay.style[property]);
-              let stop = false;
-
-              switch (true) {
-                //uncollapsed;
-                case computed > initial:
-                  if (currProp <= end) {
-                    stop = true;
-                  }
-
-                  break;
-                //collapsed;
-
-                case computed === initial:
-                  if (currProp >= end) {
-                    stop = true;
-                  }
-
-                  break;
-              }
-
-              if (stop) {
-                trigger.disabled = false;
-                return clearTimeout(t);
-              }
-
-              t = setTimeout(wait, interval);
-            }, interval);
-
-          case 6:
-          case "end":
-            return _context3.stop();
-        }
-      }, _callee3);
-    }))
-  );
+        case 6:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
 } //===========================================END UTILITIES======================================//
 //=======================================START GLOBAL OBJECTS===================================//
 //emulate event object;
@@ -1101,11 +1084,11 @@ let Session;
 let CardService;
 let UrlFetchApp; //=======================================START POLYFILLS===================================//
 
-const HtmlElement = GLOBAL.HTMLElement;
-const Element = GLOBAL.Element; //polyfill for empty() method of HtmlElement;
+const HTMLElement = GLOBAL.HTMLElement;
+const Element = GLOBAL.Element; //polyfill for empty() method of HTMLElement;
 
-if (!HtmlElement.prototype.empty) {
-  HtmlElement.prototype.empty = function () {
+if (!HTMLElement.prototype.empty) {
+  HTMLElement.prototype.empty = function () {
     let chd = this.children;
 
     for (let c = 0; c < chd.length; c++) {
@@ -1127,15 +1110,15 @@ if (!Element.prototype.append) {
   Element.prototype.append = function (elem) {
     this.appendChild(elem);
   };
-} //polyfill for remove() method of HtmlElement;
+} //polyfill for remove() method of HTMLElement;
 
 
-if (!HtmlElement.prototype.remove) {
-  HtmlElement.prototype.remove = function () {
+if (!HTMLElement.prototype.remove) {
+  HTMLElement.prototype.remove = function () {
     let prt = this.parentElement;
     prt.removeChild(this);
   };
-} //poltfill for add() method of classList property of HtmlElement;
+} //poltfill for add() method of classList property of HTMLElement;
 
 
 const DOMTokenList = GLOBAL.DOMTokenList;
