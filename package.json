@@ -36,6 +36,7 @@
   },
   "babel": {
     "plugins": [
+      "@babel/plugin-transform-regenerator",
       "@babel/plugin-transform-arrow-functions",
       "@babel/plugin-transform-block-scoped-functions",
       "@babel/plugin-transform-classes",
@@ -54,7 +55,7 @@
   },
   "sourceType": "script",
   "browserslist": [
-    "ie 11"
+    "ie 9"
   ],
   "dependencies": {}
 }
