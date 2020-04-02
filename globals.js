@@ -320,3 +320,12 @@ var globalSheetsShort                = 'Fetches data from a Google Sheet. Please
 var globalQBShortDesc                = 'Fetches customer or supplier invoice or bill detail from connected QuickBooks company. Please authenticate to QuickBooks';
 var globalWebhookShort               = 'Sends and recieves data from custom webhooks, including Microsoft Flow (supports iterative data updating)';
 var globalZendeskSellShort           = 'Fetches contact and company information from Zendesk Sell';
+
+/**
+ * HTTP protocol enumeration
+ * @enum {String}
+ */
+var Protocols = Object.freeze({
+	HTTPS: 'https://',
+	HTTP: 'http://'
+});
