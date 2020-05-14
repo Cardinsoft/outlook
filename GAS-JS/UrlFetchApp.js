@@ -179,7 +179,7 @@ function makeRequest(url, params) {
     //pass endpoint in headers to avoid ambiguity of query
 		request.setRequestHeader("endpoint", url);
 
-    request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy); //if content type is provided -> set request Content-Type header;
+    request.open(params.method.toUpperCase(), 'https://cardin.azurewebsites.net/api/proxy'); //if content type is provided -> set request Content-Type header;
 
     if (params.contentType) {
       request.setRequestHeader('Content-Type', params.contentType);
