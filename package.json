@@ -31,7 +31,7 @@
     "@babel/preset-env": "^7.9.0",
     "@types/google-apps-script": "^1.0.11",
     "expose-require": "git+https://github.com/Oaphi/exposeAndRequire.git",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "xmlhttprequest-ssl": "^1.6.2"
   },
   "babel": {
